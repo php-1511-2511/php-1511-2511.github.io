@@ -100,9 +100,7 @@ Students will be evaluated based on:
 
 
 | Grade  | Category | Percentage |
-
 | --------------- | ----------------- | ------------- |
-
 | Participation       |                    10%   |
 | Homework             |                   20%  | 
 | Exam 1 (03/12/2017)   |                  20% | 
