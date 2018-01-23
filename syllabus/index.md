@@ -61,8 +61,10 @@ Course topics will be drawn (but subject to change) from
   [Amazon](https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-ebook/dp/B00YFSZPTE).
   We follow this book for content and pacing. 
 
+* * *
 
 ### Suggested
+
 {:.right}
 ![An Introduction to Statistical Learning](../images/ISL.jpg)
 
