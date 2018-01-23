@@ -7,8 +7,7 @@ title: Course Resources & Links
 * Applied Regression Analysis and Generalized Linear Models
   John Fox Jr.   [Amazon](https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-ebook/dp/B00YFSZPTE).
 * An Introduction to Statistical Learning: with Applications in R
-  Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani [Get
-  it @Duke](http://getitatduke.library.duke.edu/?sid=sersol&SS_jc=TC0000935811&title=An%20Introduction%20to%20Statistical%20Learning%20with%20Applications%20in%20R)
+  Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani [Online PDF]http://www-bcf.usc.edu/~gareth/ISL/)
 
 
 
