@@ -3,14 +3,14 @@ exclude:
   - LICENSE
 
 layouts_dir: ./_noita
-baseurl: /courses/Spring17/sta521
+baseurl: /
 
 noita:
-  name: STA 521 Modern Regression & Predictive Modelling
-  description: Jekyll theme built with Foundation
+  name: PHP 1511 / PHP 2511 Applied Regression Analsis
+  description: A first course in Regression!
   author:
-    name: Merlise Clyde
-    url: http://stat.duke.edu/~clyde
+    name: Adam J Sullivan
+    url: https://vivo.brown.edu/display/asulliv3
     absolute: true
   lang: en
   topbar:
