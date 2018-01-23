@@ -1,0 +1,358 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+% ***************************************************************
+% for handout, change only this...
+%   \documentclass[twocolumn]{article}
+%   \usepackage{beamerarticle}
+%   \setlength{\textwidth}{7.5in}
+%   \setlength{\textheight}{9.8in}
+%   \setlength{\topmargin}{-1in}
+%   \setlength{\oddsidemargin}{-.52in}
+%   \setlength{\evensidemargin}{-.52in}
+
+%\usepackage{beamerprosper}
+%\usetheme{Warsaw}
+%\usecolortheme{orchid}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\title{Bayesian Model Averaging}
+
+\author{Hoff Chapter 9, Hoeting et al 1999, Clyde \& George 2004, Liang et al 2008}
+\date{\today}
+%\Logo(-1.9,7.3){\includegraphics[width=.5in]{../eps/duke}}
+% Optional: text to put in the bottom of each slide.
+% By default, the title of the talk will be placed there.
+%\slideCaption{\textit{October 28, 2005 }}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+% make the title slide
+\maketitle
+
+\begin{frame} \frametitle{Outline}
+
+\begin{itemize}
+\item Problems with g-priors
+\item Alternatives:  Mixtures of $g$-priors
+\item Model Averaging
+\item Choice of Model
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayes Factors}
+\begin{itemize}
+\item Bayes Factor = ratio of marginal likelihoods \pause
+
+\item Posterior odds = Bayes Factor $\times$ Prior odds \pause
+
+\item Posterior Probability
+$$P(\Mg \mid \Y) = \frac{BF[\Mg : \M_0] p(\Mg)/p(\M_0)}
+{\sum_{\Mg \in \Gamma} BF[\Mg : \M_0] p(\Mg)/p(\M_0)}
+$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}  \frametitle{Problem with g-Prior with arbitrary g}
+
+The Bayes factor for comparing $\Mg$ to the null
+model:
+%$$
+% BF(\Mg : \M_0) =    (1 + g)^{(n - 1 - p_\g)/2} (1 + g(1 - \R^2))^{-(n-1)/2}
+%$$
+\pause
+\begin{itemize}
+\item Let $g$ be a fixed constant and take $n$ fixed.\pause
+\item Let $F = \frac{R_{\g}^2/\pg}{(1 - R_{\g}^2)/(n - 1 - \pg)}$ \pause
+\item As $R^2_{\g} \to 1$, $F \to \infty$ LR test would reject $H_0$  where
+ $F$ is the usual $F$ statistic for  comparing model $\Mg$ to $\M_0$ \pause
+\item Bayes Factor would go to $(1 + g)^{(n-\pg -1)/2}$ as $F \to \infty$  (bounded for fixed $g$, $n$ and $\pg$ \pause
+\end{itemize}
+
+Bayes and Frequentist would not agree in this limit \pause
+
+\vspace{12pt}
+``Information paradox''
+\end{frame}
+
+
+\begin{frame} \frametitle{Resolution of Paradox}
+
+Liang et al (2008) show that paradox can be resolved with mixtures of $g$-priors
+$$p(\bg \mid \phi) = \int_0^{\infty} \N(\bg; 0, g (\Xg^T\Xg)^{-1}/\phi) p(g) dg$$
+\pause
+
+\begin{itemize}
+\item  $BF \to \infty$ if $\R^2 \to 1$  $\Leftrightarrow$ $\E_g[(1 +
+g)^{-\pg/2}]$ diverges \pause
+\item Zellner-Siow Cauchy prior
+$$ 1/g \sim \Gam(1/2, n/2)$$ \pause
+
+\item Hyper-g   $p(g) \propto (1 +g )^{a/2 - 1}$ if $2 < a \le 3$
+
+$$\frac{g}{1+g} \sim \textsf{Beta}(1, \frac{a}{2} - 1)$$
+\pause
+\item "hyper-g/n"
+\pause
+\item  robust prior (Bayarri et al Annals of Statistics 2012)
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Example}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(BAS)}
+\hlstd{poll.ZS} \hlkwb{=} \hlkwd{bas.lm}\hlstd{(}\hlkwd{log}\hlstd{(SO2)} \hlopt{~} \hlstd{temp} \hlopt{+} \hlkwd{log}\hlstd{(firms)} \hlopt{+}
+                             \hlkwd{log}\hlstd{(popn)} \hlopt{+} \hlstd{wind} \hlopt{+}
+                             \hlstd{precip}\hlopt{+} \hlstd{rain,}
+                  \hlkwc{data}\hlstd{=usair,}
+                  \hlkwc{prior}\hlstd{=}\hlstr{"ZS-null"}\hlstd{,}
+                  \hlkwc{alpha}\hlstd{=}\hlnum{41}\hlstd{,}    \hlcom{# g = n}
+                  \hlkwc{n.models}\hlstd{=}\hlnum{2}\hlopt{^}\hlnum{7}\hlstd{,}\hlcom{# enumerate (can omit)}
+                  \hlkwc{modelprior}\hlstd{=}\hlkwd{uniform}\hlstd{(),}
+                  \hlkwc{method}\hlstd{=}\hlstr{"deterministic"}\hlstd{)}   \hlcom{# fast enumeration}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+ use `prior = "hyper-g"` and `a = 3` for hyper-g or `prior = "hyper-g/n"` and `a=3` for hyper-g/n
+\end{frame}
+
+\begin{frame}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(poll.ZS,} \hlkwc{which}\hlstd{=}\hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame} \frametitle{Bayesian Model Averaging}
+
+\begin{itemize}
+\item Posterior for $\mu = \one \alpha + \X \b$ is a mixture distribution
+
+$$p(\mu \mid \Y) = \sum p(\mu \mid \Y, \Mg) p(\Mg \mid \Y)$$ \pause
+with expectation expressed as a weighted average
+$$\E[\mu \mid \Y] = \one \hat{\alpha} +  \X \sum \E[\b \mid \Y, \Mg] p(\Mg \mid \Y)$$
+\pause
+\item Predictive Distribution for $\Y^*$
+$$p(\Y^* \mid \Y) = \sum p(\Y^* \mid \Y, \Mg) p(\Mg \mid \Y)$$
+\pause
+\item Posterior Distribution of $\beta_j$
+
+$$p(\beta_j \mid \Y) = p(\gamma_j = 0 \mid \Y) \delta_0(\beta) + \sum p(\beta_j \mid \Y, \Mg) \gamma_j p(\Mg \mid \Y) $$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame} \frametitle{Estimator}
+
+\begin{itemize}
+\item Find $\hat{\mu}$ that minimizes posterior expected loss
+$$\E[(\mu - \hat{\mu})^T(\mu - \hat{\mu}) \mid \Y]$$ \pause
+\item Solution is posterior mean under BMA
+$$\E[\mu \mid \Y] = \one \hat{\alpha} +  \X \sum \E[\b \mid \Y, \Mg] p(\Mg \mid \Y)$$ \pause
+\item If one model has probability 1, then BMA is equivalent to using the highest posterior probability model \pause
+\item incorporates estimates from other models when there is substantial uncertainty
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile] {Coefficients under BMA}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{beta.ZS} \hlkwb{=} \hlkwd{coef}\hlstd{(poll.ZS)}
+\hlstd{beta.ZS}
+\end{alltt}
+\begin{verbatim}
+## 
+##  Marginal Posterior Summaries of Coefficients: 
+## 
+##  Based on the top  64 models 
+##             post mean  post SD    post p(B != 0)
+## Intercept    3.153004   0.082226   1.000000     
+## temp        -0.058053   0.020325   0.976833     
+## log(firms)   0.206384   0.177253   0.758554     
+## log(popn)   -0.035074   0.174760   0.342677     
+## wind        -0.129875   0.085195   0.813330     
+## precip       0.010898   0.011327   0.633639     
+## rain         0.001759   0.004034   0.356085
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Posterior of Coefficients under BMA}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/coefplot-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Credible Intervals for Coefficients under BMA}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(}\hlkwd{confint}\hlstd{(beta.ZS,} \hlkwc{parm}\hlstd{=}\hlnum{2}\hlopt{:}\hlnum{7}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+}
+
+
+\begin{kframe}\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame} \frametitle{Selection and Model Uncertainty}
+
+\begin{itemize}
+\item Select a model and $\hat{\mu}$ that minimizes posterior expected loss
+$$\E[(\mu - \hat{\mu})^T(\mu - \hat{\mu}) \mid \Y]$$ \pause
+\item BMA is "best" estimator without selection \pause
+
+\item Best model and estimator is the posterior mean under the model that is closest to BMA under squared error loss
+$$(\hat{\mu}_{BMA} - \hat{\mu}_{\Mg})^T(\hat{\mu}_{BMA} - \hat{\mu}_{\Mg})$$
+\pause
+\item Often contains more predictors than the HPM or Median Probability Model
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Best Predictive Model}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#BPM}
+\hlstd{BPM} \hlkwb{=} \hlkwd{predict}\hlstd{(poll.ZS,} \hlkwc{estimator} \hlstd{=} \hlstr{"BPM"}\hlstd{)}
+\hlstd{BPM}\hlopt{$}\hlstd{bestmodel}
+\end{alltt}
+\begin{verbatim}
+## [1] 0 1 2 4 5 6
+\end{verbatim}
+\begin{alltt}
+\hlstd{(poll.ZS}\hlopt{$}\hlstd{namesx[}\hlkwd{attr}\hlstd{(BPM}\hlopt{$}\hlstd{fit,} \hlstr{'model'}\hlstd{)} \hlopt{+}\hlnum{1}\hlstd{])[}\hlopt{-}\hlnum{1}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] "temp"       "log(firms)" "wind"       "precip"     "rain"
+\end{verbatim}
+\begin{alltt}
+\hlcom{#HPM}
+\hlstd{HPM} \hlkwb{=} \hlkwd{predict}\hlstd{(poll.ZS,} \hlkwc{estimator} \hlstd{=} \hlstr{"HPM"}\hlstd{)}
+\hlstd{HPM}\hlopt{$}\hlstd{bestmodel}
+\end{alltt}
+\begin{verbatim}
+## [1] 0 1 2 4 5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile] %\frametitle{Comparison}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/plot_est-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame} \frametitle{Summary}
+
+\begin{itemize}
+\item BMA shown in practice to have better out of sample predictions than selection (in many cases) \pause
+\item avoids selecting a single model and accounts for out uncertainty \pause
+\item if one model dominates BMA is very close to selection  (asymptotically will put probability one on model that is "closest" to the true model) \pause
+\item MCMC allows one to implement without enumerating all models \pause
+\item BMA depends on prior on coefficients, variance and models  (sensitivity to choice?) \pause
+\item Mixtures of $g$ priors preferred to usual $g$ prior
+\end{itemize}
+\end{frame}
+\end{document}

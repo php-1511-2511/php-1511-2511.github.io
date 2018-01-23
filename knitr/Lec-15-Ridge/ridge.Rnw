@@ -1,0 +1,295 @@
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+
+%\usetheme{Warsaw}
+\usecolortheme{orchid}
+\title{Bayes Estimators \& Ridge Regression}
+\subtitle{Readings ISLR 6 }
+\institute{Merlise Clyde}
+\author{STA 521  Duke University}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\begin{frame} \frametitle{Model}
+
+\begin{itemize}
+\item Assume that we have centered (as before) and rescaled $\X^o$  (original $\X$) so that
+
+$$\X_j =  \frac{\X^o_j - \bar{\X}^o_j}{\sum_i (X^o_{ij} - \bar{\X}^o_j)^2}$$
+\pause
+\item Equivalent to using `r scale(X)` \pause
+
+\item Model:
+
+$$\Y = \one \beta_0 + \X \b + \eps$$
+\pause
+\item $\X^T\X = (n-1) \Cor(\X) $  (correlation matrix of $X$) \pause
+\item Eigenvalue Decomposition $\X^T\X = \U \Lambda \U^T$ \pause
+\item if smallest eigen value is 0, $\X$ has columns that are linearly dependent
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How Good are  Various Estimators}
+Quadratic loss for estimating  $\b$ using estimator $\a$
+$$ L(\b, \a) =  ( \b - \a)^T(\b -\a)$$ \pause
+
+\begin{itemize}
+\item Consider our expected loss (before we see the data) of taking an
+``action'' $\a$ \pause
+\item Under OLS or the  Reference prior the Expected Mean Square Error  \pause
+  \begin{eqnarray*}
+\E_\Y[( \b - \bhat)^T(\b -\bhat) & = &\sigma^2
+  \tr[(\X^T\X)^{-1}] \pause \\
+ & = & \sigma^2 \sum_{j=1}^p \lambda_j^{-1}
+  \end{eqnarray*}
+\pause
+\item If smallest $\lambda_j \to 0$ then MSE $\to \infty$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problems}
+Estimates:
+$$\bhat = (\X^T\X)^{-1} \X^T \Y$$  or with $g$-prior
+
+$$\bhat = \frac{g}{1+g}(\X^T\X)^{-1} \X^T \Y$$ may be unstable
+
+
+Solutions:
+  \begin{itemize}
+  \item remove redundant variables (model selection)  (AIC, BIC, other approches)  $2^p$ models combinatorial hard problem even with Stochastic Search
+\item add constant to  $\X^T\X$:  $\tilde{\b} = (\X^T\X  + k \I)^{-1} \X^T \Y$ to stabilise eigenvalues -  alternative shrinkage estimator
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Independent Prior}
+  \begin{itemize}
+  \item Reference prior $p(\beta_0, \phi) \propto \phi^{-1}$
+  \item
+  Prior Distribution on $$\b \mid \phi, \beta_0, k \sim \N(\zero_p, \frac{1}{ \phi
+    k} \I_p)$$ \pause
+
+\item log likelihood (integrated) for $\b$ plus prior
+$$- \frac{\phi}{2}\left(\| \Y - \one \bar{\Y} - \X \b \|^2  + k \| \b \|^2    \right)$$
+\item  Posterior mean
+
+
+  $$\bv_n = (\X^T\X + k \I)^{-1}  \X^T\X \bhat$$ \pause
+\item importance of standardizing \pause
+
+\item Choice of $k$ in practice?
+\item $k = 0$ OLS
+\item $k = \infty$  estimates are $\zero$   (intercept only)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}  \frametitle{Alternative Motivation}
+  \begin{itemize}
+  \item If  $\bhat$ is unconstrained  expect high variance with nearly
+    singular $\X$ \pause
+
+\item Control how large coefficients may grow \pause
+    $$\min_{\b} (\Y - \one \bar{\Y}  - \X \b)^T (\Y -\one \bar{Y}  - \X\b)$$
+    subject to
+    $$ \sum \beta_j^2 \le t$$ \pause
+  \item Equivalent Quadratic Programming Problem
+    $$\min_{\b} \| \Y^c - \X^c \b\|^2 + k \|\b\|^2$$ \pause
+  \item ``penalized'' likelihood  \pause
+  \item Ridge Regression
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Geometry}
+\includegraphics[height=2in]{ridge-constraint}
+\footnote{onlinecourses.science.pse.edu}
+\end{frame}
+\begin{frame}
+  \frametitle{Longley Data:  library(MASS); data(longley)}
+
+\vspace{-12pt}
+
+<<data, echo=FALSE, fig.align='center', fig.height=4.5, fig.width=5>>=
+library(MASS);
+data("longley");
+pairs(longley)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{OLS}
+\begin{small}
+\begin{verbatim}
+> longley.lm = lm(Employed ~ ., data=longley)
+> summary(longley.lm)
+
+Coefficients:
+               Estimate Std. Error t value Pr(>|t|)
+(Intercept)  -3.482e+03  8.904e+02  -3.911 0.003560 **
+GNP.deflator  1.506e-02  8.492e-02   0.177 0.863141
+GNP          -3.582e-02  3.349e-02  -1.070 0.312681
+Unemployed   -2.020e-02  4.884e-03  -4.136 0.002535 **
+Armed.Forces -1.033e-02  2.143e-03  -4.822 0.000944 ***
+Population   -5.110e-02  2.261e-01  -0.226 0.826212
+Year          1.829e+00  4.555e-01   4.016 0.003037 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3049 on 9 degrees of freedom
+Multiple R-squared: 0.9955,	Adjusted R-squared: 0.9925
+F-statistic: 330.3 on 6 and 9 DF,  p-value: 4.984e-10
+\end{verbatim}
+\end{small}
+\end{frame}
+
+
+\begin{frame}[fragile]  \frametitle{Ridge Regression}
+<<ridge, evaluate=FALSE>>=
+# from library MASS
+longley.ridge = lm.ridge(Employed ~ ., data=longley,
+                         lambda=seq(0, 0.1, 0.0001))
+# lambda = k in notes
+
+summary(longley.ridge)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]  \frametitle{Ridge Trace Plot}
+<<ridgetrace, echo=FALSE, fig.height=4>>=
+# from library MASS
+longley.ridge = lm.ridge(Employed ~ ., data=longley, lambda=seq(0, 0.1, 0.0001))
+plot(longley.ridge)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Choice of $k$}
+<<cverror, cache=TRUE>>=
+k = seq(0, 0.1, 0.0001)
+n.k = length(k); n = nrow(longley)
+cv.lambda = matrix(NA, n, n.k)
+
+rmse.ridge = function(data, i, j, k) {
+  m.ridge = lm.ridge(Employed ~ ., data = data, lambda=k[j],
+                          subset = -i)
+  yhat = scale(data[i,1:6, drop=F],center = m.ridge$xm,
+                       scale = m.ridge$scales) %*%
+                m.ridge$coef + m.ridge$ym
+(yhat - data$Employed[i])^2
+}
+
+for (i  in 1:n)  {
+  for (j in 1:n.k) {
+    cv.lambda[i,j] = rmse.ridge(longley, i, j, k)
+  }
+}
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Cross Validation Error}
+<<fig.height=4>>=
+cv.error = apply(cv.lambda, 2, mean)
+plot(k, cv.error, type="l")
+@
+Best $k$ = \Sexpr{k[which.min(cv.error)]}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Generalized Cross-validation}
+\begin{small}
+<<out.width=50>>=
+select(lm.ridge(Employed ~ ., data=longley,
+         lambda=seq(0, 0.1, 0.0001)))
+best.k = longley.ridge$lambda[which.min(longley.ridge$GCV)]
+longley.RReg = lm.ridge(Employed ~ ., data=longley,
+                        lambda=best.k)
+coef(longley.RReg)
+@
+
+\end{small}
+
+\end{frame}
+
+
+
+
+
+
+
+
+\begin{frame}
+  \frametitle{Priors on $k$}
+
+$\X$ is centered and standardized
+  \begin{eqnarray*}
+  \Y  & =  &\one \beta_0 + \X  \b + \eps
+  \end{eqnarray*}
+
+Hierarchical prior \pause
+\begin{itemize}
+\item $p(\beta_0,  \phi \mid \b, \kappa) \propto \phi^{-1}$ \pause
+\item $\b \mid \phi, \kappa \sim \N(\zero, \I (\phi \kappa )^{-1})$ \pause
+\item prior on $\kappa$?  \pause
+
+\item Take $$\kappa \mid \phi \sim  \Gam(1/2, 1/2)$$ \pause
+
+\item What is induced prior on $\b \mid \phi$?
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Posterior Distributions}
+Joint Distribution
+  \begin{itemize}
+ \item $\beta_0, \b, \phi \mid \kappa, \Y$  Normal-Gamma family given $\Y$
+   and $\kappa$ \pause
+  \item $\kappa \mid \Y$  not tractable \pause
+  \end{itemize}
+Obtain marginal for  $\b$ via  MCMC \pause
+%\begin{itemize}
+
+Pick initial values $\beta_0^{(0)}, \b^{(0)},
+  \phi^{(0)}$, \pause \\
+
+Set  $t = 1$
+
+\begin{enumerate}
+ \item Sample $\kappa^{(t)} \sim p(\kappa \mid \beta_0^{(t-1)},
+    \b^{(t-1)}, \phi^{(t-1)}, \Y)$ \pause
+\item Sample $\beta_0^{(t)}, \b^{(t)}, \phi^{(t)} \mid \kappa(t),
+     \Y$ \pause
+\item  Set $t = t + 1$ and repeat until $t > T$ \pause
+\end{enumerate}
+Use Samples  $\beta_0^{(t)}, \b^{(t)}, \phi^{(t)}, \kappa^{(t)}$ for $t
+= B, \ldots, T$ for inference
+
+\end{frame}
+
+\begin{frame} \frametitle{JAGS}
+JAGS = Just Another Gibbs Sampler \pause
+
+\begin{itemize}
+\item scripting language to express sampling models and priors \pause
+\item "derives" full conditional distributions \pause
+\item integrates with R \pause
+\item typically faster than interpreted R code \pause
+\item accounts for uncertainty about $k$ \pause
+\end{itemize}
+
+How would you compare Bayes predictions with Ridge with Cross-validation?
+\end{frame}
+\end{document}
+

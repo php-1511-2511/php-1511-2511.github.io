@@ -1,0 +1,288 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\usepackage[dvips]{color}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal,url}
+\input{macros}
+\usepackage{verbatim}
+
+%\usetheme{Warsaw}
+%\usecolortheme{orchid}
+\title{Robust Regression and Related Methods}
+\subtitle{Readings ISLR Chapter 6 + Papers}
+\institute{Merlise Clyde}
+\author{STA521 Predictive Models Duke University}
+\date{\today}
+\logo{duke.eps}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\begin{frame} \frametitle{Problem with Lasso/Bayesian Lasso Model}
+
+\begin{itemize}
+\item Model: $\Y = \one \beta_0 + \X \b + \eps$;  $\X$ is matrix of centered and scaled predictors so that  $\diag(\X^T\X) = \I_p$ \pause
+\item Lasso Prior
+    $$\beta_j \mid \phi \simiid DE(\phi^{1/2} \lambda)$$   \pause
+    $$p(\beta_0, \phi) \propto 1/\phi $$ \pause
+\item One parameter $\lambda$ controls shrinkage of $\b$  \pause
+ \begin{itemize}
+ \item hard thresholding to zero  \pause
+ \item soft thresholding of non-zero coefficients to zero  \pause
+ \end{itemize}
+\item cannot achieve an optimal balance of both  \pause
+\item Carvhalo, Polson, Scott proposed the Horseshoe prior to address this problem  \pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Robust Shrinkage}
+
+\includegraphics[height=3.0in]{shrinkage.jpg}
+
+\url{http://www.jmlr.org/proceedings/papers/v5/carvalho09a/carvalho09a.pdf}
+\end{frame}
+
+
+\begin{frame} \frametitle{Horseshoe}
+\begin{itemize}
+\item Horseshoe Prior Distribution
+$$\beta_j \mid \phi, \tau_j \simiid \N(0, \tau_j/\phi) $$ \pause
+\item $\tau_j^{1/2} \mid  \varphi \simiid \Ca^+(0, \varphi^{1/2})$ with density for the half-Cauchy
+$$p(\tau^{1/2}) \propto \left(1 + \frac{\tau}{\varphi}\right)^{-1}  \qquad \tau > 0$$
+\pause
+\item $\varphi^{1/2} \sim \Ca^+(0, 1)$ \pause
+\item $p(\beta_0, \phi) \propto 1/\phi)$ \pause
+\end{itemize}
+
+
+
+\end{frame}
+
+
+\begin{frame} \frametitle{Alternative representation}
+
+Normal $+$ Generalized Beta:
+$$\beta_j \mid \rho_j \sim N(0, 1/\rho_j - 1)$$
+ \pause
+$$ p(\rho_j) \propto \rho^{1/2 -1} (1 - \rho_j)^{1/2 - 1} (1 + \varphi \rho_j)^{-1}
+$$
+ \pause
+
+Special Case:  $\varphi = 1$ then $$\rho_j \sim \Be(1/2, 1/2)$$
+ \pause
+
+\vspace{12pt}
+Induced Shrinkage:
+
+$$\hat{\beta}_j \mid \beta_j \sim N(\beta_j, 1)$$
+$$\beta_j \mid \Y, \rho_j \sim \N\left((1 - \rho_j) \hat{\beta}_j, 1 - \rho_j\right)$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Horseshoe Prior Shrinkage}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/beta-prior-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}\frametitle{Prior}
+\includegraphics[height=3.5in]{prior}
+\end{frame}
+
+\begin{frame}\frametitle{Outliers}
+
+Why should we assume that errors are normally distributed?  \pause
+
+\vspace{2.75in}
+
+
+
+Use heavy tailed distributions for errors too!  Student t, etc
+
+\end{frame}
+
+\begin{frame} \frametitle{Robust Regression with t errors}
+Model
+$$ Y_i \mid \b, \beta_0, \omega_j, \phi \ind
+\N(\beta_0 + \x_i^T\b, \phi^{-1} \omega^{-1})$$
+ \pause
+
+$$
+\omega_i \simiid \Gam(\nu/2, \nu/2)
+$$
+ \pause
+implies that marginally
+
+$$ Y_i \mid \b, \beta_0, \phi
+\ind \St(\nu, \beta_0 + \x_i^T\b, \phi^{-1/2})
+$$
+ \pause
+
+Interpretation of $\omega$ as latent weights
+
+$$p(y_i) =  (2 \pi)^{-1/2} (\phi \omega_i)^{1/2}
+\exp( - \frac{\phi \omega_j}{2}(y_i - \x_i^T \b)^2)
+$$
+ \pause
+Small $\omega$ down weights errors
+\end{frame}
+
+\begin{frame} \frametitle{Conditional Distribution}
+Prior $\times$ Likelihood for case $i$
+
+$$p(\omega_i \mid \cdot) \propto \omega_i^{\nu/2 - 1} \exp(- \frac{\nu}{2} \omega_i)  (2 \pi)^{-1/2} (\phi \omega_i)^{1/2}
+\exp\left( - \frac{\phi \omega_j}{2}(y_i - \x_i^T \b)^2\right)$$
+
+\vspace{2.5in}
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Code}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# library(lars)}
+\hlcom{# library(monomvn)}
+\hlcom{# data(diabetes)}
+
+\hlcom{# yf = diabetes$y}
+\hlcom{# Xf = diabetes$x2}
+\hlcom{# do not center/scale as doen within blasso}
+\hlcom{# rbhs = blasso(Xf, yf, case="hs",}
+\hlcom{#                theta = 16, RJ=FALSE,}
+\hlcom{#                thin=10, T=2000,}
+\hlcom{#                verb=0)}
+\hlcom{# y.pred = mean(rbhs$mu) +}
+\hlcom{#          Xf %*% apply(rbhs$beta, 2, mean)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]  \frametitle{Simulation Study with Diabetes Data}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/plot-rmse-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Other Options}
+  Range of other scale mixtures used  \pause
+  \begin{itemize}
+  \item Generalized Double Pareto (Armagan, Dunson \& Lee)
+ \pause
+  \item Normal-Exponential-Gamma (Griffen \& Brown 2005)
+
+  \pause
+
+\item Relevance Vector Machines (Tipping) (improper!) \pause
+  \item Bridge - Power Exponential Priors  (Stable mixing density) \pause
+
+   \end{itemize}
+Some implemented in monomvn, but easy to add in JAGS  \pause
+
+\vfill
+
+Prior on $\b$ should have heavier tails than error distribution
+\end{frame}
+
+\begin{frame}
+  \frametitle{Choice of Estimator \& Selection?}
+
+  \begin{itemize}
+  \item Posterior Mode (may set some coefficients to zero) \pause
+  \item Posterior Mean (no selection) \pause
+  \end{itemize}
+  Bayesian Posterior under Shrinkage Priors does not assign any probability to $\beta_j = 0$ \pause
+
+  \begin{itemize}
+  \item Selection solved as a post-analysis decision problem \pause
+  \item Selection part of model uncertainty $\Rightarrow$ add prior \pause
+    probability that $\beta_j = 0$  and combine with decision problem  \pause
+    \item Use `RJ=TRUE` in blasso
+
+
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+

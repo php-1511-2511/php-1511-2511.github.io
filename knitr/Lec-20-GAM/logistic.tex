@@ -1,0 +1,290 @@
+\documentclass[]{beamer}
+%\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{../macros}
+\usepackage{verbatim}
+% abbreviation
+\def\logit{\textsf{logit}}
+\def\SE{\textsf{SE}}
+\def\C{\textsf{CAGE}}
+\def\L{\textsf{LIGHT}}
+\def\Li{\textsf{LITTER}}
+\def\G{\textsf{GAP}}
+\def\S{\textsf{SURV}}
+\def\V{\textsf{SPECIES}}
+
+\title{Binary Regression}
+
+\author{Hoff Chapter 10 -11, ISL Chapter 4 } 
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{frame}[fragile]\frametitle{Seedling Survival}
+  
+  Tropical rain forests have up to 300 species of trees per hectare,
+  which leads to difficulties when studying processes which occur at
+  the community level. To gain insight into species responses, a
+  sample of seeds were selected from a suite of eight species selected
+  to represent the range of regeneration types which occur in this
+  community.
+\begin{verbatim}
+Name       Size Cotyledon type
+Ardisia       3 H     
+C. biflora    7 H     
+Gouania       1 E      Size = 1 smallest to 8 largest
+Hirtella      8 H      E = Epigeal  - cotyledons
+Inga          4 H      H = Hypogeal - seed food reserves  
+Maclura       2 E
+C. racemosa   6 H
+Strychnos     5 E
+\end{verbatim}
+%Epigeal species rely on the cotyledons for
+%photosynthesis and production of energy to become estabished. Seed
+%size tends to be small, with little reserves in the seeds. Hypogeal
+%species tend to have larger seeds, and can rely on reserves in the
+%seed to produce energy, thus if initial leaves are lost to predators,
+%there may still be additional reserves that can be used to produce
+%additional leaves. Larger seeds, however, may be easier to spot by
+%predators.
+\end{frame}
+
+\begin{frame}\frametitle{Experimental Design}
+ This representative community was then placed in
+  experimental plots manipulated to mimic natural conditions \pause
+  \begin{itemize}
+  \item 8 PLOTs: 4 in forest gaps, 4 in understory conditions \pause
+  \item Each plot split in half:  mammals were excluded from
+  one half with a CAGE \pause
+  \item 4 subplots within each CAGE/NO CAGE \pause
+  \item 6 seeds of each SPECIES plotted in each SUBPLT \pause
+  \item 4 LITTER levels applied to each SUBPLT \pause 
+  \item LIGHT levels at forest floor recorded \pause
+ \item  SURV  an indicator of whether they germinated and survived was 
+  recorded \pause
+  \end{itemize}
+  Which variables are important in determining whether a
+  seedling will survive? Are there interactions that influence
+  survival probabilities?  
+\end{frame}
+\begin{frame}\frametitle{Modeling Survival}
+Distribution for Survival of a single Seedling is Bernoulli
+$$  \E[\S_i \mid {\textsf covariates} ] = \pi_i $$ \pause
+  
+How should we relate covariates to probability of survival? \pause
+
+For example, probability of survival may depend on whether there was a
+\C to prevent animals from eating the seedling or \L levels. \pause
+\begin{itemize}
+\item Naive approach: Regress \S on \C and \L
+$$\hat{\pi}_i = \hat{\beta}_0 + \hat{\beta}_1 \C_i + \hat{\beta}_2 \L_i$$ \pause
+\item Problems: 
+  \begin{itemize}
+  \item  Fitted values of probabilities are not constrained to
+  (0, 1) \pause
+  \item Variances are not constant $\pi_i(1 - \pi_i)$ under Bernoulli model \pause
+ \end{itemize}
+\item Unbiased? \pause
+
+\end{itemize}
+
+\end{frame}
+\begin{frame}\frametitle{Logistic Regression}
+To build in the necessary constraints that the probabilities are
+between 0 and 1 convert to log-odds or ``logits'' \pause
+\begin{itemize}
+\item Odds of survival: $\pi_i/(1 - \pi_1)$ \pause
+$$ \logit(\pi_i) \stackrel{\sf def}{=} \log\left(\frac {\pi_i} {1 -
+    \pi_i} \right) = \beta_0 + \beta_1 \C_i + \beta_2 \L_i = \eta_i$$ \pause
+\item $\eta_i$ is the linear predictor \pause
+\item \logit\  is the {\it link} function that relates the mean $\pi_i$
+  to the linear predictor $\eta_i$ \pause
+\item Generalized Linear Models (GLMs) \pause
+\item Find Maximum Likelihood Estimates (optimization problem)
+\end{itemize}
+  
+\end{frame}
+\begin{frame}\frametitle{Logits}
+To convert from the linear predictor $\eta$ to the mean $\pi$,
+  use the inverse transformation: \pause
+  \begin{itemize}
+\item log odds (\S = 1) = $\eta$ \pause
+\item odds $(\S = 1) = \exp(\eta) = \omega$ \pause
+\item $\pi$ = odds/(1 + odds) = $\omega/(1 + \omega)$ \pause
+\item $\omega = \pi/(1 - \pi)$ \pause
+  \end{itemize}
+Can go in either direction
+\end{frame}
+\begin{frame}\frametitle{Interpretation of Coefficients}
+$$\omega_i = \exp(\beta_0 + \beta_1 \C_i + \beta_2 \L_i)$$ \pause
+\begin{itemize}
+\item When all explanatory variables are 0 (\C = 0, \L = 0), the odds
+  of survival are $\exp(\beta_0)$ \pause
+\item The ratio of odds (or odds ratio) at $X_j = A$ to odds at $X_j =
+  B$, for fixed values of the other explanatory variables is 
+  \begin{align*}
+   \textsf{ Odds ratio} &= \frac{\omega_A}{\omega_b}  = \exp(\beta_j
+   (A - B)) \\  \pause
+ \textsf{ Odds ratio} &= \frac{\omega_A}{\omega_b}  = \exp(\beta_j)
+   \text{ if } A - B = 1\\ \pause
+\textsf{Odds}(X_j = A) &= \exp(\beta_j) \cdot \textsf{Odds}(X_j = B) 
+  \end{align*}
+\item Coefficients are log odds ratios \pause
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]\frametitle{R}
+  \begin{itemize}
+  \item use {\tt glm()} rather than {\tt lm()} \pause
+  \item model formula as before  \pause
+  \item need to specify family (and link if not default) \pause
+  \end{itemize}
+\begin{verbatim}
+seeds.glm0 = glm(SURV ~ 1, data=seeds, family=binomial)
+seeds.glm1 = glm(SURV ~  CAGE + LIGHT, 
+                 family = binomial,
+                 data=seeds)
+plot(seeds.glm1)
+summary(seeds.glm1)
+anova(seeds.gm1, seeds.glm0, test="Chi")
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Estimates}
+\begin{verbatim}
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -1.437e+00  7.095e-02 -20.258  < 2e-16 ***
+CAGE         7.858e-01  8.753e-02   8.977  < 2e-16 ***
+LIGHT       -4.683e-07  8.762e-08  -5.344 9.09e-08 ***
+\end{verbatim}
+  \begin{itemize}
+  \item Coefficient for the dummy variable \C = 0.79 \pause
+  \item If \C\ increases by 1 unit (No \C\ to \C) the odds of survival change by
+  $\exp(.79) = 2.2$ \pause
+\item The odds of survival in a \C\ are 2.2 times higher than odds of
+  survival in the open. \pause
+  \end{itemize}
+
+\end{frame}
+\begin{frame}\frametitle{Confidence Intervals}
+  \begin{itemize}
+  \item MLEs are approximately normally distributes (large samples) \pause
+    \begin{itemize}
+    \item mean $\beta_j$ \pause
+    \item estimated variance $\SE(\beta_j)^2$ \pause
+    \end{itemize}
+\item Asymptotic posterior distribution for $\beta_j$ is
+  $N(\hat{\beta}_j, \SE(\beta_j)^2)$ \pause
+\item $(1 - \alpha) 100\%$ CI based on normal theory:
+$$ \hat{\beta}_j \pm Z_{\alpha/2} \SE(\beta_j)$$ \pause
+\item $95\%$ CI for coefficient for \C:
+$$ 0.79 \pm 1.96 0.088 = (0.62, 0.96) $$ \pause
+\item Exponentiate to obtain interval for odds ratio:
+$\exp(0.62), \exp(0.96) = (1.85,  2.62)$ \pause
+  \end{itemize}
+ The odds of survival in a \C\  are 1.85 to 2.62 times higher than odds of
+  survival in the open (with probability  $0.95)$.
+\end{frame}
+\begin{frame}[fragile]\frametitle{Deviance}
+The concept of Deviance replaces Sum-of-Squares in GLMs \pause
+\begin{itemize}
+\item residual deviance = -2 log likelihood at MLEs \pause
+\item null deviance = residual deviance under model with constant mean (Total
+  Sum of Squares in Gaussian) \pause
+\item analysis of deviance \pause
+\item change in (residual) deviance has an asymptotic $\chi^2$
+  distribution with degrees of freedom based on the change in
+  parameters  \pause
+\end{itemize}
+\begin{verbatim}
+> anova(seeds.glm1, test="Chi")
+Analysis of Deviance Table
+
+Terms added sequentially (first to last)
+
+        Df Deviance Resid. Df Resid. Dev P(>|Chi|)
+NULL                     3071     3426.1          
+CAGE     1     91.6      3070     3334.5 1.065e-21
+LIGHT    1     35.5      3069     3299.0 2.548e-09
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Other Variables}
+\begin{verbatim}
+> seeds.glm3 = glm(SURV ~  SPECIES + CAGE + log(LIGHT) +
+ factor(LITTER),  data=seeds, family=binomial)
+> summary(seeds.glm3)
+                   Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -0.83171    0.25280  -3.290  0.00100 ** 
+SPECIESC. biflora   0.18742    0.17000   1.103  0.27024    
+SPECIESC. racemosa  0.84686    0.16320   5.189 2.11e-07 ***
+SPECIESGouania     -2.63505    0.36003  -7.319 2.50e-13 ***
+SPECIESHirtella     1.14131    0.16246   7.025 2.14e-12 ***
+SPECIESInga         0.90420    0.16295   5.549 2.87e-08 ***
+SPECIESMaclura     -2.63505    0.36003  -7.319 2.50e-13 ***
+SPECIESStrychnos   -1.18652    0.21736  -5.459 4.80e-08 ***
+CAGE                0.92548    0.09654   9.586  < 2e-16 ***
+log(LIGHT)         -0.08997    0.02001  -4.496 6.92e-06 ***
+factor(LITTER)1     0.09099    0.13494   0.674  0.50013    
+factor(LITTER)2     0.24257    0.13425   1.807  0.07079 .  
+factor(LITTER)4    -0.13625    0.13531  -1.007  0.31396    
+\end{verbatim}
+  
+\end{frame}
+\begin{frame}[fragile]\frametitle{Analysis of Deviance}
+\begin{verbatim}
+> anova(seeds.glm3, test="Chi")
+Analysis of Deviance Table
+Model: binomial, link: logit
+Response: SURV
+
+Terms added sequentially (first to last)
+
+              Df Deviance Resid. Df Resid. Dev  P(>|Chi|)
+NULL                           3071     3426.1           
+SPECIES        7    572.2      3064     2853.9 2.353e-119
+CAGE           1    109.3      3063     2744.6  1.399e-25
+log(LIGHT)     1     15.3      3062     2729.3  9.191e-05
+factor(LITTER) 3      7.9      3059     2721.4  4.769e-02
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Interactions?}
+The presence of a \C\ may be more important for surival for some
+species than others - implies an interation \pause
+
+The odds of survival $|$ Cage  compared to odds of survival $|$ no Cage
+depend on \V \pause
+
+Fit model with upto 4 way interactions:
+\begin{verbatim}
+seeds.glm4 = glm(SURV~SPECIES*CAGE*log(LIGHT)*LITTER, 
+             data=seeds, family=binomial)
+\end{verbatim}
+The analysis of deviance test suggests that there are three way interactions  
+\end{frame}
+\begin{frame}\frametitle{Hierarchical Model}
+
+So far we have not taken into account all the sources of variation or
+information about the experimental design.
+\pause
+\begin{itemize}
+\item 
+\V\ (size \& cotyledon type) and \Li\ are  randomized to sub-plots.
+Expect that survival of seedlings in the same sub-plot may be related,
+which suggests a sub-plot random effect.
+\pause
+\item sub-plots are nested within \C\ within plots (so expect that
+  sub-plots in the same \C\ are correlated, as well as sub-plots within the same plot may have a similar survival. 
+\pause
+\item Plot  characteristics may affect survival (light levels)
+\pause
+\end{itemize}
+
+How to model?  
+
+
+  
+\end{frame}
+\end{document}

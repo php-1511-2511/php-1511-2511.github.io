@@ -1,0 +1,279 @@
+\documentclass[]{beamer}
+%\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal,url}
+\input{../macros}
+\usepackage{verbatim}
+
+\usetheme{Warsaw}
+\usecolortheme{orchid}
+\title{Lasso and Bayesian Lasso}
+\subtitle{Chapter 6 ISL}
+\institute{Merlise Clyde}
+\author{STA521 Linear Models Duke University}
+\date{\today}
+\logo{duke.eps}
+
+\begin{document}
+\maketitle
+
+\begin{frame}
+
+\frametitle{Ridge Regression Model}
+
+Write $\Y = \one_n \alpha  + \X^c \b + \eps$
+where $\X^c$ has been centered and standardized 
+\begin{itemize}
+\item 
+Prior Distribution on $$\b \mid \phi \sim \N(\zero_p, \frac{1}{ \phi
+    k} \I_p)$$ \pause
+
+\item Posterior mean
+  $$\tilde{\b} = (\X^{cT}\X^c + k \I)^{-1}  \X^{cT}\X^c \bhat$$ \pause
+
+\item Prior distribution on $k$? 
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Priors on $k$}
+  Reparameterization to canonical representation:
+
+  \begin{eqnarray*}
+  \Y  & =  &\one \alpha + (\I - \P_{\one}) \X S S \b +
+  \eps   \pause \\
+      & = & \one \alpha + \X^c \b^c + \eps
+  \end{eqnarray*}
+
+Hierarchical prior \pause
+\begin{itemize}
+\item $p(\alpha \mid \phi, \g, \kappa) \propto 1$ \pause
+\item $\b^c \mid \phi, \kappa \sim \N(\zero, \I (\phi \kappa )^{-1})$ \pause
+\item $p(\phi \mid \kappa) \propto 1/\phi$ \pause
+\item prior on $\kappa$?  Take $\kappa \mid \phi \sim  \G(1/2, 1/2)$ 
+\end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Posterior Distributions}
+Joint Distribution
+  \begin{itemize}
+  \item $\alpha, \b^c, \phi \mid \kappa, \Y$  Normal-Gamma family given $\Y$
+    and $\kappa$ \pause
+  \item $\kappa \mid \Y$  not tractable \pause
+  \end{itemize}
+Obtain marginal for  $\b^c$ via  \pause
+\begin{itemize}
+\item Numerical integration \pause
+\item MCMC: Gibbs Sampling from Full Conditional  Distributions
+  \begin{itemize}
+  \item $\alpha, \g, \phi \mid \kappa, \Y$  Normal-Gamma family given $\Y$
+    and $\kappa$ \pause
+  \item $\kappa \mid \alpha, \g, \phi, \Y$  is tractable! 
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Full Conditional for $k$}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{MCMC Algorithm}
+  \begin{itemize}
+  \item  Pick initial values $\alpha^{(0)}, \b^{(0)},
+  \phi^{(0)}$, \pause \\
+  Set  $t = 1$
+  \begin{enumerate}
+  \item Sample $\kappa^{(t)} \sim p(\kappa \mid \alpha^{(t-1)},
+    \g^{(t-1)}, \phi^{(t-1)}, \Y)$ \pause
+   \item Sample $\alpha^{(t)}, \g^{(t)}, \phi^{(t)} \mid \kappa^{(t)},
+     \Y$ \pause
+ \item Set $t = t + 1$ and repeat until $t > T$ \pause
+  \end{enumerate}
+Use Samples  $\alpha^{(t)}, \g^{(t)}, \phi^{(t)}, \kappa^{(t)}$ for $t
+= B, \ldots, T$ for inference   (B = Burnin)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{JAGS}
+  Just Another Gibbs Sampler (and more)
+  
+  \begin{itemize}
+  \item Stanalone Program (for MAC, Windows, Unix)
+  \item R interface
+  \item Easy scripting language (no full conoditional derivation!)
+  \item CODA Diagnostics
+  \item Wide Range of Models/Priors!  
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example}
+\begin{verbatim}
+  rr.model = function() {
+  for (i in 1:n) {
+      mu[i] <- inprod(X[i,], alpha)
+      Y[i] ~ dnorm(mu[i], phi)
+  }
+  phi ~ dgamma(1.0E-6, 1.0E-6)
+  sigma <- pow(phi, -.5) 
+  alpha[1] ~ dnorm(0, 1.0E-10)
+
+  lambda.beta ~ dgamma(.5, .5)  
+  for (j in 2:p) {
+      prec.beta[j] <- lambda.beta*phi
+      alpha[j] ~ dnorm(0, prec.beta[j])
+      beta[j] <- alpha[j]/scales[j]   # rescale
+  }
+  beta[1] <- alpha[1] - inprod(beta[2:p], Xbar)
+}
+
+\end{verbatim}
+
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Initial Values}
+\begin{verbatim}
+ rr.inits = function() {
+    bf.lm <- lm(data$Y ~ -1 + data$X)
+    coefs = coef(bf.lm)
+    alpha= coefs
+    phi = (1/summary(bf.lm)$sigma)^2
+return(list(alpha=alpha, phi=phi))
+  } 
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Running}
+\begin{verbatim}
+rr.model.file = paste(getwd(),"rr-model.txt", sep="/")
+write.model(rr.model, rr.model.file)
+
+parameters = c("beta","sigma","lambda.beta")
+
+bf.sim = jags(data, inits=rr.inits, parameters, 
+              model.file=rr.model.file,  n.iter=10000)
+plot(bf.sim)
+bf.sim
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Output}
+  \begin{tiny}
+\begin{verbatim}
+> bf.sim
+Inference for Bugs model at "/home/fac/clyde/Dropbox/Sta521/Lectures/ridge/rr-model.txt", fit using jags,
+ 3 chains, each with 10000 iterations (first 5000 discarded), n.thin = 5
+ n.sims = 3000 iterations saved
+              mu.vect sd.vect      2.5%       25%       50%       75%     97.5%  Rhat n.eff
+beta[1]      -464.642 415.597 -1296.740  -743.015  -459.517  -170.197   321.255 1.001  3000
+beta[2]      -497.325 137.834  -761.888  -590.347  -497.310  -404.987  -221.117 1.001  3000
+beta[3]         1.567   0.042     1.488     1.538     1.567     1.596     1.647 1.002  1300
+beta[4]        -0.812   0.182    -1.167    -0.935    -0.812    -0.686    -0.449 1.001  3000
+beta[5]        49.125   5.684    38.420    45.290    49.024    53.027    60.348 1.001  3000
+beta[6]       -13.752   4.615   -22.989   -16.781   -13.719   -10.688    -4.698 1.001  3000
+beta[7]         0.053   0.031    -0.009     0.032     0.054     0.075     0.114 1.001  3000
+beta[8]         0.044   0.032    -0.020     0.023     0.044     0.066     0.108 1.001  3000
+beta[9]        -0.084   0.019    -0.121    -0.096    -0.084    -0.071    -0.047 1.002  1600
+beta[10]        0.153   0.048     0.057     0.122     0.154     0.185     0.248 1.001  3000
+beta[11]        0.026   0.244    -0.458    -0.137     0.024     0.193     0.498 1.001  3000
+beta[12]        0.032   0.063    -0.089    -0.012     0.032     0.075     0.156 1.001  3000
+beta[13]       -8.507   4.562   -17.402   -11.596    -8.471    -5.468     0.272 1.001  3000
+beta[14]       -3.648   5.032   -13.822    -6.907    -3.557    -0.123     5.761 1.002  1900
+beta[15]       15.061  12.816    -9.761     6.503    14.759    23.718    40.284 1.001  3000
+beta[16]       -0.070   4.062    -7.787    -2.917    -0.096     2.624     7.942 1.001  2300
+beta[17]        0.078   0.012     0.053     0.069     0.078     0.086     0.102 1.001  3000
+beta[18]        8.690   2.925     2.974     6.745     8.739    10.751    14.306 1.001  3000
+lambda.beta     1.102   0.380     0.487     0.827     1.054     1.325     1.923 1.001  3000
+sigma        1042.370  26.961   992.679  1023.561  1041.502  1060.475  1094.968 1.002  1200
+deviance    13003.732   6.262 12993.517 12999.206 13003.168 13007.578 13017.910 1.001  3000
+\end{verbatim}
+    
+  \end{tiny}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Bayesian Lasso}
+  Park \& Casella (JASA 2008) and Hans Biometrika (2010) propose
+  Bayesian versions of the Lasso  \pause
+  \begin{eqnarray*}
+    \Y \mid \alpha, \b, \phi & \sim & \N(\one_n \alpha + \X^c \b, \I_n/\phi)  \pause\\
+    \b \mid \alpha, \phi, \taub & \sim & \N(\zero, \diag(\taub^2)/\phi)  \pause\\
+    \tau_1^2 \ldots, \tau_p^2 \mid \alpha, \phi & \iid & \Ex(\lambda^2/2)  \pause\\
+    p(\alpha, \phi) & \propto& 1/\phi  \pause\\
+  \end{eqnarray*}
+Can show that $\beta_j \mid \phi, \lambda \simiid DE(\lambda \sqrt{\phi})$
+$$\int_0^\infty \frac{1}{\sqrt{2 \pi s}}
+  e^{-\frac{1}{2} \phi \frac{\beta^2}{s }}
+  \, \frac{\lambda^2}{2} e^{- \frac{\lambda^2 s}{2}}\, ds =
+  \frac{\lambda \phi^{1/2}}{2} e^{-\lambda \phi^{1/2} |\beta|}
+$$  \pause
+Scale Mixture of Normals  (Andrews and Mallows 1974)
+\end{frame}
+\begin{frame}
+  \frametitle{Gibbs Sampling}
+  \begin{itemize}
+  \item Integrate out $\alpha$: $\alpha \mid \Y, \phi \sim \N(\ybar,
+    1/(n \phi)$  \pause
+\item $\b \mid \taub, \phi, \lambda, \Y \sim \N(, )$   \pause
+\item $\phi \mid \taub, \b, \lambda, \Y \sim \G( , ) $  \pause
+\item $1/\tau_j^2 \mid \b, \phi, \lambda, \Y \sim \text{InvGaussian}(
+  , )$  \pause
+  \end{itemize}
+$X \sim \textsf{InvGaussian}(\mu,  \lambda)$
+$$
+f(x) =  \sqrt{\frac{\lambda^2}{2 \pi}}  x^{-3/2} e^{- \frac{1}{2} \frac{
+    \lambda^2( x - \mu)^2} {\mu^2 x}} \qquad x > 0
+$$  \pause
+
+Exercise for Energetic Student:  Derive the full conditionals for $\b$, $\phi$,
+$1/\tau^2$  see \url{http://www.stat.ufl.edu/~casella/Papers/Lasso.pdf} 
+\end{frame}
+\begin{frame}
+  \frametitle{Other Options}
+  Range of other scale mixtures used  \pause
+  \begin{itemize}
+  \item Bridge - Power Exponential Priors  \pause
+  \item Horseshoe  (Carvalho, Polson \& Scott)  \pause
+  \item Generalized Double Pareto (Armagan, Dunson \& Lee)  \pause
+  \item Normal-Exponenetial-Gamma (Griffen \& Brown)  \pause
+   \end{itemize}
+Properties of Prior?   \pause
+\end{frame}
+
+\begin{frame}
+  \frametitle{Selection?}
+  Bayesian Posterior does not assign any probability to $\beta_j = 0$
+
+  \begin{itemize}
+  \item selection based on posterior mode ad hoc rule \pause
+  \item Selection solved as a post-analysis decision problem \pause
+  \item Selection part of model uncertainty $\Rightarrow$ add prior \pause
+    probability that $\beta_j = 0$  and combine with decision problem 
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  
+\end{frame}
+\begin{frame}
+  
+\end{frame}
+
+\begin{frame}
+  
+\end{frame}
+\begin{frame}
+  
+\end{frame}
+
+
+\end{document}
+

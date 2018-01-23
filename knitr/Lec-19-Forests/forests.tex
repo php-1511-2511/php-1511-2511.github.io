@@ -1,0 +1,586 @@
+\documentclass[]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+\def\logit{\textsf{logit}}
+
+
+\title{More on Tree Based Methodss}
+
+\author{ISLR Chapter 8 }
+\date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+
+
+
+\begin{frame}\frametitle{Outline}
+Ways to improving trees through a multiple trees in some ensemble:
+  \begin{itemize}
+  \item Bagging  \pause
+  \item Boosting \pause
+  \item Random Forests  \pause
+  \item BART  (Bayesian Additive Regression Trees) \pause
+  \end{itemize}
+Combining trees will yield improved prediction accuracy, but with loss of interpretability.
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Tree with Random Split of Data}
+
+
+
+\vspace{-.25in}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/tree-plot-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]{Tree with another Random Split of Data}
+
+\vspace{-.25in}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/tree-plot2-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}  \frametitle{Bagging: Bootstrap Aggregation}
+  \begin{itemize}
+  \item Splitting data into random partitions and fitting a tree model on each half may lead to very different predictions (high variability) \pause
+\item Reduce variability by averaging over multiple training sets! \pause
+\item do not have access to multiple training sets so create them via bootstrap samples  (sample of size $n$ with replacement) \pause
+  \begin{itemize}
+  \item Generate B bootstrap sample of observations from the single training data \pause
+  \item Calculate predictions for the $b$th sample $\hat{f}^{b}(x)$ \pause
+  \item Bagging (Bootstrap Aggregation) estimate is
+$$\hat{f}_{\text{bag}}(x) = \frac{1}{B} \sum \hat{f}^{b}(x)
+$$
+  \end{itemize}
+\item Trees are grown deep  so little bias  (although could prune) \pause
+ \item Reduce variance by averaging many trees across the bootstrap samples \pause
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Random Forests}
+ Closely related to Bagging, but attempts to de-correlate the trees used in the average \pause
+  \begin{itemize}
+\item take B bootstrap samples  \pause
+\item Each time a split in a tree is considered, a random sample of $m$ predictors is chosen as split candidates from the set of $p$ predictors.  \pause
+\item a new sample is taken at each split  \pause
+\item Recommended $m$  around $\sqrt{p}$  \pause
+\item Random Forests with $m = p$ is Bagging  \pause
+\item Predictions are based on average over the bootstrap samples  \pause
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Bagging Example}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{suppressMessages}\hlstd{(}\hlkwd{library}\hlstd{(randomForest))}
+\hlstd{bag.carseats} \hlkwb{=} \hlkwd{randomForest}\hlstd{(High} \hlopt{~} \hlstd{.} \hlopt{-}\hlstd{Sales,}
+                            \hlkwc{data}\hlstd{=Carseats,} \hlkwc{subset} \hlstd{= train,}
+                            \hlkwc{mtry}\hlstd{=}\hlnum{10}\hlstd{,} \hlkwc{importance} \hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlcom{#  mtry = 10 (the number of predictors)}
+\hlstd{yhat.bag} \hlkwb{=} \hlkwd{predict}\hlstd{(bag.carseats,}\hlkwc{newdata} \hlstd{= Carseats.test)}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(yhat.bag,Carseats.test}\hlopt{$}\hlstd{High)}
+\hlstd{tab}
+\end{alltt}
+\begin{verbatim}
+##         
+## yhat.bag No Yes 
+##     No   96   16
+##     Yes  20   68
+\end{verbatim}
+\begin{alltt}
+\hlstd{CE.tab[}\hlstr{"RandomForests"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+
+\hlstd{CE.tab[}\hlstr{"RandomForests"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.82
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Now we are at 18\%  mis-classification error!
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{RandomForests}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ \hlstd{rf.carseats} \hlkwb{=} \hlkwd{randomForest}\hlstd{(High} \hlopt{~} \hlstd{.} \hlopt{-}\hlstd{Sales,}\hlkwc{data}\hlstd{=Carseats,}
+                            \hlkwc{subset} \hlstd{=train,}
+                            \hlkwc{mtry}\hlstd{=}\hlnum{3}\hlstd{,} \hlkwc{importance} \hlstd{=}\hlnum{TRUE}\hlstd{)}
+ \hlstd{yhat.rf}\hlkwb{=} \hlkwd{predict}\hlstd{(rf.carseats ,}\hlkwc{newdata} \hlstd{=Carseats.test)}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(yhat.rf,Carseats.test}\hlopt{$}\hlstd{High)}
+
+ \hlstd{tab}
+\end{alltt}
+\begin{verbatim}
+##        
+## yhat.rf No Yes 
+##    No   99   23
+##    Yes  17   61
+\end{verbatim}
+\begin{alltt}
+\hlstd{CE.tab[}\hlstr{"RandomForests"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+\hlcom{# (101+63)/200}
+\hlstd{CE.tab[}\hlstr{"RandomForests"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The same as Bagging
+\end{frame}
+
+\begin{frame} \frametitle{Variable Importance Measures in Bagging \& RandomForests}
+
+\begin{itemize}
+\item For Regression Trees use the total reduction in Sum of Squares Error due to splits with that variable averaged over all trees \pause
+\item For Classification Trees use the total reduction in Gini Index due to splits of the that variable averaged over all trees.  Gini Index is defined as
+$$G = \sum_{k = 1}^K \hat{\pi}_{mk} (1 - \hat{\pi}_{mk})$$
+where $K$ is the number of classes for region $m$
+or use the reduction in deviance  \pause
+\item Out of Bag Prediction Error \pause
+\item  May be normalized by dividing by the maximum
+
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame} \frametitle{Variable Importance Measures in RandomForests}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{varImpPlot}\hlstd{(rf.carseats)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}  \frametitle{Boosting}
+\includegraphics[height=3in]{boostingAlgo}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Boosting }
+  \begin{itemize}
+  \item Mean is a sum of B trees  \pause
+  \item Boosting can over-fit if $B$ is too large  \pause
+  \item The number of splits, $d$, in each tree controls  the complexity of the boosted ensemble; $d = 1$ corresponds to models of stumps  \pause
+\item $d$ is the interaction depth; $d$ splits can involve $d$ variables.  (default in {\tt gbm} package is $4$)  \pause
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]  \frametitle{Boosting Example}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{suppressMessages}\hlstd{(}\hlkwd{library}\hlstd{(gbm))}
+\hlstd{boost.car} \hlkwb{=}\hlkwd{gbm}\hlstd{(}\hlkwd{I}\hlstd{(}\hlkwd{as.numeric}\hlstd{(High)}\hlopt{-}\hlnum{1}\hlstd{)} \hlopt{~} \hlstd{.} \hlopt{-}\hlstd{Sales,}
+               \hlkwc{data}\hlstd{=Carseats[train ,],}
+               \hlkwc{distribution}\hlstd{=}\hlstr{"bernoulli"}\hlstd{,}
+               \hlkwc{n.trees} \hlstd{=}\hlnum{5000}\hlstd{,} \hlkwc{interaction.depth} \hlstd{=}\hlnum{4}\hlstd{)}
+\hlstd{yhat.boost} \hlkwb{=} \hlkwd{ifelse}\hlstd{(}\hlkwd{predict}\hlstd{(boost.car,}
+                      \hlkwc{newdata}\hlstd{=Carseats.test,}
+                      \hlkwc{n.trees}\hlstd{=}\hlnum{5000}\hlstd{,}
+                      \hlkwc{type}\hlstd{=}\hlstr{"response"}\hlstd{)} \hlopt{>} \hlnum{.5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+\hlstd{tab} \hlkwb{=}\hlkwd{table}\hlstd{(yhat.boost, Carseats.test}\hlopt{$}\hlstd{High)}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(yhat.boost,Carseats.test}\hlopt{$}\hlstd{High)}
+\hlstd{tab}
+\end{alltt}
+\begin{verbatim}
+##           
+## yhat.boost  No Yes 
+##          0 100   16
+##          1  16   68
+\end{verbatim}
+\begin{alltt}
+\hlstd{CE.tab[}\hlstr{"Boosting"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+
+\hlstd{CE.tab[}\hlstr{"Boosting"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.84
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+84.5\% accuracy!
+\end{frame}
+
+\begin{frame}[fragile]  \frametitle{Variable Importance: Boosting}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(boost.car,} \hlkwc{plotit}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##                     var    rel.inf
+## Price             Price 27.1860994
+## ShelveLoc     ShelveLoc 20.9558458
+## Advertising Advertising 14.3652543
+## Age                 Age 13.0972300
+## CompPrice     CompPrice  8.6307712
+## Income           Income  6.6391956
+## Population   Population  6.1235720
+## Education     Education  1.6769694
+## Urban             Urban  0.8472994
+## US                   US  0.4777628
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Variable Importance: summary(boost.car)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-6-1} 
+
+}
+
+
+\begin{kframe}\begin{verbatim}
+##                     var    rel.inf
+## Price             Price 27.1860994
+## ShelveLoc     ShelveLoc 20.9558458
+## Advertising Advertising 14.3652543
+## Age                 Age 13.0972300
+## CompPrice     CompPrice  8.6307712
+## Income           Income  6.6391956
+## Population   Population  6.1235720
+## Education     Education  1.6769694
+## Urban             Urban  0.8472994
+## US                   US  0.4777628
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Bayesian Additive Regression Trees}
+Gaussian Model:  Single Tree model
+
+$$
+Y = g(x, T, M) + \eps
+$$
+Where $T$ is a tree and $M= (\mu_1, \ldots \mu_b)^T$ is the vector of means at the terminal nodes of the tree given by $T$  \pause
+
+\vspace{12pt}
+BART represents the mean function as
+
+$$
+Y =\sum_j  g(x, T_j, M_j) + \eps
+$$
+as a sum of trees. \pause
+
+
+Priors control the complexity of each tree; back-fitting as in boosting. \pause
+
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{BART: Bayesian Additive Regression Trees}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(BayesTree)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(BayesTree): there is no package called 'BayesTree'}}\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{)}
+\hlstd{bart.carseats} \hlkwb{=} \hlkwd{bart}\hlstd{(}\hlkwc{x.train}\hlstd{=Carseats[train,}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{12}\hlstd{)],}
+                   \hlkwc{y.train}\hlstd{=Carseats}\hlopt{$}\hlstd{High[train],}
+                   \hlkwc{x.test}\hlstd{=Carseats[}\hlopt{-}\hlstd{train,}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{12}\hlstd{)],}
+                   \hlkwc{verbose}\hlstd{=}\hlnum{FALSE}   \hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}bart"{}}}\begin{alltt}
+\hlstd{pihat.bart} \hlkwb{=} \hlkwd{apply}\hlstd{(}\hlkwd{pnorm}\hlstd{(bart.carseats}\hlopt{$}\hlstd{yhat.test),} \hlnum{2}\hlstd{, mean)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in pnorm(bart.carseats\$yhat.test): object 'bart.carseats' not found}}\begin{alltt}
+\hlstd{yhat.bart} \hlkwb{=} \hlkwd{ifelse}\hlstd{(pihat.bart} \hlopt{>} \hlnum{.5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in ifelse(pihat.bart > 0.5, 1, 0): object 'pihat.bart' not found}}\begin{alltt}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(yhat.bart, Carseats.test}\hlopt{$}\hlstd{High)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in table(yhat.bart, Carseats.test\$High): object 'yhat.bart' not found}}\begin{alltt}
+\hlstd{CE.tab[}\hlstr{"BART"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+
+\hlstd{CE.tab[}\hlstr{"BART"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.84
+\end{verbatim}
+\begin{alltt}
+\hlcom{#> investigate_var_importance(bart.carseats)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame} \frametitle{Uncertainty in Mean Function}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(bart.carseats)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot(bart.carseats): object 'bart.carseats' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Partial Dependendence (computationally intensive!)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-9-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{BartMachine}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{suppressMessages}\hlstd{(}\hlkwd{library}\hlstd{(bartMachine))}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{)}
+\hlstd{bart.carseats} \hlkwb{=} \hlkwd{bartMachine}\hlstd{(}\hlkwc{X}\hlstd{=Carseats[train,}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{12}\hlstd{)],}
+                            \hlkwc{y}\hlstd{=Carseats}\hlopt{$}\hlstd{High[train],}
+                            \hlkwc{verb}\hlstd{=}\hlnum{FALSE}\hlstd{,} \hlkwc{serialize}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## serializing in order to be saved for future R sessions...done
+\end{verbatim}
+\begin{alltt}
+\hlstd{yhat.bart} \hlkwb{=} \hlkwd{predict}\hlstd{(bart.carseats,}
+                    \hlstd{Carseats.test[,} \hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{12}\hlstd{)],}
+                    \hlkwc{type}\hlstd{=}\hlstr{"class"}\hlstd{)}
+\hlkwd{table}\hlstd{(yhat.bart, Carseats.test}\hlopt{$}\hlstd{High)}
+\end{alltt}
+\begin{verbatim}
+##          
+## yhat.bart  No Yes 
+##      No   103   20
+##      Yes   13   64
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Variable Importance}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in library(bartMachine): there is no package called 'bartMachine'}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{investigate_var_importance}\hlstd{(bart.carseats)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}investigate\_var\_importance"{}}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{GLMs and Bayesian Variable Selection}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{);} \hlkwd{library}\hlstd{(BAS)}
+\hlstd{bas.carseats} \hlkwb{=} \hlkwd{bas.glm}\hlstd{(High} \hlopt{~} \hlstd{.} \hlopt{-} \hlstd{Sales,} \hlkwc{data}\hlstd{=Carseats,}
+                       \hlkwc{subset}\hlstd{=train,} \hlkwc{family}\hlstd{=}\hlkwd{binomial}\hlstd{(),}
+                       \hlkwc{method}\hlstd{=}\hlstr{"MCMC"}\hlstd{,}  \hlkwc{n.models}\hlstd{=}\hlnum{10000}\hlstd{,}
+                       \hlkwc{betaprior}\hlstd{=}\hlkwd{bic.prior}\hlstd{(}\hlkwc{n}\hlstd{=}\hlnum{200}\hlstd{))}
+\hlstd{yhat} \hlkwb{=} \hlkwd{predict}\hlstd{(bas.carseats,} \hlkwc{newdata}\hlstd{=Carseats[}\hlopt{-}\hlstd{train,])}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(}\hlkwd{ifelse}\hlstd{(yhat}\hlopt{$}\hlstd{fit} \hlopt{>} \hlnum{.5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{), Carseats.test}\hlopt{$}\hlstd{High)}
+\hlstd{CE.tab[}\hlstr{"BMA"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+
+\hlstd{CE.tab[}\hlstr{"BMA"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.905
+\end{verbatim}
+\begin{alltt}
+\hlcom{#(107 + 74)/200}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{LASSO Variable Selection}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{);} \hlkwd{library}\hlstd{(glmnet)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: Matrix}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: foreach}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loaded glmnet 2.0-5}}\begin{alltt}
+\hlstd{glmnet.carseats} \hlkwb{=} \hlkwd{cv.glmnet}\hlstd{(}
+  \hlkwc{x}\hlstd{=}\hlkwd{model.matrix}\hlstd{(High} \hlopt{~} \hlstd{.} \hlopt{-} \hlstd{Sales,} \hlkwc{data}\hlstd{=Carseats[train,]),}
+  \hlkwc{y}\hlstd{=(}\hlkwd{as.numeric}\hlstd{(Carseats}\hlopt{$}\hlstd{High[train])} \hlopt{-} \hlnum{1}\hlstd{),} \hlkwc{family}\hlstd{=}\hlstr{"binomial"}\hlstd{)}
+\hlstd{yhat} \hlkwb{=} \hlkwd{predict}\hlstd{(glmnet.carseats,}
+               \hlkwc{newx}\hlstd{=}\hlkwd{model.matrix}\hlstd{(High} \hlopt{~} \hlstd{.} \hlopt{-} \hlstd{Sales,} \hlkwc{data}\hlstd{=Carseats[}\hlopt{-}\hlstd{train,]))}
+\hlstd{tab} \hlkwb{=} \hlkwd{table}\hlstd{(}\hlkwd{ifelse}\hlstd{(yhat} \hlopt{>} \hlnum{.0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{), Carseats.test}\hlopt{$}\hlstd{High)}
+\hlstd{CE.tab[}\hlstr{"LASSO"}\hlstd{,} \hlnum{1}\hlstd{]}\hlkwb{=} \hlstd{(tab[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{tab[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{])}\hlopt{/}\hlkwd{sum}\hlstd{(tab)}
+
+\hlstd{CE.tab[}\hlstr{"LASSO"}\hlstd{,]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.89
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+\begin{frame}\frametitle{Summary}
+  \begin{itemize}
+  \item Trees are simple to understand, but have high variability \pause
+  \item Bagging (Averaging) reduces variability \pause
+  \item Random Forests adds additional constraints to average trees
+    that are different (reduced correlation leads to reduction in variance). \pause
+  \item Boosting builds a mean function that uses multiple trees where
+    the growth takes into account the previous trees.  Smaller trees
+    can be used  (larger trees can overfit) \pause
+\item BART is similar to Boosting in that the mean function is a sum
+  of trees, but uses a Bayesian approach to control complexity.  Trees
+  can be of different sizes and the number of trees can be large without overfitting \pause
+
+\item Plots may suggest that a (generalized) linear model  may be appropriate! \pause
+
+  \end{itemize}
+Interpretability? For which methods can you explain how changes in a predictor change the response?
+\end{frame}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{save}\hlstd{(CE.tab,} \hlkwc{file}\hlstd{=}\hlstr{"OoS.accuracy"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

@@ -1,0 +1,47 @@
+---
+title: "Transformations"
+author: "Merlise Clyde"   
+date: "January 23, 2017"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+**Due by start of next class**
+
+Read in Animal data from MASS.  The data set contains measurements on body weight and brain weight.
+
+Let's try to predict brain weight (size) from body weight.
+
+```{r}
+library(MASS)
+data(Animals)
+brain.lm = lm(brain ~ body, data=Animals)
+```
+
+
+Create some residual plots to check assumptions:
+
+```{r}
+# add code here run
+```
+
+your findings?
+
+Examine outliers and refit model (recall subset argument for `lm`)  eliminating any outliers adding your code here
+
+```{r}
+# outlier identification
+```
+
+
+Continue until assumptions of normality and no outliers seems OK.
+
+```{r}
+# final model ?
+```
+
+## Findings
+
+add your findings here

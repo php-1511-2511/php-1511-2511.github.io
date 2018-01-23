@@ -1,0 +1,66 @@
+Tropical rain forests have up to 300 species of trees per hectare, which
+leads to difficulties when studying processes which occur at the
+community level.  To gain insight into species responses, a sample of
+seeds were selected from a suite of eight species selected to represent
+the range of regeneration types which occur in this community. This
+representative community was then placed in experimental plots
+manipulated to mimic the natural variation in light conditions found in
+rain forests.  Mammals were excluded from one half of each plot in order
+to assess their effects on the regeneration of rain forest trees.  Six
+seeds of each type were planted and an indicator of whether they
+germinated and survived was recorded. 
+<p><NL>Which variables are important in determining whether a seedling will survive? </NL> Are there interactions that influence survival probabilities? </p>
+<NL><li><P> 
+</NL>
+
+Variables:
+<UL>
+<LI> SURV:  Survival -- {No = 0, Yes = 1} of seedling.  Indicator of 
+whether there was a seedling present at the end of the observation 
+period. 
+
+<LI> GAP:  {0, 1}  Indicator for understory versus clearing
+
+<LI> CAGE  {0, 1} (0 = Absent, 1 = Present}  
+      Enclosure to prevent mammals from eating the seeds
+
+<LI> LITTER:  (different levels = 0,1,2,i)
+<LI> SPECIES = (a,b,g,h,i,m,r,s),  Size= 1 smallest to 8 largest  E =
+Epigeal - cotyledons, H=Hypogeal - food reserves in seed.  Epigeal
+species rely on the cotyledons for photosynthesis and production of
+energy to become estabished. Seed size tends to be small, with little
+reserves in the seeds.  Hypogeal species tend to have larger seeds,
+and can rely on reserves in the seed to produce energy, thus if 
+initial leaves are lost to predators, there may still be additional
+reserves that can be used to produce additional leaves.  Larger seeds,
+however, may be easier to spot by predators.
+
+<PRE>
+Code    Name       Size Cotyledon type
+a       Ardisia       3 H     
+b       C. biflora    7 H     
+g       Gouania       1 E
+h       Hirtella      8 H
+i       Inga          4 H 
+m       Maclura       2 E
+r       C. racemosa   6 H
+s       Strychnos     5 E
+</PRE>
+<LI> LIGHT  measure of light levels at the forest floor
+</UL>
+
+The data set includes columns in the following order: 
+<PRE>
+plot number
+subplot number within the plot
+species
+indiv (seeding number within plot/subplot)
+surv 
+germ (indicator for germination)
+estab (intermediate measure of survival | germination)
+light 
+litter 
+cage 
+gap
+</PRE>
+

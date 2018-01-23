@@ -1,0 +1,245 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+% ***************************************************************
+% for handout, change only this...
+%   \documentclass[twocolumn]{article}
+%   \usepackage{beamerarticle}
+%   \setlength{\textwidth}{7.5in}
+%   \setlength{\textheight}{9.8in}
+%   \setlength{\topmargin}{-1in}
+%   \setlength{\oddsidemargin}{-.52in}
+%   \setlength{\evensidemargin}{-.52in}
+
+%\usepackage{beamerprosper}
+%\usetheme{Warsaw}
+%\usecolortheme{orchid}
+
+\usepackage{graphicx}
+
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\title{Bayesian Model Averaging}
+
+\author{Hoff Chapter 9, Hoeting et al 1999, Clyde \& George 2004, Liang et al 2008}
+\date{\today}
+%\Logo(-1.9,7.3){\includegraphics[width=.5in]{../eps/duke}}
+% Optional: text to put in the bottom of each slide.
+% By default, the title of the talk will be placed there.
+%\slideCaption{\textit{October 28, 2005 }}
+
+\begin{document}
+% make the title slide
+\maketitle
+
+\begin{frame} \frametitle{Outline}
+
+\begin{itemize}
+\item Problems with g-priors
+\item Alternatives:  Mixtures of $g$-priors
+\item Model Averaging
+\item Choice of Model
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayes Factors}
+\begin{itemize}
+\item Bayes Factor = ratio of marginal likelihoods \pause
+
+\item Posterior odds = Bayes Factor $\times$ Prior odds \pause
+
+\item Posterior Probability
+$$P(\Mg \mid \Y) = \frac{BF[\Mg : \M_0] p(\Mg)/p(\M_0)}
+{\sum_{\Mg \in \Gamma} BF[\Mg : \M_0] p(\Mg)/p(\M_0)}
+$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}  \frametitle{Problem with g-Prior with arbitrary g}
+
+The Bayes factor for comparing $\Mg$ to the null
+model:
+%$$
+% BF(\Mg : \M_0) =    (1 + g)^{(n - 1 - p_\g)/2} (1 + g(1 - \R^2))^{-(n-1)/2}
+%$$
+\pause
+\begin{itemize}
+\item Let $g$ be a fixed constant and take $n$ fixed.\pause
+\item Let $F = \frac{R_{\g}^2/\pg}{(1 - R_{\g}^2)/(n - 1 - \pg)}$ \pause
+\item As $R^2_{\g} \to 1$, $F \to \infty$ LR test would reject $H_0$  where
+ $F$ is the usual $F$ statistic for  comparing model $\Mg$ to $\M_0$ \pause
+\item Bayes Factor would go to $(1 + g)^{(n-\pg -1)/2}$ as $F \to \infty$  (bounded for fixed $g$, $n$ and $\pg$ \pause
+\end{itemize}
+
+Bayes and Frequentist would not agree in this limit \pause
+
+\vspace{12pt}
+``Information paradox''
+\end{frame}
+
+
+\begin{frame} \frametitle{Resolution of Paradox}
+
+Liang et al (2008) show that paradox can be resolved with mixtures of $g$-priors
+$$p(\bg \mid \phi) = \int_0^{\infty} \N(\bg; 0, g (\Xg^T\Xg)^{-1}/\phi) p(g) dg$$
+\pause
+
+\begin{itemize}
+\item  $BF \to \infty$ if $\R^2 \to 1$  $\Leftrightarrow$ $\E_g[(1 +
+g)^{-\pg/2}]$ diverges \pause
+\item Zellner-Siow Cauchy prior
+$$ 1/g \sim \Gam(1/2, n/2)$$ \pause
+
+\item Hyper-g   $p(g) \propto (1 +g )^{a/2 - 1}$ if $2 < a \le 3$
+
+$$\frac{g}{1+g} \sim \textsf{Beta}(1, \frac{a}{2} - 1)$$
+\pause
+\item "hyper-g/n"
+\pause
+\item  robust prior (Bayarri et al Annals of Statistics 2012)
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Example}
+<<echo=FALSE, warnings=FALSE, messages=FALSE>>=
+suppressMessages(library(GGally))
+suppressMessages(library(HH))
+data(usair)
+colnames(usair) = c("SO2","temp","firms","popn", "wind", "precip", "rain")
+@
+
+<<ZS,echo=TRUE>>=
+library(BAS)
+poll.ZS = bas.lm(log(SO2) ~ temp + log(firms) +
+                             log(popn) + wind +
+                             precip+ rain,
+                  data=usair,
+                  prior="ZS-null",
+                  alpha=41,    # g = n
+                  n.models=2^7,# enumerate (can omit)
+                  modelprior=uniform(),
+                  method="deterministic")   # fast enumeration
+@
+ use `prior = "hyper-g"` and `a = 3` for hyper-g or `prior = "hyper-g/n"` and `a=3` for hyper-g/n
+\end{frame}
+
+\begin{frame}
+<<fig.width=6,fig.height=5,fig.align='center'>>=
+plot(poll.ZS, which=4)
+@
+\end{frame}
+
+\begin{frame} \frametitle{Bayesian Model Averaging}
+
+\begin{itemize}
+\item Posterior for $\mu = \one \alpha + \X \b$ is a mixture distribution
+
+$$p(\mu \mid \Y) = \sum p(\mu \mid \Y, \Mg) p(\Mg \mid \Y)$$ \pause
+with expectation expressed as a weighted average
+$$\E[\mu \mid \Y] = \one \hat{\alpha} +  \X \sum \E[\b \mid \Y, \Mg] p(\Mg \mid \Y)$$
+\pause
+\item Predictive Distribution for $\Y^*$
+$$p(\Y^* \mid \Y) = \sum p(\Y^* \mid \Y, \Mg) p(\Mg \mid \Y)$$
+\pause
+\item Posterior Distribution of $\beta_j$
+
+$$p(\beta_j \mid \Y) = p(\gamma_j = 0 \mid \Y) \delta_0(\beta) + \sum p(\beta_j \mid \Y, \Mg) \gamma_j p(\Mg \mid \Y) $$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame} \frametitle{Estimator}
+
+\begin{itemize}
+\item Find $\hat{\mu}$ that minimizes posterior expected loss
+$$\E[(\mu - \hat{\mu})^T(\mu - \hat{\mu}) \mid \Y]$$ \pause
+\item Solution is posterior mean under BMA
+$$\E[\mu \mid \Y] = \one \hat{\alpha} +  \X \sum \E[\b \mid \Y, \Mg] p(\Mg \mid \Y)$$ \pause
+\item If one model has probability 1, then BMA is equivalent to using the highest posterior probability model \pause
+\item incorporates estimates from other models when there is substantial uncertainty
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile] {Coefficients under BMA}
+<<>>=
+beta.ZS = coef(poll.ZS)
+beta.ZS
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Posterior of Coefficients under BMA}
+<<coefplot,echo=FALSE, fig.height=5, fig.width=6, fig.align='center'>>=
+
+par(mfrow=c(2,3))
+plot(beta.ZS, subset=2:7)
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Credible Intervals for Coefficients under BMA}
+<<fig.height=5, fig.width=6, fig.align='center'>>=
+plot(confint(beta.ZS, parm=2:7))
+@
+\end{frame}
+
+\begin{frame} \frametitle{Selection and Model Uncertainty}
+
+\begin{itemize}
+\item Select a model and $\hat{\mu}$ that minimizes posterior expected loss
+$$\E[(\mu - \hat{\mu})^T(\mu - \hat{\mu}) \mid \Y]$$ \pause
+\item BMA is "best" estimator without selection \pause
+
+\item Best model and estimator is the posterior mean under the model that is closest to BMA under squared error loss
+$$(\hat{\mu}_{BMA} - \hat{\mu}_{\Mg})^T(\hat{\mu}_{BMA} - \hat{\mu}_{\Mg})$$
+\pause
+\item Often contains more predictors than the HPM or Median Probability Model
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Best Predictive Model}
+<<BPM, out.width=60>>=
+#BPM
+BPM = predict(poll.ZS, estimator = "BPM")
+BPM$bestmodel
+
+(poll.ZS$namesx[attr(BPM$fit, 'model') +1])[-1]
+
+#HPM
+HPM = predict(poll.ZS, estimator = "HPM")
+HPM$bestmodel
+@
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile] %\frametitle{Comparison}
+<<plot.est, echo=FALSE, fig.width=3.5, fig.height=3.5, fig.align='center'>>=
+MPM = predict(poll.ZS, estimator = "MPM")
+BMA = predict(poll.ZS, estimator= "BMA")
+ggpairs(data.frame(HPM = as.vector(HPM$fit),
+                   MPM = as.vector(MPM$fit),
+                   BPM = as.vector(BPM$fit),
+                   BMA = as.vector(BMA$fit)))
+
+@
+\end{frame}
+
+\begin{frame} \frametitle{Summary}
+
+\begin{itemize}
+\item BMA shown in practice to have better out of sample predictions than selection (in many cases) \pause
+\item avoids selecting a single model and accounts for out uncertainty \pause
+\item if one model dominates BMA is very close to selection  (asymptotically will put probability one on model that is "closest" to the true model) \pause
+\item MCMC allows one to implement without enumerating all models \pause
+\item BMA depends on prior on coefficients, variance and models  (sensitivity to choice?) \pause
+\item Mixtures of $g$ priors preferred to usual $g$ prior
+\end{itemize}
+\end{frame}
+\end{document}

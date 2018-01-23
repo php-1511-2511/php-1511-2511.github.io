@@ -1,0 +1,256 @@
+%\documentclass{beamer}
+\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+
+%\usetheme{Warsaw}
+\usecolortheme{orchid}
+\title{Generalized Ridge \& Lasso Regression}
+\subtitle{Readings ISLR 6,  Casella \& Park }
+\institute{Merlise Clyde}
+\author{STA 521  Duke University}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+
+\begin{frame} \frametitle{Model}
+
+\begin{itemize}
+\item Model: $\Y = \one \beta_0 + \X \b + \eps$  $\X$ is centered and scaled predictors
+\pause
+\item (Classical) Ridge Regression controls
+ how large coefficients may grow \pause
+    $$\min_{\b} (\Y - \one \bar{\Y}  - \X \b)^T (\Y -\one \bar{Y}  - \X\b)$$
+    subject to
+    $$ \sum \beta_j^2 \le t$$ \pause
+  \item Penalized Likelihood
+    $$\min_{\b} \| \Y - \one  \bar{\Y}  - \X \b\|^2 + k \|\b\|^2$$ \pause
+\item  Bayesian Ridge Regression - Hierarchical prior \pause
+\begin{itemize}
+\item $p(\beta_0,  \phi \mid \b, \kappa) \propto \phi^{-1}$ \pause
+\item $\b \mid \phi, \kappa \sim \N(\zero, \I (\phi \kappa )^{-1})$ \pause
+\item prior on $\kappa$
+\end{itemize}
+\end{itemize}
+For fixed $\kappa$ the Bayes MAP and the penalized MLE are the same
+\end{frame}
+
+
+
+\begin{frame} \frametitle{Differences}
+
+Treatement of uncertainty  \pause
+\begin{itemize}
+\item Frequentist:  use of cross validation or optimization for finding  k  \pause
+\item Bayes: removes "nuisance" parameter $\kappa$ through integration rather than than optimization  \pause
+\begin{itemize}
+\item  Can use full posterior distribution for credible intervals for parameters, regression function or predictions
+ \pause
+\item Other Choices of priors?
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Lasso}
+Tibshirani (JRSS B 1996) proposed estimating coefficients through
+$L_1$ constrained least squares  ``Least Absolute Shrinkage and
+Selection Operator''  \pause
+\begin{itemize}
+ \item Control how large coefficients may grow \pause
+    $$\min_{\b} (\Y - \one \bar{Y} - \X \b)^T (\Y -  \one \bar{Y} - \X\b)$$
+    subject to
+    $$ \sum |\beta_j| \le t$$ \pause
+  \item Equivalent Quadratic Programming Problem for ``penalized'' Likelihood
+    $$\min_{\b} \| \Y -\one\bar{Y} - \X \b\|^2 + \lambda \|\b\|_1$$ \pause
+  \item Posterior mode
+  $$
+\max_{\b} - \{ \| \Y -\one \beta_0 - \X \b\|^2 + \lambda \|\b\|_1 \}
+$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}  \frametitle{Variable Selection via the LASSO }
+$p = 2$  constraint $|\beta_1| + |\beta_2| \le t$ is a diamond
+
+\vfill
+
+
+\end{frame}
+
+
+\begin{frame}\frametitle[fragile]{R Code}
+Path of solutions can be found using the
+   ``Least Angle Regression'' Algorithm of Efron et al (Annals of
+   Statistics 2004)   \pause
+<<data, echo=FALSE>>=
+library(knitr)
+library(MASS)
+data(longley)
+suppressMessages(library(lars))
+longley.lars = lars(as.matrix(longley[,-7]), longley[,7],
+                 type="lasso")
+@
+
+
+<<lars, evaluate=FALSE, fig.align='center', fig.width=5, fig.height=3>>=
+library(lars)
+longley.lars = lars(as.matrix(longley[,-7]), longley[,7],
+                 type="lasso")
+plot(longley.lars)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Solutions}
+{\fontsize{9pt}{10pt} \selectfont
+<<>>=
+kable(coef(longley.lars), digits=4)
+@
+}
+
+Which one?
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Summary}
+\begin{small}
+<<summary>>=
+sum.lars = summary(longley.lars)
+sum.lars
+@
+\end{small}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Cp Solution}
+Min $C_p = SSE_p/\hat{\sigma}^2_F - n + 2 p$  \pause
+
+For a model that includes all true predictors $C_p \approx p$
+\begin{small}
+<<>>=
+n.sol = length(sum.lars$Cp)
+best = which.min(abs(sum.lars$Cp - sum.lars$Df)[-n.sol])
+kable(coef(longley.lars)[best,], digits=4)
+
+@
+\end{small}
+
+ \pause
+Can also use Cross-Validation - many packages available!
+
+ \pause
+What about uncertainty?  Confidence intervals?
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bayesian Lasso}
+  Park \& Casella (JASA 2008) and Hans (Biometrika 2010) propose
+  Bayesian versions of the Lasso  \pause
+  \begin{eqnarray*}
+    \Y \mid \beta_0, \b, \phi & \sim & \N(\one_n \beta_0 + \X \b, \I_n/\phi)  \pause\\
+    \b \mid \beta_0, \phi, \taub & \sim & \N(\zero, \diag(\taub^2)/\phi)  \pause\\
+    \tau_1^2 \ldots, \tau_p^2 \mid \beta_0, \phi & \simiid & \Ex(\lambda^2/2)  \pause\\
+    p(\beta_0, \phi) & \propto& 1/\phi  \pause\\
+  \end{eqnarray*}
+Can show that $\beta_j \mid \phi, \lambda \simiid DE(\lambda \sqrt{\phi})$
+$$\int_0^\infty \frac{1}{\sqrt{2 \pi s}}
+  e^{-\frac{1}{2} \phi \frac{\beta^2}{s }}
+  \, \frac{\lambda^2}{2} e^{- \frac{\lambda^2 s}{2}}\, ds =
+  \frac{\lambda \phi^{1/2}}{2} e^{-\lambda \phi^{1/2} |\beta|}
+$$  \pause
+Scale Mixture of Normals  (Andrews and Mallows 1974)
+\end{frame}
+
+\begin{frame}\frametitle{Densities}
+<<echo=FALSE, fig.align='center', fig.height=4, fig.width = 5>>=
+z = seq(-5,5, length=1000)
+
+dLaplace = function(x) {
+  dexp(abs(z))*.5}
+plot(z,dLaplace(z), type="l", ylab="Density", xlab=expression(beta))
+lines(z, dnorm(z), lty = 3, col=2)
+lines(z, dt(z, df=1), lty=4, col="blue")
+legend("topright", legend=c("Laplace", "Normal", "Cauchy"),
+        col=c(1,2,"blue"),
+        lty=c(1,3,4))
+
+
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Bayesian Lasso Fitting}
+
+<<monomvn, cache=T>>=
+data(diabetes)
+Y = diabetes$y
+X = diabetes$x2  # 64 variables from all 10 main effects,
+                  # two-way interactions and quadradics
+set.seed(8675309)
+suppressMessages(library(monomvn))
+
+## Ordinary Least Squares regression from monomvn
+reg.ols <- regress(X, Y)
+## ridge regression
+reg.ridge <- regress(X, Y, method="ridge")
+## Lasso regression from monomvn
+reg.las <- regress(X, Y, method="lasso")
+
+## Bayesian Lasso regression from monomvn
+reg.blas <- blasso(X, Y, RJ=FALSE, verb=0)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Estimates}
+
+<<plots.blas, echo=FALSE, fig.align='center', fig.width=6.5, fig.height=5>>=
+suppressMessages(library(monomvn))
+plot(reg.blas, burnin=200)
+points(drop(reg.las$b), col=2, pch=20)
+points(drop(reg.ols$b), col="blue", pch=18)
+#points(drop(reg.ridge$b), col="green", pch=19)
+legend("topright", c("blasso-map", "lasso", "ols"),
+       col=c(2,2,"blue"), pch=c(21,20,18))
+@
+\end{frame}
+
+
+\begin{frame}  \frametitle{Shrinkage}
+\vspace{-16pt}
+<<shrinkage, echo=FALSE, fig.align='center', fig.width=4, fig.height=4>>=
+## compare the coefs
+df = data.frame(ols=reg.ols$b[-1], lasso=reg.las$b[-1],
+           ridge=reg.ridge$b[-1],
+           blas = apply(reg.blas$beta[-(1:200),], 2, mean))
+pairs(blas ~ ., df)
+@
+\end{frame}
+
+\begin{frame}\frametitle{Summary}
+
+\begin{itemize}
+\item Bayesian and Regular LASSO shrink (unstable) coefficients to zero  \pause
+\item Bayesian posterior mean cannont be zero (so no selection)  \pause
+\item Bayesian MAP (Maximum a posteriori) estimate equivalent to Lasso penalized MLE for same $\lambda$  \pause
+\item Bayesian allows uncertainty in $\lambda$ to propogate to estimates and predictions  \pause
+\item Bayesian MAP estimates via EM algorithms or Variational Bayes (STAN)  \pause
+\item Report MAP estimate and HPD intervals
+\pause
+\item RJ = TRUE incorporates probabilty that $\beta = 0$ for variable selection
+
+\end{itemize}
+
+\end{frame}
+\end{document}
+

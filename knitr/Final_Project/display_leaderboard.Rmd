@@ -1,0 +1,39 @@
+---
+title: "Leaderboard Housing Data Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+suppressMessages(library(mongolite))
+suppressMessages(library(dplyr))
+suppressMessages(library(knitr))
+#suppressMessages(library(sp))
+knitr::opts_chunk$set(echo = TRUE)
+mongo_url = "mongodb://sta521:sta521_final_project@saxon.stat.duke.edu:52123/sta521"
+
+```
+
+```{r get.board, echo=FALSE}
+m = mongo("final_project", url = mongo_url)
+leaderboard = m$find()
+load("badges.Rdata")
+load("ghrepos.Rdata")
+reponames = gh.repos
+reponames[reponames =="STA521-S17/Final-Project"] = "BayesianSadistics"
+leaderboard$badges = badges
+for (i in 1:nrow(leaderboard)) {
+  leaderboard$badges[i] = badges[grep(leaderboard$Team[i], reponames)]
+}
+  
+```
+
+```{r, echo=FALSE}
+cat(date(), "\n\n")
+```
+
+
+```{r, echo=FALSE}
+kable(arrange(leaderboard, RMSE))
+```
+
+

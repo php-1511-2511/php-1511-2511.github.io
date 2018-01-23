@@ -1,0 +1,268 @@
+%\documentclass[handout]{beamer}
+\documentclass{beamer}
+%\usepackage[dvips]{color}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal,url}
+\input{macros}
+\usepackage{verbatim}
+
+%\usetheme{Warsaw}
+%\usecolortheme{orchid}
+\title{Robust Regression and Related Methods}
+\subtitle{Readings ISLR Chapter 6 + Papers}
+\institute{Merlise Clyde}
+\author{STA521 Predictive Models Duke University}
+\date{\today}
+\logo{duke.eps}
+
+\begin{document}
+\maketitle
+
+\begin{frame} \frametitle{Problem with Lasso/Bayesian Lasso Model}
+
+\begin{itemize}
+\item Model: $\Y = \one \beta_0 + \X \b + \eps$;  $\X$ is matrix of centered and scaled predictors so that  $\diag(\X^T\X) = \I_p$ \pause
+\item Lasso Prior
+    $$\beta_j \mid \phi \simiid DE(\phi^{1/2} \lambda)$$   \pause
+    $$p(\beta_0, \phi) \propto 1/\phi $$ \pause
+\item One parameter $\lambda$ controls shrinkage of $\b$  \pause
+ \begin{itemize}
+ \item hard thresholding to zero  \pause
+ \item soft thresholding of non-zero coefficients to zero  \pause
+ \end{itemize}
+\item cannot achieve an optimal balance of both  \pause
+\item Carvhalo, Polson, Scott proposed the Horseshoe prior to address this problem  \pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Robust Shrinkage}
+
+\includegraphics[height=3.0in]{shrinkage.jpg}
+
+\url{http://www.jmlr.org/proceedings/papers/v5/carvalho09a/carvalho09a.pdf}
+\end{frame}
+
+
+\begin{frame} \frametitle{Horseshoe}
+\begin{itemize}
+\item Horseshoe Prior Distribution
+$$\beta_j \mid \phi, \tau_j \simiid \N(0, \tau_j/\phi) $$ \pause
+\item $\tau_j^{1/2} \mid  \varphi \simiid \Ca^+(0, \varphi^{1/2})$ with density for the half-Cauchy
+$$p(\tau^{1/2}) \propto \left(1 + \frac{\tau}{\varphi}\right)^{-1}  \qquad \tau > 0$$
+\pause
+\item $\varphi^{1/2} \sim \Ca^+(0, 1)$ \pause
+\item $p(\beta_0, \phi) \propto 1/\phi)$ \pause
+\end{itemize}
+
+
+
+\end{frame}
+
+
+\begin{frame} \frametitle{Alternative representation}
+
+Normal $+$ Generalized Beta:
+$$\beta_j \mid \rho_j \sim N(0, 1/\rho_j - 1)$$
+ \pause
+$$ p(\rho_j) \propto \rho^{1/2 -1} (1 - \rho_j)^{1/2 - 1} (1 + \varphi \rho_j)^{-1}
+$$
+ \pause
+
+Special Case:  $\varphi = 1$ then $$\rho_j \sim \Be(1/2, 1/2)$$
+ \pause
+
+\vspace{12pt}
+Induced Shrinkage:
+
+$$\hat{\beta}_j \mid \beta_j \sim N(\beta_j, 1)$$
+$$\beta_j \mid \Y, \rho_j \sim \N\left((1 - \rho_j) \hat{\beta}_j, 1 - \rho_j\right)$$
+\end{frame}
+
+\begin{frame}
+\frametitle{Horseshoe Prior Shrinkage}
+<<beta-prior, echo=F, fig.align='center', fig.width=4, fig.height=4>>=
+b = seq(0,1, length=1000)
+plot(b, dbeta(b, .5, .5), type="l",  xlab=expression(beta), main = "Beta(1/2, 1/2)", ylab="density")
+@
+
+\end{frame}
+
+\begin{frame}\frametitle{Prior}
+\includegraphics[height=3.5in]{prior}
+\end{frame}
+
+\begin{frame}\frametitle{Outliers}
+
+Why should we assume that errors are normally distributed?  \pause
+
+\vspace{2.75in}
+
+
+
+Use heavy tailed distributions for errors too!  Student t, etc
+
+\end{frame}
+
+\begin{frame} \frametitle{Robust Regression with t errors}
+Model
+$$ Y_i \mid \b, \beta_0, \omega_j, \phi \ind
+\N(\beta_0 + \x_i^T\b, \phi^{-1} \omega^{-1})$$
+ \pause
+
+$$
+\omega_i \simiid \Gam(\nu/2, \nu/2)
+$$
+ \pause
+implies that marginally
+
+$$ Y_i \mid \b, \beta_0, \phi
+\ind \St(\nu, \beta_0 + \x_i^T\b, \phi^{-1/2})
+$$
+ \pause
+
+Interpretation of $\omega$ as latent weights
+
+$$p(y_i) =  (2 \pi)^{-1/2} (\phi \omega_i)^{1/2}
+\exp( - \frac{\phi \omega_j}{2}(y_i - \x_i^T \b)^2)
+$$
+ \pause
+Small $\omega$ down weights errors
+\end{frame}
+
+\begin{frame} \frametitle{Conditional Distribution}
+Prior $\times$ Likelihood for case $i$
+
+$$p(\omega_i \mid \cdot) \propto \omega_i^{\nu/2 - 1} \exp(- \frac{\nu}{2} \omega_i)  (2 \pi)^{-1/2} (\phi \omega_i)^{1/2}
+\exp\left( - \frac{\phi \omega_j}{2}(y_i - \x_i^T \b)^2\right)$$
+
+\vspace{2.5in}
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Code}
+
+<<code, cache=TRUE, evaluate=FALSE, echo=TRUE>>=
+# library(lars)
+# library(monomvn)
+# data(diabetes)
+
+# yf = diabetes$y
+# Xf = diabetes$x2
+# do not center/scale as doen within blasso
+# rbhs = blasso(Xf, yf, case="hs",
+#                theta = 16, RJ=FALSE,
+#                thin=10, T=2000,
+#                verb=0)
+# y.pred = mean(rbhs$mu) +
+#          Xf %*% apply(rbhs$beta, 2, mean)
+@
+
+
+
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]  \frametitle{Simulation Study with Diabetes Data}
+<<sim, echo=FALSE, warning=F, message=F, cache=FALSE>>=
+set.seed(42)
+
+library(lars)
+library(monomvn)
+data(diabetes)
+
+
+yf = diabetes$y
+Xf = diabetes$x2  # 64 variables from all 10 main effects,
+                  # two-way interactions and quadradics
+n = length(yf)
+n.test = round(n/2)
+
+nsim= 1
+mse.ols = rep(NA, nsim)
+mse.lasso = rep(NA, nsim)
+mse.bhs = rep(NA, nsim)
+mse.rbhs = rep(NA, nsim)
+for (i in 1:nsim) {
+  in.test = sample(1:n, n.test)  # random test cases
+  in.train = (1:n)[-in.test]  # remaining training data
+  y = yf[in.train]
+  x = Xf[in.train,]
+  db.lars = lars(x,y, type="lasso")
+  Cp = summary(db.lars)$Cp
+  best = which.min(Cp)     # step with smallest Cp
+  y.pred = predict(db.lars, s=best, newx=Xf[in.test,])
+  mse.lasso[i] =  sum((yf[in.test] - y.pred$fit)^2)/n.test
+
+  y.pred = predict(lm(y ~ x), Xf[in.test,]) # old predictions
+  mse.ols[i] = sum((yf[in.test] - y.pred)^2)/n.test
+#print(c(i, mse.ols[i], mse.lasso[i], mse.bhs[i]))
+  bhs = blasso(x, y, case="hs", RJ=FALSE, verb=0)
+  y.pred = mean(bhs$mu) + Xf[in.test,] %*% apply(bhs$beta, 2, mean)
+  mse.bhs[i] = sum((yf[in.test] - y.pred)^2)/n.test
+#print(c(i, mse.ols[i], mse.lasso[i], mse.bhs[i]))
+ rbhs = blasso(x, y, case="hs", theta = 1/8, RJ=FALSE, thin=10, T=1000, verb=0)
+ y.pred = mean(rbhs$mu) + Xf[in.test,] %*% apply(rbhs$beta, 2, mean)
+ mse.rbhs[i] = mean((yf[in.test] - y.pred)^2)
+#print(c(i, mse.ols[i], mse.lasso[i], mse.bhs[i], mse.rbhs[i]))
+}
+
+
+@
+
+<<plot-rmse, echo=F, fig.height=4, fig.width=4, fig.align='center'>>=
+boxplot(sqrt(mse.ols), sqrt(mse.lasso), sqrt(mse.bhs),
+sqrt(mse.rbhs),
+names=c("OLS", "Lasso", "Horseshoe", "RobHS"
+        ), ylab="RMSE")
+@
+
+\end{frame}
+
+
+
+
+\begin{frame}
+  \frametitle{Other Options}
+  Range of other scale mixtures used  \pause
+  \begin{itemize}
+  \item Generalized Double Pareto (Armagan, Dunson \& Lee)
+ \pause
+  \item Normal-Exponential-Gamma (Griffen \& Brown 2005)
+
+  \pause
+
+\item Relevance Vector Machines (Tipping) (improper!) \pause
+  \item Bridge - Power Exponential Priors  (Stable mixing density) \pause
+
+   \end{itemize}
+Some implemented in monomvn, but easy to add in JAGS  \pause
+
+\vfill
+
+Prior on $\b$ should have heavier tails than error distribution
+\end{frame}
+
+\begin{frame}
+  \frametitle{Choice of Estimator \& Selection?}
+
+  \begin{itemize}
+  \item Posterior Mode (may set some coefficients to zero) \pause
+  \item Posterior Mean (no selection) \pause
+  \end{itemize}
+  Bayesian Posterior under Shrinkage Priors does not assign any probability to $\beta_j = 0$ \pause
+
+  \begin{itemize}
+  \item Selection solved as a post-analysis decision problem \pause
+  \item Selection part of model uncertainty $\Rightarrow$ add prior \pause
+    probability that $\beta_j = 0$  and combine with decision problem  \pause
+    \item Use `RJ=TRUE` in blasso
+
+
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+

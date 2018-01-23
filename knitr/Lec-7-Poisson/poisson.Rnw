@@ -1,0 +1,251 @@
+\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+
+
+\title{Poisson Regression}
+
+\author{Gelman \&  Hill Chapter 6}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{frame}{Military Coups}
+Background: Sub-Sahara Africa has experienced a high proportion of
+regime changes due to military takeover of governments for a variety
+of reasons: ethnic fragmentation, arbitrary borders, economic problems,
+outside interventions, poorly developed government institutions, etc.
+
+
+\vspace{.5in}
+Data in Gill (page 551-552) is a subset from Bratton and Van de Valle
+(1994) to examine factors to try to explain military coups in 33
+countries from each country's colonial independence to 1989.
+
+<<data>>=
+africa =  read.table("africa.dat", header = T)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Variables}
+\begin{verbatim}
+MILTCOUP    # of coups
+MILTITARY   # of years of military oligarchy
+POLLIB      (0=no civil rights, 1=limited, 2=extensive)
+PARTY93     # of political parties
+PCTVOTE     % legislative voting
+PCTTURN     % registered voting
+SIZE        of country (1000 km^2
+POP         (in millions)
+NUMREGIM    Number of regimes
+NUMELEC     Number of elections
+\end{verbatim}
+
+  \begin{itemize}
+  \item Type of study? \pause
+  \item Are causal conclusions possible?  \pause
+
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Distribution of Response}
+
+<<setup, include=F, echo=F>>=
+suppressMessages(library(ggplot2))
+suppressMessages(library(GGally))
+@
+
+
+<<pairs, fig.height=3.5, echo=FALSE>>=
+ggpairs(africa, columns=c(4,5,7,1))
+@
+
+Response is non-negative
+\end{frame}
+
+
+\begin{frame}{Poisson Distribution}
+  \begin{align*}
+ Y_i \mid \lambda_i & \sim P(\lambda_i)     \\
+p(y_i) & = \frac{\lambda_i^{y_i} e^{-\lambda_i}}{y_i !} \qquad y_i = 0, 1, \ldots,
+\qquad \lambda_i > 0
+  \end{align*}  \pause
+
+  \begin{itemize}
+  \item Used for counts with no upper limit   \pause
+  \item $E(Y_i) = V(Y_i) = \lambda_i$  \pause
+  \end{itemize}
+
+How to build in covariates into the mean?  \pause
+\begin{itemize}
+\item $\lambda > 0  \Leftrightarrow \log(\lambda) = \eta \in \bbR$
+\item log link
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Generalized Linear Model}
+Canonical Link function for Poisson data is the log link   \pause
+\begin{itemize}
+\item $\log(\lambda_i) = \eta_i = \beta_0 + X_1 \beta_1 + \ldots X_p \beta_p $ (linear predictor)  \pause
+\item $\lambda = \exp( \beta_0 + X_1 \beta_1 + \ldots X_p \beta_p) $  \pause
+\item Holding all other $X$'s fixed a 1 unit change in $X_j$  \pause
+  \begin{align*}
+     \lambda^* & = \exp( \beta_0 + X_1 \beta_1 + \ldots (X_j + 1)\beta_j
+     + \ldots X_p \beta_p) \\ \pause
+ \lambda^* & = \exp(\beta_j) \exp( \beta_0 + X_1 \beta_1 + \ldots X_j \beta_j
+     + \ldots X_p \beta_p) \\  \pause
+\lambda^* & = \exp(\beta_j) \lambda \\  \pause
+\lambda^*/\lambda & =  \exp(\beta_j)
+  \end{align*}
+\item $\exp(\beta_j)$ is called a ``relative risk''  (risk relative to
+  some baseline)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Output from glm}
+\begin{small}
+<<glm, digits=4>>=
+africa.glm = glm(MILTCOUP ~ MILITARY + POLLIB + PARTY93+
+                   PCTVOTE + PCTTURN + SIZE*POP +
+                   NUMREGIM*NUMELEC,
+                   family=poisson, data=africa)
+round(summary(africa.glm)$coef, 4)
+@
+\end{small}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{lack of fit?}
+
+ \begin{itemize}
+    \item Under the hypothesis that the model is correct,
+    residual deviance   has an asymptotic  $\chi^2_{n - p -1}$ distribution  \pause
+    \item Residual deviance is the change in deviance from the model to a saturated model where each observation has its own $\lambda_i$
+\item Under the alternative that we have omitted important terms,
+  expect to see a large residual deviance
+ \pause
+\item Compare observed deviance to $\chi^2$ distribution
+%\item p-value = $P(\chi^2 _{\Sexpr{summary(africa.glm)$df.residual} > \Sexpr{round{summary(africa.glm)$deviance),2} = 0.996$  \pause
+\end{itemize}
+\begin{small}
+<<>>=
+c(summary(africa.glm)$deviance, summary(africa.glm)$df.residual)
+1 - pchisq(summary(africa.glm)$deviance, summary(africa.glm)$df.residual)
+@
+\end{small}
+So no evidence of lack of fit (overdispersion).
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Diagnostics}
+<<diag, warning=FALSE, echo=FALSE, fig.height=5>>=
+par(mfrow=c(2,2))
+plot(africa.glm)
+@
+
+\end{frame}
+
+\begin{frame} {Residuals in GLMS}
+
+\begin{itemize}
+\item residuals:  $Y_i - \hat{\lambda}_i$  (observed - fitted)
+\item Pearson Goodness of Fit
+$$X^2 = \sum_i \frac{(Y_i -  \hat{\lambda}_i)^2} {\hat{\lambda}_i}$$
+\item Pearson Residuals:
+$$r_i =  \frac{Y_i -  \hat{\lambda}_i}  {\sqrt{ \hat{\lambda}_i } }$$
+{\tt residuals.glm(africa.glm, type="pearson")}
+\item residual deviance: Change in deviance for Model compared to Saturated model
+\begin{align*}
+D & = 2 \left\{
+\sum_i y_i \log(y_i/\hat{\lambda}_i) - (y_i - \hat{\lambda}_i)
+\right\} \\
+ &  =  \sum d_i
+ \end{align*}
+ {\tt residuals.glm(africa.glm, type="deviance")}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Coefficients}
+<<coefs, echo=FALSE, results="asis">>=
+library(xtable)
+xtable(summary(africa.glm)$coef)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Treat Political Liberties as a Factor?}
+<<>>=
+africa.glm1 = glm(MILTCOUP ~ MILITARY + factor(POLLIB) +
+                    PARTY93 + PCTVOTE+ PCTTURN +
+                    SIZE*POP + NUMREGIM*NUMELEC,
+                    family=poisson, data=africa)
+anova(africa.glm, africa.glm1, test="Chi")
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Interpretation of Coefficients}
+<<beta.milt, echo=FALSE, include=FALSE>>=
+beta = round(summary(africa.glm)$coef, 3)
+beta = beta["MILITARY",]
+ci = round(confint(africa.glm)["MILITARY",],3)
+eci = round(exp(confint(africa.glm)["MILITARY",]),3)
+@
+  \begin{itemize}
+  \item Asymptotic distribution (Frequentist)
+$$(\beta_j - \hat{\beta_j})/\SE(\beta_j) \sim N(0,1)$$  \pause
+  \item 95\% CI for coefficient of MILITARY:
+   $$\Sexpr{beta[1]} \pm 1.96 \cdot \Sexpr{beta[2]}  = (
+   \Sexpr{ci[1]}, \Sexpr{ci[2]})$$  \pause
+  \item relative risk is $\exp(\Sexpr{beta[1]}) = \Sexpr{round(exp(beta[1]),3)}$  \pause
+  \item  95\% CI for relative risk  $e^{CI}$
+$$ (\exp(\Sexpr{ci[1]}), \exp(\Sexpr{ci[2]}))  =
+(\Sexpr{eci[1]}, \Sexpr{eci[2]})$$
+%$$
+  \end{itemize}
+
+Keeping everything else constant, for every additional year of military oligarchy, the risk of a
+military coup increases by $\Sexpr{round((eci[1] -1)*100,0)}$ to $\Sexpr{round((eci[2] -1)*100,0)}$ percent
+
+\end{frame}
+
+\begin{frame}\frametitle{Deviance Goodness of Fit}
+\begin{itemize}
+\item deviance is -2 log(likelihood) evaluated at the MLE of the parameters in that model
+$$ -2 \sum_i (y_i \log(\hat{\lambda}_i)  + \hat{\lambda}_i -
+\log( y_i!))$$
+\item smaller is better (larger likelihood)
+\item null deviance is the deviance under the "Null" model, that is a model with just an intercept or $\lambda_i = \lambda$ and $\hat{\lambda} = \bar{Y}$
+\item saturated model deviance is the deviance of a model where each observation has there own unique $\lambda_i$ and the MLE of $\hat{\lambda}_i = y_i$,
+\item the change in deviance has a Chi-squared distribution
+with degrees of freedom equal to the change in number of parameters in the models.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame} \frametitle{Derivation}
+the residual deviance is the change in the deviance between the given model and the saturated model. substituting, we have
+\begin{align*}
+D  = & -2\sum_i\left(y_i \log(\hat{\lambda}_i)  - \hat{\lambda}_i -
+\log(y_i!)\right) - \\
+&  -2\sum_i\left (y_i \log(y_i)  - y_i -
+\log(y_i!)\right) \\
+=  & 2 \sum_i\left(y_i (\log(y_i) -  \log(\hat{\lambda}_i))   -( y_i -  \hat{\lambda}_i)) \right) \\
+& = 2 \left(y_i (\log(y_i/\hat{\lambda}_i)   - (y_i -  \hat{\lambda}_i)) \right)
+& = \sum d_i
+\end{align*}
+This has a chi squared distibution with $n - (p+1)$ degrees of freedom.
+\end{frame}
+\end{document}

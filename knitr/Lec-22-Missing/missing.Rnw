@@ -1,0 +1,250 @@
+\documentclass[]{beamer}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+
+% abbreviation
+ \def\bi{\begin{itemize}}
+ \def\ei{\end{itemize}}
+ \def\i{\item}
+
+\title{Missing Data and Imputation}
+
+\author{Hoff Chapter 7, GH Chapter 25}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+<<echo=FALSE>>=
+opts_chunk$set(comment="", message=FALSE,tidy.opts=list(keep.blank.line=TRUE, width.cutoff=120),options(width=100), cache=TRUE,fig.align='center',fig.height=6, fig.width=10,fig.path='figure/beamer-',fig.show='hold',size='footnotesize', cache=TRUE)
+@
+\begin{frame}[fragile]\frametitle{Bednets and Malaria}
+
+\begin{itemize} %Y,AGE,BEDNET,GREEN,PHC
+\item {\tt Y}:presence or absence of parasites in a blood smear
+\item {\tt AGE}: age of child
+\item {\tt BEDNET}: bed net use  (exposure)
+\item {\tt GREEN}:greenness of the surrounding vegetation based on satellite photography
+\item {\tt PHC}: whether a village is part of a primary health-care system
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Bednets and Malaria}
+\begin{small}
+<<data>>=
+malaria = read.csv("gambia.dat", header=TRUE)
+summary(malaria)
+@
+\end{small}
+
+\Sexpr{round(mean(is.na(malaria$BEDNET))*100)}\% missing
+\end{frame}
+
+
+
+
+
+\begin{frame} \frametitle{More about missingness}
+\begin{itemize}
+\item Consider Probability of missingness - are certain groups more likely to have missing data? \pause
+\item Are certain responses more likely to be missing?   (i.e. individuals with high income are more likely to not report it) probability of missing depends on value of outcome. \pause
+\item Analysis depends on assumptions about missingness
+\end{itemize}
+\end{frame}
+
+\begin{frame} \frametitle{Mechanisms for Missingness}
+\begin{itemize}
+\item Missing Completely at random  (MCAR): missingness does not depend on outcome or other variables   \pause
+\item Missing at Random: missing does not depend on value of variable, but may depend on other variables.  \pause
+\item Missing Not at Random:  missingness depends on the variable that is missing  \pause
+\end{itemize}
+Cannot tell from data
+\end{frame}
+
+\begin{frame}{Modeling}
+  \begin{itemize}
+  \item Delete subjects with any missing observations.  This would
+  remove 39 \% of the data and reduces power.  Induces Bias if data are not missing completely at random!  \pause
+  \item Replace each missing value with an estimated mean (plug-in approach).  This implies that we are certain about the values
+  of the missing cases, so any measures of uncertainty in parameter
+  estimates are overly optimistic (too narrow).  Distorts correlation structure in data  \pause
+\item Work with likelihoods based on observed data; this will be a product
+  of marginal distributions, difficult to work with \pause
+  \item Model Based Methods
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Observed Data}
+  \begin{itemize}
+  \item $(Y_{i,1}, Y_{i,2},  Y_{i,3},  Y_{i,4},  Y_{i,5})$
+  \item $(O_{i,1}, O_{i,2},  O_{i,3},  O_{i,4},  O_{i,5})$  \pause
+where $O_{i,j}$ is 1 if $Y_{i,j}$ is observed and $O_{i,j}$ is 0 if $Y_{i,j}$ is missing  \pause
+  \end{itemize}
+Missing at Random Data:
+\begin{itemize}
+\item $O_i$ and $Y_i$ are independent given $\t$  \pause
+\item distribution for $O_i$ does not depend on  $\t$  \pause
+\end{itemize}
+Marginal Model for observed data
+\begin{align*}
+p(o_i, y[o_i = 1] \mid \t) &= p(o_i) p(y[o_i = 1] \mid \t) \\
+  & = p(o_i) \int \left\{ p(y_{i,1}, y_{i,2}, y_{i,3}, y_{i,4}, y_{i,5} \mid \t)
+  \prod_{y_{i,j} \backepsilon \, o_{i,j} = 0} dy_{i,j} \right\}
+\end{align*}
+ \pause
+Integrate over the missing variables to obtain the likelihood
+\end{frame}
+
+\begin{frame}{Use the Gibbs Sampler  to Integrate}
+
+If we had ``complete data'' then we would draw  $\t$ from the condition distribution of $\t \mid \Y$
+  class for sampling $\mub$ and $\Sigma$. Add a step at each iteration to generate the missing data:
+ \pause
+ \begin{itemize}
+  \item Generate  $Y_{\textsf{miss}}^{(t+1)}$
+  from   $p(Y_{\textsf{miss}} \mid Y_{\textsf{obs}}, \t^{(t)})$
+ and fill in the missing data to obtain a
+  ``complete'' matrix $Y$  from $ Y_{\textsf{obs}}$ and  $Y_{\textsf{miss}}$  \pause
+\item Generate $\t^{(t+1)}$ from  $p(\t \mid Y_{\textsf{obs}},
+  Y_{\textsf{miss}}^{(t+1)},)$  \pause
+  \end{itemize}
+Averaging over the draws of $Y_{\textsf{miss}}$ ``integrates''
+marginalizes over the missing dimensions
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{JAGS Model}
+
+<<model>>=
+model = function() {
+  for (i in 1:N) {
+  Y[i] ~ dbern(p[i])
+  logit(p[i]) <- alpha + beta.age*AGE[i] + beta.bednet*BEDNET[i]
+                 +beta.green*GREEN[i] + beta.phc*PHC[i]
+}
+   # model for missing exposure variable
+for (i in 1:N) {
+  BEDNET[i] ~ dbern(q) #prior model for whether or not child
+                       # sleeps under treated bednet
+}
+  #uniform prior (uniform) on prob of sleeping under bednet
+  q ~ dbeta (1,1)
+ #vague priors on regression coefficients
+   alpha ~ dnorm(0,0.00000001)
+   beta.age ~ dnorm(0,0.00000001)
+   beta.bednet ~ dnorm(0,0.00000001)
+   beta.green ~ dnorm(0,0.00000001)
+   beta.phc ~ dnorm(0,0.00000001)
+  # calculate odds ratios of interest
+  OR.bednet <- exp(beta.bednet) #OR of malaria for children using bednets
+}
+
+data=as.list(malaria)
+data$N = nrow(malaria)
+parameters = c("beta.bednet", "OR.bednet")
+library(R2jags)
+sim = jags(data, inits=NULL, parameters,model=model)
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Posterior Density}
+<<>>=
+theta = as.data.frame(sim$BUGSoutput$sims.matrix)
+plot(density(theta[,1]), xlab="OR Bednet", main="")
+@
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{JAGS Model}
+
+<<model.PHC, cache=FALSE>>=
+model2 = function() {
+  for (i in 1:N) {
+  Y[i] ~ dbern(p[i])
+  logit(p[i]) <- alpha + beta.age*AGE[i] + beta.bednet*BEDNET[i]
+                 +beta.green*GREEN[i] + beta.phc*PHC[i]
+}
+   # model for missing exposure variable
+for (i in 1:N) {
+  BEDNET[i] ~ dbern(q[i]) #prior model for  bednet use
+  logit(q[i]) <- gamma[1] + gamma[2]*PHC[i] #allow prob depend on PHC
+}
+
+ #vague priors on regression coefficients
+   gamma[1] ~ dnorm(0,0.00000001)
+   gamma[2] ~ dnorm(0,0.00000001)
+   alpha ~ dnorm(0,0.00000001)
+   beta.age ~ dnorm(0,0.00000001)
+   beta.bednet ~ dnorm(0,0.00000001)
+   beta.green ~ dnorm(0,0.00000001)
+   beta.phc ~ dnorm(0,0.00000001)
+  # calculate odds ratios of interest
+  OR.bednet <- exp(beta.bednet) #OR of malaria for children using bednets
+  OR.bednet.PHC <- exp(gamma[2]) #OR of malaria for children using bednets
+}
+
+data=as.list(malaria)
+data$N = nrow(malaria)
+parameters = c("OR.bednet", "OR.bednet.PHC")
+library(R2jags)
+sim.phc = jags(data, inits=NULL, parameters,model=model2)
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Posterior Density}
+<<theta.phc>>=
+theta.phc = as.data.frame(sim.phc$BUGSoutput$sims.matrix)
+plot(density(theta.phc[,1]), xlab="OR Malaria Bednet", main="")
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Posterior Density}
+<<>>=
+plot(density(theta.phc[,"OR.bednet.PHC"]), xlab="OR BEDNET PHC", main="")
+@
+
+\end{frame}
+\begin{frame}[fragile] \frametitle{intervals}
+<<>>=
+exp(confint(glm(Y ~ . , data=malaria, family=binomial), parm="BEDNET"))
+HPDinterval(as.mcmc(theta))
+HPDinterval(as.mcmc(theta.phc))
+@
+\end{frame}
+
+\begin{frame} \frametitle{More than one variable with missing data}
+
+\begin{itemize}
+\item Model each predictor (joint distribution)   \pause
+\item Coherent sequential model of conditional distributions  \pause
+\item Handle Mix of Discrete and Continuous  \pause
+\item Categorical:  Continuation Ratios easiest  \pause
+\end{itemize}
+
+\end{frame}
+
+\begin{frame} \frametitle{Missing Not at Random}
+
+\begin{itemize}
+\item probability of missing depends on predictor  \pause
+\item need to model joint missingness indicator and outcomes  \pause
+\item model missingness given variables  \pause
+\item need more information !
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}\frametitle{Summary}
+\begin{itemize}
+\item Make sure you know how missing data are coded!  \pause
+\item Think about why they are missing; i.e if there is no garage then there can be no garage condition.  \pause
+\item  Joint Models require understanding more about the data and reasons for missingness and more sophisticated modelling  \pause
+\end{itemize}
+\end{frame}
+
+\end{document}

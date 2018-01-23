@@ -1,0 +1,366 @@
+\documentclass[handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\usepackage[dvips]{color}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+
+
+\title{Poisson Regression}
+
+\author{Gelman \&  Hill Chapter 6}
+\date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+\begin{frame}{Military Coups}
+Background: Sub-Sahara Africa has experienced a high proportion of
+regime changes due to military takeover of governments for a variety
+of reasons: ethnic fragmentation, arbitrary borders, economic problems,
+outside interventions, poorly developed government institutions, etc.
+
+
+\vspace{.5in}
+Data in Gill (page 551-552) is a subset from Bratton and Van de Valle
+(1994) to examine factors to try to explain military coups in 33
+countries from each country's colonial independence to 1989.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{africa} \hlkwb{=}  \hlkwd{read.table}\hlstd{(}\hlstr{"africa.dat"}\hlstd{,} \hlkwc{header} \hlstd{= T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Variables}
+\begin{verbatim}
+MILTCOUP    # of coups
+MILTITARY   # of years of military oligarchy
+POLLIB      (0=no civil rights, 1=limited, 2=extensive)
+PARTY93     # of political parties
+PCTVOTE     % legislative voting
+PCTTURN     % registered voting
+SIZE        of country (1000 km^2
+POP         (in millions)
+NUMREGIM    Number of regimes
+NUMELEC     Number of elections
+\end{verbatim}
+
+  \begin{itemize}
+  \item Type of study? \pause
+  \item Are causal conclusions possible?  \pause
+
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Distribution of Response}
+
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/pairs-1} 
+
+\end{knitrout}
+
+Response is non-negative
+\end{frame}
+
+
+\begin{frame}{Poisson Distribution}
+  \begin{align*}
+ Y_i \mid \lambda_i & \sim P(\lambda_i)     \\
+p(y_i) & = \frac{\lambda_i^{y_i} e^{-\lambda_i}}{y_i !} \qquad y_i = 0, 1, \ldots,
+\qquad \lambda_i > 0
+  \end{align*}  \pause
+
+  \begin{itemize}
+  \item Used for counts with no upper limit   \pause
+  \item $E(Y_i) = V(Y_i) = \lambda_i$  \pause
+  \end{itemize}
+
+How to build in covariates into the mean?  \pause
+\begin{itemize}
+\item $\lambda > 0  \Leftrightarrow \log(\lambda) = \eta \in \bbR$
+\item log link
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Generalized Linear Model}
+Canonical Link function for Poisson data is the log link   \pause
+\begin{itemize}
+\item $\log(\lambda_i) = \eta_i = \beta_0 + X_1 \beta_1 + \ldots X_p \beta_p $ (linear predictor)  \pause
+\item $\lambda = \exp( \beta_0 + X_1 \beta_1 + \ldots X_p \beta_p) $  \pause
+\item Holding all other $X$'s fixed a 1 unit change in $X_j$  \pause
+  \begin{align*}
+     \lambda^* & = \exp( \beta_0 + X_1 \beta_1 + \ldots (X_j + 1)\beta_j
+     + \ldots X_p \beta_p) \\ \pause
+ \lambda^* & = \exp(\beta_j) \exp( \beta_0 + X_1 \beta_1 + \ldots X_j \beta_j
+     + \ldots X_p \beta_p) \\  \pause
+\lambda^* & = \exp(\beta_j) \lambda \\  \pause
+\lambda^*/\lambda & =  \exp(\beta_j)
+  \end{align*}
+\item $\exp(\beta_j)$ is called a ``relative risk''  (risk relative to
+  some baseline)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Output from glm}
+\begin{small}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{africa.glm} \hlkwb{=} \hlkwd{glm}\hlstd{(MILTCOUP} \hlopt{~} \hlstd{MILITARY} \hlopt{+} \hlstd{POLLIB} \hlopt{+} \hlstd{PARTY93}\hlopt{+}
+                   \hlstd{PCTVOTE} \hlopt{+} \hlstd{PCTTURN} \hlopt{+} \hlstd{SIZE}\hlopt{*}\hlstd{POP} \hlopt{+}
+                   \hlstd{NUMREGIM}\hlopt{*}\hlstd{NUMELEC,}
+                   \hlkwc{family}\hlstd{=poisson,} \hlkwc{data}\hlstd{=africa)}
+\hlkwd{round}\hlstd{(}\hlkwd{summary}\hlstd{(africa.glm)}\hlopt{$}\hlstd{coef,} \hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##                  Estimate Std. Error z value Pr(>|z|)
+## (Intercept)        2.9209     1.3368  2.1850   0.0289
+## MILITARY           0.1709     0.0509  3.3575   0.0008
+## POLLIB            -0.4654     0.3319 -1.4022   0.1609
+## PARTY93            0.0247     0.0109  2.2792   0.0227
+## PCTVOTE            0.0613     0.0217  2.8202   0.0048
+## PCTTURN           -0.0361     0.0137 -2.6372   0.0084
+## SIZE              -0.0018     0.0007 -2.5223   0.0117
+## POP               -0.1188     0.0397 -2.9961   0.0027
+## NUMREGIM          -0.8662     0.4571 -1.8949   0.0581
+## NUMELEC           -0.4859     0.2118 -2.2948   0.0217
+## SIZE:POP           0.0001     0.0000  3.0111   0.0026
+## NUMREGIM:NUMELEC   0.1810     0.0689  2.6265   0.0086
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{small}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{lack of fit?}
+
+ \begin{itemize}
+    \item Under the hypothesis that the model is correct,
+    residual deviance   has an asymptotic  $\chi^2_{n - p -1}$ distribution  \pause
+    \item Residual deviance is the change in deviance from the model to a saturated model where each observation has its own $\lambda_i$
+\item Under the alternative that we have omitted important terms,
+  expect to see a large residual deviance
+ \pause
+\item Compare observed deviance to $\chi^2$ distribution
+%\item p-value = $P(\chi^2 _{summary(africa.glm)$df.residual > round{summary(africa.glm)$deviance),2 = 0.996$  \pause
+\end{itemize}
+\begin{small}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{c}\hlstd{(}\hlkwd{summary}\hlstd{(africa.glm)}\hlopt{$}\hlstd{deviance,} \hlkwd{summary}\hlstd{(africa.glm)}\hlopt{$}\hlstd{df.residual)}
+\end{alltt}
+\begin{verbatim}
+## [1]  7.547369 21.000000
+\end{verbatim}
+\begin{alltt}
+\hlnum{1} \hlopt{-} \hlkwd{pchisq}\hlstd{(}\hlkwd{summary}\hlstd{(africa.glm)}\hlopt{$}\hlstd{deviance,} \hlkwd{summary}\hlstd{(africa.glm)}\hlopt{$}\hlstd{df.residual)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.9967843
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{small}
+So no evidence of lack of fit (overdispersion).
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Diagnostics}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/diag-1} 
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame} {Residuals in GLMS}
+
+\begin{itemize}
+\item residuals:  $Y_i - \hat{\lambda}_i$  (observed - fitted)
+\item Pearson Goodness of Fit
+$$X^2 = \sum_i \frac{(Y_i -  \hat{\lambda}_i)^2} {\hat{\lambda}_i}$$
+\item Pearson Residuals:
+$$r_i =  \frac{Y_i -  \hat{\lambda}_i}  {\sqrt{ \hat{\lambda}_i } }$$
+{\tt residuals.glm(africa.glm, type="pearson")}
+\item residual deviance: Change in deviance for Model compared to Saturated model
+\begin{align*}
+D & = 2 \left\{
+\sum_i y_i \log(y_i/\hat{\lambda}_i) - (y_i - \hat{\lambda}_i)
+\right\} \\
+ &  =  \sum d_i
+ \end{align*}
+ {\tt residuals.glm(africa.glm, type="deviance")}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Coefficients}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb  6 18:53:54 2017
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+  \hline
+(Intercept) & 2.92 & 1.34 & 2.18 & 0.03 \\ 
+  MILITARY & 0.17 & 0.05 & 3.36 & 0.00 \\ 
+  POLLIB & -0.47 & 0.33 & -1.40 & 0.16 \\ 
+  PARTY93 & 0.02 & 0.01 & 2.28 & 0.02 \\ 
+  PCTVOTE & 0.06 & 0.02 & 2.82 & 0.00 \\ 
+  PCTTURN & -0.04 & 0.01 & -2.64 & 0.01 \\ 
+  SIZE & -0.00 & 0.00 & -2.52 & 0.01 \\ 
+  POP & -0.12 & 0.04 & -3.00 & 0.00 \\ 
+  NUMREGIM & -0.87 & 0.46 & -1.89 & 0.06 \\ 
+  NUMELEC & -0.49 & 0.21 & -2.29 & 0.02 \\ 
+  SIZE:POP & 0.00 & 0.00 & 3.01 & 0.00 \\ 
+  NUMREGIM:NUMELEC & 0.18 & 0.07 & 2.63 & 0.01 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Treat Political Liberties as a Factor?}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{africa.glm1} \hlkwb{=} \hlkwd{glm}\hlstd{(MILTCOUP} \hlopt{~} \hlstd{MILITARY} \hlopt{+} \hlkwd{factor}\hlstd{(POLLIB)} \hlopt{+}
+                    \hlstd{PARTY93} \hlopt{+} \hlstd{PCTVOTE}\hlopt{+} \hlstd{PCTTURN} \hlopt{+}
+                    \hlstd{SIZE}\hlopt{*}\hlstd{POP} \hlopt{+} \hlstd{NUMREGIM}\hlopt{*}\hlstd{NUMELEC,}
+                    \hlkwc{family}\hlstd{=poisson,} \hlkwc{data}\hlstd{=africa)}
+\hlkwd{anova}\hlstd{(africa.glm, africa.glm1,} \hlkwc{test}\hlstd{=}\hlstr{"Chi"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Deviance Table
+## 
+## Model 1: MILTCOUP ~ MILITARY + POLLIB + PARTY93 + PCTVOTE + PCTTURN + 
+##     SIZE * POP + NUMREGIM * NUMELEC
+## Model 2: MILTCOUP ~ MILITARY + factor(POLLIB) + PARTY93 + PCTVOTE + PCTTURN + 
+##     SIZE * POP + NUMREGIM * NUMELEC
+##   Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+## 1        21     7.5474                     
+## 2        20     7.1316  1  0.41581    0.519
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Interpretation of Coefficients}
+
+  \begin{itemize}
+  \item Asymptotic distribution (Frequentist)
+$$(\beta_j - \hat{\beta_j})/\SE(\beta_j) \sim N(0,1)$$  \pause
+  \item 95\% CI for coefficient of MILITARY:
+   $$0.171 \pm 1.96 \cdot 0.051  = (
+   0.078, 0.282)$$  \pause
+  \item relative risk is $\exp(0.171) = 1.186$  \pause
+  \item  95\% CI for relative risk  $e^{CI}$
+$$ (\exp(0.078), \exp(0.282))  =
+(1.081, 1.325)$$
+%$$
+  \end{itemize}
+
+Keeping everything else constant, for every additional year of military oligarchy, the risk of a
+military coup increases by $8$ to $32$ percent
+
+\end{frame}
+
+\begin{frame}\frametitle{Deviance Goodness of Fit}
+\begin{itemize}
+\item deviance is -2 log(likelihood) evaluated at the MLE of the parameters in that model
+$$ -2 \sum_i (y_i \log(\hat{\lambda}_i)  + \hat{\lambda}_i -
+\log( y_i!))$$
+\item smaller is better (larger likelihood)
+\item null deviance is the deviance under the "Null" model, that is a model with just an intercept or $\lambda_i = \lambda$ and $\hat{\lambda} = \bar{Y}$
+\item saturated model deviance is the deviance of a model where each observation has there own unique $\lambda_i$ and the MLE of $\hat{\lambda}_i = y_i$,
+\item the change in deviance has a Chi-squared distribution
+with degrees of freedom equal to the change in number of parameters in the models.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame} \frametitle{Derivation}
+the residual deviance is the change in the deviance between the given model and the saturated model. substituting, we have
+\begin{align*}
+D  = & -2\sum_i\left(y_i \log(\hat{\lambda}_i)  - \hat{\lambda}_i -
+\log(y_i!)\right) - \\
+&  -2\sum_i\left (y_i \log(y_i)  - y_i -
+\log(y_i!)\right) \\
+=  & 2 \sum_i\left(y_i (\log(y_i) -  \log(\hat{\lambda}_i))   -( y_i -  \hat{\lambda}_i)) \right) \\
+& = 2 \left(y_i (\log(y_i/\hat{\lambda}_i)   - (y_i -  \hat{\lambda}_i)) \right)
+& = \sum 2 d_i
+\end{align*}
+This has a chi squared distibution with $n - (p+1)$ degrees of freedom.
+\end{frame}
+\end{document}

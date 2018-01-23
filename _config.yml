@@ -1,0 +1,36 @@
+markdown: kramdown
+exclude:
+  - LICENSE
+
+layouts_dir: ./_noita
+baseurl: /courses/Spring17/sta521
+
+noita:
+  name: STA 521 Modern Regression & Predictive Modelling
+  description: Jekyll theme built with Foundation
+  author:
+    name: Merlise Clyde
+    url: http://stat.duke.edu/~clyde
+    absolute: true
+  lang: en
+  topbar:
+    toggle: Menu
+    right:
+      - name: Info
+        url: /
+      - name: Syllabus
+        url: /syllabus/
+      - name: Calendar
+        url: /calendar
+      - name: Resources
+        url: /resources/
+      - name: Sakai
+        url: https://sakai.duke.edu/portal/site/sta521-s17
+        absolute: true
+      - name: Github
+        url: https://github.com/STA521-S17
+        absolute: true
+social:
+  github: merliseclyde
+  linkedin: merliseclyde
+permalink: /404.html

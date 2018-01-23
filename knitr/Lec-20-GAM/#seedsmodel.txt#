@@ -1,0 +1,33 @@
+model
+{
+    for (n in 1:N) {
+        logit(pi[n]) <- alpha[Species[n], Cage[n], Litter[n]] + 
+            beta[Species[n], Cage[n], Litter[n]] * (light[n] - 
+                meanlight)
+        Y[n] ~ dbin(pi[n], reps)
+    }
+    for (c in 1:C) {
+        for (l in 1:L) {
+            for (s in 1:S) {
+                alpha[s, c, l] ~ dnorm(alpha.mu[Leaves[s], c, 
+                  l], alpha.phi)
+                beta[s, c, l] ~ dnorm(beta.mu[Leaves[s], c, l], 
+                  beta.phi)
+            }
+            for (leaves in 1:2) {
+                alpha.mu[leaves, c, l] <- alpha.pop + alpha.coty * 
+                  (leaves - 1) + alpha.cage * (c - 1) + alpha.litter * 
+                  l
+                beta.mu[leaves, c, l] ~ dnorm(0.00000E+00, 1)
+            }
+        }
+    }
+    alpha.pop ~ dnorm(0.00000E+00, 1)
+    alpha.coty ~ dnorm(0.00000E+00, 1)
+    alpha.cage ~ dnorm(0.00000E+00, 1)
+    alpha.litter ~ dnorm(0.00000E+00, 1)
+    alpha.sigma ~ dunif(0.00000E+00, 10)
+    alpha.phi <- 1/(alpha.sigma * alpha.sigma)
+    beta.phi <- pow(beta.sigma, -2)
+    beta.sigma ~ dunif(0.00000E+00, 10)
+}

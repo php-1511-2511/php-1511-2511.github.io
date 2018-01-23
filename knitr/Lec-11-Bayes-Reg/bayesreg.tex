@@ -1,0 +1,474 @@
+\documentclass[handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\documentclass[]{beamer}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+
+%\usetheme{Warsaw}
+%\usecolortheme{orchid}
+\title{Bayesian Estimation in Linear Models}
+\institute{Merlise Clyde}
+\author{STA521 Linear Models Duke University}
+\date{\today}
+%\logo{duke.eps}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+\begin{frame}
+  \frametitle{Bayesian Estimation}
+  Model $\Y = \X \b + \eps$  with $\eps \sim \N(\zero_n , \sigma^2
+  \I_n)$ \pause
+is equivalent to
+$$
+\Y \sim \N(\X \b, \I_n/\phi)
+$$
+\pause
+ $\phi = 1/\sigma^2$ is the {\it precision}.
+\pause
+
+\vspace{14pt}
+In the  Bayesian paradigm describe uncertainty about unknown
+parameters using probability distributions
+\pause
+\begin{itemize}
+\item  Prior Distribution $p(\b, \phi)$ describes uncertainty about
+  parameters prior to seeing the data \pause
+\item Posterior Distribution $p(\b, \phi \mid \Y)$ describes
+  uncertainty about the parameters after updating  believes given the
+  observed data \pause
+\item updating rule is based on Bayes Theorem
+$$p(\b, \phi \mid \Y) \propto \cL(\b, \phi) p(\b, \phi)$$
+\pause
+\end{itemize}
+ reweight prior beliefs by likelihood of parameters  under observed data
+\end{frame}
+
+\begin{frame}
+  \frametitle{Posterior}
+  Posterior is obtained by conditional distribution theory \pause
+
+  Let $\t = (\b, \phi)^T$ \pause
+\begin{eqnarray*}
+  p(\t \mid \Y ) & = & \frac{p(\Y \mid \t) p(\t) }
+{ \int_{\T} p(\Y \mid \t)   p(\t) \, d\t} \pause \\
+& = &  \frac{p(\Y, \t)}{p(\Y)}
+\end{eqnarray*}
+\pause
+$p(\Y)$, the normalizing constant, is the marginal distribution of the data.
+\pause
+\vfill
+
+Easiest to work with Bayes Theorem in proportional form and then
+identify the normalizing constant.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Prior Distributions}
+Factor joint prior distribution  $$p(\b, \phi) = p(\b \mid \phi) p(\phi)$$
+\pause
+
+Convenient choice is to take \pause
+\begin{itemize}
+\item $\b \mid \phi \sim \N(b_0, \Phi_0^{-1}/\phi)$ where $b_0$ is the prior
+  mean and $\Phi^{-1}/\phi$ is the prior covariance of $\b$ \pause
+ $$ p(\b \mid \phi) = (2 \pi)^{-p/2} \phi^{p/2} | \Phi_0|^{1/2}
+  \exp\left(- \frac{\phi}{2} (\b - b_0)^T \Phi_0 (\b - b_0)\right)$$
+\item $\phi \sim \G( \nu_0/2, \SS_0/2)$  with $\E(\sigma^2) =
+  \SS_0/(\nu_0 - 2)$ \pause
+$$p(\phi) = \frac{1}{\Gamma{(\nu_0/2)}}
+\left(\frac{\SS_0}{2} \right)^{\nu_0/2}
+\phi^{\nu_0/2 - 1}
+ e^{- \phi \SS_0/2}
+ $$\pause
+\item $(\b, \phi)^T \sim \NG(\bv_0, \Phi_0, \nu_0, \SS_0)$ \pause
+\item Conjugate  ``Normal-Gamma'' family implies \pause
+$$(\b, \phi)^T \mid \Y \sim \NG(\bv_n, \Phi_n, \nu_n, \SS_n)$$
+\end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Posterior Distribution}
+  \begin{eqnarray*}
+     p(\b, \phi \mid \Y) &\propto&  \cL(\b, \phi) p(\b \mid \phi) p(\phi)
+    \pause \\
+ & = & c_Y\, \phi^{n/2} e^{- \frac \phi 2 (\Y - \X \b)^T (\Y - \X \b)} \pause \\
+& & c_{\b}\, |\phi \Phi_0|^{1/2} e^{- \frac{\phi}{2} (\b - \bv_0)^T \Phi_0 (\b - \bv_0) }  \pause \\
+& &  c_\phi \, \phi^{\frac{nu_0}{2} - 1} e^{-\phi \SS_0/2}
+  \end{eqnarray*}
+Write $\Phi_0 = \X_0^T \X_0$ \pause \\(by Spectral Theorem $\Phi = \U \Lambdab
+\U^T$ take $\X_0 = \Lambdab^{1/2} \U^T$)
+\pause
+\begin{eqnarray*}
+p(\b \mid \phi) & \propto & \phi^p/2 e^{- \frac{\phi}{2} (\b - \bv_0)^T
+  \X_0^T\X_0 (\b - \bv_0) } \pause \\
+ & = & \phi^{p/2} e^{- \frac{\phi}{2} (\X_0\b - \X_0\bv_0)^T
+  (\X_0\b - \X_0\bv_0) } \pause
+\end{eqnarray*}
+Looks like the likelihood from a prior sample of size $p$ with prior
+design $\X_0$ and $\Y_0 = \X_o \bv_0$
+
+\end{frame}
+\begin{frame}
+  \frametitle{Prior Data}
+  Let
+ $$\tY = \left[
+   \begin{array}{l}
+     \Y \\
+\Y_0
+   \end{array}
+\right] \in \bbR^{n+p}  \qquad \tX = \left[
+   \begin{array}{l}
+     \Y \\
+\X_0
+   \end{array}
+\right]  (n+p \times p)  $$  \pause
+then
+$$p(\b, \phi \mid \Y) \propto p(\tY \mid \b, \phi) p(\phi)$$
+where  $\tY \sim \N( \tX \b, \I_{n+p}/\phi)$
+\pause
+
+\vspace{24pt}
+Likelihood proportional to sampling model of ``augmented'' data
+\pause
+\begin{eqnarray*}
+ p(\b, \phi \mid \Y) &\propto&  \phi^{\frac n 2} e^{- \frac \phi 2 (\Y - \X \b)^T (\Y - \X \b)}
+ |\phi \Phi_0|^{\frac 1 2} e^{- \frac{\phi}{2} (\X_0\b - \X_0\bv_0)^T  (\X_0\b - \X_0\bv_0) }  \\
+& &  \phi^{\frac{nu_0}{2} - 1} e^{-\phi \SS_0/2} \pause \\
+ &\propto&  \phi^{\frac {n + p}{ 2}} e^{- \frac \phi 2 (\tY - \tX \b)^T (\tY - \tX \b)}
+\phi^{\frac{nu_0}{2} - 1} e^{-\phi \frac{ \SS_0}{ 2}}
+  \end{eqnarray*}
+\end{frame}
+\begin{frame}
+  \frametitle{Decompose}
+  Let $\P_{\tX} = \tX (\tX^T\tX)^{-1} \tX^T$ \pause -  this is an orthogonal
+  projection on $C(\tX)$ \pause
+ $$\tY^T\tY = \tY^T\P_{\tX}\tY +
+  \tY^T(\I_{n+p} - \P_{\tX} )\tY$$
+
+\pause
+
+\begin{eqnarray*}
+ p(\b, \phi \mid \Y)
+ &\propto&  \phi^{\frac {n + p}{ 2}} e^{- \frac \phi 2 (\tY - \tX \b)^T (\tY - \tX \b)}
+\phi^{\frac{nu_0}{2} - 1} e^{-\phi \frac{ \SS_0}{ 2}} \pause \\
+ & = &  \phi^{\frac {n + p}{ 2}} e^{- \frac \phi 2 (\tY - \tX \b)^T
+   \P_{\tX} (\tY - \tX \b)} \pause \\
+ & & e^{- \frac \phi 2 (\tY - \tX \b)^T (\I_{n+p} - \P_{\tX}) (\tY -
+   \tX \b)} \pause \\
+& & \phi^{\frac{nu_0}{2} - 1} e^{-\phi \frac{ \SS_0}{ 2}} \pause \\
+& = &  \phi^{\frac {p}{ 2}} e^{- \frac{\phi} {2}
+(\P_{\tX}\tY - \tX \b)^T (\P_{\tX}\tY - \tX \b)} \pause \\
+& & \phi^{\frac{n + nu_0}{2} - 1} e^{- \frac \phi 2 \tY^T (\I_{n +p}
+  -\P_{\tX}) \tY}  e^{-\phi \frac{ \SS_0}{ 2}}
+  \end{eqnarray*}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Continued}
+$\P_{\tX} \tY = \tX \tb$  Maximum a Posteriori (MAP) estimator
+\begin{eqnarray*}
+ p(\b, \phi \mid \Y)
+ &\propto&   \phi^{\frac {p}{ 2}} e^{- \frac{\phi} {2}
+(\tX\tb - \tX \b)^T (\tX\tb - \tX \b)}\\
+& & \phi^{\frac{n + \nu_0}{2} - 1} e^{-  \phi \frac{ \tY^T (\I_{n +p}
+  -\P_{\tX}) \tY +  \SS_0}{ 2}} \pause \\
+&\propto&   \phi^{\frac {p}{ 2}} e^{- \frac{\phi} {2}
+(\b - \alert{\tb})^T \alert{\tX^T\tX}(\b - \alert{\tb})} \,
+ \phi^{\alert{\frac{n + \nu_0}{2}} - 1} e^{-  \phi \alert{ \frac{ \tY^T (\I_{n +p}
+  -\P_{\tX}) \tY +  \SS_0}{ 2}}}
+  \end{eqnarray*}
+Read off distributions!
+
+\begin{eqnarray*}
+  \b \mid \phi, \Y & \sim & \N( \tb, (\phi \tX^T \tX)^{-1}) \pause \\
+  \phi \mid \Y & \sim & \G\left(\frac{n + \nu_0}{2},  \frac{\tY^T (\I_{n +p}
+  -\P_{\tX}) \tY +  \SS_0}{ 2} \right)
+\end{eqnarray*}
+\end{frame}
+\begin{frame}
+  \frametitle{Simplify Distribution of $\b$}
+
+Posterior Precision $\phi \tX^T\tX$ \pause
+  \begin{eqnarray*}
+\tX^T\tX &= &\X^T\X + \X_0^T\X_0 \pause \\
+         & = &\X^T\X + \Phi_0 \pause \\
+\Phi_n & = & \X^T\X + \Phi_0 \pause
+\end{eqnarray*}
+sum of precision from data plus prior precision \pause
+
+\begin{eqnarray*}
+  \tb & = &  (\tX^T\tX)^{-1} \tX^T\tY \pause \\
+ & = &  (\X^T\X + \Phi_0)^{-1} (\X^T\Y + \X_0^T \X_0 \bv_0) \pause \\
+ & = &  (\X^T\X + \Phi_0)^{-1}[ (\X^T\X) (\X^T\X)^{-1} \X^T\Y + \Phi_0
+ \bv_0] \pause \\
+& = & (\X^T\X + \Phi_0)^{-1}[ (\X^T\X) \bhat + \Phi_0
+ \bv_0] \pause \\
+\bv_n & = & (\X^T\X + \Phi_0)^{-1}[ (\X^T\X) \bhat + \Phi_0
+ \bv_0]  \pause
+\end{eqnarray*}
+
+Conditional Posterior for $\b \mid \phi, \Y  \sim  \N( \bv_n, \phi^{-1} \Phi_n^{-1})$
+
+\end{frame}
+\begin{frame}
+  \frametitle{Simplify Posterior Distribution for $\phi$}
+  \begin{eqnarray*}
+  \phi \mid \Y & \sim & \G\left(\frac{n + \nu_0}{2},  \frac{\tY^T (\I_{n +p}
+  -\P_{\tX}) \tY +  \SS_0}{ 2} \right) \pause \\
+& & \\
+\tY^T (\I_{n +p}   -\P_{\tX}) \tY & = & \| \tY - \tX \bv_n \|^2 \pause \\
+& = &  \| \Y - \X \bv_n \|^2 +  \| \Y_0 - \X_0 \bv_n \|^2 \pause \\
+& = &  \| \Y - \X \bv_n \|^2 +  (\X_0\bv_0 - \X_0 \bv_n)^T  (\X_0\bv_0
+- \X_0 \bv_n) \pause \\
+& = &  \| \Y - \X \bv_n \|^2 +  (\bv_0 - \bv_n)^T(\X_o^T\X_0)(\bv_0
+- \bv_n) \pause \\
+& = &  \| \Y - \X \bv_n \|^2 +  (\bv_0 - \bv_n)^T\Phi_o(\bv_0
+- \bv_n) \pause\\
+\nu_n & = & n + \nu_0\pause \\
+\end{eqnarray*}
+Posterior for $\phi$
+$$ \phi \mid \Y \sim \G\left(\frac{\nu_n}{2},  \frac{\| \Y - \X \bv_n \|^2 +  (\bv_0 - \bv_n)^T\Phi_o(\bv_0
+- \bv_n) +  \SS_0}{ 2} \right) $$
+\end{frame}
+
+\begin{frame}
+  \frametitle{Marginal Distribution from Normal--Gamma }
+  \begin{theorem}
+    Let  $\t \mid \phi \sim \N(m, \frac{1}{\phi} \Sigma)$ and $\phi \sim
+    \G(\nu/2, \nu \shat/2)$. Then  $\t$ ($p \times 1)$ has a $p$
+    dimensional multivariate $t$ distribution $$\t \sim t_\nu( m,
+    \shat \Sigma )$$ with density
+$$p(\t) \propto  \left[ 1 + \frac{1}{\nu}  \frac{ (\t - m)^T
+    \Sigma^{-1} (\t - m)}{\shat} \right]^{- \frac{p + \nu}{2}}$$
+  \end{theorem}
+\end{frame}
+\begin{frame}
+  \frametitle{Derivation}
+Marginal density  $p(\t) = \int p(\t \mid \phi) p(\phi) \, d\phi$
+\pause
+\begin{eqnarray*}
+  p(\t) & \propto & \int |\Sigma/\phi|^{-1/2}
+e^{- \frac{\phi}{2} (\t - m)^T
+    \Sigma^{-1} (\t - m)}  \phi^{\nu/2 - 1} e^{- \phi \frac{\nu
+      \shat}{2}}\, d \phi \pause \\
+  & \propto & \int \phi^{p/2} \phi^{\nu/2 - 1}
+e^{- \phi \frac{(\t - m)^T
+    \Sigma^{-1} (\t - m)+  \nu
+      \shat}{2}}\, d \phi \pause \\
+ & \propto & \int \phi^{\frac{p +\nu}{2} - 1}
+e^{- \phi \frac{(\t - m)^T
+    \Sigma^{-1} (\t - m)+  \nu
+      \shat}{2}} \, d \phi \pause \\
+& = & \Gamma((p + \nu)/2 ) \left( \frac{(\t - m)^T
+    \Sigma^{-1} (\t - m)+  \nu
+      \shat}{2} \right)^{- \frac{p + \nu}{2}} \pause \\
+& \propto &  \left( (\t - m)^T
+    \Sigma^{-1} (\t - m)+  \nu
+      \shat \right)^{- \frac{p + \nu}{2}} \pause \\
+& \propto &  \left( 1 + \frac{1}{\nu}  \frac{(\t - m)^T
+    \Sigma^{-1} (\t - m)}{\shat}
+       \right)^{- \frac{p + \nu}{2}}
+\end{eqnarray*}
+\end{frame}
+\begin{frame}
+  \frametitle{Marginal Posterior Distribution of $\b$}
+  \begin{eqnarray*}
+\b \mid \phi, \Y  & \sim & \N( \bv_n, \phi^{-1} \Phi_n^{-1}) \pause \\
+ \phi \mid \Y & \sim & \G\left(\frac{\nu_n}{2},  \frac{\SS_n}{ 2} \right) \\
+    & \sim & \G\left(\frac{\nu_n}{2},  \frac{\nu_n \shat}{ 2} \right)
+    \text{ where } \shat = \SS_n/\nu_n  \text{ (Bayesian MSE)}
+  \end{eqnarray*}
+\pause
+
+
+Then the marginal posterior distribution of $\b$ is
+$$
+\b  \mid \Y \sim t_{\nu_n} (\bv_n, \shat \Phi_n^{-1})
+$$ \pause
+
+
+Any linear combination $\lambda^T\b$
+$$\lambda^T\b  \mid \Y \sim t_{\nu_n}
+(\lambda^T\bv_n, \shat \lambda^T\Phi_n^{-1}\lambda)$$ has a univariate
+$t$ distribution with $\v_n$ degrees of freedom
+
+\end{frame}
+
+
+\begin{frame} \frametitle{Posterior Distribution of $\mu_i = \x^T_i \b$}
+
+\begin{itemize}
+\item Use a limiting prior distribution: $p(\b, \phi) \propto \phi^{-1}$
+$$b_0 = 0, \SS_0 = 0, \Phi_0 = 0, \nu_0 =  -(p+1)$$
+
+\item joint posterior distribution depends on MLE's
+\begin{align*}
+\b \mid \phi, \Y & \sim  \N\left(\hat{\b}, \phi^{-1}(\X^T\X)^{-1}\right) \\
+\phi \mid \Y & \sim  \G((n - p -1)/2, (n - p - 1)\hat \sigma^2/2) \\
+\mu_i \mid \Y & \sim t_{n -p -1}(\x^T_i\hat{\b},  \hat{\sigma}^2 \x_i^T (\X^T\X)^{-1}\x_i)
+\end{align*}
+\item Same distribution as frequentists:
+$$P( \mu  \in  (
+\x_i^T\hat{\b} \pm t_{\alpha/2} \hat{\sigma}^2 h_{ii})
+\mid \Y) = 1 - \alpha $$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Predictive Distribution}
+Suppose $\Y^* \mid \b, \phi \sim \N(\X^* \b , \I_f/\phi)$  and is conditionally
+independent of $\Y$ given $\b$ and $\phi$ \pause
+\vspace{18pt}
+
+What is the predictive distribution of $\Y^* \mid \Y$? \pause
+
+\vspace{18pt}
+$\Y^* = \X^* \b + \eps^*$ and $\eps^*$ is independent of $\Y$ given
+$\phi$ \pause
+
+\begin{eqnarray*}
+\X^* \b + \eps^* \mid \Y, \phi & \sim & \N(\X^*\bv_n, (\X^{*} \Phi_n^{-1} \X^{*T}
++ \I)/\phi)  \pause \\
+\Y^* \mid \phi, \Y & \sim & \N(\X^*\bv_n, (\X^{*T} \Phi_n^{-1} \X^{*T}
++ \I)/\phi)  \pause \\
+\phi \mid \Y & \sim & \G\left(\frac{\nu_n}{2},
+  \frac{\shat \nu_n}{ 2} \right)  \pause \\
+\Y^* \mid \Y & \sim & t_{\nu_n}( \X^*\bv_n, \shat (\X^* \Phi_n^{-1} \X))
+\end{eqnarray*}
+
+Under limiting prior same as frequentist predictive interval
+\end{frame}
+\begin{frame}
+  \frametitle{Conjugate Priors}
+  \begin{definition}
+    A class of prior distributions $\cP$ for $\t$ is conjugate for a
+    sampling model $p(y \mid \t)$ if for every $p(\t) \in \cP$, $p(\t
+    \mid \Y) \in \cP$.
+  \end{definition}
+\pause
+  Advantages: \pause
+  \begin{itemize}
+  \item Closed form distributions for most quantities; bypass MCMC for
+    calculations \pause
+  \item Simple updating in terms of sufficient statistics ``weighted
+    average'' \pause
+  \item Interpretation as prior samples - prior sample size \pause
+  \item Elicitation of prior through imaginary or historical data \pause
+  \item limiting ``non-proper'' form recovers MLEs \pause
+  \end{itemize}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Some Default Choices}
+  \begin{itemize}
+  \item Independent Jeffreys Prior $p(\b, \phi) \propto 1/\phi$
+  \item Unit information prior $\b \mid \phi \sim \N(\bhat, n
+    (\X^T\X)^{-1}/\phi)$ \pause
+\item  Zellner's g-prior(s) $\b \mid \phi \sim \N(\bv_0, g
+    (\X^T\X)^{-1}/\phi)$ \pause
+
+$$\b \mid \Y, \phi \sim \N\left( \frac{g}{1 + g} \bhat +  \frac{1}{1 + g}
+\bv_0, \frac{g}{1 + g} (\X^T\X)^{-1} \phi^{-1} \right)$$ \pause
+\item Independent Priors on $\beta_j$
+$$\beta_j \mid \phi, \lambda_j \ind N(0, s^2_j /(\phi \lambda_j))$$
+\end{itemize}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Disadvantages}
+  Disadvantages: \pause
+\begin{itemize}
+\item Results  may have be sensitive to prior ``outliers'' due to
+  linear updating \pause
+\vspace{2.25in}
+
+\item Cannot capture all possible prior beliefs \pause
+\end{itemize}
+
+
+\end{frame}
+\begin{frame}
+  \frametitle{Mixtures of Conjugate Priors}
+  \begin{theorem}[Diaconis \& Ylivisaker 1985]  Given a sampling model
+  $p(y \mid \t)$ from an exponential family, any prior distribution
+  can be expressed as a mixture of conjugate prior distributions
+ \end{theorem}
+
+ \begin{itemize}
+ \item Prior $p(\t) = \int p(\t \mid \omega) p(\omega)\, d \omega$ \pause
+ \item Posterior \pause
+   \begin{eqnarray*}
+   p(\t \mid \Y)  &\propto & \int p(\Y \mid \t) p(\t \mid \omega)
+   p(\omega) \, d\omega \pause \\
+ & \propto & \int  \frac{  p(\Y \mid \t) p(\t \mid \omega) } {p(\Y \mid
+   \omega)}  p(\Y \mid
+ \omega) p(\omega ) \, d \omega  \pause \\
+& \propto & \int p(\t \mid \Y, \omega)  p(\Y \mid
+ \omega) p(\omega ) \, d \omega \pause \\
+ p(\t \mid \Y) & =  & \frac{\int p(\t \mid \Y, \omega)  p(\Y \mid
+ \omega) p(\omega ) \, d \omega }
+{\int p(\Y \mid
+ \omega) p(\omega ) \, d \omega }
+       \end{eqnarray*}
+
+ \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Next Class After Midterm}
+  Review Hoff Chapters 1-9,  Gelman-Hill Chapter 18
+\end{frame}
+\end{document}
+

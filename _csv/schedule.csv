@@ -1,0 +1,45 @@
+Week,Date,Topic,Handouts,Readings,HW
+Week 1,11-Jan,Course Introduction,"<a href=""../knitr/Lec-1-Intro/intro.pdf"">slides</a>  ","Read  ISLR <a href=""http://search.library.duke.edu/search?id=DUKE005921677""> Chapters 1</a>","Install <a href=""https://www.rstudio.com/products/rstudio/download3/"">Rstudio</a> and start CodeSchool's<a href=""https://www.codeschool.com/courses/try-r"">Try R</a>"
+,13-Jan,Lab0: RStudio & Github,"<a href=""http://www2.stat.duke.edu/~cr173/Sta523_Fa16/git.html"">git & github</a>  ","<a href=""https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow/""> Centralized WorkFlow with Git""</a>  <a href=""https://try.github.io/""> Try git</a> ",
+Week 2,16-Jan,,"<span style=""color:gray"">No class - MLK Day",,
+,18-Jan,Modelling Overview and Review of Regression,"<a href=""../knitr/Lec-2-Models/Models.pdf"">slides</a>  (<a href=""../knitr/Lec-2-Models/Models.Rmd"">Rmarkdown</a> )","Read  ISLR <a href=""http://search.library.duke.edu/search?id=DUKE005921677""> Chapters 2-3</a>",
+,20-Jan,Lab1: Rmarkdown & EDA,"<a href=""https://classroom.github.com/assignment-invitations/62ee001b0a33890a01ccc60fcf6f9d7d""> Lab1 Repo</a>",,
+Week 3,23-Jan,Diagnostics,"<a href=""../knitr/Lec-3-Diagnostics/Diagnostics.pdf"">slides</a>  (<a href=""../knitr/Lec-3-Diagnostics/Diagnostics.Rmd"">Rmarkdown</a> )",ALR Ch 9,"<a href=""../knitr/Lec-4-Transformations/animals.Rmd"">Rmarkdown for next class</a>  "
+,25-Jan,Transformations,"<a href=""../knitr/Lec-4-Transformations/Transformations.pdf"">slides</a>  (<a href=""../knitr/Lec-4-Transformations/Transformations.Rmd"">Rmarkdown</a> )",GH 2 & 3  and ALR Ch 8,
+,27-Jan,"Lab2: Rstudio, Git & Teams","See Lab2 in your <a href=""https://github.com/STA521-S17""> github team page</a>","<a href="".http://r-bio.github.io/intro-git-rstudio/""> Try git & RStudio</a> ","See <a href=""https://github.com/STA521-S17"">  HW2 in your github team page</a>"
+Week 4,30-Jan,Hypothesis Testing: Model Choice," <a href=""../knitr/Lec-5-HT/HT.pdf"">slides</a>  (<a href=""../knitr/Lec-5-HT/HT.Rmd"">Rmarkdown</a>) ","Read  ISLR <a href=""http://search.library.duke.edu/search?id=DUKE005921677""> Chapters 3</a> & GH Chapter 4",
+,1-Feb,Logistic Regression," <a href=""../knitr/Lec-6-Binary-Regression/logistic.pdf"">slides</a>  (<a href=""../knitr/Lec-6-Binary-Regression/logistic.Rnw"">Beamer</a>) ","Read  ISLR <a href=""http://search.library.duke.edu/search?id=DUKE005921677""> Chapters 4</a>  & GH Chapter 5, <a href=""http://www.clayford.net/statistics/tag/termplot/"">termplots</a>",
+,3-Feb,Lab 3: ," <a href=""https://github.com/STA521-S17/Lab3""> Lab 3 - werker & termplot slides</a>  ","<a href=""https://www.youtube.com/watch?v=Pqp2k4oDktw""> werker video</a>  from STA523","See <a href=""https://github.com/STA521-S17"">  HW3 in your github team page</a>"
+Week 5,6-Feb,Poisson Regression & GLMs," <a href=""../knitr/Lec-7-Poisson/poisson.pdf"">slides</a>  (<a href=""../knitr/Lec-7-Poisson/poisson.Rnw"">Beamer</a>)  <a href=""../knitr/Lec-7-Poisson/africa.dat"">Africa data</a> ",GH Chapter 6,
+,8-Feb,Predictive Checking,"<a href=""../knitr/Lec-8-Predictive-Checks/predictive-checking.pdf"">slides</a>  (<a href=""../knitr/Lec-8-Predictive-Checks/predictive-checking.Rmd"">Rmarkdown  files</a>)  ",GH Chapters 6-8,
+,10-Feb,Lab 4:  Simulations and Predictive Comparisons,"<a href=""https://github.com/STA521-S17/Lab4"">  Lab4</a>",ISLR CH 5 & GH  7-8  ,"See <a href=""https://github.com/STA521-S17"">  HW4_Team_X in your github team page</a>"
+Week 6,13-Feb,Prediction ," <a href=""../knitr/Lec-9-Selection/Resampling.pdf"">slides</a>  (<a href=""../knitr/Lec-9-Selection/Resampling.Rmd"">Rmarkdown</a> )",ISLR Chapter 5,
+,15-Feb,Model Selection,"<a href=""../knitr/Lec-10-Model-Selection/Selection.pdf"">slides</a>  (<a href=""../knitr/Lec-10-Model-Selection/Selection.Rmd"">Rmarkdown</a> )",ISLR Chapter 6,
+,17-Feb,Lab 5:  Model Selection ,"<a href=""https://github.com/STA521-S17/Lab5"">  Lab5</a>",,
+Week 7,20-Feb,Bayesian Regression,"<a href=""../knitr/Lec-11-Bayes-Reg/bayesreg.pdf"">slides</a>  (<a href=""../knitr/Lec-11-Bayes-Reg/bayesreg.Rnw"">Beamer</a> )","GH Chapter 18,  Hoff Chapter 9",
+,22-Feb,Midterm I,,,
+,24-Feb,Lab 6:  Simulation,"<a href=""https://github.com/STA521-S17/Lab6"">  Lab6</a>",GH Chapters 6-8,
+Week 8,27-Feb,Bayesian Inference,"<a href=""../knitr/Lec-12-Priors/priors521.pdf"">slides</a>  (<a href=""../knitr/Lec-12-Priors/priors521.Rnw"">Beamer</a> )",Hoff Chapter 9,"See <a href=""https://github.com/STA521-S17"">  HW5_Team_X in your github team page</a>"
+,1-Mar,Bayesian Variable Selection ,"<a href=""../knitr/Lec-13-Bayes-VarSel/bayes-varsel.pdf"">slides</a>  (<a href=""../knitr/Lec-13-Bayes-VarSel/bayes-varsel.Rnw"">Beamer</a> )","<a href=""https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/readings/liang-etal.pdf""> Liang et al 2008 JASA</a>",
+,3-Mar,Lab 7: MCMC for Variable Selection,"<a href=""https://github.com/STA521-S17/Lab7"">  Lab7</a>","<a href=""https://cran.r-project.org/web/packages/BAS/vignettes/BAS-vignette.html"">BAS Vignette</a>",
+Week 9,6-Mar,BMA & Estimation with Model Uncertainty,"<a href=""../knitr/Lec-14-BMA/bma.pdf"">slides</a>  (<a href=""../knitr/Lec-14-BMA/bma.Rnw"">Beamer</a> )","<a href=""https://projecteuclid.org/download/pdf_1/euclid.ss/1009212519 ""> Hoeting et al 1999, Stat Sci </a> ,<a href=""https://projecteuclid.org/euclid.ss/1089808274""> Clyde & George 2004 (Stat. Sci.)</a>,  <a href=""https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/readings/liang-etal.pdf""> Liang et al 2008 JASA</a>",
+,8-Mar,(Bayesian) Ridge Regression ,"<a href=""../knitr/Lec-15-Ridge/ridge.pdf"">slides</a>  (<a href=""../knitr/Lec-15-Ridge/ridge.Rnw"">Beamer</a> )",ISLR Chapter 6,
+,10-Mar,Lab 8:  JAGS intro,"<a href=""https://github.com/STA521-S17/Lab8"">  Lab8</a>",,
+Week 10,13-Mar,,"<span style=""color:gray"">No class - Spring Break",,
+Week 11,20-Mar,(Bayesian) Lasso Regression,"<a href=""../knitr/Lec-16-GRR/blasso.pdf"">slides</a>  (<a href=""../knitr/Lec-16-GRR/blasso.Rnw"">Beamer</a> )","ISLR Chapter 6,   <a href=""http://www.stat.ufl.edu/archived/casella/Papers/Lasso.pdf""> Park & Casella</a>  and <a href=""http://faculty.chicagobooth.edu/workshops/econometrics/past/pdf/asp047v1.pdf"">, Hans 2010 </a>","See <a href=""https://github.com/STA521-S17"">  HW6_Team_X in your github team page</a>"
+,22-Mar,Robust Regression & Priors,"<a href=""../knitr/Lec-17-Robust/robust.pdf"">slides</a>  (<a href=""../knitr/Lec-17-Robust/robust.Rnw"">Beamer</a> )","<a href=""https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4214276/""> Generalized Beta Mixtures of  Gaussians </a>, <a href=""http://www2.stat.duke.edu/~mw/MWextrapubs/West1984a.pdf""> Regression with t-errors </a>",
+,,Lab 9:  Q& A for JAGS and shrinkage methods ,,,
+Week 12,27-Mar,Trees,"<a href=""../knitr/Lec-18-Trees/tree.pdf"">slides</a>  (<a href=""../knitr/Lec-18-Trees/tree.Rnw"">Beamer</a> )",ISLR Chapter 8,
+,29-Mar,Forests,"<a href=""../knitr/Lec-19-Forests/forests.pdf"">slides</a>  (<a href=""../knitr/Lec-19-Forests/forests.Rnw"">Beamer</a> )","ISLR Chapters 5 & 8, <a href=""https://projecteuclid.org/euclid.aoas/1273584455""> BART </a>",
+,,Lab 10:  Q & A,,,
+Week 13,3-Apr,Generalized Additive Models,"<a href=""../knitr/Lec-20-GAM/gam.pdf"">slides</a>  (<a href=""../knitr/Lec-20-GAM/gam.Rnw"">Beamer</a>  and  <a href=""../knitr/Lec-20-GAM/gam.R"">R</a> )",ISLR 7,
+,5-Apr,BARK,"<a href=""../knitr/Lec-21-BARK/talk.pdf"">slides</a>  ",,"See <a href=""https://github.com/STA521-S17"">  HW7_Team_X in your github team page</a>"
+,7-Apr,Lab 11: GAMS,,,
+Week 14,10-Apr,Midterm II,,,
+,12-Apr,BARK,,,
+Week 15,17-Apr,More on Interactions and Priors,,,"See <a href=""https://github.com/STA521-S17"">  Project_X in your github team  X page </a>  (new teams!)   Write up Due April 28"
+,19-Apr,Final Data Analysis Project,"<a href=""../knitr/Final_Project/display_leaderboard.html"">Daily Leader Board Scores</a>  ","See <a href=""https://github.com/STA521-S17"">  Project_X in your github team  X page </a>  (new teams!) ",
+,20-Apr,Missing Data and Project Overview,"<a href=""../knitr/Lec-22-Missing/missing.pdf"">slides</a>,   <a href=""../knitr/Lec-22-Missing/missing.Rnw"">source</a>   and <a href=""../knitr/Lec-22-Missing/gambia.dat"">data</a>  ",,
+Week 16,24-Apr,"<span style=""color:gray"">Graduate Reading Period",,,
+,28-Apr,Write up for Project Due by 5pm,,,
+Final Presentations,1-May,<b>Team Slide Presentations 9- 12 pm</b>,Old Chem 116,,

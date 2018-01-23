@@ -1,0 +1,403 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{amsbsy}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{packed_enum}{
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+\usepackage{epstopdf}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\setlength{\parindent}{0in}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\newcommand{\V}{\mathbf{V}} % expectation
+\newcommand{\E}{\mathbf{E}} % expectation
+\newcommand{\Cov}{\mathbf{Cov}} % covariance
+\newcommand{\cond}{\, | \,} % conditional
+\renewcommand{\P}{\mathbf{P} } % prob
+\renewcommand{\d}{\, \mathrm{d}} % differential
+\renewcommand{\t}{^\intercal} % transpose
+\newcommand{\1}{\mathbf{1}} % indicator
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{property}{Property}[section]
+\newtheorem{definition}{Definition}[section]
+\begin{document}
+\lhead{STA521: Linear Algebra and Linear Models}
+\rhead{Spring 2017}
+
+
+\begin{center}
+\Large \textbf{STA521: Linear Algebra and Some Linear Model Theory} \\
+\vspace{.5pc}
+\large Víctor Peña \\
+\end{center}
+\tableofcontents
+
+\newpage
+
+\section{Matrix Algebra}
+Basically taken from Sam Roweis' notes\footnote{Link:
+  \url{http://www.cs.nyu.edu/~roweis/notes/matrixid.pdf}. Also of
+  interest: \url{http://www.cs.nyu.edu/~roweis/notes/gaussid.pdf} (Gaussian identities).}:
+\begin{align*}
+A(B+C) &= AB + AC \\
+(A+B)\t &= A\t + B\t \\ 
+(AB)^{-1} &= B^{-1} A^{-1} \\
+(A^{-1}) \t &= (A \t)^{-1} \\
+|AB| &= |A| |B| \\
+|A^{-1}| &= 1/|A| \\
+|A| &= \prod \mathrm{evals}(A) \\
+|c A_{n \times n}| &= c^n |A_{n \times n}| \\  
+\mathrm{tr}(A) &= \sum \mathrm{evals}(A) \\
+\mathrm{tr}(ABC) &= \mathrm{tr}(BCA) = \mathrm{tr}(CAB) \\
+\mathrm{rank}(A) &= \mathrm{rank}(A \t A) = \mathrm{rank}(A A \t) \\
+X \t X &\text{ and } X X \t \text{ are positive-semidefinite and symmetric}.  
+\end{align*}
+\section{Linear Algebra}
+Most of the results here can be found in Appendix B in Christensen.
+\subsection{Column Space and Rowspace}
+Let $X$ be $n \times p$.
+\begin{align*}
+C(X) &= \{X a \in \mathbb{R}^n : a \in \mathbb{R}^p\} \\
+N(X) &= \{v \in \mathbb{R}^p : X v = 0\} \\
+p & = \mathrm{dim}(C(X)) + \mathrm{dim}(N(X)) \\
+C(X \t) &= N(X)^\perp \text{ (they are orthogonal complements)}\\
+N(X \t) &= C(X)^\perp \\
+C(X) &= C(X \t X) 
+\end{align*}
+\subsection{Orthogonal Matrices}
+Let $Q$ be a $n \times n$ matrix. 
+\begin{packed_item}
+\item $Q$ is orthogonal if its columns
+form an orthonormal basis of $\mathbb{R}^n$ (that is, if they are
+orthogonal unit vectors).
+\item Equivalently, $Q$ is orthogonal if $Q^T =
+Q^{-1}$. 
+\item If $Q$ is orthogonal, then $|Q|^2 = 1$.
+\end{packed_item}
+\subsection{Spectral Theorem and Decompositions}
+\textbf{Spectral Theorem:} If $X$ is a symmetric matrix, it has
+real eigenvalues and it can be
+decomposed as $X = U \Lambda U^\intercal$, where $\Lambda$ is a
+diagonal matrix with the eigenvalues of $X$ and $U$ is an orthogonal
+matrix with the eigenvectors of $X$. The rank of $X$ equals the number of nonzero eigenvalues of
+$X$. Based on this decomposition, one can define matrix powers as $X^p
+= U \Lambda^p U^\intercal$. \\
+
+\textbf{SVD:} Let $X$ be a $n \times p$ matrix, then one can find $U$ ($n
+\times n$), $\Sigma$ ($n \times p$) and $V$ ($p \times p$) such that
+$X = U \Sigma V \t$, where $U$ and $V$ are orthogonal matrices. The
+columns of $U$ are eigenvectors of $X X \t$, and the columns of $V$
+are eigenvectors of $X \t X$. $\Sigma$ is a rectangular diagonal matrix
+with the square roots of the eigenvalues of $X \t X$ or $X X \t$ (they
+are the same). \\
+
+\textbf{Cholesky:} Any positive definite matrix $X$ can be factorized
+as $X = L L \t$, where $L$ is a lower triangular matrix. \\
+
+\textbf{QR:} Any square matrix $X$ can be decomposed as $X = QR$,
+where $Q$ is an orthogonal matrix and $R$ is upper triangular.
+
+\subsection{Generalized Inverses}
+
+\textbf{Definition:} A generalized inverse of a matrix $X$ is any matrix $X^{-}$ such that $XX^{-}X = X$. Generalized inverses exist for arbitrary matrices. \\
+
+\textbf{Results:}
+\begin{packed_item}
+\item Let $X$ be a symmetric matrix. The Moore-Penrose generalized inverse is defined as follows. First, decompose $X = U \Lambda U^\intercal$. Then $X^{-} = U \Lambda^{-} U^\intercal$ where $\lambda^{-}_i = 1/\lambda_i$ if $\lambda_i \neq 0$ and $\lambda^{-}_i = 0$ if $\lambda_i = 0$. The Moore-Penrose generalized inverse is nice because it is symmetric and reflexive (i.e. $A^{-} A A^{-} = A^{-}$). 
+\item If $G$ and $H$ are generalized inverses of $X^\intercal X$, then $XGX^\intercal X = XHX^\intercal X = X$ and $XGX^\intercal = XHX^\intercal$. 
+\end{packed_item}
+
+\subsection{Orthogonal Projections}
+\textbf{Definition:} $P$ is a perpendicular projection operator (ppo) onto $C(X)$ if and only if
+\begin{packed_item}
+\item $v \in C(X)$ implies $Pv = v$.
+\item $v \perp C(X)$ implies $Pv = 0$.
+\end{packed_item}
+
+\textbf{Properties:}
+\begin{packed_item}
+\item $P = X (X\t X)^- X\t$ is the ppo onto $C(X)$. If $X \t X$ is
+  invertible, $P = X (X\t X)^{-1} X\t$. 
+\item $P$ is a ppo onto $C(P)$ if and only if $PP = P$ (idempotent) and $P^\intercal = P$ (symmetry). 
+\item Ppos are unique. 
+\item If $P$ is ppo onto $C(X)$, then $C(X) = C(P)$. 
+\item If $P$ is ppo onto $C(X)$, $(I - P)$ is ppo onto $C(X)^\perp$. 
+\item Let $P_1$ and $P_2$ be ppos onto $C(P_1)$, $C(P_2)$, then $P_1 +
+  P_2$ is the ppo onto $C(P_1,P_2)$ if and only if $C(P_1) \perp
+  C(P_2)$.
+\item If $\{o_1, o_2, \, ... \, , o_r\}$ is an orthonormal basis of $C(X)$
+  and we construct $O$ such that its columns are $\{ o_1, o_2, \, ... \,
+  , o_r \}$, then $O O \t$ is the ppo onto $C(X)$.
+\item If $P$ is ppo its eigenvalues are either 0 or 1, and $\mathrm{tr}(P) = \sum \mathrm{evals}(P) = r(P)$.
+\end{packed_item}
+
+\section{Random Vectors}
+\textbf{Definition:} Let $Y$ be a random vector such that $E(Y) = \mu$. The covariance matrix of $Y$ is 
+$$
+\mathrm{Cov}(Y) = E[(Y-\mu)(Y-\mu)^\intercal].
+$$
+The elements of the diagonal are variances, the off-diagonal elements are covariances.  \\
+
+\textbf{Properties} \\ 
+Let $Y$ be a random vector with $E(Y)
+= \mu$ and $\mathrm{Cov}(Y) = \Sigma$, and let $A$ and $b$ be a matrix
+and a vector with constants, respectively:
+\begin{packed_item}
+\item $E(AY + b) = A \mu + b$. 
+\item $\mathrm{Cov}(AY + b) = A \Sigma A^\intercal$.
+\item \textbf{Expectation of a quadratic form:} Assume $A$ is symmetric, then $E(Y^\intercal A Y) = \mathrm{tr}(A\Sigma) + \mu^\intercal A \mu$.
+\end{packed_item}
+
+
+\section{Multivariate Normal}
+These are notes I took after watching the videos on the 
+Multivariate Normal that Jeff Miller uploaded to his YouTube\footnote{YouTube
+  channel:
+  \url{https://www.youtube.com/user/mathematicalmonk}.}. \\
+
+\textbf{Definition:} $Y = (Y_1, \, ... \, Y_n)^\intercal$ follows a Multivariate Normal (MVN) with mean $\mu$ and covariance $\Sigma$ if any linear combination of the components is $v^\intercal Y \sim$ Normal$(v^\intercal \mu, v^\intercal \Sigma v)$, for $v \in \mathbb{R}^n$. If $|\Sigma| = \mathrm{det}(\Sigma) \neq 0$, $Y$ has the following pdf:
+$$
+f(Y) = \frac{1}{\sqrt{|2\pi\Sigma|}} \exp\left\{-\frac{1}{2}\left[ (Y-\mu)^\intercal \Sigma^{-1} (Y-\mu)\right] \right\}.
+$$ 
+
+\textbf{Remark:} Recall that if $c \in \mathbb{R}$ and $A$ is an $n \times n$ matrix, then $|c A| = c^n |A|$. 
+
+\subsection{Zero Correlation and Independence}
+
+Let $Y \sim$ MVN($\mu, \Sigma$). For an arbitrary partition
+$$
+\left[ \begin{array}{c} Y_1 \\ Y_2 \end{array} \right] \sim \text{MVN} \left( \left[ \begin{array}{c} \mu_1 \\ \mu_2 \end{array} \right] , \left[ \begin{array}{cc} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \end{array} \right] \right),
+$$ 
+then $\mathrm{Cov}(Y_1, Y_2) = \Sigma_{12} = 0$ if and only if $Y_1$ and $Y_2$ are independent. That is, uncorrelation implies independence. \\
+
+\textbf{Corollary:} $Y \sim$ MVN($\mu, \sigma^2 I$) and $AB^\intercal = 0$, then $AY$ and $BY$ are independent. \\
+
+\textbf{Caution!} $X_1$ and $X_2$ normally distributed does not imply $(X_1, X_2) \sim$ MVN. For example, let $X_1 \sim$N($0,1$) and 
+$$
+X_2 = \begin{cases} X_1 & \text{if } |X_1| \le 1 \\ - X_1 & \text{if } |X_1| > 1. \end{cases}
+$$
+$X_1$ and $X_2$ are Normal, but $(X_1, X_2)$ is not Multivariate Normal. Also, if two Normal random variables are uncorrelated, it doesn't mean they're independent (unless they are jointly MVN!).
+
+\subsection{Affine Property}
+
+Any affine transformation of a MVN is MVN. If $X \sim$ MVN($\mu, \Sigma$), then $AX + b \sim$ MVN($A\mu +b , A \Sigma A^\intercal)$, for any matrix of constants $A$ and vector $b$ of conformable sizes. \\
+
+Some operations:
+\begin{packed_item}
+\item \textbf{Constructing:} If $X_1, X_2, \, ... \, , X_n \sim$
+  N$(0,1)$ are independent, then $(X_1, X_2, \, ... \, , X_n) = X
+  \sim$ MVN($0, I$). We have $AX + \mu \sim $ MVN($\mu, \Sigma)$,
+  where $\Sigma = AA^\intercal$. Using the spectral theorem, one can
+  find $A$ such that $AA^\intercal = \Sigma$ (i.e. you can construct
+  any MVN from standard Normal rvs). Recall that, by the spectral theorem,  $\Sigma = U \Lambda U^\intercal = U \Lambda^{1/2} \Lambda^{1/2}U^{\intercal} = AA^\intercal$, where $U$ is an orthogonal matrix.
+\item \textbf{Sphering:} If $Y \sim$ MVN($\mu, \Sigma$) and $\Sigma$ is invertible, then $A^{-1}(Y-\mu) \sim $ MVN$(0,I)$, where $\Sigma = AA^\intercal$. Alternatively, one can write this as follows: $\Sigma^{-1/2} (Y - \mu) \sim$ MVN$(0,I)$. 
+\end{packed_item}
+
+\subsection{Marginals and conditionals}
+
+Let $Y \sim$ MVN($\mu, \Sigma$). Marginal distributions are Normal with the same parameters as in the MVN. \\
+ 
+Let
+$$
+\left[ \begin{array}{c} Y_1 \\ Y_2 \end{array} \right] \sim \text{MVN} \left( \left[ \begin{array}{c} \mu_1 \\ \mu_2 \end{array} \right] , \left[ \begin{array}{cc} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \end{array} \right] \right),
+$$ 
+then
+$$
+Y_1 | Y_2 = a \sim \text{MVN}(\mu_1 + \Sigma_{12}\Sigma^{-1}_{22}(a - \mu_2), \Sigma_{11} - \Sigma_{12}\Sigma^{-1}_{22}\Sigma_{21}).
+$$
+
+\section{Chi-square Distribution}
+
+
+\textbf{Definition:} Let $Z_j$ for $j \in \{1, 2, \, ... \, , p\}$ be iid
+$N(0,1)$, and let $Z = (Z_1, Z_2, \, ... \, , Z_p)^\intercal$. Then, $X = Z^\intercal Z \sim \chi^2_p$.  \\
+
+\textbf{Noncentral chi-square:} Let
+$Z_j$ for $j \in \{1, 2, \, ... \, , p\}$ be iid $N(\mu,1)$ and let $Z
+= (Z_1, Z_2, \, ... \, , Z_p)^\intercal$. Then, $Z^\intercal Z \sim \chi^2_p(\sum_{j=1}^p \mu^2_j)$. \\
+
+\textbf{Quadratic forms and $\chi^2$ distributions:} Let $Y \sim$
+MVN$(0, I)$ and let $P$ be a symmetric $n \times n$ matrix of rank
+$k$. Then $Y^\intercal P Y \sim \chi^2_{k}$ if and only if $P$ is a
+rank $k$ perpendicular projection operator (ppo). In the noncentral case, if $Y
+\sim$ MVN($\mu, I$), then $Y^\intercal P Y \sim
+\chi^2_{k}(\mu^\intercal P \mu/2)$ if and only of $P$ is a
+ppo. Application: let $Y \sim$ MVN$(\mu, I)$ with
+$\mu \in C(X)$ and $(I-P)$ be a rank $k$ ppo onto $C(X)^\perp$. Then
+$Y^\intercal (I-P) Y \sim \chi^2_k$. 
+
+\section{A Little Bit of Linear Model Theory}
+
+A lot of important results are not even mentioned here. I strongly
+recommend looking at Faraday's ``Practical Regression and ANOVA using
+R''\footnote{Link:
+  \url{http://cran.r-project.org/doc/contrib/Faraway-PRA.pdf}} if
+you think Christensen is too dry and need some extra intuition. \\ 
+
+
+In matrix notation:
+$$
+Y = X\beta + \varepsilon
+$$
+where
+\begin{packed_item}
+\item $Y$ is the response variable, which is observable.
+\item $X$ is the design matrix, also observable.
+\item $\beta$ are the unknown coefficients, which we want to estimate.
+\item $\varepsilon$ are the errors, also unobservable.
+\end{packed_item}
+
+Assume $X$ is full rank, then the Ordinary Least Squares (OLS) estimator is
+$$
+\hat{\beta}_{OLS} = \arg \min_\beta \sum_{i=1}^n (Y_i - x^\intercal_i
+\beta)^2 =  \arg \min_\beta (Y - X\beta)^\intercal (Y - X\beta) =
+\arg \min_\beta || Y - X \beta||^2_2 = (X \t X)^{-1} X \t Y.
+$$
+If $X$ is not full rank $\hat{\beta}_{\mathrm{OLS}} = (X \t X)^{-} X \t Y$. \\
+
+Let $Y | \beta \sim $ MVN($X\beta, \sigma^2 I)$. Then
+$\hat{\beta}_{\mathrm{MLE}} = \hat{\beta}_{\mathrm{OLS}} = \hat{\beta}$. Now, let $\mu = X\beta$. Then
+$\hat{\mu} = X \hat{\beta} = P_X Y$ is the MLE of $\mu$, where $P_X$
+is the ppo onto $C(X)$. On the other hand, the MLE of $\sigma^2$ is
+$\hat{\sigma}^2 = ||(I-P_X)Y||^2/n = e^\intercal e/n$, where $e =
+(I-P_X)Y$ are the residuals and $(I-P_X)$ is the ppo onto the
+orthogonal complement of $C(X)$. 
+
+\subsection{Inference}
+
+Again, $Y \mid \beta \sim$ MVN($X\beta, \sigma^2I$). \\
+
+The MLE of $\mu = X\beta$ is $\hat{\mu} = P_X Y$, and it is an unbiased estimate:
+$$
+E(\hat{\mu}) = E(P_X Y) = P_X E(Y) = P_X \mu = \mu,
+$$ 
+because $\mu \in C(X)$. \\
+
+The residuals $e = (I-P_X)Y$ have mean zero:
+$$
+E(e) = E[(I-P_X)Y] = (I - P_X) E(Y) = (I - P_X) \mu = 0,
+$$
+because $\mu \perp C(X)^\perp$. \\
+
+The residuals are correlated:
+$$
+\mathrm{Cov}(e) = \mathrm{Cov}[(I-P_X)Y] = \sigma^2 (I-P_X)(I-P_X) = \sigma^2 (I - P_X).
+$$
+Therefore $e \sim $ MVN($0, \sigma^2(I-P_X))$ by the affine property
+of the MVN. \\
+
+Now we find the expectation of the MLE of $\sigma^2$, which is $\hat{\sigma}^2 = e^\intercal e /n = ||(I - P_X) Y||^2/n$:
+$$
+E(||(I - P_X) Y||^2) = E[ Y^\intercal (I-P_X) Y] = \sigma^2 \mathrm{tr}(I-P_X) + \mu^\intercal (I - P_X) \mu = \sigma^2(n-r(X)),
+$$
+Therefore, the MLE is biased, but $e^\intercal e/(n-r(X))$ is
+unbiased. \\
+
+Let $Y | \beta \sim$ MVN($X\beta, \sigma^2 I)$. The MLE for $\beta$ is $\hat{\beta} = (X^\intercal X)^{-} X^\intercal Y$. We take the Moore-Penrose generalized inverse. Then, the distribution of $\hat{\beta}$ is MVN because it's just a linear combination of $Y$, which is MVN. \\
+
+Taking expectations,
+$$
+E(\hat{\beta}) = (X^\intercal X)^{-} X^\intercal X \beta,
+$$
+and the variance is
+$$
+\mathrm{Cov}(\hat{\beta}) = \sigma^2 (X^\intercal X)^{-} X^\intercal X (X^\intercal X)^{-} = \sigma^2 (X^\intercal X)^{-}, 
+$$
+because if $A^{-}$ is a Moore-Penrose generalized inverse, then it is symmetric and $A^{-} A A^{-} = A^{-}$ (reflexive).  \\
+
+Therefore
+$$
+\hat{\beta} \sim \text{MVN}((X^\intercal X)^{-} X^\intercal X \beta, \sigma^2 (X^\intercal X)^{-})
+$$
+If $X$ full rank, 
+$$
+\hat{\beta} \sim \text{MVN}(\beta, \sigma^2 (X^\intercal X)^{-1}).
+$$
+The standard error for a particular component is
+$\mathrm{se}(\hat{\beta}_i) = \sqrt{(X^\intercal X)^{-1}_{ii} \sigma
+}$. \\
+
+
+\subsection{Gauss-Markov Theorem}
+
+\begin{packed_item}
+\item Gauss-Markov says that OLS has minimum variance in the class of all linear unbiased estimators. 
+\item Requires just first and second moments, no normality required.
+\item Under normality assumption, OLS = MLE has minimum variance out of all unbiased estimators, not just the linear ones.
+\item However, we can find estimators with smaller MSE if we allow some bias.
+\end{packed_item}
+ 
+\section{Bayesian Linear Regression}
+As usual, we have
+$$
+Y = X\beta + \varepsilon,
+$$
+and assume that $\varepsilon$ is normal, yielding
+$$
+Y \mid \beta, \phi \sim \text{MVN}(X \beta, \phi^{-1} I),
+$$
+where $\phi$ is the precision (a scalar). \\
+
+Since we're Bayesians now, we need to specify priors on $\beta$ and $\phi$. \\
+
+A convenient (conjugate) choice of priors is
+\begin{align*}
+\beta \mid \phi &\sim \text{MVN}(b_0, \Phi^{-1}_0/\phi) \\
+\phi &\sim \text{Gamma}(v_0/2, SS_0/2).
+\end{align*} 
+Posteriors are
+\begin{align*}
+\beta \mid \phi, Y &\sim \text{MVN}(b_n, \Phi_n^{-1}/\phi) \\
+\phi \mid Y &\sim \text{Ga}(v_n/2,  SS_n/2),
+\end{align*}
+where
+\begin{align*}
+b_n &= (X \t X + \Phi_0)^{-1} (X \t X
+\hat{\beta}_{\mathrm{OLS}} + \Phi_0 b_0) = (X \t X + \Phi_0)^{-1} (X \t y +
+\Phi_0 b_0) \\
+\Phi_n &= (X \t X + \Phi_0) \\
+v_n &= v_0+n \\
+SS_n &= SS_0 +  Y \t Y + b_o\t \Phi_0 b_0 - b_n \t \Phi_n b_n  
+\end{align*}
+\subsection{Marginal of $\beta$  and predictive distribution, all $t$}
+
+The following theorem is really useful for deriving marginal
+distributions. \\
+
+\textbf{Theorem:} Let $\theta \mid \phi \sim$ MVN$(m, \Sigma/\phi)$ and $\phi
+\sim $ Gamma($\nu/2, \nu \hat{\sigma}^2/2$). Then $\theta \sim
+t_{\nu}(m, \hat{\sigma}^2\Sigma)$ with density
+$$
+p(\theta) \propto \left[ 1 + \frac{1}{\nu} \frac{(\theta-m)^\intercal
+    \Sigma^{-1} (\theta - m) }{\hat{\sigma}^2} \right]^{-(p+\nu)/2}.
+$$
+
+\textbf{Trick for predictives:} Recall that $\beta \mid \phi, Y \sim$
+MVN($b_n, \phi^{-1} \Phi^{-1}_n)$ and $\phi \mid Y \sim \text{Ga}(v_n/2,  SS_n/2)$. Then the new data $Y^\ast = X^\ast \beta + \varepsilon^\ast |
+\phi, Y \sim$ MVN$(X^\ast b_n,  \phi^{-1} (X^\ast \Phi^{-1}_n X^{\ast
+  \intercal} + I))$. Using the previous theorem, $Y^\ast \mid Y \sim
+t_{v_n}(X^\ast b_n, \hat{\sigma}^2(X^\ast \Phi^{-1}_n X^{\ast
+  \intercal}+I))$, where $\hat{\sigma}^2_n = SS_n/v_n$.
+
+
+
+\end{document}

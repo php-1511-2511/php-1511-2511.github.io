@@ -1,0 +1,286 @@
+---
+title: "Model Selection and Inference"
+author: "Merlise Clyde"
+date: "January 29, 2017"
+output: 
+   beamer_presentation:
+          includes:
+             in_header:  macros.tex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+suppressMessages(library(dplyr))
+#suppressMessages(library(magrittr))
+library(knitr)
+library(MASS)
+data(Animals)
+```
+
+
+## Last Class
+
+Model for  brain weight as a function of body weight
+
+- In the model with both response and predictor log transformed, are dinosaurs outliers?
+- should you test each one individually or as a group; if as a group how do you think you would you do this using `lm`?
+- do you think your final model is adequate?  What else might you change?
+
+##  Dummy variables
+
+Create an indicator variable for each of the dinosaurs:
+
+```{r dummies, echo=T}
+Animals = 
+  Animals %>%
+    mutate(name = row.names(Animals)) %>%
+    mutate(Dino.T = (name ==  "Triceratops")) %>%
+    mutate(Dino.D = (name == "Dipliodocus")) %>%
+    mutate(Dino.B = (name == "Brachiosaurus")) %>%
+    mutate(Dino = (name %in% 
+                   c("Triceratops",
+                     "Brachiosaurus", 
+                     "Dipliodocus")))
+```
+
+uses the `dplyr` package and pipes `%>%` with `mutate`
+
+##  New Dataframe
+
+
+```{r}
+head(Animals[, c(1:2,4:7,3)])
+```
+
+## Dinosaurs as Outliers
+
+```{r outliers, echo=T}
+brain_out.lm = lm(log(brain) ~ log(body) + 
+              Dino.T + Dino.B + Dino.D, data=Animals)
+kable(summary(brain_out.lm)$coef)
+```
+
+
+
+
+## Anova with Nested Models
+
+Compare models through Extra-Sum-of Squares
+
+* Each additional predictor reduces the SSE (sum of squares error)
+* Adds to model complexity (more parameters) fewer degrees of freedom for error
+
+Is the addition worth it?  Is the decrease "significant"?
+
+$$\frac{\Delta \SSE}{\Delta \text{ df}}$$
+
+How big is big enough?   
+
+$$F = \frac{\frac{\Delta \SSE}{\Delta \text{ df}}}
+{\frac{\SSE_F}{\text{df}_F}} = 
+\frac{\frac{\Delta \SSE}{\Delta \text{ df}}}
+{\hat{\sigma}^2} \sim  F(\Delta \text{ df}, n-p)
+$$
+
+## Simultaneous Test: Anova in `R`
+
+Model:
+$\log(brain) = \beta_0 +  \log(body) \beta_1+ 
+\text{Dino.T} \beta_2 + \text{Dino.B} \beta_3 + 
+\text{Dino.D}\beta_4  + \epsilon$
+
+Hypothesis Test:  $\beta_2 = \beta_3 = \beta_4 = 0$
+
+```{r orig, include=F}
+#model from last class
+brain.lm = lm(log(brain) ~ log(body), data=Animals)
+```
+
+```{r anova, echo=TRUE}
+anova(brain_out.lm, brain.lm)
+```
+
+
+
+
+
+## Other Possible Models 
+
+1. all animals follow the same regression
+2. the rate of change is the same, but a different intercept for dinosaurs   (parallel regression)
+3. different slopes and intercepts for dinosaurs and other animals
+4. all dinosaurs have a different mean (outliers)
+
+```{r model, echo=T}
+brain1.lm = lm(log(brain) ~ log(body),data=Animals) #0
+brain2.lm = lm(log(brain) ~ log(body) + Dino,data=Animals) #1
+brain3.lm = lm(log(brain) ~ log(body)*Dino, data=Animals) #2
+brain4.lm = lm(log(brain) ~ log(body) + 
+              Dino.T + Dino.B + Dino.D, data=Animals)  #3
+```
+
+Interaction Model 3:
+```{r, echo=T, evaluate=F}
+log(brain) ~ log(body) + Dino + log(body):Dino
+```
+
+##  Sequential Sum of Squares
+
+```{r anova-seq, echo=T}
+anova(brain1.lm, brain2.lm, brain3.lm, brain4.lm)
+```
+
+##  Model Selection
+
+* Fail to reject Model 3 in favor of Model 4
+* Fail to reject Model 2 in favor of Model 3
+* Reject Model 1 in  favor of Model 2
+
+
+Same slope for `log(body)` for all animals, but different intercepts
+
+```{r}
+kable(summary(brain2.lm)$coef)
+```
+
+##  Distribution of Coefficients
+
+Joint Distribution under normality
+ $$\hat{\b} \mid \sigma^2 \sim \N(\b, \hat{\sigma}^2 (\X^T
+   \X)^{-1})$$
+
+Distribution of SSE
+
+$$\SSE \sim \chi^2(n-p)$$
+
+Marginal distribution
+$$\frac{\hat{\beta}_j - \beta_j }
+  {\text{SE}(\hat{\beta}_j)} \sim \St(n - p)$$
+  
+## Confidence Intervals
+
+$(1 - \alpha/2) 100$% Confidence interval for $\beta_j$
+$$\hat{\beta}_j \pm t_{n-p, \alpha/2} 
+  {\text{SE}(\hat{\beta}_j)}$$
+
+```{r confint, echo=TRUE}
+kable(confint(brain2.lm))
+
+
+```
+
+##  Converting to Original Units
+
+\begin{align*}
+\widehat{brain} & = e^{\hat{\beta}_0 +  \log(body) \hat{\beta}_1+  \text{Dino}\hat{\beta}_2} \\
+ & = e^{\hat{\beta}_0} e^{\log(body) \hat{\beta}_1} e^{\text{Dino}\hat{\beta}_2}  \\
+ & = e^{\hat{\beta}_0} body^{\hat{\beta}_1} e^{\text{Dino}\hat{\beta}_2}  
+\end{align*}
+
+10% increase in body weight implies a 
+
+\begin{align*}
+\widehat{brain}_{1.10} & = e^{\hat{\beta}_0} (1.10* body)^{\hat{\beta}_1} e^{\text{Dino}\hat{\beta}_2}   \\
+ & = 1.10^{\hat{\beta}_1} e^{\hat{\beta}_0} body^{\hat{\beta}_1} e^{\text{Dino}\hat{\beta}_2} 
+\end{align*}
+
+$1.1^{\hat{\beta}_1}$ = `r round(1.1^(coef(brain2.lm)[2]),3)` or a `r (  round(1.1^(coef(brain2.lm)[2]),3) -1)*100`% increase in brain weight
+
+## 95% Confidence interval
+
+To obtain a 95\% confidence interval, $(1.10^{CI} -1)*100$
+```{r}
+CI = confint(brain2.lm)[2, , drop=F]
+rownames(CI) = "body"
+kable(100*(1.1^CI -1))
+```
+
+## Interpretation of Intercept
+
+$$\widehat{\log(brain)} = \hat{\beta}_0 +  \log(body) \hat{\beta}_1+  \text{Dino}\hat{\beta}_2$$
+
+* For a non-dinosaur, if `log(body) = 0`  (body weight = 1 kilogram), we expect that brain weight will be `r round(coef(brain2.lm)[1], 2)` log(grams) ???
+
+* Exponentiate: predicted brain weight for non-dinosaur with a 1 kg body weight is 
+
+$$e^{\hat{\beta}_0} =  `r round(exp(coef(brain2.lm)[1]), 2)`$$
+
+grams
+
+
+
+## Plot of Fitted Values
+```{r pred.plot}
+library(ggplot2)
+beta= coef(brain2.lm)
+gp = ggplot(Animals, aes(y=log(brain), x=log(body))) + 
+     geom_point() +
+     geom_abline(aes(intercept=beta[1], slope=beta[2], color=2)) +
+     geom_abline(aes(intercept=(beta[1]+beta[3]), slope=beta[2], color=3))
+print(gp)
+
+     
+```
+
+##  Predictions  for 259 gram cockatoo
+```{r pred}
+newdata = data.frame(body=.0259, Dino=FALSE)
+pred = predict(brain2.lm, newdata=newdata, se=T, interval="predict")
+
+gp = gp + geom_segment(aes(y=pred$fit[2], yend=pred$fit[3],
+                           x=log(.0259), xend=log(.0259)))
+print(gp)
+```
+
+## Predictions in original units
+
+95% Confidence Interval for $f(x)$
+
+```{r CI, echo=T}
+newdata = data.frame(body=.0259, Dino=FALSE)
+fit = predict(brain2.lm, newdata=newdata,
+              interval="confidence", se=T)
+```
+
+95% Prediction Interval for Brain Weight
+```{r PI, echo=T}
+pred = predict(brain2.lm, newdata=newdata, 
+               interval="predict", se=T)
+```
+
+
+## CI/Predictions in original units for body=259 g
+
+95% Confidence Interval for $f(x)$
+
+```{r CI-val, echo=T}
+exp(fit$fit)
+```
+
+95% Prediction Interval for Brain Weight
+```{r PI-val, echo=T}
+exp(pred$fit)
+```
+
+95% confident that the brain weight will be between 
+`r round(exp(pred$fit[2]),2)` and `r round(exp(pred$fit[3]),2)` grams
+
+
+## Summary
+
+* Linear predictors may be based on functions of other predictors
+(dummy variables, interactions, non-linear terms)
+
+* need to change back to original units
+
+* log transform useful for non-negative responses (ensures predictions are non-negative)
+
+* Be careful of units of data 
+      +  plots should show units
+      +  summary statements should include units
+      
+* Goodness of fit measure: $R^2$ and Adjusted $R^2$  depend on scale   $R^2$ is percent variation in "$Y$" that is explained by the model
+$$  R^2 = 1 - SSE/SST$$
+where SST = $\sum_i (Y_i - \bar{Y})^2$
+
+

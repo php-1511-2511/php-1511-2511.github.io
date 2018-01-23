@@ -1,0 +1,211 @@
+%\documentclass[]{beamer}
+\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+\def\logit{\textsf{logit}}
+
+
+\title{Introduction to Classification \& Regression Trees}
+
+\author{ISLR Chapter 8 }
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{frame}[fragile]\frametitle{Classification and Regression Trees}
+
+Carseat data from ISLR package \pause
+
+\begin{itemize}
+\item Binary Outcome {\tt High} 1 if Sales $ > 8$, otherwise  0 \pause
+\item Fit a Classification tree model to {\tt Price} and {\tt Income} \pause
+\item Pick a predictor  and a cutpoint to split data
+$$  X_j \le s  \text{ and } X_k > s$$
+to minimize deviance (or SSE for regression) - leads to a  root node in a tree  \pause
+\item continue  splitting/partitioning data until stopping criterion is reached  (number of observations in a node $ > 10$ and within node deviance $ > 0.01$ deviance of the root node) \pause
+\item  Prediction is mean or proportion of
+  successes of data in terminal nodes \pause
+\item Output is a decision tree \pause
+\item regression or classification function is nonlinear in predictors \pause
+\item Captures interactions
+\end{itemize}
+
+\end{frame}
+
+<<setup,include=FALSE, echo=FALSE>>=
+suppressMessages(library(dplyr))
+library(ISLR)
+@
+
+\begin{frame}[fragile] \frametitle{Carseat Example}
+
+
+<<>>=
+library(tree)
+data(Carseats)
+  Carseats = mutate(Carseats, High=factor(ifelse (
+  Carseats$Sales <=8,
+    "No",
+    "Yes "))
+  )
+
+tree.carseats = tree(High ~ Price + Income,
+                     data=Carseats)
+
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Carseat Example}
+<<tree-1, fig.align='center', fig.width=4, fig.height=3.5>>=
+ plot(tree.carseats)
+ text(tree.carseats)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Partition}
+
+<<partition, fig.align="center",fig.width=4, fig.height=3>>=
+partition.tree(tree.carseats)
+points(Carseats$Price,Carseats$Income, col=Carseats$High)
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Splits}
+<<>>=
+tree.carseats
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Summary}
+<<>>=
+ summary(tree.carseats)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{All Variables}
+
+<<tree-all>>=
+tree.carseats =tree(High ~  . -Sales, data=Carseats )
+summary(tree.carseats)
+@
+
+Overfitting?
+\end{frame}
+
+\begin{frame}\frametitle{Tree}
+\vspace{-.5in}
+<<tree-plot, echo=FALSE, fig.align='center', fig.height=9, fig.width=9>>=
+plot(tree.carseats)
+text(tree.carseats, cex=.75)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Classification Error}
+<<>>=
+set.seed (2)
+train=sample (1: nrow(Carseats ), 200)
+Carseats.test=Carseats [-train ,]
+
+tree.carseats =tree(High ~  . -Sales,
+                    data=Carseats,subset=train )
+tree.pred=predict (tree.carseats ,Carseats.test ,type ="class")
+table(tree.pred , Carseats.test$High)
+@
+
+
+<<>>=
+ (30 + 27) /200   # classification error
+@
+
+\end{frame}
+\begin{frame}\frametitle{Cost-Complexity Pruning}
+\begin{enumerate}
+\item Grow a large tree on training data, stopping when each terminal node has fewer than some minimum number of observations \pause
+\item Prediction for region $m$ is the Class $c$ that $max_{c} \hat{\pi}_{m c}$ \pause
+\item  Snip  off the least important splits via  cost-complexity pruning to the tree in order to obtain a sequence of best subtrees indexed by cost parameter $k$,  \pause
+
+$$\frac{N_{miss}}{N} - k |T| $$
+ missclassification error penalized  by number of terminal nodes  \pause
+\item Using $K$-fold cross validation, compute average cost-complexity for each $k$  \pause
+\item Pick subtree with smallest penalized error
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Pruning via Cross Validation )}
+<<cv>>=
+set.seed(2)
+cv.carseats = cv.tree(tree.carseats, FUN=prune.misclass)
+@
+
+\vspace{-.5in}
+<<cv.plot, echo=FALSE, fig.height=4.5, fig.width=6>>=
+par(mfrow =c(1,2))
+plot(cv.carseats$size,cv.carseats$dev, type="b")
+plot(cv.carseats$k,cv.carseats$dev, type="b")
+@
+
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Pruned}
+
+<<pruned>>=
+prune.carseats = prune.misclass(tree.carseats ,best =9)
+@
+
+<<plot.pruned, echo=FALSE,fig.height=4.5, fig.width=6>>=
+plot(prune.carseats )
+text(prune.carseats,pretty =0, cex=.75)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Miss-classification after Selection}
+
+<<>>=
+tree.pred=predict(prune.carseats , Carseats.test,
+                  type="class")
+table(tree.pred ,Carseats.test$High)
+@
+
+<<>>=
+(94 +60)/200  # classified Correctly
+@
+
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Next Class}
+Trees are simple to understand, but not as competitive with other supervised learning approaches for prediction/classification. \pause
+
+Ways to improving Trees through multiple trees in some ensemble:
+  \begin{itemize}
+  \item Bagging   \pause
+  \item Random Forests  \pause
+  \item Boosting  \pause
+  \item BART  (Bayesian Additive Regression Trees)  \pause
+  \end{itemize}
+Combining trees will yield improved prediction accuracy, but with loss of interpretability.
+
+
+\end{frame}
+\end{document}

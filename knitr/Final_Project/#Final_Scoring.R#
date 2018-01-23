@@ -1,0 +1,77 @@
+suppressMessages(library(mongolite))
+#suppressMessages(library(sf))
+suppressMessages(library(knitr))
+#suppressMessages(library(sp))
+
+strip_attrs = function(obj)
+{
+  attributes(obj) = NULL
+  obj
+}
+
+
+#sessionInfo()
+#mongo_url = "mongodb://sta521:sta521_final_project@saxon.stat.duke.edu:52123/sta521"
+
+#test_url= "https://stat.duke.edu/courses/Spring17/sta521/Data/ames_test.Rdata"
+
+#Valdata_URL = "https://stat.duke.edu/courses/Spring17/sta521/Data/ames_validation.Rdata"
+
+options(nwarnings = 50)
+
+args = commandArgs(trailingOnly = TRUE)
+
+stopifnot(length(args) == 3)
+team = args[1]
+mongo_url = args[2]
+test_url = args[3]
+#true_url = "https://stat.duke.edu/courses/Spring17/sta521/Data/ames_test.Rdata"
+load(url(test_url))  #load  ames_test.Rdata
+
+m = mongo("final_project", url = mongo_url)
+leaderboard = m$find()
+
+if (!team %in% leaderboard$Team)
+    stop("Invalid team name.")
+
+if (!file.exists("prediction.Rdata"))
+    stop("No predictions to score.  Make sure your repo has a file prediction.Rdata!")
+
+  pred = load("predictions.Rdata")
+ 
+
+
+if (!"PIP" %in% colnames(pred))
+    stop("Predictions must have PIP column")
+
+if (!"fit" %in% colnames(pred))
+    stop("Predictions must have fit column")
+
+if (nrow(ames_test) != nrow(pred))
+    stop("number of rows in prediction.Rdata does not equal the number of rows in the test data")
+
+pred_score$price  = ames_test$price
+
+pred_score = mutate(pred_score, price - fit)
+
+rmse = sqrt(mean(pred_score^2))
+Bias = 
+
+
+old_score = leaderboard[leaderboard$Team == team,]
+leaderboard$RMSE[leaderboard$Team == team] = rmse
+
+new_score = leaderboard[leaderboard$Team == team,]
+
+m$drop()
+r = m$insert(leaderboard)
+
+
+cat("\n\n\n")
+cat("Old score:", old_score, "\n")
+cat("New score:", new_score, "\n")
+
+cat("\n\n\nLeaderboard\n")
+knitr::kable(leaderboard)
+
+

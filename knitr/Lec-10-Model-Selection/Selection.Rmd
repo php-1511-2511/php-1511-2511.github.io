@@ -1,0 +1,326 @@
+---
+title: "Model Selection"
+author: "ISLR Chapter 6, GH 6 Chapter 24"
+output:
+    beamer_presentation:
+          includes:
+             in_header:  macros.tex
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(formatR)
+knitr::opts_chunk$set(
+      echo = TRUE,
+      comment=NA,
+      warning=FALSE,
+      message=FALSE,
+#      tidy = TRUE,
+#      tidy.opts=list(blank=FALSE, width.cutoff=60,size = 'tiny'),
+      fig.width=5, 
+      fig.height=4 )
+
+suppressMessages(library(ggplot2))
+suppressMessages(library(dplyr))
+library(foreign)
+library(xtable)
+library(stargazer)
+library(arm)
+```
+
+
+```{r data, echo=F}
+# Data are at http://www.stat.columbia.edu/~gelman/arm/examples/nes
+
+nes <- read.dta("http://www.stat.columbia.edu/~gelman/arm/examples/nes/nes5200_processed_voters_realideo.dta", convert.factors=F)
+# Data cleaning
+
+
+nes1992 = nes %>% filter(!is.na(presvote)) 
+nes1992[is.na(nes1992)] = "missing"  # recode other NA's as missing
+
+nes1992 = nes1992 %>% filter(year == 1992) %>%
+                      filter(presvote %in% 1:2)  %>%
+                      mutate(gender = factor(gender, levels=c("1","2"), labels = c("male", "female" )),
+                             race = factor(race, labels = c("white", "black", "asian",
+                                                            "native american", "hispanic", "missing")),
+                             black= race =="black",
+                             income = factor(income),
+                             educ = factor(educ1, labels= c("no high school", "high school graduate", "some college", "college graduate", "missing")),
+                             vote = presvote == 2,
+                             partyid = factor(partyid3, labels= c("democrats", "independents", "republicans", "apolitical", "missing")),
+                             ideo = factor(ideo, labels= c("liberal", "moderate", "conservative", "missing")))
+
+#summary(nes1992)                           
+```
+
+## Voting model with interactions and a subset of predictors
+
+
+```{r}
+# see code for variable coding
+nes1992 = dplyr::select(nes1992, race,  black, 
+                        gender, educ, income, partyid, 
+                        ideo, vote)
+vote.glm = glm(vote ~ (. -race)^2, data=nes1992,
+               family="binomial")  
+
+```
+
+
+## Output
+
+```{r, results='asis', echo=F}
+print(xtable(vote.glm, digits=c(0, -1, -1, -1, -1)), comment=F)
+```
+
+## Problems
+
+*  large coefficients
+*  large standard errors!   instability
+*  very small  p-values
+*  lots of NA's
+*  warnings glm.fit: algorithm did not converge 
+*  warnings glm.fit: fitted probabilities numerically 0 or 1 occurred 
+*  still have over-dispersion
+
+Quasi-Separation (in Binary Data)
+
+Collinearity
+
+  
+##  Possible Solutions  
+
+* Variable Selection: reduce the number of predictors 
+    + best subset selection of $2^p$ models  (exhaustive enumeration)
+    + step-wise selection (forward, backwards, step-wise, MCMC)
+    
+    
+* Shrinkage: use all predictors, but the coefficients are shrunk towards 0
+    + some shrinkage methods shrink coefficients to zero allowing variable selection (ad hoc)
+    
+* Shrinkage + variable selection
+    
+* Dimension Reduction:  create new variables     
+
+Distinguish between goals of good predictions and learning the "true" model 
+
+
+##  Balancing Goodness of Fit and Model Complexity
+
+ Adjusted Deviance:   deviance + number of parameters
+
+*  adding a variable with a  parameter that is zero is expected to decrease the deviance by 1 
+*  adding $k$ variables (all with zero coefficients) is expected to reduce the deviance by $k$  ($\E[\chi^2_k]$ variable)
+*   needs to be greater than 1
+* How much bigger to improve predictions?
+
+##  Akaike Information Criterion  
+
+AIC: deviance + 2 ( number of parameters)
+    + each predictor needs to reduce the deviance by 2 to improve the fit to new data
+
+* True data generating model $f(y)$
+* Candidate Model $p(y \mid \theta, \M)$; estimate $p(y \mid \hat{\theta}, \M)$
+* measure closeness of candidate to truth by Kullback Leibler divergence
+
+\begin{align*}
+KL(f, \hat{p}_{\M}) & =  \int \log\left[\frac{f(y)}{p(y \mid \hat{\theta}, \M)}\right] f(y) \, dy \\
+ & =   \int \log(f(y)) f(y) \, dy  - \int \log(p(y \mid \hat{\theta}, \M)) f(y) \, dy  \\
+ & =  C - \int \log(p(y \mid \hat{\theta},\M)) f(y) \, dy  \\
+\end{align*}
+
+## Estimating
+
+Naive estimate of integral
+\begin{align*}
+K(f, \hat{p}_{\M}) & =  C - \int \log(p(y \mid \hat{\theta}, \M)) f(y) \, dy  \\
+                &  \approx  C - \frac{1}{n} \sum_i \log(p(y_i \mid \hat{\theta}, \M))) \\
+                &   =  C  -\frac{\ell(\hat{\theta}; \M)}{n}
+\end{align*}
+
+Akaike showed that the bias was approximately $p_{\M}/n$
+
+Correcting for bias, minimizing KL divergence is the same as minimizing
+$$ -\frac{\ell(\hat{\theta}; \M)}{n}  + \frac{p_{\M}}{n}$$
+or multiplying by $2n$ we get the deviance + $2 p_{\M}$
+
+$$ - 2 {\ell(\hat{\theta}; \M)}  + 2 p_{\M}$$
+
+## Bayes Information Criterion (BIC or Schwarz Criterion)
+
+Consider models $\M_1, \ldots \M_K$
+
+Bayes Theorem:  probability of model $\M$ 
+$$p(\M_j \mid Y_1, \ldots, Y_n) = \frac{ p(Y_1, \ldots, Y_n \mid \M_j) p(\M_j) } 
+{\sum_k p(Y_1, \ldots, Y_n \mid \M_k) p(\M_k)}
+$$
+Pick model that has highest posterior probability 
+
+What happened to $\theta$?
+
+\begin{align*}
+p(Y_1, \ldots, Y_n \mid \M) & = \int  p(Y_1, \ldots, Y_n \mid \theta, \M) p(\theta \mid \M) \, d \theta \\
+& = \int {\cal L}(\theta) p(\theta \mid \M) \, d \theta
+\end{align*}
+
+## Continue
+
+Maximizing $p(\M_j \mid Y_1, \ldots, Y_n)$ is
+equivalent to picking $\M$ that maximizes
+$$\log( p(Y_1, \ldots, Y_n \mid \M_j)) + \log( p(\M_j) )$$
+
+Taylor's series expansion of likelihood can be used to show this is approximately
+$$
+\approx \ell_{\M_j}(\hat{\theta}) - \frac{ p_{\M_j}}{2} \log(n)
+$$
+
+Multiply by $-2$ to obtain BIC = deviance + log(n) (number of parameters)
+
+Not necessarily the best predictive model!   But the model that is most likely to be true given the data out of the collection of models under consideration.
+
+##  R Packages/Functions
+
+*  `step`   (base R, step-wise)
+ 
+*  `leaps::regsubsets`  exhaustive  Leaps & Bounds search AIC, BIC  linear models
+
+*  `bestglim::bestglm`  GLM's   for AIC, BIC, LOOCV, others
+ 
+*  `BAS:bas.lm` or `BAS:bas.glm`  AIC, BIC,  more with  exhaustive and MCMC as well as model averaging
+
+*  `BMA`   samples based on leaps and MCMC
+
+## Stepwise
+
+```{r step}
+best.step = step(vote.glm, k=2)  # AIC
+
+```
+
+## Final Model
+```{r}
+summary(best.step)
+```
+
+##  Stepwise
+
+* each step pick the lowest IC model
+* add/drop until no improvement
+* output is the final model
+* possible that forward, backwards, both lead to different final models.
+
+Does not do exhaustive search
+
+##  Example with bestglm  (exhaustive)
+
+```{r bestAIC, warning=F}
+library(bestglm)
+nes1992sub = dplyr::select(nes1992, -race) %>%
+          filter(partyid != "apolitical")
+vote.AIC = bestglm(Xy=nes1992sub, family=binomial, 
+                   IC="AIC", RequireFullEnumerationQ = T)
+```
+
+Notes:  dataframe limited to variables under consideration with the response last
+
+##  Best AIC
+
+```{r, width.cutoff = 50, comment=NA, echo=F}
+tt =capture.output(summary(vote.AIC$BestModel))
+cat(tt[12:length(tt)], sep="\n")
+```
+
+
+##  Best BIC
+
+```{r bestBIC, include=F, echo=F}
+vote.BIC = bestglm(Xy=nes1992, family=binomial,
+                   IC="BIC", RequireFullEnumerationQ = T)
+```
+
+
+```{r, echo=F, warning=FALSE, message=F, comment=NA}
+tt = capture.output(summary(vote.BIC$BestModel))
+cat(tt[12:length(tt)], sep="\n")
+```
+
+
+## BAS with AIC
+
+```{r BAS}
+library(BAS)
+# nes1992 = mutate(nes1992, vote=as.numeric(vote))
+vote.BAS = bas.glm(vote ~ ., data=nes1992,
+                   family=binomial(),
+                   method="MCMC", n.models=20000,
+                   betaprior=aic.prior(),
+                   modelprior=uniform())
+```
+
+
+## Top models
+
+```{r}
+image(vote.BAS, rotate=T)
+```
+
+
+## summary
+
+```{r}
+summary(vote.BAS)
+# bug in plot(vote.bas)  need to fix!
+```
+
+
+## BAS with BIC
+
+```{r BAS-BIC}
+library(BAS)
+nes1992 = mutate(nes1992, vote=as.numeric(vote))
+vote.BAS = bas.glm(vote ~ ., data=nes1992,
+                   family=binomial(),
+                   method="MCMC", n.models=20000,
+                   betaprior=bic.prior(n = nrow(nes1992)),
+                   modelprior=uniform())
+```
+
+
+## Top models
+
+```{r}
+image(vote.BAS, rotate=T)
+```
+
+
+## BAS with BIC
+
+```{r BAS-BIC-big}
+library(BAS)
+#nes1992 = mutate(nes1992, vote=as.numeric(vote))
+vote.BAS = bas.glm(vote ~ (. - race)^2, data=nes1992,
+                   family=binomial(),
+                   method="MCMC", n.models=20000,
+                   betaprior=bic.prior(n = nrow(nes1992)),
+                   modelprior=uniform())
+```
+
+
+
+
+##  Summary
+
+*  Various model selection criteria may not all agree on best model
+
+*  competing goals of finding the "true" model versus best for prediction
+
+*  exhaustive search is not always possible for big $p$
+
+*  Stochastic Search   (more in lab)
+
+
+ 
+
+

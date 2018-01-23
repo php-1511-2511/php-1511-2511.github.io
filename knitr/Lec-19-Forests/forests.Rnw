@@ -1,0 +1,369 @@
+\documentclass[]{beamer}
+%\documentclass[handout]{beamer}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+\def\logit{\textsf{logit}}
+
+
+\title{More on Tree Based Methodss}
+
+\author{ISLR Chapter 8 }
+\date{\today}
+
+\begin{document}
+\maketitle
+
+<<setup,include=FALSE, echo=FALSE>>=
+suppressMessages(library(dplyr))
+library(ISLR)
+library(tree)
+data(Carseats)
+  Carseats = mutate(Carseats, High=factor(ifelse (
+  Carseats$Sales <=8,
+    "No",
+    "Yes "))
+  )
+set.seed (2)
+train=sample (1: nrow(Carseats ), 200)
+Carseats.test=Carseats [-train ,]
+CE.tab = data.frame(row.names =
+                      c("RandomForests", "Boosting",
+                        "BART", "LASSO", "BMA"),
+                    accuracy = rep(NA,5))
+@
+
+
+\begin{frame}\frametitle{Outline}
+Ways to improving trees through a multiple trees in some ensemble:
+  \begin{itemize}
+  \item Bagging  \pause
+  \item Boosting \pause
+  \item Random Forests  \pause
+  \item BART  (Bayesian Additive Regression Trees) \pause
+  \end{itemize}
+Combining trees will yield improved prediction accuracy, but with loss of interpretability.
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Tree with Random Split of Data}
+
+<<tree-all, echo=FALSE>>=
+n = nrow(Carseats)
+set.seed(42)
+tree.carseats1 =tree(High ~  . -Sales,
+                    data=Carseats,
+                    subset=sample(1:n, size=round(n/2)))
+tree.carseats2 =tree(High ~  . -Sales,
+                    data=Carseats,
+                    subset=sample(1:n, size=round(n/2)))
+@
+
+\vspace{-.25in}
+<<tree-plot, echo=FALSE, fig.align='center', fig.height=9, fig.width=9>>=
+plot(tree.carseats1)
+text(tree.carseats1, cex=.75)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Tree with another Random Split of Data}
+
+\vspace{-.25in}
+<<tree-plot2, echo=FALSE, fig.align='center', fig.height=9, fig.width=9>>=
+plot(tree.carseats2)
+text(tree.carseats2, cex=.75)
+@
+
+\end{frame}
+
+\begin{frame}  \frametitle{Bagging: Bootstrap Aggregation}
+  \begin{itemize}
+  \item Splitting data into random partitions and fitting a tree model on each half may lead to very different predictions (high variability) \pause
+\item Reduce variability by averaging over multiple training sets! \pause
+\item do not have access to multiple training sets so create them via bootstrap samples  (sample of size $n$ with replacement) \pause
+  \begin{itemize}
+  \item Generate B bootstrap sample of observations from the single training data \pause
+  \item Calculate predictions for the $b$th sample $\hat{f}^{b}(x)$ \pause
+  \item Bagging (Bootstrap Aggregation) estimate is
+$$\hat{f}_{\text{bag}}(x) = \frac{1}{B} \sum \hat{f}^{b}(x)
+$$
+  \end{itemize}
+\item Trees are grown deep  so little bias  (although could prune) \pause
+ \item Reduce variance by averaging many trees across the bootstrap samples \pause
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Random Forests}
+ Closely related to Bagging, but attempts to de-correlate the trees used in the average \pause
+  \begin{itemize}
+\item take B bootstrap samples  \pause
+\item Each time a split in a tree is considered, a random sample of $m$ predictors is chosen as split candidates from the set of $p$ predictors.  \pause
+\item a new sample is taken at each split  \pause
+\item Recommended $m$  around $\sqrt{p}$  \pause
+\item Random Forests with $m = p$ is Bagging  \pause
+\item Predictions are based on average over the bootstrap samples  \pause
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{Bagging Example}
+<<>>=
+suppressMessages(library(randomForest))
+bag.carseats = randomForest(High ~ . -Sales,
+                            data=Carseats, subset = train,
+                            mtry=10, importance =TRUE)
+#  mtry = 10 (the number of predictors)
+yhat.bag = predict(bag.carseats,newdata = Carseats.test)
+tab = table(yhat.bag,Carseats.test$High)
+tab
+CE.tab["RandomForests", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+
+CE.tab["RandomForests",]
+@
+
+Now we are at 18\%  mis-classification error!
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{RandomForests}
+<<>>=
+ rf.carseats = randomForest(High ~ . -Sales,data=Carseats,
+                            subset =train,
+                            mtry=3, importance =TRUE)
+ yhat.rf= predict(rf.carseats ,newdata =Carseats.test)
+tab = table(yhat.rf,Carseats.test$High)
+
+ tab
+CE.tab["RandomForests", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+# (101+63)/200
+CE.tab["RandomForests",]
+@
+
+The same as Bagging
+\end{frame}
+
+\begin{frame} \frametitle{Variable Importance Measures in Bagging \& RandomForests}
+
+\begin{itemize}
+\item For Regression Trees use the total reduction in Sum of Squares Error due to splits with that variable averaged over all trees \pause
+\item For Classification Trees use the total reduction in Gini Index due to splits of the that variable averaged over all trees.  Gini Index is defined as
+$$G = \sum_{k = 1}^K \hat{\pi}_{mk} (1 - \hat{\pi}_{mk})$$
+where $K$ is the number of classes for region $m$
+or use the reduction in deviance  \pause
+\item Out of Bag Prediction Error \pause
+\item  May be normalized by dividing by the maximum
+
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame} \frametitle{Variable Importance Measures in RandomForests}
+<<fig.align='center', fig.height=4, fig.width=6>>=
+varImpPlot(rf.carseats)
+@
+
+\end{frame}
+
+
+\begin{frame}  \frametitle{Boosting}
+\includegraphics[height=3in]{boostingAlgo}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Boosting }
+  \begin{itemize}
+  \item Mean is a sum of B trees  \pause
+  \item Boosting can over-fit if $B$ is too large  \pause
+  \item The number of splits, $d$, in each tree controls  the complexity of the boosted ensemble; $d = 1$ corresponds to models of stumps  \pause
+\item $d$ is the interaction depth; $d$ splits can involve $d$ variables.  (default in {\tt gbm} package is $4$)  \pause
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]  \frametitle{Boosting Example}
+<<>>=
+suppressMessages(library(gbm))
+boost.car =gbm(I(as.numeric(High)-1) ~ . -Sales,
+               data=Carseats[train ,],
+               distribution="bernoulli",
+               n.trees =5000, interaction.depth =4)
+yhat.boost = ifelse(predict(boost.car,
+                      newdata=Carseats.test,
+                      n.trees=5000,
+                      type="response") > .5, 1, 0)
+tab =table(yhat.boost, Carseats.test$High)
+tab = table(yhat.boost,Carseats.test$High)
+tab
+CE.tab["Boosting", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+
+CE.tab["Boosting",]
+@
+
+84.5\% accuracy!
+\end{frame}
+
+\begin{frame}[fragile]  \frametitle{Variable Importance: Boosting}
+<<>>=
+summary(boost.car, plotit=FALSE)
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Variable Importance: summary(boost.car)}
+<<echo=FALSE, fig.align='center', fig.height=9.5, fig.width=12>>=
+summary(boost.car)
+@
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Bayesian Additive Regression Trees}
+Gaussian Model:  Single Tree model
+
+$$
+Y = g(x, T, M) + \eps
+$$
+Where $T$ is a tree and $M= (\mu_1, \ldots \mu_b)^T$ is the vector of means at the terminal nodes of the tree given by $T$  \pause
+
+\vspace{12pt}
+BART represents the mean function as
+
+$$
+Y =\sum_j  g(x, T_j, M_j) + \eps
+$$
+as a sum of trees. \pause
+
+
+Priors control the complexity of each tree; back-fitting as in boosting. \pause
+
+\end{frame}
+
+
+\begin{frame}[fragile] \frametitle{BART: Bayesian Additive Regression Trees}
+<<>>=
+library(BayesTree)
+set.seed(42)
+bart.carseats = bart(x.train=Carseats[train,-c(1,12)],
+                   y.train=Carseats$High[train],
+                   x.test=Carseats[-train,-c(1,12)],
+                   verbose=FALSE   )
+pihat.bart = apply(pnorm(bart.carseats$yhat.test), 2, mean)
+yhat.bart = ifelse(pihat.bart > .5, 1, 0)
+tab = table(yhat.bart, Carseats.test$High)
+CE.tab["BART", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+
+CE.tab["BART",]
+#> investigate_var_importance(bart.carseats)
+@
+\end{frame}
+
+\begin{frame} \frametitle{Uncertainty in Mean Function}
+<<fig.align='center', fig.height=9, fig.width=12>>=
+plot(bart.carseats)
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Partial Dependendence (computationally intensive!)}
+<<echo=FALSE, fig.align='center', fig.height=9, fig.width=12, cache=TRUE>>=
+par(mfrow=c(2,3))
+pd.carseats=pdbart(x.train=Carseats[train,-c(1,12)],
+                   y.train=Carseats$High[train],
+                   xind=c(1:5, 7),
+                   verbose=FALSE   )
+
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{BartMachine}
+<<BM, cache=TRUE>>=
+suppressMessages(library(bartMachine))
+set.seed(42)
+bart.carseats = bartMachine(X=Carseats[train,-c(1,12)],
+                            y=Carseats$High[train],
+                            verb=FALSE, serialize=TRUE)
+yhat.bart = predict(bart.carseats,
+                    Carseats.test[, -c(1,12)],
+                    type="class")
+table(yhat.bart, Carseats.test$High)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Variable Importance}
+<<load, echo=FALSE, message=FALSE, warning=FALSE>>=
+suppressMessages(library(bartMachine))
+@
+
+<<fig.height=8,fig.width=12>>=
+investigate_var_importance(bart.carseats)
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{GLMs and Bayesian Variable Selection}
+<<>>=
+set.seed(42); library(BAS)
+bas.carseats = bas.glm(High ~ . - Sales, data=Carseats,
+                       subset=train, family=binomial(),
+                       method="MCMC",  n.models=10000,
+                       betaprior=bic.prior(n=200))
+yhat = predict(bas.carseats, newdata=Carseats[-train,])
+tab = table(ifelse(yhat$fit > .5, 1, 0), Carseats.test$High)
+CE.tab["BMA", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+
+CE.tab["BMA",]
+#(107 + 74)/200
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{LASSO Variable Selection}
+<<>>=
+set.seed(42); library(glmnet)
+glmnet.carseats = cv.glmnet(
+  x=model.matrix(High ~ . - Sales, data=Carseats[train,]),
+  y=(as.numeric(Carseats$High[train]) - 1), family="binomial")
+yhat = predict(glmnet.carseats,
+               newx=model.matrix(High ~ . - Sales, data=Carseats[-train,]))
+tab = table(ifelse(yhat > .0, 1, 0), Carseats.test$High)
+CE.tab["LASSO", 1]= (tab[1,1] + tab[2,2])/sum(tab)
+
+CE.tab["LASSO",]
+
+@
+\end{frame}
+\begin{frame}\frametitle{Summary}
+  \begin{itemize}
+  \item Trees are simple to understand, but have high variability \pause
+  \item Bagging (Averaging) reduces variability \pause
+  \item Random Forests adds additional constraints to average trees
+    that are different (reduced correlation leads to reduction in variance). \pause
+  \item Boosting builds a mean function that uses multiple trees where
+    the growth takes into account the previous trees.  Smaller trees
+    can be used  (larger trees can overfit) \pause
+\item BART is similar to Boosting in that the mean function is a sum
+  of trees, but uses a Bayesian approach to control complexity.  Trees
+  can be of different sizes and the number of trees can be large without overfitting \pause
+
+\item Plots may suggest that a (generalized) linear model  may be appropriate! \pause
+
+  \end{itemize}
+Interpretability? For which methods can you explain how changes in a predictor change the response?
+\end{frame}
+<<>>=
+save(CE.tab, file="OoS.accuracy")
+@
+
+\end{document}

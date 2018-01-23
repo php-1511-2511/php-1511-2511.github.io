@@ -1,0 +1,354 @@
+---
+title: "Predictive Checking"
+author: "Readings GH Chapter 6-8"
+date: "February 8, 2017"
+output:
+  beamer_presentation:
+          incremental: FALSE
+          includes:
+             in_header:  macros.tex
+             
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(formatR)
+knitr::opts_chunk$set(
+      echo = FALSE,
+      warning=FALSE,
+      message=FALSE,
+#      tidy = TRUE,
+#      tidy.opts=list(blank=FALSE, width.cutoff=60,size = 'tiny'),
+      fig.width=5, 
+      fig.height=4 )
+
+suppressMessages(library(ggplot2))
+suppressMessages(library(dplyr))
+library(foreign)
+library(xtable)
+library(arm)
+```
+
+##  Model Choice and Model Checking
+
+2 Questions:
+
+
+
+1. Is my Model good enough? (no alternative models in mind)   
+
+2. Which  Model is best? (comparison among a subset of models)
+
+Note that 2 does not imply  1.
+
+Focus on simulation based methods
+
+
+
+##  HIV & Risk Behaviour Study
+
+
+* The variables `couples` and `women_alone` code the **intervention**:
+    + control - no counselling  (both 0)
+    + the couple was counselled together (couple=1, women_alone=0)
+    +  only the woman was counselled (couple=0, women_alone=1)
+
+* `bs_hiv` indicates whether the member reporting sex acts was
+HIV-positive at "baseline" (the beginning of the study)
+
+*  `bupacts` - number of unprotected sex acts reported at "baseline"
+
+* `fupacts` - number of unprotected sex acts reported at the end of the study
+* `sex` - factor with levels "woman" and "man". 
+This is the member of the couple that reports sex acts to the researcher
+
+
+##   Data, Design & balance
+
+
+```{r data, echo=F, out.width=50}
+hiv <- read.dta("http://www.stat.columbia.edu/~gelman/arm/examples/risky.behavior/risky_behaviors.dta", convert.factors=TRUE)
+options(width=50)
+hiv = mutate(hiv, fupacts=round(fupacts))
+summary(hiv)
+```
+
+## Model  
+
+
+```{r hiv.model, echo=T}
+hiv.glm = glm(fupacts ~ bs_hiv + log(bupacts +1) + sex +
+              couples + women_alone, data=hiv,
+              family=poisson(link="log"))
+```
+
+```{r summary}
+options(width=60)
+p = length(coefficients(hiv.glm))
+tt = capture.output(summary(hiv.glm))
+cat(tt[c(11:(11+p), (11+p+4):length(tt))], sep='\n')
+
+```
+
+```{r hiv.coef, echo=T, results='asis'}
+print(xtable(summary(hiv.glm)), comment=F)
+```
+
+##  Over-Dispersion, Goodness of Fit or Lack of Fit?
+
+* deviance is -2 log(likelihood) evaluated at the MLE of the parameters in that model $\hat{\lambda}_i = \exp(\x^T_i \hat{\b})$
+$$ -2 \sum_i (y_i \log(\hat{\lambda}_i)  - \hat{\lambda}_i -
+\log( y_i!))$$
+* smaller is better (larger likelihood)
+* null deviance is the deviance under the "Null" model, that is a model with just an intercept or $\lambda_i = \lambda$ and $\hat{\lambda} = \bar{Y}$
+* saturated model deviance is the deviance of a model where each observation has there own unique $\lambda_i$ and the MLE of $\hat{\lambda}_i = y_i$,
+* the change in deviance has a Chi-squared distribution
+with degrees of freedom equal to the change in number of parameters in the models. 
+
+## Residual Deviance
+
+the residual deviance is the change in the deviance between the given model and the saturated model. Substituting the expressions for deviance, we have
+\begin{align*}
+D  = & -2\sum_i\left(y_i \log(\hat{\lambda}_i)  - \hat{\lambda}_i -
+\log(y_i!)\right) - \\
+&  -2\sum_i\left (y_i \log(y_i)  - y_i -
+\log(y_i!)\right) \\
+=  & 2 \sum_i\left(y_i (\log(y_i) -  \log(\hat{\lambda}_i))   -( y_i -  \hat{\lambda}_i)) \right) \\
+ = & 2 \sum_i \left(y_i (\log(y_i/\hat{\lambda}_i)   - (y_i -  \hat{\lambda}_i)) \right)
+ = & \sum  d_i^2
+\end{align*}
+This has a chi squared distribution with $n - (p+1)$ degrees of freedom.   ($p+1$ is the number of parameters in the linear predictor)
+
+## Test in R
+
+```{r}
+cat(tt[(11+p+8)], sep='\n')
+```
+
+Estimate of overdispersion: Residual Deviance/ Residual df = 
+`r round(hiv.glm$deviance/hiv.glm$df.residual, 2)`
+
+Overdispersion if greater than 1.  
+
+Formal Test
+```{r echo=TRUE}
+pchisq(hiv.glm$deviance, hiv.glm$df.residual, lower.tail=F)
+```
+
+The above p-value suggests that  a residual deviance as large or larger than what we observed under the model in `hiv.glm` is highly unlikely!
+
+Suggests that the model is not adequate or lack of fit.
+
+##   Diagnostics Plots
+
+```{r}
+par(mfrow=c(2,2))
+plot(hiv.glm)
+```
+
+## Standardized Residuals
+
+```{r}
+hiv %>% mutate(fitted=fitted(hiv.glm), r = rstandard(hiv.glm)) %>% 
+ggplot(aes(x=fitted, y=r)) +
+  geom_point() +
+  geom_hline(yintercept=2) + geom_hline(yintercept=-2)
+
+```
+
+## Binned Residuals library(arm)
+
+```{r}
+binnedplot(fitted(hiv.glm), rstandard(hiv.glm), main="")
+```
+
+##  Overdispersed Poisson - QuasiLikelihood
+
+```{r od, echo=T}
+hiv.glmod = glm(fupacts ~ bs_hiv + log(bupacts +1) + sex +
+              couples + women_alone, data=hiv,
+              family=quasipoisson(link="log"))
+```
+
+
+```{r summary.od}
+options(width=60)
+p = length(coefficients(hiv.glmod))
+tt = capture.output(summary(hiv.glmod))
+cat(tt[c(11:(11+p), (11+p+4):length(tt)-1)], sep='\n')
+
+```
+
+```{r hiv.coef.od, echo=T, results='asis'}
+options(width=60)
+print(xtable(summary(hiv.glmod)), comment=F)
+```
+
+##  Negative Binomial Distribution
+
+* The formulation of the negative binomial distribution as a gamma mixture of Poissons can be used to model count data with overdispersion.
+$$
+p(y \mid \mu, \theta) = \frac{ \Gamma(y + \theta)}{y! \Gamma(\theta)}
+\left(\frac{\theta}{\theta + \mu}\right)^{\theta}
+\left(\frac{\mu}{\theta + \mu}\right)^{y}
+$$
+* The negative binomial distribution has two parameters: 
+    + $\mu$ is the mean or expected value of the distribution $\mu_i = \exp(\x^T_i \beta)$
+    + $a$ is the over dispersion parameter $V(Y) = \mu + \mu^2/\theta$
+* When $\theta \to \infty$ the negative binomial distribution is the same as a Poisson distribution
+
+
+## Review of Mixtures
+
+
+\begin{align*}
+Y \mid \lambda & \sim \Poi(\lambda) \\
+p(y \mid \lambda) & = \frac{\lambda^y e^{-\lambda}} {y!} \\
+& \\
+\lambda \mid \mu, \theta & \sim \Gam(\theta, \theta/\mu)  \\
+p(\lambda \mid  \mu, \theta) & = \frac{(\theta/ \mu)^\theta}{\Gamma(\theta)} \lambda^{\theta - 1} e^{- \lambda \theta/\mu} \\
+& \\
+p(Y \mid \mu, \theta) & = \int p(Y \mid \lambda) p(\lambda \mid \theta, \theta/\mu) d \lambda \\
+ & =   \frac{ \Gamma(y + \theta)}{y! \Gamma(\theta)}
+\left(\frac{\theta}{\theta + \mu}\right)^{\theta}
+\left(\frac{\mu}{\theta + \mu}\right)^{y} \\
+Y \mid \mu, \theta & \sim \NB(\mu, \theta) 
+\end{align*}
+
+## Iterated Expectations Review
+
+*  expectation $\E[Y] = \E_\lambda[\E_Y[Y \mid \lambda]]$
+*  variance  
+$$\Var[Y] = \Var_\lambda[E_Y[Y \mid \lambda]] + \E_\lambda[\Var_Y[Y \mid \lambda]]$$
+ Variance(Expected Value) + Expected Value(Variance)
+ 
+You should be able to derive the mean and variance of the $\NB$ using the above expressions  (HW)
+ 
+##  Fitting the Negative Binomial Model in R
+
+```{r nb, echo=T, results='asis'}
+library(MASS)
+hiv.glm.nb = glm.nb(fupacts ~ bs_hiv + log(bupacts + 1) +
+                    sex + couples + women_alone, 
+                    data=hiv)
+```
+
+associated `summary` and `plot` functions available
+
+##  Model Summary  (subset)
+
+```{r}
+tt = capture.output(summary(hiv.glm.nb))
+cat(tt[11:length(tt)], sep="\n")
+```
+
+##  Using Simulation to Check the  Model
+
+* Find a test statistic (meaningful quantity)
+* simulate 1000 replicates of $Y$'s from the model
+* compute the test statistics for each set of replicate data
+* estimate distribution of test statistics from the simulations
+* compare observed statistics to the simulated data (predictive p-value)
+
+##  R Code
+
+```{r code, echo=T}
+nsim = 10000
+n = nrow(hiv)
+X = model.matrix(hiv.glm.nb)
+class(hiv.glm.nb) <- "glm"  # over-ride class of "glm.nb"
+sim.hiv.nb = sim(hiv.glm.nb, nsim)  # use GLM to generate beta's
+sim.hiv.nb@sigma = rnorm(nsim, hiv.glm.nb$theta,
+                         hiv.glm.nb$SE.theta) # add slot for theta overide sigma
+y.rep = array(NA, c(nsim, nrow(hiv)))
+
+for (i in 1:nsim) {
+  mu = exp(X %*% sim.hiv.nb@coef[i,])
+  y.rep[i,] = rnegbin(n, mu=mu, theta=sim.hiv.nb@sigma[i])
+}
+
+perc_0 = apply(y.rep, 1, function(x) {mean(x == 0)})
+perc_10 = apply(y.rep, 1, function(x) {mean( x > 10)})
+                      
+```
+
+## Comparison
+
+```{r, fig.width=3}
+df = data.frame(perc_0=perc_0, perc_10 = perc_10)
+ggplot(df, aes(x = perc_0)) + geom_histogram() +
+ geom_vline(xintercept = mean(hiv$fupacts == 0), col=2)
+ggplot(df, aes(x = perc_10)) + geom_histogram() +
+  geom_vline(xintercept = mean(hiv$fupacts > 10), col=2)
+
+```
+
+##  Confidence Intervals 
+
+Observed proportion at zero is `r  round(mean(hiv$fupacts == 0),2)` and proportion at 0, 95% CI from simulated replicates:
+```{r}
+round(quantile(perc_0, c(.025,  .975)), 2)
+```
+
+Observed proportion > 10 is `r  round(mean(hiv$fupacts > 10),2)` and 95% CI from simulated replicates
+
+```{r}
+round(quantile(perc_10, c(.025, .975)), 2)
+```
+
+Observed data seem to have summaries in line with simulated replicated data based on Negative Binomial model
+
+Model appears to capture these features adequately  (may change with other summaries)
+
+
+## Estimates of Relative Risks
+```{r, results='asis'}
+class(hiv.glm.nb) = c("glm.nb", "glm", "lm")
+ci = exp(cbind(coef(hiv.glm.nb),confint(hiv.glm.nb)))
+colnames(ci) = c("RR", "2.5", "97.5")
+print(xtable(ci), comment=F)
+```
+
+* 1 = no change
+* Values less than 1 imply decrease
+* Values greater than 1 imply increase
+* to obtain percent increase  RR - 1 or CI - 1 and multiply by 100%
+* to obtain percent decrease  1 - RR or 1  - CI and multiply by 100%
+
+## Conclusions
+
+The intervention had a significant impact on reducing the number of unprotected sex acts:
+
+In couples where only the woman took part in the counseling sessions, we estimated a significant decrease in unprotected sex  acts of 
+`r round((1 - exp(coef(hiv.glm.nb)["women_alone"]))*100, 0)`%;
+95% CI: (`r round(100*(1 - ci["women_alone",3:2]), 0)`)
+
+When both partners were counseled unprotected acts are expected to decrease by `r round((1 - exp(coef(hiv.glm.nb)["couples"]))*100, 0)`%  (although p.value > .05)
+
+There is no evidence to suggest that the sex of partner who reports to the researcher has an effect on the number of unprotected acts.
+
+There is evidence to suggest that if the partner who reports is HIV  positive there is a significant reduction of unprotected
+acts of 
+`r round((1 - exp(coef(hiv.glm.nb)[2]))*100, 0)`%;
+95% CI: ( `r round(100*(1 - ci[2,3:2]), 0)`)
+
+
+## Energetic Student
+
+* provide an interpretation of the coefficient for `log(bupacts + 1)`
+
+* offsets are used to remove effects, so that the mean = $\exp(offset + \X \b)$.  In `R` this is expressed by
+```{r}
+library(MASS)
+hiv.glm.nb2 = glm.nb(fupacts ~ bs_hiv + sex + couples +
+                    women_alone + offset(log(bupacts +1)),
+                    data=hiv)
+```
+
+* adding `log(bupacts +1)` as an offset is equivalent to constraining its $\beta$ to be $1$ 
+* does the previously fitted model support that this should be handled by an offset?
+* Do any of the coefficient estimates change by using an offset?
+* Which model seems to be better?
+* What happens if you do not add 1 to `bupacts`?
+* Do you think that how we handle zero values of `bupacts` has an impact on our predictive check for predicting at 0?
+

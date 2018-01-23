@@ -1,0 +1,516 @@
+%\documentclass[]{beamer}
+\documentclass[handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,array,eucal}
+\input{macros}
+\usepackage{verbatim}
+
+\def\logit{\textsf{logit}}
+\def\SE{\textsf{SE}}
+\def\C{\textsf{CAGE}}
+\def\L{\textsf{LIGHT}}
+\def\Li{\textsf{LITTER}}
+\def\G{\textsf{GAP}}
+\def\S{\textsf{SURV}}
+\def\V{\textsf{SPECIES}}
+
+
+\title{Binary Regression}
+
+\author{GH Chapter 5, ISL Chapter 4 }
+\date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+
+
+
+\begin{frame}[fragile]\frametitle{Seedling Survival}
+
+  Tropical rain forests have up to 300 species of trees per hectare,
+  which leads to difficulties when studying processes which occur at
+  the community level. To gain insight into species responses, a
+  sample of seeds were selected from a suite of eight species selected
+  to represent the range of regeneration types which occur in this
+  community.
+\begin{verbatim}
+Name       Size Cotyledon type
+Ardisia       3 H
+C. biflora    7 H
+Gouania       1 E      Size = 1 smallest to 8 largest
+Hirtella      8 H      E = Epigeal  - cotyledons
+Inga          4 H      H = Hypogeal - seed food reserves
+Maclura       2 E
+C. racemosa   6 H
+Strychnos     5 E
+\end{verbatim}
+%Epigeal species rely on the cotyledons for
+%photosynthesis and production of energy to become estabished. Seed
+%size tends to be small, with little reserves in the seeds. Hypogeal
+%species tend to have larger seeds, and can rely on reserves in the
+%seed to produce energy, thus if initial leaves are lost to predators,
+%there may still be additional reserves that can be used to produce
+%additional leaves. Larger seeds, however, may be easier to spot by
+%predators.
+\end{frame}
+
+\begin{frame}\frametitle{Experimental Design}
+ This representative community was then placed in
+  experimental plots manipulated to mimic natural conditions \pause
+  \begin{itemize}
+  \item 8 PLOTs: 4 in forest gaps, 4 in understory conditions \pause
+  \item Each plot split in half:  mammals were excluded from
+  one half with a CAGE \pause
+  \item 4 subplots within each CAGE/NO CAGE \pause
+  \item 6 seeds of each SPECIES plotted in each SUBPLT \pause
+  \item 4 LITTER levels applied to each SUBPLT \pause
+  \item LIGHT levels at forest floor recorded \pause
+  \item  SURV  an indicator of whether they germinated and survived was
+  recorded \pause
+  \end{itemize}
+  Which variables are important in determining whether a
+  seedling will survive? Are there interactions that influence
+  survival probabilities?
+\end{frame}
+
+\begin{frame}\frametitle{Modeling Survival}
+Distribution for Survival of a single Seedling is a Bernoulli random variable
+$$  \E[\S_i \mid {\textsf covariates} ] = \pi_i $$ \pause
+
+How should we relate covariates to probability of survival? \pause
+
+For example, probability of survival may depend on whether there was a
+\C\ to prevent animals from eating the seedling or \L\ levels. \pause
+\begin{itemize}
+\item Naive approach: Regress \S\ on \C\ and \L\
+$$\hat{\pi}_i = \hat{\beta}_0 + \hat{\beta}_1 \C_i + \hat{\beta}_2 \L_i$$ \pause
+\item Problems:
+  \begin{itemize}
+  \item  Fitted values of probabilities are not constrained to
+  (0, 1) \pause
+  \item Variances are not constant $\pi_i(1 - \pi_i)$ under Bernoulli model \pause
+ \end{itemize}
+\item Unbiased? \pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{plot of SURV \& CAGE }
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{seeds} \hlkwb{=} \hlkwd{read.table}\hlstd{(}\hlstr{"seeds.txt"}\hlstd{,} \hlkwc{header}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlkwd{mosaicplot}\hlstd{(SURV} \hlopt{~} \hlstd{CAGE,} \hlkwc{data}\hlstd{=seeds)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-2-1} 
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{plot of SURV versus LIGHT and CAGE }
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-3-1} 
+
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{plot of SURV versus LIGHT and CAGE jittered}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-4-1} 
+
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}\frametitle{Logistic Regression}
+To build in the necessary constraints that the probabilities are
+between 0 and 1 convert to log-odds or ``logits'' \pause
+\begin{itemize}
+\item Odds of survival: $\pi_i/(1 - \pi_1)$ \pause
+$$ \logit(\pi_i) \stackrel{\sf def}{=} \log\left(\frac {\pi_i} {1 -
+    \pi_i} \right) = \beta_0 + \beta_1 \C_i + \beta_2 \L_i = \eta_i$$ \pause
+\item $\eta_i$ is the linear predictor \pause
+\item \logit\  is the {\it link} function that relates the mean $\pi_i$
+  to the linear predictor $\eta_i$ \pause
+\item Generalized Linear Models (GLMs) \pause
+\item Find Maximum Likelihood Estimates (optimization problem)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Logits}
+To convert from the linear predictor $\eta$ to the mean $\pi$,
+  use the inverse transformation: \pause
+  \begin{itemize}
+\item log odds (\S = 1) = $\eta$ \pause
+\item odds $(\S = 1) = \exp(\eta) = \omega$ \pause
+\item $\pi$ = odds/(1 + odds) = $\omega/(1 + \omega)$ \pause
+\item $\omega = \pi/(1 - \pi)$ \pause
+  \end{itemize}
+Can go in either direction
+\end{frame}
+
+\begin{frame}\frametitle{Interpretation of Coefficients}
+$$\omega_i = \exp(\beta_0 + \beta_1 \C_i + \beta_2 \L_i)$$ \pause
+\begin{itemize}
+\item When all explanatory variables are 0 (\C = 0, \L = 0), the odds
+  of survival are $\exp(\beta_0)$ \pause
+\item The ratio of odds (or odds ratio) at $X_j = A$ to odds at $X_j =
+  B$, for fixed values of the other explanatory variables is
+  \begin{align*}
+   \textsf{ Odds ratio} &= \frac{\omega_A}{\omega_b}  = \exp(\beta_j
+   (A - B)) \\  \pause
+ \textsf{ Odds ratio} &= \frac{\omega_A}{\omega_b}  = \exp(\beta_j)
+   \text{ if } A - B = 1\\ \pause
+\textsf{Odds}(X_j = A) &= \exp(\beta_j) \cdot \textsf{Odds}(X_j = B)
+  \end{align*}
+\item Coefficients are log odds ratios \pause
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{R Code}
+  \begin{itemize}
+  \item use {\tt glm()} rather than {\tt lm()} \pause
+  \item model formula as before  \pause
+  \item need to specify family (and link if not default) \pause
+  \end{itemize}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{seeds} \hlkwb{=} \hlkwd{read.table}\hlstd{(}\hlstr{"seeds.txt"}\hlstd{,} \hlkwc{header}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\hlstd{seeds.glm0} \hlkwb{=} \hlkwd{glm}\hlstd{(SURV} \hlopt{~} \hlnum{1}\hlstd{,} \hlkwc{data}\hlstd{=seeds,} \hlkwc{family}\hlstd{=binomial)}
+\hlstd{seeds.glm1} \hlkwb{=} \hlkwd{glm}\hlstd{(SURV} \hlopt{~}  \hlstd{CAGE} \hlopt{+} \hlstd{LIGHT,}
+                 \hlkwc{family} \hlstd{= binomial,}
+                 \hlkwc{data}\hlstd{=seeds)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Estimates}
+
+\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(xtable)}
+\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(seeds.glm1)}\hlopt{$}\hlstd{coef,}
+       \hlkwc{digits}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{1}\hlstd{,}\hlopt{-}\hlnum{2}\hlstd{))}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Tue Jan 31 22:43:50 2017
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+  \hline
+(Intercept) & -1.4373 & 0.0709 & -20.3 & 3.02E-91 \\ 
+  CAGE & 0.7858 & 0.0875 & 9.0 & 2.79E-19 \\ 
+  LIGHT & -0.0000 & 0.0000 & -5.3 & 9.09E-08 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+  \begin{itemize}
+  \item Coefficient for the dummy variable \C = 0.79 \pause
+  \item If \C\ increases by 1 unit (No \C\ to \C) the odds of survival change by
+  $\exp(.79) = 2.2$ \pause
+\item The odds of survival in a \C\ are 2.2 times higher than odds of
+  survival in the open. \pause
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Confidence Intervals}
+
+
+  \begin{itemize}
+  \item MLEs are approximately normally distributed (large samples) \pause
+    \begin{itemize}
+    \item mean $\beta_j$ \pause
+    \item estimated variance $\SE(\beta_j)^2$ \pause
+    \end{itemize}
+\item Asymptotic posterior distribution for $\beta_j$ is
+  $N(\hat{\beta}_j, \SE(\beta_j)^2)$ \pause
+\item $(1 - \alpha) 100\%$ CI based on normal theory:
+$$ \hat{\beta}_j \pm Z_{\alpha/2} \SE(\beta_j)$$ \pause
+\item $95\%$ CI for coefficient for \C:
+
+$$  0.7858\pm 1.96 * 0.7858 = (0.62, 0.96) $$ \pause
+\item Exponentiate to obtain interval for odds ratio:
+$\exp(0.62), \exp(0.96) = (1.85, 2.607)$ \pause
+  \end{itemize}
+ The odds of survival in a \C\  are 1.85 to 2.607 times higher than odds of  survival in the open (with confidence  $0.95)$.
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Deviance}
+The concept of Deviance replaces Sum-of-Squares in GLMs \pause
+\begin{itemize}
+\item residual deviance = -2 log likelihood at MLEs \pause
+$$ -2 \sum_i y_i\log(\hat{\pi}_i) + (1 - y_i)\log(1 - \hat{\pi}_i)$$
+$$\log(\hat{\pi}_i/(1 - \hat{\pi}_i)) = \hat{\beta}_0 + \C\ \hat{\beta}_1 + \L\ \hat{\beta}_2$$
+\item null deviance = residual deviance under model with constant mean (Total
+  Sum of Squares in Gaussian) \pause
+\item analysis of deviance \pause
+\item change in (residual) deviance has an asymptotic $\chi^2$
+  distribution with degrees of freedom based on the change in
+  number of parameters  \pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Analysis of Deviance Table}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(seeds.glm0, seeds.glm1,} \hlkwc{test}\hlstd{=}\hlstr{"Chi"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Deviance Table
+## 
+## Model 1: SURV ~ 1
+## Model 2: SURV ~ CAGE + LIGHT
+##   Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+## 1      3071     3426.1                          
+## 2      3069     3299.0  2   127.09 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+OverDispersion/Lack of Fit?
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Lack of Fit}
+
+\begin{itemize}
+\item Lack of fit if residual deviance larger than expected
+\item no variance needed to compare
+\item Residual Deviance has a $\chi^2$ with $n - p$ df
+\item p-value = $P(\chi^2_{n-p} > \text{ observed deviance})$
+\end{itemize}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{pchisq}\hlstd{(seeds.glm1}\hlopt{$}\hlstd{deviance, seeds.glm1}\hlopt{$}\hlstd{df.residual,}
+       \hlkwc{lower}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.002024634
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Surprising result if model were true.
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Diagnostic Plots: { plot(seeds.glm1)}}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/unnamed-chunk-7-1} 
+
+\end{knitrout}
+
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{termplot}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{termplot}\hlstd{(seeds.glm1,} \hlkwc{term}\hlstd{=}\hlstr{'LIGHT'}\hlstd{,} \hlkwc{rug}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/termplot-1} 
+
+\end{knitrout}
+
+see \url{http://www.clayford.net/statistics/tag/termplot/}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{log(LIGHT)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{seeds.glm2} \hlkwb{=} \hlkwd{glm}\hlstd{(SURV} \hlopt{~}  \hlstd{CAGE} \hlopt{+} \hlkwd{log}\hlstd{(LIGHT),}
+                 \hlkwc{family} \hlstd{= binomial,}
+                 \hlkwc{data}\hlstd{=seeds)}
+\hlkwd{termplot}\hlstd{(seeds.glm2,} \hlkwc{term}\hlstd{=}\hlstr{"log(LIGHT)"}\hlstd{,} \hlkwc{rug}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{figure/seeds_glm2-1} 
+
+\end{knitrout}
+
+\end{frame}
+\begin{frame}[fragile]\frametitle{Other Variables}
+\begin{small}
+\begin{kframe}
+\begin{alltt}
+\hlstd{seeds.glm3} \hlkwb{=} \hlkwd{glm}\hlstd{(SURV} \hlopt{~}  \hlstd{SPECIES} \hlopt{+} \hlstd{CAGE} \hlopt{+} \hlkwd{log}\hlstd{(LIGHT)} \hlopt{+}
+                \hlkwd{factor}\hlstd{(LITTER),}  \hlkwc{data}\hlstd{=seeds,} \hlkwc{family}\hlstd{=binomial)}
+\hlkwd{xtable}\hlstd{(}\hlkwd{summary}\hlstd{(seeds.glm3)}\hlopt{$}\hlstd{coef)}
+\end{alltt}
+\end{kframe}% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Tue Jan 31 22:43:51 2017
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & z value & Pr($>$$|$z$|$) \\ 
+  \hline
+(Intercept) & -0.83 & 0.25 & -3.29 & 0.00 \\ 
+  SPECIESC. biflora & 0.19 & 0.17 & 1.10 & 0.27 \\ 
+  SPECIESC. racemosa & 0.85 & 0.16 & 5.19 & 0.00 \\ 
+  SPECIESGouania & -2.64 & 0.36 & -7.32 & 0.00 \\ 
+  SPECIESHirtella & 1.14 & 0.16 & 7.03 & 0.00 \\ 
+  SPECIESInga & 0.90 & 0.16 & 5.55 & 0.00 \\ 
+  SPECIESMaclura & -2.64 & 0.36 & -7.32 & 0.00 \\ 
+  SPECIESStrychnos & -1.19 & 0.22 & -5.46 & 0.00 \\ 
+  CAGE & 0.93 & 0.10 & 9.59 & 0.00 \\ 
+  log(LIGHT) & -0.09 & 0.02 & -4.50 & 0.00 \\ 
+  factor(LITTER)1 & 0.09 & 0.13 & 0.67 & 0.50 \\ 
+  factor(LITTER)2 & 0.24 & 0.13 & 1.81 & 0.07 \\ 
+  factor(LITTER)4 & -0.14 & 0.14 & -1.01 & 0.31 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Analysis of Deviance}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(seeds.glm3,} \hlkwc{test}\hlstd{=}\hlstr{"Chi"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: SURV
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##                Df Deviance Resid. Df Resid. Dev  Pr(>Chi)    
+## NULL                            3071     3426.1              
+## SPECIES         7   572.20      3064     2853.9 < 2.2e-16 ***
+## CAGE            1   109.29      3063     2744.6 < 2.2e-16 ***
+## log(LIGHT)      1    15.30      3062     2729.3 9.191e-05 ***
+## factor(LITTER)  3     7.92      3059     2721.4   0.04769 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Interactions?}
+The presence of a \C\ may be more important for survival for some
+species than others - implies an interation \pause
+
+The odds of survival $|$ Cage  compared to odds of survival $|$ no Cage
+depend on \V \pause
+
+Fit model with upto 4 way interactions:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{seeds.glm4} \hlkwb{=} \hlkwd{glm}\hlstd{(SURV}\hlopt{~}\hlstd{SPECIES}\hlopt{*}\hlstd{CAGE}\hlopt{*}\hlkwd{log}\hlstd{(LIGHT)}\hlopt{*}\hlstd{LITTER,}
+             \hlkwc{data}\hlstd{=seeds,} \hlkwc{family}\hlstd{=binomial)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+The analysis of deviance test suggests that there are three way interactions
+\end{frame}
+\begin{frame}\frametitle{Hierarchical Model}
+
+So far we have not taken into account all the sources of variation or
+information about the experimental design.
+\pause
+\begin{itemize}
+\item
+\V\ (size \& cotyledon type) and \Li\ are  randomized to sub-plots.
+Expect that survival of seedlings in the same sub-plot may be related,
+which suggests a sub-plot random effect.
+\pause
+\item sub-plots are nested within \C\ within plots (so expect that
+  sub-plots in the same \C\ are correlated, as well as sub-plots within the same plot may have a similar survival.
+\pause
+\item Plot  characteristics may affect survival (light levels)
+\pause
+\end{itemize}
+
+How to model?
+
+
+
+\end{frame}
+\end{document}

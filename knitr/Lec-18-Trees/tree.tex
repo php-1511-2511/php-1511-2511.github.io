@@ -1,0 +1,377 @@
+%\documentclass[]{beamer}
+\documentclass[handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+%\usepackage[dvips]{color}
+%\usepackage{beamerprosper}
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\usepackage{verbatim}
+% abbreviation
+\def\logit{\textsf{logit}}
+
+
+\title{Introduction to Classification \& Regression Trees}
+
+\author{ISLR Chapter 8 }
+\date{\today}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\maketitle
+\begin{frame}[fragile]\frametitle{Classification and Regression Trees}
+
+Carseat data from ISLR package \pause
+
+\begin{itemize}
+\item Binary Outcome {\tt High} 1 if Sales $ > 8$, otherwise  0 \pause
+\item Fit a Classification tree model to {\tt Price} and {\tt Income} \pause
+\item Pick a predictor  and a cutpoint to split data
+$$  X_j \le s  \text{ and } X_k > s$$
+to minimize deviance (or SSE for regression) - leads to a  root node in a tree  \pause
+\item continue  splitting/partitioning data until stopping criterion is reached  (number of observations in a node $ > 10$ and within node deviance $ > 0.01$ deviance of the root node) \pause
+\item  Prediction is mean or proportion of
+  successes of data in terminal nodes \pause
+\item Output is a decision tree \pause
+\item regression or classification function is nonlinear in predictors \pause
+\item Captures interactions
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile] \frametitle{Carseat Example}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(tree)}
+\hlkwd{data}\hlstd{(Carseats)}
+  \hlstd{Carseats} \hlkwb{=} \hlkwd{mutate}\hlstd{(Carseats,} \hlkwc{High}\hlstd{=}\hlkwd{factor}\hlstd{(}\hlkwd{ifelse} \hlstd{(}
+  \hlstd{Carseats}\hlopt{$}\hlstd{Sales} \hlopt{<=}\hlnum{8}\hlstd{,}
+    \hlstr{"No"}\hlstd{,}
+    \hlstr{"Yes "}\hlstd{))}
+  \hlstd{)}
+
+\hlstd{tree.carseats} \hlkwb{=} \hlkwd{tree}\hlstd{(High} \hlopt{~} \hlstd{Price} \hlopt{+} \hlstd{Income,}
+                     \hlkwc{data}\hlstd{=Carseats)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Carseat Example}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ \hlkwd{plot}\hlstd{(tree.carseats)}
+ \hlkwd{text}\hlstd{(tree.carseats)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/tree-1-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Partition}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{partition.tree}\hlstd{(tree.carseats)}
+\hlkwd{points}\hlstd{(Carseats}\hlopt{$}\hlstd{Price,Carseats}\hlopt{$}\hlstd{Income,} \hlkwc{col}\hlstd{=Carseats}\hlopt{$}\hlstd{High)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/partition-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Splits}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tree.carseats}
+\end{alltt}
+\begin{verbatim}
+## node), split, n, deviance, yval, (yprob)
+##       * denotes terminal node
+## 
+##  1) root 400 541.50 No ( 0.5900 0.4100 )  
+##    2) Price < 92.5 62  66.24 Yes  ( 0.2258 0.7742 ) *
+##    3) Price > 92.5 338 434.80 No ( 0.6568 0.3432 )  
+##      6) Price < 142 287 382.10 No ( 0.6167 0.3833 )  
+##       12) Income < 60.5 113 128.70 No ( 0.7434 0.2566 ) *
+##       13) Income > 60.5 174 240.40 No ( 0.5345 0.4655 ) *
+##      7) Price > 142 51  36.95 No ( 0.8824 0.1176 )  
+##       14) Income < 62.5 19   0.00 No ( 1.0000 0.0000 ) *
+##       15) Income > 62.5 32  30.88 No ( 0.8125 0.1875 ) *
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Summary}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ \hlkwd{summary}\hlstd{(tree.carseats)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Classification tree:
+## tree(formula = High ~ Price + Income, data = Carseats)
+## Number of terminal nodes:  5 
+## Residual mean deviance:  1.18 = 466.2 / 395 
+## Misclassification error rate: 0.325 = 130 / 400
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]{All Variables}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tree.carseats} \hlkwb{=}\hlkwd{tree}\hlstd{(High} \hlopt{~}  \hlstd{.} \hlopt{-}\hlstd{Sales,} \hlkwc{data}\hlstd{=Carseats )}
+\hlkwd{summary}\hlstd{(tree.carseats)}
+\end{alltt}
+\begin{verbatim}
+## 
+## Classification tree:
+## tree(formula = High ~ . - Sales, data = Carseats)
+## Variables actually used in tree construction:
+## [1] "ShelveLoc"   "Price"       "Income"      "CompPrice"   "Population" 
+## [6] "Advertising" "Age"         "US"         
+## Number of terminal nodes:  27 
+## Residual mean deviance:  0.4575 = 170.7 / 373 
+## Misclassification error rate: 0.09 = 36 / 400
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Overfitting?
+\end{frame}
+
+\begin{frame}\frametitle{Tree}
+\vspace{-.5in}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/tree-plot-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Classification Error}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed} \hlstd{(}\hlnum{2}\hlstd{)}
+\hlstd{train}\hlkwb{=}\hlkwd{sample} \hlstd{(}\hlnum{1}\hlopt{:} \hlkwd{nrow}\hlstd{(Carseats ),} \hlnum{200}\hlstd{)}
+\hlstd{Carseats.test}\hlkwb{=}\hlstd{Carseats [}\hlopt{-}\hlstd{train ,]}
+
+\hlstd{tree.carseats} \hlkwb{=}\hlkwd{tree}\hlstd{(High} \hlopt{~}  \hlstd{.} \hlopt{-}\hlstd{Sales,}
+                    \hlkwc{data}\hlstd{=Carseats,}\hlkwc{subset}\hlstd{=train )}
+\hlstd{tree.pred}\hlkwb{=}\hlkwd{predict} \hlstd{(tree.carseats ,Carseats.test ,}\hlkwc{type} \hlstd{=}\hlstr{"class"}\hlstd{)}
+\hlkwd{table}\hlstd{(tree.pred , Carseats.test}\hlopt{$}\hlstd{High)}
+\end{alltt}
+\begin{verbatim}
+##          
+## tree.pred No Yes 
+##      No   86   27
+##      Yes  30   57
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+ \hlstd{(}\hlnum{30} \hlopt{+} \hlnum{27}\hlstd{)} \hlopt{/}\hlnum{200}   \hlcom{# classification error}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.285
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+\begin{frame}\frametitle{Cost-Complexity Pruning}
+\begin{enumerate}
+\item Grow a large tree on training data, stopping when each terminal node has fewer than some minimum number of observations \pause
+\item Prediction for region $m$ is the Class $c$ that $max_{c} \hat{\pi}_{m c}$ \pause
+\item  Snip  off the least important splits via  cost-complexity pruning to the tree in order to obtain a sequence of best subtrees indexed by cost parameter $k$,  \pause
+
+$$\frac{N_{miss}}{N} - k |T| $$
+ missclassification error penalized  by number of terminal nodes  \pause
+\item Using $K$-fold cross validation, compute average cost-complexity for each $k$  \pause
+\item Pick subtree with smallest penalized error
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Pruning via Cross Validation )}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{2}\hlstd{)}
+\hlstd{cv.carseats} \hlkwb{=} \hlkwd{cv.tree}\hlstd{(tree.carseats,} \hlkwc{FUN}\hlstd{=prune.misclass)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\vspace{-.5in}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/cv_plot-1} 
+
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Pruned}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{prune.carseats} \hlkwb{=} \hlkwd{prune.misclass}\hlstd{(tree.carseats ,}\hlkwc{best} \hlstd{=}\hlnum{9}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{figure/plot_pruned-1} 
+
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Miss-classification after Selection}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{tree.pred}\hlkwb{=}\hlkwd{predict}\hlstd{(prune.carseats , Carseats.test,}
+                  \hlkwc{type}\hlstd{=}\hlstr{"class"}\hlstd{)}
+\hlkwd{table}\hlstd{(tree.pred ,Carseats.test}\hlopt{$}\hlstd{High)}
+\end{alltt}
+\begin{verbatim}
+##          
+## tree.pred No Yes 
+##      No   94   24
+##      Yes  22   60
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(}\hlnum{94} \hlopt{+}\hlnum{60}\hlstd{)}\hlopt{/}\hlnum{200}  \hlcom{# classified Correctly}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.77
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Next Class}
+Trees are simple to understand, but not as competitive with other supervised learning approaches for prediction/classification. \pause
+
+Ways to improving Trees through multiple trees in some ensemble:
+  \begin{itemize}
+  \item Bagging   \pause
+  \item Random Forests  \pause
+  \item Boosting  \pause
+  \item BART  (Bayesian Additive Regression Trees)  \pause
+  \end{itemize}
+Combining trees will yield improved prediction accuracy, but with loss of interpretability.
+
+
+\end{frame}
+\end{document}

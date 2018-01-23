@@ -1,0 +1,374 @@
+\documentclass[handout]{beamer}
+%\documentclass{beamer}
+% ***************************************************************
+
+\usepackage{graphicx}
+%\usepackage{psfrag, pstricks}
+\usepackage{amsmath,amssymb,array,comment,eucal}
+\input{macros}
+\title{Bayesian Variable Selection}
+
+\author{Hoff Chapter 9,  Mixtures of g-Priors Liang et al JASA}
+\date{\today}
+%\Logo(-1.9,7.3){\includegraphics[width=.5in]{../eps/duke}}
+% Optional: text to put in the bottom of each slide.
+% By default, the title of the talk will be placed there.
+%\slideCaption{\textit{October 28, 2005 }}
+
+\begin{document}
+% make the title slide
+\maketitle
+\begin{frame}[fragile]  \frametitle{US Air Example}
+
+<<data, echo=FALSE, fig.align='center', fig.width=7, fig.height=5>>=
+suppressMessages(library(HH))
+library(GGally)
+suppressMessages(library(dplyr))
+suppressMessages(library(ggplot2))
+data(usair) #pollution = read.table(hh("datasets/usair.dat"))
+colnames(usair) = c("SO2","temp","firms","popn", "wind", "precip", "rain")
+usair = select(usair, c(temp,firms,popn,wind, precip, rain, SO2))
+print(ggpairs(usair), comment=FALSE)
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{lm summary}
+<<lm, echo=F,comment="">>=
+poll.lm = lm(log(SO2) ~ temp + log(firms) + log(popn) + wind + precip+ rain, data=usair)
+tmp = capture.output(summary(poll.lm))
+n.out = length(tmp)
+for (i in 3:4) {cat(tmp[i], "\n")}
+for (i in 10:n.out) {cat(tmp[i], "\n")}
+@
+
+\end{frame}
+
+\begin{frame}\frametitle{Zellner's g-prior}
+  Centered model:  $$\Y = \1 \alpha + \X^c \b + \epsilon$$
+  where $\X^c$ is the centered design matrix where all variables have
+  had their mean subtracted \pause
+\begin{itemize}
+\item  $p(\phi) \propto 1/\phi$  \pause
+\item   $p(\alpha \mid \phi) \propto 1$ \pause
+\item  $\b \mid \alpha, \phi, \g \sim \N(0, g \phi^{-1}
+  ({\X^c}^\prime \X^c)^{-1})$ \pause
+%\item  take $g=n$
+\end{itemize}
+
+$$\b \mid \Y, \alpha, \phi \sim N\left(\frac{g}{1 + g} \bhat, \phi^{-1}\frac{g}{1 + g} (\X^T\X)^{-1} \right)$$
+$$ \phi \mid \Y \sim \Gam \left(\frac{n-1}{2}, \frac{\SSE + \frac{1}{1 + g} \bhat^T (\X^T\X) \bhat}{2} \right) $$
+\end{frame}
+
+\begin{frame} \frametitle{joint posterior draws of beta's}
+<<sim, echo=FALSE, fig.align='center', fig.width=3, fig.height=3>>=
+library(mvtnorm)
+n = nrow(usair)
+g = n
+p = ncol(usair) - 1
+bhat = coef(poll.lm)[-1]*g/(1+g)
+b.names = names(bhat)
+totss = var(log(usair$SO2))*(n-1)
+sse = sum(poll.lm$residuals^2)
+rss = totss - sse
+sigma2.bayes = (sse - rss/(1 + g))/(n-1)
+X = scale(model.matrix(poll.lm)[,-1], scale=F)
+cov.bhat = sigma2.bayes*solve(t(X) %*% X)
+beta = data.frame(rmvt(5000, delta=bhat, type="shifted", sigma=cov.bhat, df=n-1))
+colnames(beta) = b.names
+ggplot(beta, aes(`log(firms)`, `log(popn)`)) + geom_density_2d()
+@
+
+\end{frame}
+
+
+\begin{frame} \frametitle{Bayesian Variable Selection}
+  \begin{itemize}
+   \item Avoid the use of redundant variables (problems with
+    interpretations) \pause
+   \item Inclusion of un-necessary terms yields less precise
+  estimates, particularly if explanatory variables are highly
+  correlated with each other \pause
+  \item reduced MSE: reduced variance but possibly higher bias  \pause
+  \item it is too ``expensive'' to use all variables
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Bayesian Model Choice}
+  \begin{itemize}
+  \item
+Models for the variable selection problem  are based on a subset of
+  the $\X_1, \ldots \X_p$ variables  \pause
+
+\item Encode models with a  vector $\g = (\gamma_1, \ldots
+  \gamma_p)$  where  $\gamma_j \in \{0,1\}$
+  is an indicator for whether variable $\X_j$ should be included in
+  the model $\Mg$.  $\gamma_j = 0 \Leftrightarrow \beta_j
+  = 0$  \pause
+\item Each value of $\g$ represents one of the $2^p$ models.
+\pause
+\item Under model $\Mg$:
+ $$\Y \mid \alpha, \b, \sigma^2, \g \sim \N(\one \alpha + \Xg \b_\gamma,
+ \sigma^2 \I) $$
+Where $\Xg$ is design matrix  using the columns in $\X$ where
+ $\gamma_j = 1$ and $\b_{\g}$ is the subset of $\b$ that are non-zero.
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}\frametitle{Posterior Probabilities of Models}
+
+  \begin{itemize}
+  \item Posterior model probabilities
+$$p(\M_j \mid \Y) = \frac{ p(\Y \mid \M_j)p(\M_j)}{\sum_jp(\Y \mid
+  \M_j)p(\M_j)} $$ \pause
+Marginal likelihod of a model is proportional to
+$$ p(\Y \mid \Mg) = \iint p(\Y \mid \b_\gamma,
+  \sigma^2)p(\b_\gamma \mid \g, \sigma^2)p(\sigma^2 \mid \g)
+  d\b\, d\sigma^2$$\pause
+  \item Probability $\beta_j \ne 0$: $\sum_{\M_j:  \beta_j \ne 0}
+    p(\M_j \mid \Y)$ (marginal posterior inclusion probability) \pause
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Prior Distributions}
+  \begin{itemize}
+  \item Bayesian Model choice requires  proper prior distributions on
+  regression coefficients (exception parameters that are included in all models) \pause
+  \item Vague but proper priors may lead to paradoxes! \pause
+  \item Conjugate Normal-Gammas lead to closed form expressions for
+  marginal likelihoods, Zellner's g-prior is one of the most popular.
+  \end{itemize}
+
+\end{frame}
+\begin{frame}\frametitle{Zellner's g-prior within Models}
+Centered model:  $$\Y = \1 \alpha + \Xg^c \b_\gamma + \epsilon$$
+
+\begin{itemize}
+\item Common parameters $$p(\alpha, \phi) \propto \phi^{-1}$$  \pause
+\item Model Specific parameters
+$$\b_\gamma \mid \alpha, \phi, \g \sim \N(0, g \phi^{-1}
+  ({\Xg^c}^\prime \Xg^c)^{-1})$$ \pause
+%\item  take $g=n$
+\item Marginal likelihood of $\Mg$  is proportional
+to $$ p(\Y \mid \Mg) = C (1 + g)^{\frac{n-p-1}{2}} ( 1 + g (1 -
+ R^2_\gamma))^{- \frac{(n-1)}{2}}$$
+where $R^2_\gamma$ is the usual $R^2$ for model $\Mg$ and $C$ is a constant that is $p(\Y \mid \M_0)$ (model with intercept alone)
+\pause
+\item  uniform distribution over space of models $p(\Mg) = 1/(2^p)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{USair Data: Enumeration of All Models}
+<<bas.lm, echo=TRUE>>=
+library(devtools)
+suppressMessages(install_github("merliseclyde/BAS"))  # current version
+library(BAS)
+poll.bma = bas.lm(log(SO2) ~ temp + log(firms) +
+                             log(popn) + wind +
+                             precip+ rain,
+                  data=usair,
+                  prior="g-prior",
+                  alpha=41,    # g = n
+                  n.models=2^7,# enumerate (can omit)
+                  method="deterministic")   # fast enumeration
+@
+
+\end{frame}
+
+\begin{frame}\frametitle{residual plot)}
+<<resplots, fig.width=3.5, fig.height=3.5, fig.align='center'>>=
+plot(poll.bma, which=1)
+@
+\end{frame}
+
+\begin{frame}\frametitle{Model Complexity)}
+<<sizeplots, fig.width=3.5, fig.height=3.5, fig.align='center'>>=
+plot(poll.bma, which=3)
+@
+\end{frame}
+
+\begin{frame}\frametitle{Inclusion Probabilities)}
+<<pipplots, fig.width=3.5, fig.height=3.5, fig.align='center'>>=
+plot(poll.bma, which=4)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Model Space}
+<<>>=
+summary(poll.bma)
+@
+\end{frame}
+
+
+\begin{frame}\frametitle{Summary}
+<<summary,comment="", fig.height=5, fig.align='center'>>=
+image(poll.bma)
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Coefficients}
+<<coef>>=
+ beta = coef(poll.bma, n.models=1)
+ beta
+@
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Coefficients}
+<<coefplot>>=
+ par(mfrow=c(2,2));  plot(beta, subset=c(3, 6))
+
+@
+
+\end{frame}
+
+\begin{frame}[fragile] \frametitle{Bayesian Confidence Intervals}
+<<>>=
+confint(beta)
+@
+\end{frame}
+
+\end{document}
+
+
+\begin{frame}
+  \frametitle{Problem with g Prior}
+
+
+
+The Bayes factor for comparing $\Mg$ to the null
+model:
+$$
+ BF(\Mg : \M_0) =    (1 + g)^{(n - 1 - p_\g)/2} (1 + g(1 - \R^2))^{(n-1)/2}
+$$
+
+\begin{itemize}
+\item Let $g$ be a fixed constant and take $n$ fixed.
+\item Let $F = \frac{R_g^2/\pg}{(1 - R_\g^2)/(n - 1 - \pg)}$
+\item As $R^2_\g \to 1$, $F \to \infty$ LR test would reject $H_0$
+\end{itemize}
+
+
+usual $F$ statistic for  comparing model $\Mg$ to $\M_0$
+
+\end{frame}
+\section{Mortality}
+\begin{frame}[fragile]
+\frametitle{Mortality \& Pollution}
+  \begin{itemize}
+  \item Data from Statistical Sleuth 12.17 \pause
+  \item 60 cities \pause
+\item response Mortality \pause
+\item measures of HC, NOX, SO2 \pause
+\item Is pollution associated with mortality after adjusting for other
+  socio-economic and meteorological factors? \pause
+\item 15 predictor variables implies $2^{15} = 32,768$ possible models
+  \pause
+\item Use Zellner-Siow Cauchy prior  $1/g \sim  G(1/2, n/2)$
+  \end{itemize}
+\begin{verbatim}
+mort.bma = bas.lm(MORTALITY ~ ., data=mortality,
+                  prior="ZS-null",
+                  alpha=60,  n.models=2^15,
+                  update=100, initprobs="eplogp")
+\end{verbatim}
+\end{frame}
+
+\begin{frame}\frametitle{Posterior Distributions}
+  \includegraphics[height=3.5in]{mort-sum}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Posterior Probabilities}
+  \begin{itemize}
+  \item What is the probability that there is no pollution effect? \pause
+\item Sum posterior model probabilities over all models that include
+  no pollution variables \pause
+\begin{verbatim}
+> which.mat = list2matrix.which(mort.bma,1:(2^15))
+> poll.in = (which.mat[, 14:16] %*% rep(1, 3)) == 0
+> sum(poll.in * mort.bma$postprob)
+[1] 0.9889641
+\end{verbatim}\pause
+\item Posterior probability is $0.011$ \pause
+\item Odds that there is an effect  $(1 - .011)/(.011) = 89.6$ \pause
+\item Prior Odds $7.9 = (1 - .2^3)/.2^3$ \pause
+\item Bayes Factor for a pollution effect $ 89.6/7.9 = 11.3$ \pause
+\item Bayes Factor for NOX based on marginal inclusion probability
+  $0.917/(1 - 0.917) = 11.0$ \pause
+\item Marginal inclusion probability for logHC =  0.427144
+\item Marginal inclusion probability for logSO2 = 0.218978
+\end{itemize}
+Bayes Factors are not additive!
+\end{frame}
+\begin{frame}\frametitle{Model Space}
+  \includegraphics[height=3.5in]{mort-image}
+\end{frame}
+\begin{frame}\frametitle{Coefficients}
+  \includegraphics[height=3.5in]{mort-beta1}
+\end{frame}
+
+\begin{frame}\frametitle{Coefficients}
+  \includegraphics[height=3.5in]{mort-beta2}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Effect Estimation}
+  \begin{itemize}
+  \item  Coefficients in each model are adjusted for other variables
+    in the model
+\item OLS:  leave out a predictor with a non-zero coefficient then
+  estimates are biased!
+\item Model Selection in the presence of high correlation, may leave
+  out "redundant" variables;
+\item improved MSE for prediction (Bias-variance tradeoff)
+\item Bayes is biased anyway so should we care?
+\item What is meaning of $\sum_{\g} \beta_{j \g} \gamma_j P(\Mg \mid \Y)$
+  \end{itemize}
+  Problem with confounding!  Need to change prior?
+
+\end{frame}
+
+\begin{frame}\frametitle{Model Selection}
+  Selection of a single model has the following problems \pause
+  \begin{itemize}
+  \item When the criteria suggest that several models are equally
+    good, what should we report?  Still pick only one model? \pause
+\item What do we report for our uncertainty after selecting a model?  \pause
+  \end{itemize}
+Typical analysis ignores model uncertainty! \pause
+\vfill
+
+Winner's Curse
+\end{frame}
+
+
+\begin{frame}\frametitle{ Other Problems}
+
+
+  \begin{itemize}
+  \item Computational \pause
+  if $p > 35$  enumeration is difficult \pause
+  \begin{itemize}
+  \item Gibbs sampler or Random-Walk algorithm on $\g$ \pause
+  \item poor convergence/mixing with high correlations \pause
+  \item Metropolis Hastings algorithms more flexibility \pause
+  \item "Stochastic Search" (no guarantee samples represent posterior) \pause
+  \item in BMA all variables are included, but coefficients are
+   shrunk to 0; alternative is to use Shrinkage methods \pause
+  \end{itemize}
+\item Prior Choice: Choice of prior distributions on $\b$ and on $\g$ \pause
+\end{itemize}
+
+\bigskip Model averaging versus Model Selection  -- what are objectives?
+
+
+\end{frame}
+\end{document}

@@ -1,0 +1,11 @@
+seeds = read.table("seeds.txt", header=T)
+seeds = read.table("http://www.stat.duke.edu/courses/Fall08/sta290/datasets/seeds.txt", header=T)
+summary(seeds)
+par(mfrow=c(1,1))
+plot(seeds)
+
+seeds.glm4 = glm(SURV ~  SPECIES*CAGE*log(LIGHT)*factor(LITTER), data=seeds, family=binomial)
+anova(seeds.glm4, test="Chi")
+library(mgcv)
+
+table(seeds$PLOT, seeds$SUBPLT)
