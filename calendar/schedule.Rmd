@@ -12,5 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, message=F, warning=F, results='asis'}
 library(readr)
 schedule <- read_csv("../_csv/schedule.csv")
+options(knitr.kable.NA = '')
 knitr::kable(schedule, format="html")
 ```
