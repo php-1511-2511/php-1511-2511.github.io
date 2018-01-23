@@ -24,13 +24,13 @@ noita:
         url: /calendar
       - name: Resources
         url: /resources/
-      - name: Sakai
-        url: https://sakai.duke.edu/portal/site/sta521-s17
+      - name: Canvas
+        url: /canvas
         absolute: true
       - name: Github
-        url: https://github.com/STA521-S17
+        url: https://github.com/php-1511-2511
         absolute: true
 social:
-  github: merliseclyde
-  linkedin: merliseclyde
+  github: sullivanstatistics
+  linkedin: sullivanstats
 permalink: /404.html
