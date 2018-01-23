@@ -1,0 +1,16 @@
+---
+title: "Untitled"
+author: "Adam J Sullivan"
+date: "January 23, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=F, warning=F, results='asis'}
+library(readr)
+schedule <- read_csv("../_csv/schedule.csv")
+knitr::kable(schedule, format="html")
+```
