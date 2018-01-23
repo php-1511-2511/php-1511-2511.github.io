@@ -3,6 +3,7 @@ layout: default
 title: Calendar
 ---
 
+<center>
 <table>
 <thead>
 <tr>
@@ -738,4 +739,4 @@ Lab 12: Final Review
 </tbody>
 </table>
 
-
+</center>
