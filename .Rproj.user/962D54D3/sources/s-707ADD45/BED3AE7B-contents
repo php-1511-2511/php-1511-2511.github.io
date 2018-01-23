@@ -18,11 +18,11 @@ This course is designed for graduate and advanced undergraduate students who wil
 |------------+---------------------+---------------------|
 |Professor   | [Adam J Sullivan, PhD ](https://vivo.brown.edu/display/asulliv3) | [adam_sullivan@brown.edu](mailto:adam_sullivan@brown.edu)
 |:-----------|:--------------------|:-------------------|
-|TA         |Yi Cao   | [yi_cao2@brown.edu](mailto:yi_cao2@brown.edu) 
+|TA         | Yi Cao   | [yi_cao2@brown.edu](mailto:yi_cao2@brown.edu) 
 |:-----------|:--------------------|:-------------------|
-|TA         |Ludan Zhang | [ludan_zhang@brown.edu](mailto:ludan_zhang@brown.edu) 
+|TA         | Ludan Zhang | [ludan_zhang@brown.edu](mailto:ludan_zhang@brown.edu) 
 |:-----------|:--------------------|:-------------------|
-|Additional Tutoring / Office Hourse         | Julia Mullokandova   | [julia_mullokandova@brown.edu ](mailto:julia_mullokandova@brown.edu ) 
+| Additional Tutoring / Office Hourse         | Julia Mullokandova   | [julia_mullokandova@brown.edu ](mailto:julia_mullokandova@brown.edu ) 
 |------------+--------------------+-------------------|
 
 
