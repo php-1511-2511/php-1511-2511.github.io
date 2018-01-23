@@ -15,7 +15,7 @@ After successful completion of this course you will understand and be able to de
 
 1. Recognize when data should be analyzed by regression
 2. Plan an appropriate analysis
-3. Bring in, Clean and Analyze dats with R. 
+3. Bring in, Clean and Analyze data with R. 
 4. Coherently summarize results. 
 
 
@@ -40,7 +40,7 @@ Students in this course will be expected to do the following:
 Course topics will be drawn (but subject to change) from
 
 * Linear Regression
-* Linear Regresson Diagnostics
+* Linear Regression Diagnostics
 * Generalized Linear Models
 * Nonlinear Regression
 * Robust Regression
@@ -99,20 +99,17 @@ Other resources for reference books, statistical computing using R,
 Students will be evaluated based on:
 
 
--------------------------------------------------
-Grade Category                          Percentage
---------------------------------------- ---------------------------------
-Participation                           10%
+| Grade  | Category | Percentage |
 
-Homework                                20%
+| --------------- | ----------------- | ------------- |
 
-Exam 1 (03/12/2017)                     20%
+| Participation       |                    10%   |
+| Homework             |                   20%  | 
+| Exam 1 (03/12/2017)   |                  20% | 
+| Exam 2 (05/9-18/2017)  |                 20%  |
+| Reproducible Research Project  |           30% |
 
-Exam 2 (05/9-18/2017)                   20%
-
-Reproducible Research Project           30%
---------------------------------------------------
-
+* * * 
 
 ## Evaluation Category Details
 
@@ -141,7 +138,7 @@ An in class exam will be given. Students will be expected to interpret and analy
 
 Students will spend the semester working on a Reproducible Research Project. This project will require:
 
-1. Asking a relevant public Health question for those in 2511 and a relavant scientific question for those in 1511. 
+1. Asking a relevant public Health question for those in 2511 and a relevant scientific question for those in 1511. 
 2. Identify available data to answer this question. 
 3. Model the question with appropriate statistical models. 
 4. Write up a report with appropriate tables, graphs and results. 
@@ -163,38 +160,13 @@ Given the nature of this course with multiple levels of students from Undergradu
 
 ### Undergraduates
 
--------------------------------------------------
-Grade Category                  Comments
-------------------------------- ---------------------------------
-Participation                   Graded the same as all students, Must be in class and prepared to work in groups. 
+| Grade Category | Comments | 
+| ----------------- | ---------------------------------------------------- |
+| Participation  |                 Graded the same as all students, Must be in class and prepared to work in groups.  |
+| Homework        |                Students will be expected to complete a portion of the material with the exception of some more difficult problems which may be attempted but do not have to be complete. | 
+| Exam 1 & 2              |        Students will be expected to complete a portion of the exam.  |
+| Reproducible Research Project |  Students will be expected to complete a reproducible research project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work. |
 
-Homework                        Students will be expected to complete a portion of the material with the exception of some more difficult problems which may be attempted but do not have to be complete.
-
-Exam 1 & 2                      Students will be expected to complete a portion of the exam. 
-
-
-Reproducible Research Project   Students will be expected to complete a reproducible resaerch project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work. 
---------------------------------------------------
-
-
-
-
-
-### Graduate Students
-
-
--------------------------------------------------
-Grade Category                  Comments
-------------------------------- ---------------------------------
-Participation                   Graded the same as all students, Must be in class and prepared to work in groups. 
-
-Homework                        Students will be expected to complete the entire assignment. 
-
-Exam 1 & 2                      Students will be expected to complete the entire exam. 
-
-
-Reproducibile Research Project  Students will be expected to complete a reproducible resaerch project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work. 
---------------------------------------------------
 
 
 
@@ -210,7 +182,7 @@ Reproducibile Research Project  Students will be expected to complete a reproduc
   to a dedicated server running RStudio Pro for all students that will
   have a unified environment.  See the
   [Resources]({{site.baseurl}}/resources) page for books and other
-  reseources for learning R.
+  resources for learning R.
 
 
 ### Homework:
@@ -237,13 +209,6 @@ All assignments will be time stamped and late work will be penalized based on th
 * Regrade requests must be made **within 3 days** of when the assignment is returned, and must be submitted in writing. These will be honored if points were tallied incorrectly, or if you feel your answer is correct but it was marked wrong. No regrade will be made to alter the number of points deducted for a mistake. There will be no grade changes after the final exam.
 
 
-
-
-
-#### <a name="exams"></a>Key Dates:
-
-See the Course Calendar for dates for the Midterms and other
-assignments.  
 
 
 
