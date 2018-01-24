@@ -1,5 +1,5 @@
 Week,Date,Topic,Handouts,Readings,HW
-Week 1,24-Jan,Course Introduction / What is Regression?,[Slides](../knitr/Lec-01-Intro/intro.pdf),Read  FOX: Chapters 1 - 3,Install [Rstudio](https://www.rstudio.com/products/rstudio/download3/) and [Go through Introduction to R]({{ site.baseurl }}/Introduction-to-R/)
+Week 1,24-Jan,Course Introduction / What is Regression?,[Slides](../knitr/Lec-01-Intro/intro.pdf),Read  FOX: Chapters 1 - 3,Install [Rstudio](https://www.rstudio.com/products/rstudio/download3/) and [Go through Introduction to R](https://php-1511-2511.github.io/Introduction-to-R/)
 Week 2,29-Jan,Simple and Multiple Linear Regression,,Read  FOX: Chapter 5,
 ,31-Jan,Inference for Linear Regression,,Read  FOX: Chapter 6,
 ,,Lab1: Rmarkdown/Dplyr/Manipulating Data in R,,,

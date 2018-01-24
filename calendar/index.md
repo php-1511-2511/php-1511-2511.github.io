@@ -3,15 +3,14 @@ layout: default
 title: Calendar
 ---
 
-
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="3%"></col>
 <col width="2%"></col>
-<col width="17%"></col>
-<col width="15%"></col>
+<col width="16%"></col>
+<col width="14%"></col>
 <col width="9%"></col>
-<col width="51%"></col>
+<col width="53%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -30,7 +29,7 @@ title: Calendar
 <td align="left">Course Introduction / What is Regression?</td>
 <td align="left"><a href="../knitr/Lec-01-Intro/intro.pdf">Slides</a></td>
 <td align="left">Read FOX: Chapters 1 - 3</td>
-<td align="left">Install <a href="https://www.rstudio.com/products/rstudio/download3/">Rstudio</a> and <a href="%7B%7B%20site.baseurl%20%7D%7D/Introduction-to-R/">Go through Introduction to R</a></td>
+<td align="left">Install <a href="https://www.rstudio.com/products/rstudio/download3/">Rstudio</a> and <a href="https://php-1511-2511.github.io/Introduction-to-R/">Go through Introduction to R</a></td>
 </tr>
 <tr class="even">
 <td align="left">Week 2</td>
@@ -370,4 +369,5 @@ title: Calendar
 </tr>
 </tbody>
 </table>
+
 
