@@ -24,8 +24,8 @@ noita:
         url: /calendar
       - name: Resources
         url: /resources/
-      - name: Canvas
-        url: /canvas
+      - name: Links
+        url: /links
         absolute: true
       - name: Github
         url: https://github.com/php-1511-2511

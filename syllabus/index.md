@@ -76,8 +76,7 @@ We will use this as a reference to some methods as well as a resource for data a
 This is  available freely available as an eBook  [Get it
   ](http://www-bcf.usc.edu/~gareth/ISL/)
   .  If you prefer a paperback version you may buy it at cost from
-  Springer (see links from library site) or purchase a hardback version at the Duke
-Bookstore or through Amazon.
+  Springer (see links from library site) or purchase a hardback version at the through Amazon.
 
 For additional information check out [Videos for
   the ISL book](https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/)  
@@ -170,6 +169,20 @@ Given the nature of this course with multiple levels of students from Undergradu
 
 * * *
 
+### Graduate Students
+
+| Grade Category | Comments | 
+| ----------------- | ---------------------------------------------------- |
+| Participation  |                 Graded the same as all students, Must be in class and prepared to work in groups.  |
+| Homework        |                 Students will be expected to complete the entire assignment. | 
+| Exam 1 & 2              |       Students will be expected to complete the entire exam.  |
+| Reproducible Research Project |  Students will be expected to complete a reproducible resaerch project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work.  |
+
+
+
+
+* * *
+
 
 ### Statistical Analysis:
 
@@ -183,44 +196,16 @@ Given the nature of this course with multiple levels of students from Undergradu
   resources for learning R.
 
 
-### Homework:
-
-  Assignments are in the [Course Calendar]({{site.baseurl}}/calendar). There will be about 10 of these.
-
-The objective of the problem sets is to help you develop a more in-depth understanding of the material and help you prepare for exams and projects. Grading will be based on completeness as well as accuracy. 
-
-
-
-
-**Submission instructions:** You will submit your HW on canvas by
-  uploading a PDF.
-
-All assignments will be time stamped and late work will be penalized based on this time stamp (see late work policy below).
-
-
-
-* Late work policy for Homework:
-    * next day: lose 25% of points
-    * later than next day: lose all points
-
-
-* Regrade requests must be made **within 3 days** of when the assignment is returned, and must be submitted in writing. These will be honored if points were tallied incorrectly, or if you feel your answer is correct but it was marked wrong. No regrade will be made to alter the number of points deducted for a mistake. There will be no grade changes after the final exam.
-
-
-
-
-
 
 * * *
 
 ### Email and Discussion Forums
 
-We will be using
+* We will be using
 [Slack](https://join.slack.com/t/php-1511-2511/shared_invite/enQtMzAzMjA2MzU5NDYwLTY3MWIyZmE5NjFiZDUyNTAyZjBhMTk3MjY2OWYwMWU4ZGNiYzc4OTUwMWYzYjU5MmZjYTc0NDA0ZmJjMzM5NGE45r) for class
-discussion. The system is highly catered to getting you help fast and
-efficiently from classmates, the TAs, and myself. Rather than emailing
-questions to the teaching staff, I encourage you to post your
-questions on Slack (peer answers earn participation points!). 
+discussion. 
+* The system is highly catered to getting you help fast and efficiently from classmates, the TAs, and myself. 
+* Rather than emailing questions to the teaching staff, I encourage you to post your questions on Slack (peer answers earn participation points!). 
 
 
 
