@@ -39,7 +39,7 @@ Week 1
 Course Introduction / What is Regression?
 </td>
 <td style="text-align:left;">
-<a href="../knitr/Lec-1-Intro/intro.pdf">Slides</a>
+<a href="../knitr/Lec-01-Intro/intro.pdf">Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapters 1 - 3
