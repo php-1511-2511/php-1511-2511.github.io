@@ -65,8 +65,7 @@ are available on the  [Calendar]({{site.baseurl}}/calendar)
   useful resources are provided on the
   [Resource]({{site.baseurl}}/resources) menu
 
-* Link to [Canvas]({{site.baseurl}}/canvas) allows access to Video
-  Lectures, Gradebook, the  Piazza discussion forum
+* Link to [Links]({{site.baseurl}}/links) allows access to canvas, slack and the RStudio server. 
 
 * [Github](http://github.com/php-1511-2511) for Class Github Organization
   
