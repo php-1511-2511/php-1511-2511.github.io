@@ -1,14 +1,13 @@
 ---
-layout: page
-title: Syllabus
+title: "PHP 1511/2511 Applied Regression Analysis"
+author: "Adam J Sullivan, PhD"
+date: "Spring 2018"
+output: pdf_document
 ---
 
 
-[PDF of Syllabus](../syllabus/syllabus.pdf)
 
 ## Course goals & objectives:
-
-
 
 
 This course provides a survey of regression techniques for outcomes common in public health data including continuous, binary, count and survival data.  Emphasis is on developing a conceptual understanding of the application of these techniques to solving problems, rather than to the numerical details. Extensive use of the computer will be made for analysis of datasets.
@@ -58,7 +57,6 @@ Course topics will be drawn (but subject to change) from
 
 ### Required
 
-{:.right}
 ![Applied Regression Analysis and Generalized Linear Models](../images/fox.jpg)
 
  **Applied Regression Analysis and Generalized Linear Models** by
@@ -70,7 +68,7 @@ Course topics will be drawn (but subject to change) from
 
 ### Suggested
 
-{:.right}
+
 ![An Introduction to Statistical Learning](../images/ISL.jpg)
 
  **An Introduction to Statistical Learning: with Applications in R** by 
@@ -96,6 +94,7 @@ Other resources for reference books, statistical computing using R,
 
 * * *
 
+\newpage
 
 ## Grading:
 
@@ -182,8 +181,7 @@ Given the nature of this course with multiple levels of students from Undergradu
 
 
 
-
-* * *
+\newpage 
 
 ### Graduate Students
 
@@ -232,9 +230,9 @@ Before posting a new question please make sure to check if your question has alr
 Note that it is more efficient to answer most statistical questions
 ``in person" so make use of Office Hours.
 
-* * *
 
 
+\newpage
 
 
 ## Students with Special Needs
