@@ -11,8 +11,9 @@ link: yes
 reading:  <a href="https://php-1511-2511.github.io/Introduction-to-R/">Introduction to R </a>
 slides: yes
 layout: page
-css: slides.css
+css: "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/knitr/slides.css"
 ---
+
 
 
 # PHP 1511/2511: Applied Regression Analysis
