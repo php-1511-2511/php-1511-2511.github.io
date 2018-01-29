@@ -3,8 +3,8 @@ title: "Homework 1"
 author: "Your Name"
 date: "February 5, 2018 at 11:59pm"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 
@@ -30,8 +30,8 @@ output:
 This homework will use the following data:
 
 
-* `hw2a` - https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1a.csv
-* `hw2b` - https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1b.csv
+* `hw1a` - https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1a.csv
+* `hw1b` - https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1b.csv
 
 ##Part 1
 
