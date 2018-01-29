@@ -7,7 +7,7 @@ title: Course Resources & Links
 * Applied Regression Analysis and Generalized Linear Models
   John Fox Jr.   [Amazon](https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-ebook/dp/B00YFSZPTE).
 * An Introduction to Statistical Learning: with Applications in R
-  Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani [Online PDF]http://www-bcf.usc.edu/~gareth/ISL/)
+  Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani [Online PDF](http://www-bcf.usc.edu/~gareth/ISL/)
 
 
 
@@ -23,7 +23,7 @@ title: Course Resources & Links
 
 Books & Resources for learning R
 
-* [Introduction to R](https://php-1511-2511.githu.io/Introduction-to-R/)  A tutorial written by Professor Sullivan on the basics of R. 
+* [Introduction to R](https://php-1511-2511.github.io/Introduction-to-R/)  A tutorial written by Professor Sullivan on the basics of R. 
 * [R for Data Science](http://r4ds.had.co.nz) - Grolemund, Wickham 
 O'Reilly, 1st edition, 2016 (ISBN:)
 * [ggplot2: Elegant Graphics for Data Analysis Use R! Buy it at
