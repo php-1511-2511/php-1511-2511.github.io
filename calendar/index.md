@@ -57,7 +57,7 @@ Week 2
 Simple and Multiple Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../knitr/Lec-02-Iinear/linear.pdf">PDF Slides</a> <a href="../knitr/Lec-02-linear/linear.html">HTML Slides</a>
+<a href="../knitr/Lec-02-Linear/linear.pdf">PDF Slides</a> <a href="../knitr/Lec-02-Linear/linear.html">HTML Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 5
