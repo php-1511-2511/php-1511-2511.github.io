@@ -3,9 +3,9 @@ title: "R and Basic Linear Regression"
 author: "Adam J Sullivan, PhD"
 date: "1/29/2018"
 output:
+  beamer_presentation: default
   ioslides_presentation: 
     widescreen: true
-  beamer_presentation: default
 notes: ''
 link: yes
 reading:  <a href="https://php-1511-2511.github.io/Introduction-to-R/">Introduction to R </a>
@@ -19,6 +19,7 @@ knitr::opts_chunk$set(error = TRUE)
 knitr::opts_chunk$set(warning=FALSE)
 knitr::opts_chunk$set(message=FALSE)
 knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=TRUE)
 ```
 
 # Linear Regression 
@@ -402,11 +403,6 @@ ggplot(comic_characters, aes(year, appearances)) +
 
 
 
-## Population Regression Line
-
-- We have hypothesized that as worst area increases, time decreases.
-- We can see from the scatter plot that it appears we could have a linear relationship.
-
 
 
 
@@ -416,7 +412,7 @@ ggplot(comic_characters, aes(year, appearances)) +
 - One way we could quantify this is
 \[\mu_{y|x} = \beta_0 + \beta_1X\]
 - where
-    - $\mu_{y|x}$ is the mean time for those whose worst area is $x$. 
+    - $\mu_{y|x}$ is the mean time for those whose year is $x$. 
     - $\beta_0$ is the $y$-intercept (mean value of $y$ when $x=0$, $\mu_y|0$)
     - $\beta_1$ is the slope (change in mean value of $Y$ corresponding to 1 unit increase in $x$).
 
@@ -426,7 +422,7 @@ ggplot(comic_characters, aes(year, appearances)) +
 
 ## Population Regression Line
 
-- With the population regression line we have that the distribution of time for those at a particular worst area, $x$, is approximately normal with mean, $\mu_{y|x}$, and standard deviation, $\sigma_{y|x}$. 
+- With the population regression line we have that the distribution of appearances for those at a particular year, $x$, is approximately normal with mean, $\mu_{y|x}$, and standard deviation, $\sigma_{y|x}$. 
 
 
 
@@ -434,7 +430,7 @@ ggplot(comic_characters, aes(year, appearances)) +
 
 ## Population Regression Line
 
-![Distribution of Y and different levels of X.](./assets/img/pic1.png)
+![Distribution of Y and different levels of X.](Pic1.png)
 
 
 
@@ -580,30 +576,25 @@ glance(model)
 ```{r, echo=FALSE}
 
 model <- lm(appearances~year, data=comic_characters)
-tidy(model, conf.int=TRUE)[,-c(3:4)]
+
 glance(model)
 ```
 
+
+## Example: Year and Appearances
+
+```{r, echo=FALSE}
+
+model <- lm(appearances~year, data=comic_characters)
+
+glance(model)
+```
 
 ## Interpreting the Coefficients: Continuous
 
 - Before we can discuss the regression coefficients we need to understand how to interpret what these coefficients mean. 
 -  $\beta_0$ is mean value for $Y$ when $X=0$.
-- $\beta_1$ is the mean change in $Y$ when you increase $X$ by one unit. 
-
-
-
-
-## Interpreting the Coefficients: Continuous
-
-- We consider $\beta_0$ first. 
-- Does this value have meaning with our current data? 
-    - The estimated value of time level is only applicable to worst area within the range of our data. 
-    - Many times the intercept is scientifically meaningless. 
-    - Even if meaningless on its own, $\beta_0$ is necessary to specify the equation of our regression line. 
-    - **Note:** People do sometimes use mean centered data and the intercept is then interpretable.
-
-
+- What about $\beta_1$?
 
 
 ## Interpreting the Coefficients: Continuous
@@ -615,6 +606,20 @@ $$
     &= \beta_1
 \end{aligned}
 $$
+
+
+## Interpreting the Coefficients: Continuous
+
+- We consider $\beta_0$ first. 
+- Does this value have meaning with our current data? 
+    - The estimated value of time level is only applicable to year within the range of our data. 
+    - Many times the intercept is scientifically meaningless. 
+    - Even if meaningless on its own, $\beta_0$ is necessary to specify the equation of our regression line. 
+    - **Note:** People do sometimes use mean centered data and the intercept is then interpretable.
+
+
+
+
 
 
 
