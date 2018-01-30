@@ -3,6 +3,7 @@ layout: default
 title: Calendar
 ---
 
+
 <table>
 <thead>
 <tr>
@@ -77,6 +78,7 @@ Read FOX: Chapter 5
 Inference for Linear Regression
 </td>
 <td style="text-align:left;">
+<a href="../knitr/Lec-03-Lin-Inf/mult-linear.pdf">PDF Slides</a> <a href="../knitr/Lec-03-Lin-Inf/mult-linear.html">HTML Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 6

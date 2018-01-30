@@ -493,10 +493,12 @@ glance(mod.final)</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Inference on Linear Regressions</h2></hgroup><article  id="inference-on-linear-regressions">
 
+</article></slide><slide class=""><hgroup><h2>Inference on Linear Regressions</h2></hgroup><article  id="inference-on-linear-regressions-1">
+
 <ol>
 <li>Overall F Test of Model</li>
 <li>Individual Coefficient Tests</li>
-<li>F Test Comparing Models</li>
+<li>Testing Groups of Variables</li>
 </ol>
 
 </article></slide><slide class=""><hgroup><h2>Overall Model F test</h2></hgroup><article  id="overall-model-f-test">
@@ -508,36 +510,16 @@ glance(mod.final)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Overall Model F test: Bike Sharing</h2></hgroup><article  id="overall-model-f-test-bike-sharing">
 
-<pre class = 'prettyprint lang-r'>summary(mod.final)</pre>
-
-<pre >## 
-## Call:
-## lm(formula = count ~ season + weather + humidity + windspeed, 
-##     data = bikes)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -333.53 -113.84  -35.58   76.34  727.21 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 298.33489    7.36160  40.526  &lt; 2e-16 ***
-## season2     115.80072    4.43880  26.088  &lt; 2e-16 ***
-## season3     148.35321    4.50438  32.935  &lt; 2e-16 ***
-## season4     118.49438    4.51126  26.266  &lt; 2e-16 ***
-## weather2     19.98751    3.79204   5.271 1.38e-07 ***
-## weather3      0.12379    6.36458   0.019  0.98448    
-## weather4    162.25969  162.65542   0.998  0.31851    
-## humidity     -3.49295    0.09609 -36.349  &lt; 2e-16 ***
-## windspeed     0.63287    0.20523   3.084  0.00205 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 162.6 on 10877 degrees of freedom
-## Multiple R-squared:  0.195,  Adjusted R-squared:  0.1944 
-## F-statistic: 329.3 on 8 and 10877 DF,  p-value: &lt; 2.2e-16</pre>
+<pre class = 'prettyprint lang-r'>glance(mod.final)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Overall Model F test: Bike Sharing</h2></hgroup><article  id="overall-model-f-test-bike-sharing-1">
+
+<pre >##   r.squared adj.r.squared    sigma statistic p.value df    logLik      AIC
+## 1 0.1949699     0.1943778 162.5889  329.2869       0  9 -70865.13 141750.3
+##        BIC  deviance df.residual
+## 1 141823.2 287534958       10877</pre>
+
+</article></slide><slide class=""><hgroup><h2>Overall Model F test: Bike Sharing</h2></hgroup><article  id="overall-model-f-test-bike-sharing-2">
 
 <ul>
 <li>We have an F Statistic of 3329.3</li>
@@ -549,8 +531,108 @@ glance(mod.final)</pre>
 </article></slide><slide class=""><hgroup><h2>Individual Coefficients \(t\)-test</h2></hgroup><article  id="individual-coefficients-t-test">
 
 <ul>
-<li>We can test each individual</li>
-</ul></article></slide>
+<li>We can test each individual coefficients.</li>
+<li>The hypothesis we test is that: \[H_0:\beta_i=0\] \[H_1=\beta_i\ne0\]</li>
+<li>We do this with a t-test.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Individual Coefficients \(t\)-test</h2></hgroup><article  id="individual-coefficients-t-test-1">
+
+<ul>
+<li>With the t-test we have that: \[ t_i=\dfrac{\beta_i}{se(\beta_i)}\]</li>
+<li>Then we can test this with the \(t\)-distribution.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Individual Coefficients \(t\)-test</h2></hgroup><article  id="individual-coefficients-t-test-2">
+
+<ul>
+<li>Consider out Bike model:</li>
+</ul>
+
+<p>\[ 
+\begin{align}
+E[count] &amp;= \beta_0 +  \beta_1 season(Summer) + \beta_2 season(Fall) + \\
+&amp; \beta_3 season(Winter)  +    \beta_4 weather(2) +  \beta_5 weather(3) + \\
+&amp;  \beta_6 weather(4) + \beta_7 humidity + \beta_8 windspeed\\
+\end{align}
+\]</p>
+
+<pre class = 'prettyprint lang-r'>tidy(mod.final)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Individual Coefficients \(t\)-Test</h2></hgroup><article  id="individual-coefficients-t-test-3">
+
+<pre >##          term    estimate    std.error    statistic       p.value
+## 1 (Intercept) 298.3348913   7.36160428  40.52579846  0.000000e+00
+## 2     season2 115.8007186   4.43879843  26.08830302 1.403611e-145
+## 3     season3 148.3532069   4.50438417  32.93529177 7.517679e-227
+## 4     season4 118.4943844   4.51125815  26.26637190 1.738000e-147
+## 5    weather2  19.9875113   3.79203900   5.27091395  1.383456e-07
+## 6    weather3   0.1237865   6.36457573   0.01944929  9.844830e-01
+## 7    weather4 162.2596870 162.65541954   0.99756705  3.185115e-01
+## 8    humidity  -3.4929513   0.09609386 -36.34936864 3.860368e-273
+## 9   windspeed   0.6328680   0.20523232   3.08366623  2.049791e-03</pre>
+
+</article></slide><slide class=""><hgroup><h2>F-test for Groups of Coefficients</h2></hgroup><article  id="f-test-for-groups-of-coefficients">
+
+<ul>
+<li>Many times we want to be able to test the significance of groups of coefficients.</li>
+<li>We can do this with an F-test as well.</li>
+<li>For example we may want to test that: \[H_0:\beta_1=\beta_2=0\] \[H_1:\text{ at least 1 }\beta_i\ne0\]</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example</h2></hgroup><article  id="groups-of-coefficients-example">
+
+<ul>
+<li>Consider <code>Season</code> in our bike example.</li>
+<li>Only the first coefficient is significant.</li>
+<li>We may want to know if we the whole variable is worth having in the model.</li>
+<li>We will use the <code>anova()</code> function in R.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example</h2></hgroup><article  id="groups-of-coefficients-example-1">
+
+<pre class = 'prettyprint lang-r'>mod1 &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 &lt;- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example</h2></hgroup><article  id="groups-of-coefficients-example-2">
+
+<pre >## Analysis of Variance Table
+## 
+## Model 1: count ~ season + weather + humidity + windspeed
+## Model 2: count ~ weather + humidity + windspeed
+##   Res.Df       RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1  10877 287534958                                  
+## 2  10880 320760441 -3 -33225483 418.96 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</pre>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example 2</h2></hgroup><article  id="groups-of-coefficients-example-2-1">
+
+<ul>
+<li>Consider <code>weather</code> in our bike example.</li>
+<li>Only the first coefficient is significant.</li>
+<li>We may want to know if we the whole variable is worth having in the model.</li>
+<li>We will use the <code>anova()</code> function in R.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example 2</h2></hgroup><article  id="groups-of-coefficients-example-2-2">
+
+<pre class = 'prettyprint lang-r'>mod1 &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 &lt;- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Groups of Coefficients Example 2</h2></hgroup><article  id="groups-of-coefficients-example-2-3">
+
+<pre >## Analysis of Variance Table
+## 
+## Model 1: count ~ season + weather + humidity + windspeed
+## Model 2: count ~ season + humidity + windspeed
+##   Res.Df       RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1  10877 287534958                                  
+## 2  10880 288348337 -3   -813379 10.256 9.704e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

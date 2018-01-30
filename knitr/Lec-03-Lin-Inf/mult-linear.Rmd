@@ -354,9 +354,11 @@ glance(mod.final)
           
 # Inference on Linear Regressions
 
+## Inference on Linear Regressions
+
 1. Overall F Test of Model
 2. Individual Coefficient Tests
-3. F Test Comparing Models
+3. Testing Groups of Variables
 
 
 
@@ -369,8 +371,15 @@ $$H_1=\text{ at least one }\beta_i\ne0$$
 
 ## Overall Model F test: Bike Sharing
 
-```{r}
-summary(mod.final)
+```{r, eval=F}
+glance(mod.final)
+
+```
+
+## Overall Model F test: Bike Sharing
+
+```{r, echo=F}
+glance(mod.final)
 
 ```
 
@@ -383,4 +392,96 @@ summary(mod.final)
 
 ## Individual Coefficients $t$-test
 
-- We can test each individual 
+- We can test each individual coefficients. 
+- The hypothesis we test is that:
+$$H_0:\beta_i=0$$
+$$H_1=\beta_i\ne0$$
+- We do this with a t-test. 
+
+## Individual Coefficients $t$-test
+
+- With the t-test we have that:
+$$ t_i=\dfrac{\beta_i}{se(\beta_i)}$$
+- Then we can test this with the $t$-distribution. 
+
+
+## Individual Coefficients $t$-test
+
+- Consider out Bike model:
+
+$$ 
+\begin{align}
+E[count] &= \beta_0 +  \beta_1 season(Summer) + \beta_2 season(Fall) + \\
+& \beta_3 season(Winter)  +    \beta_4 weather(2) +  \beta_5 weather(3) + \\
+&  \beta_6 weather(4) + \beta_7 humidity + \beta_8 windspeed\\
+\end{align}
+$$
+
+```{r, eval=F}
+tidy(mod.final)
+```
+
+
+
+## Individual Coefficients $t$-Test
+
+```{r, echo=F}
+tidy(mod.final)
+```
+
+## F-test for Groups of Coefficients
+
+- Many times we want to be able to test the significance of groups of coefficients. 
+- We can do this with an F-test as well. 
+- For example we may want to test that:
+$$H_0:\beta_1=\beta_2=0$$
+$$H_1:\text{ at least 1 }\beta_i\ne0$$
+
+## Groups of Coefficients Example
+
+- Consider `Season` in our bike example. 
+- Only the first coefficient is significant. 
+- We may want to know if we the whole variable is worth having in the model. 
+- We will use the `anova()` function in R.
+
+
+## Groups of Coefficients Example
+
+```{r,eval=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+
+## Groups of Coefficients Example
+
+```{r,echo=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+## Groups of Coefficients Example 2
+
+- Consider `weather` in our bike example. 
+- Only the first coefficient is significant. 
+- We may want to know if we the whole variable is worth having in the model. 
+- We will use the `anova()` function in R.
+
+
+## Groups of Coefficients Example 2
+
+```{r,eval=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+
+## Groups of Coefficients Example 2
+
+```{r,echo=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
