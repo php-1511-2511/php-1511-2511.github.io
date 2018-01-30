@@ -3,8 +3,8 @@ title: "Homework 1"
 author: "Your Name"
 date: "February 5, 2018 at 11:59pm"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
@@ -43,7 +43,7 @@ This homework will use the following data:
   e. Run the following code to create a 3d scatterplot. Notice that multiple linear regression is now a plane and not just a line. Why do you think `X1` and `X2` predict `Y` so well together when they do not alone? 
 
 
-```{R, message=F, warning=F}
+```{R, message=F, warning=F, eval=F}
 library(plotly)
 hw1a <- read.csv("https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1a.csv")
 
