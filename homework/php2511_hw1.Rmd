@@ -41,16 +41,20 @@ This homework will use the following data:
   c. Now use `lm()` to build a multiple regression model using both predictor variables `X1` and `X2`. Comment on the fit and the statistical significance of each predictor variable. What percent of the variability in Y is explained by the model now that both predictors are included? Give an explanation for what you think is happening with both predictors in the model.
   d. Comment on the change in the estimated coefficients from the simple linear regression models compared to those from the multiple regression model. Are the changes qualitative (direction), quantitative (magnitude) or both?
   e. Run the following code to create a 3d scatterplot. Notice that multiple linear regression is now a plane and not just a line. Why do you think `X1` and `X2` predict `Y` so well together when they do not alone? 
-```{r setup}
-library(knitr)
-library(rgl)
-knit_hooks$set(webgl = hook_webgl)
-```
 
-```{r testgl, webgl=TRUE , eval=FALSE}
-plot3d(hw1a$x1, hw1a$x2, hw1a$y)
-```
 
+```{R, message=F, warning=F}
+library(plotly)
+hw1a <- read.csv("https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/Data/hw1a.csv")
+
+p <- plot_ly(hw1a, x = ~x1, y = ~x2, z = ~y) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'x1'),
+                     yaxis = list(title = 'x2'),
+                     zaxis = list(title = 'y')))
+
+p
+```
 
     
 ---
