@@ -46,19 +46,14 @@ This course is designed for graduate and advanced undergraduate students who wil
 
 * * *
 
-### <a name="oh"></a>Office Hours:
+### Office Hours:
 
-|-----------+--------+-----------|
-| Who       |  Where | When      
-|:-----------|:--------|:-----------|
-| Adam J Sullivan, PhD |  SPH - Room 717 |  Sign Up Link Coming Soon|
-|:-----------|:--------|:-----------|
-| Yi Cao |  TBD |  Sign Up Link Coming Soon|
-|:-----------|:--------|:-----------|
-| Ludan Zhang |  TBD |  Sign Up Link Coming Soon|
-|:-----------|:--------|:-----------|
-| Julia Mullokandova |  TBD |  Sign Up Link Coming Soon|
-|-----------+--------+-----------|
+- Please click the button below to sign up for office hours. 
+- Each slot is for 15 minutes, however you can sign up for more than 1. 
+- The room location for each office hour is listed on the sign up time. 
+- ***Note: If no hours are signed up for by the morning of the office hours, they are subject to be cancelled.***
+
+<a href="http://signup.com/go/PUNVkjm" target="_blank"><img src="https://signup.com/imgs/icons/signup-choose-a-spot-btn.png" alt="Click to View Volunteer Opportunities on SignUp.com"></a>
 
 * * *
 
