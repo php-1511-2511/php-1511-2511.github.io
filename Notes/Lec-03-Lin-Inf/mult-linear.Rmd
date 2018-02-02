@@ -273,7 +273,8 @@ library(readr)
 library(tidyverse)
 bikes <- read_csv("bike_sharing.csv") %>%
         mutate(season = as.factor(season)) %>%
-        mutate(weather=as.factor(weather))
+        mutate(weather=as.factor(weather)) 
+       
 ```
 
 

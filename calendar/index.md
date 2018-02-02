@@ -3,7 +3,6 @@ layout: default
 title: Calendar
 ---
 
-
 <table>
 <thead>
 <tr>
@@ -39,7 +38,7 @@ Week 1
 Course Introduction / What is Regression?
 </td>
 <td style="text-align:left;">
-<a href="../knitr/Lec-01-Intro/intro.pdf">PDF Slides</a> <a href="../knitr/Lec-01-Intro/intro.html">HTML Slides</a>
+<a href="../Notes/Lec-01-Intro/intro.pdf">PDF Slides</a> <a href="../Notes/Lec-01-Intro/intro.html">HTML Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapters 1 - 3
@@ -59,7 +58,7 @@ Week 2
 Simple and Multiple Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../knitr/Lec-02-Linear/linear.pdf">PDF Slides</a> <a href="../knitr/Lec-02-Linear/linear.html">HTML Slides</a>
+<a href="../Notes/Lec-02-Linear/linear.pdf">PDF Slides</a> <a href="../Notes/Lec-02-Linear/linear.html">HTML Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 5
@@ -78,7 +77,7 @@ Read FOX: Chapter 5
 Inference for Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../knitr/Lec-03-Lin-Inf/mult-linear.pdf">PDF Slides</a> <a href="../knitr/Lec-03-Lin-Inf/mult-linear.html">HTML Slides</a>
+<a href="../Notes/Lec-03-Lin-Inf/mult-linear.pdf">PDF Slides</a> <a href="../Notes/Lec-03-Lin-Inf/mult-linear.html">HTML Slides</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 6
