@@ -89,7 +89,7 @@
   }
 
 slides > slide.dark {
-  background-image: url("C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/knitr/images/texturebg.png") !important;
+  background-image: url("C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/images/texturebg.png") !important;
 }
 
 slide img {
@@ -105,7 +105,7 @@ body slides > slide {
 }
 
 slides > slide.backdrop {
-  background-image: url("C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/knitr/images/texturebg.png");
+  background-image: url("C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/images/texturebg.png");
   background-position: 0 100%;
   background-repeat: repeat-x;
 }
