@@ -1,0 +1,555 @@
+---
+title: "Diagnostics and Assumptions"
+author: "Adam J Sullivan, PhD"
+date: "02/07/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+
+
+## Assumptions of Linear Regression
+
+- ***Linearity:*** Function $f$ is linear. 
+- Mean of error term is 0. 
+    \[E(\varepsilon)=0\]
+- ***Independence:*** Error term is independent of covariate. 
+    \[Corr(X,\varepsilon)=0\]
+- ***Homoscedacity:*** Variance of error term is same regardless of value of $X$. 
+    \[Var(\varepsilon)=\sigma^2\]
+- ***Normality:*** Errors are normally Distributed
+
+
+## Diagnostics for  Linear Regression
+
+
+
+
+
+- A remarkable paper came out in 1973 called *Graphs in Statistical Analysis* by Francis J. Anscombe.
+- We will explore this data as we discuss diagnostics and transformations for simple linear regression.
+- These examples show how much your regression output may mislead you if you are not careful about the assumptions. 
+
+
+## The Data
+
+
+```{r}
+anscombe
+```
+
+
+
+## The Model Set ups
+
+- Notice in this data that for $X_1$ - $X_3$ we have the same data points but all of the $Y$ values differ. 
+- Let us first consider their regression outputs from R:
+
+
+```{r}
+mod1 <- lm(y1 ~ x1, data=anscombe)
+mod2 <- lm(y2 ~ x2, data=anscombe)
+mod3 <- lm(y3 ~ x3, data=anscombe)
+mod4 <- lm(y4 ~ x4, data=anscombe)
+```
+
+
+## Coefficients 
+
+
+```{r,eval=F}
+library(broom)
+library(dplyr)
+tidy1 <- tidy(mod1, conf.int = T)
+tidy2 <- tidy(mod2, conf.int = T)
+tidy3 <- tidy(mod3, conf.int = T)
+tidy4 <- tidy(mod4, conf.int = T)
+
+knitr::kable(bind_rows(tidy1,tidy2, tidy3, tidy4)[,-c(3,4)])
+```
+
+
+
+
+
+
+## Coefficients
+
+
+```{r,echo=F}
+library(broom)
+library(dplyr)
+tidy1 <- tidy(mod1, conf.int = T)
+tidy2 <- tidy(mod2, conf.int = T)
+tidy3 <- tidy(mod3, conf.int = T)
+tidy4 <- tidy(mod4, conf.int = T)
+
+knitr::kable(bind_rows(tidy1,tidy2, tidy3, tidy4)[,-c(3,4)])
+```
+
+
+
+
+
+## Model Stats
+
+
+```{r,eval=F}
+glance1 <- glance(mod1)
+glance2 <- glance(mod2)
+glance3 <- glance(mod3)
+glance4 <- glance(mod4)
+
+knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
+```
+
+## Model Stats
+
+
+```{r,echo=F}
+glance1 <- glance(mod1)
+glance2 <- glance(mod2)
+glance3 <- glance(mod3)
+glance4 <- glance(mod4)
+
+knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
+```
+
+
+
+## What do we notice? 
+
+- All of the regression coefficients are the same. 
+- All of the regression diagnostics are the same. 
+- They appear to be the same models. 
+
+
+
+## What About the Assumptions
+
+- Lets check our model plots.
+
+```{r, eval=F}
+library(ggplot2)
+library(gridExtra)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+grid.arrange(p1,p2,p3, p4, ncol=2)
+```
+
+
+
+## What About the Assumptions
+
+
+
+```{r, echo=F}
+library(ggplot2)
+library(gridExtra)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+grid.arrange(p1,p2,p3, p4, ncol=2)
+```
+
+
+## What Do we Notice? 
+
+
+- We can see that the line looks appropriate for model 1 but not for the other 3. 
+- For Model 2 it appears the data is curved. 
+- For model 3 it appears that an outlier is really driving the model. 
+- Finally for Model 4 it appears that we have only one differing $X$ value and that is driving the slope.  
+- What are the values of these regression lines?
+
+
+
+
+## What Does this Mean? 
+
+- If we look at these closely we can see that these are almost the exact same regressions.
+- This is a major issue for us if we just blindly ran our regressions. 
+- We need to discuss tools to help us not make these mistakes. 
+
+
+
+# Residuals to the Rescue
+
+
+## Residuals to the Rescue!!
+
+
+- One method to help us evaluate a linear fit and to check assumptions is to consider the residuals. 
+- The benefit of examining the residuals is that unlike the plots previously is that we can evaluate them regardless of how many predictors are in the model. 
+
+
+
+## Enter Residual Plots
+
+```{R, eval=F}
+library(ggplot2)
+p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() 
+p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()
+p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()
+p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()
+grid.arrange(p1,p2,p3, p4, ncol=2)
+
+```
+
+
+## Enter Residual Plots
+
+```{R, echo=F}
+
+p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() 
+p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()
+p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()
+p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()
+grid.arrange(p1,p2,p3, p4, ncol=2)
+
+```
+
+
+
+## What do we see?
+
+
+- Looking at the plots we can see that our residuals take on different patterns. 
+- This is due to how we defined residual error as 
+\[\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i.\]
+- We first look at Model 1 there is no pattern to these residuals and they seem to be randomly spread around 0. 
+- This is indicator of a good linear fit. Recall that we assume that $E(\varepsilon_i)=0$, so we would expect to see the residuals spread around 0 and without pattern. 
+
+
+## Patterns in Residuals
+
+- Patterns in residuals show us that our model is not an adequate summary of the data. 
+- Consider what happens when our line is truly linear in nature then
+\[Y_i = E(Y_i|X_i=x_i) + \varepsilon_i = \beta_0 + \beta_1x_i + \varepsilon_i\]
+- We then fit our regression line $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$. This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx \varepsilon_i\]
+- So the residuals are randomly distributed and centered about 0.
+
+
+
+
+## Quadratic Patterns in Residuals
+
+ - In the second figure, we can see that we have a quadratic pattern in this. 
+- This happens when the true model is quadratic
+\[y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2 + \varepsilon_i\]
+then we again fit our linear model $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$.
+- This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+  \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx\beta_2x_i^2+ \varepsilon_i\]
+- So we have a quadratic relationship given our $x$. 
+
+
+
+## Quadratic Patterns in Residuals
+
+
+- This means we may have been better off by choosing a model that would include a quadratic term for $x$. 
+- In model 2 of Anscombe's data had we run a model with a quadratic term we would then have
+
+```{r, eval=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+tidy(mod2a, conf.int=T)[,-c(3,4)]
+glance(mod2a)
+
+ggplot(mod2a, aes(.fitted, .resid)) + geom_point()
+```
+
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+knitr::kable(tidy(mod2a, conf.int=T)[,-c(3,4)])
+```
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+knitr::kable(glance(mod2a))
+```
+
+
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+ggplot(mod2a, aes(.fitted, .resid)) + geom_point()
+```
+
+
+
+## Transformations
+
+- When we run into issues with some sort of pattern in the residuals it can often help to transform the data in order to run a model over this transformation. 
+- One popular method is a log transform. 
+- We will consider this in R. 
+
+
+
+
+
+
+## How do We know what to Do?
+
+- We will conside the framingham heart study data for this. 
+
+```{r}
+library(haven)
+fhs <- read_dta("fhs.dta")
+```
+
+
+
+## Systolic Blood Pressure in FHS
+
+```{r, echo=F}
+p1 = ggplot(fhs, aes(sysbp1))  + geom_histogram() + xlab("Systolic Blood Pressure mm/Hg")
+p2 = ggplot(fhs, aes(sysbp1))  + geom_density() + xlab("Systolic Blood Pressure mm/Hg")
+grid.arrange(p1,p2, ncol=2)
+```
+
+
+
+
+## What do we see?
+
+- This looks skewed so we can try and determine the best transformation so that this is normally distributed. 
+- Sometimes a log transform helps to pull in skewed values. 
+
+
+
+
+
+## What do we see?
+
+
+```{r, message=F, warning=F, echo=F}
+fhs <- fhs %>% mutate(sysbp1t = log(sysbp1))
+p1 = ggplot(fhs, aes(sysbp1t))  + geom_histogram() + xlab("log Systolic Blood Pressure mm/Hg")
+p2 = ggplot(fhs, aes(sysbp1t))  + geom_density() + xlab("log Systolic Blood Pressure mm/Hg")
+grid.arrange(p1,p2, ncol=2)
+```
+
+
+
+
+## Model with Regular Data
+
+- We can then run this transformed variable back into the model we had for this.  
+- Consider the model of Systolic Blood Pressure on BMI considering age as a confounder as well. 
+
+```{r}
+mod <- lm(sysbp1 ~ bmi1 + age1, data=fhs)
+```
+
+
+## Model Diagnostics and Coefficients
+
+```{r, echo=F}
+knitr::kable(tidy(mod, conf.int=T)[,-c(3,4)])
+knitr::kable(glance(mod))
+```
+
+
+
+
+
+## Regression on Transformed data
+
+
+
+
+```{r, echo=F}
+mod_syst <- lm(sysbp1t ~ bmi1 + age1, data=fhs)
+knitr::kable(tidy(mod_syst, conf.int=T)[,-c(3,4)])
+knitr::kable(glance(mod_syst))
+```
+
+
+
+## What do we notice?
+
+- When we see this latter model it appears that there is a large difference in coefficients. 
+- We need to remember that the coefficient for BMI in this case reflects an average change in the transformed $Y$. 
+- So in our case we see that for people of the same age a one unit increase in BMI leads to a `r round(summary(mod_syst)$coef[2,1],8)` increase in log systolic blood pressure.
+- This really does not have any meaning for us. 
+- **NEVER interpret regression coefficients in the context of a transformed variable**. 
+
+
+## Interpreting Transformed Regressions
+-  Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure. 
+- We need to interpret
+
+
+
+
+## Interpreting Transformed Regressions
+
+- This shows that for those who are the same age a one unit increase in BMI leads to an  increase in systolic blood pressure of 1. 
+
+
+## Tools for Checking Validity of a Model
+
+When fitting a regression model we will take these steps to verify the validity of the model:
+
+1. Regression Model is Linear in parameters.
+2. Residuals are normally distributed.
+3. Mean of Residuals is 0. 
+4. Homoscedasticity of variances.
+5. Variables and residuals are not correlated. 
+6. No Influential Points or Outliers
+
+
+
+## Linear in Parameters
+
+- We say it is linear in parameters if the $\beta$ values are linear in nature. 
+- Consider the 2nd Anscombe model: 
+
+\[E[Y|x] = \beta_0 + \beta_1 x + \beta_2 x^2\]
+- Even though `x2` has been transformed to a square term, the $beta$ values are still linear. 
+
+
+
+
+## Standardized Residuals
+
+- When we are concerned with residuals, everything is in context with the original values of the problem. 
+- A standardized residual takes into account the standard deviation of the residual
+
+\[\text{Standardized } \hat{\varepsilon}_i= \dfrac{\hat{\varepsilon}_i}{sd\left(\hat{\varepsilon}_i\right)}\]
+
+
+
+## Why Standardize?
+
+- This way we already assumed that $E\left(\varepsilon\right) = 0$ and the $var\left(\varepsilon\right) = \sigma^2$. 
+- By standardizing we now have a mean of 0 still but this time a variance of 1. 
+- This means that with the residuals being roughly normal we expect to see about 95\% of our residuals falling between $\pm2$. 
+
+
+## Standardized Residuals Plots
+
+```{r, eval=F}
+par(mfrow=c(1,2))
+plot(anscombe$x1, resid(mod1), xlab="x1", ylab="Residuals")
+plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
+```
+
+
+
+
+## Standardized Residuals Plots
+
+```{r, echo=F}
+par(mfrow=c(1,2))
+plot(anscombe$x1, resid(mod1), xlab="x1", ylab="Residuals")
+plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
+```
+
+## Standardized Residuals Plots
+
+- The residuals shows us that the residuals did not change by much and we can still see the pattern is the exact same as before but the range of the residuals is what has changed. 
+
+## Assessing Normality of Residuals: QQ-Plot
+
+- Recall our Transformed Systolic Blood Pressure. 
+```{r, echo=F}
+plot(mod_syst, 2)
+```
+
+
+## Assessing Normality of Residuals: Histogram
+
+```{r,echo=F}
+hist(rstandard(mod_syst))
+```
+
+
+## Mean of Residuals
+
+- We can test if the mean of residuals is zero with a simple mean function. 
+
+```{R}
+mean(mod_syst$residuals)
+```
+
+
+
+## Homoscedasticity of residuals
+
+```{r, echo=F}
+plot(mod_syst, 3)
+```
+
+
+
+
+## Homoscedasticity of residuals
+
+- We can see that there is no pattern to the residuals. 
+- They appear to be flat and not have a difference in width of the range of values. 
+- If we saw a pattern like a cone shape then we would not have homoscedasticity. 
+
+
+## Untransformed Systolic Blood Pressure
+
+```{r,echo=F}
+plot(mod, 1)
+```
+
+
+
+## Correlation of Residuals and Covariates:
+
+```{r, eval=F}
+
+cor.test(anscombe$x2, mod2$residuals)
+cor.test(anscombe$x2sq, mod2a$residuals)
+
+```
+
+
+
+## Correlation of Residuals and Covariates:
+
+```{r, echo=F}
+
+cor.test(anscombe$x2, mod2$residuals)
+cor.test(anscombe$x2sq, mod2a$residuals)
+
+```
+
+
+

@@ -1,13 +1,12 @@
 ---
 title: "Factors and Interactions"
 author: "Adam J Sullivan, PhD"
-date: "1/29/2018"
+date: "02/05/2018"
 output:
    ioslides_presentation: 
     widescreen: true
 notes: ''
 link: yes
-reading:  <a href="https://php-1511-2511.github.io/Introduction-to-R/">Introduction to R </a>
 slides: yes
 layout: page
 css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
@@ -18,7 +17,7 @@ knitr::opts_chunk$set(error = TRUE)
 knitr::opts_chunk$set(warning=FALSE)
 knitr::opts_chunk$set(message=FALSE)
 knitr::opts_chunk$set(results="hold")
-knitr::opts_chunk$set(cache=TRUE)
+knitr::opts_chunk$set(cache=F)
 ```
 
 
@@ -306,7 +305,208 @@ anova(mod1,mod2)
 ## How about $R^2$
 
 ```{r}
-glance(mod1)
-glance(mod2)
+library(broom)
+glance1 <- glance(mod1)[,c(1:2)]
+glance2 <- glance(mod2)[,c(1:2)]
+bind_rows(glance1, glance2)
 ```
 
+# Interaction
+
+
+## Interaction
+
+- The definition of interaction is the direct effect that one kind of particle has on another.
+- This is similar to how we view it in statistics. 
+- When there is an interaction, the effect of one variable is different in one group than in another. 
+- For example, if we feel there is a interaction between sex and treatment, then the effect of ones treatment is directly related to what their sex is. 
+
+
+
+## Example with Categorical Interaction
+
+- This data is from 18 women and 14 men to investigate a certain theory on why women exhibit a lower tolerance for alcohol and develop alcohol–related liver disease more readily than men.
+- This data is from [The Statistical Sleuth: A Course in Methods of Data Analysis](http://www.statisticalsleuth.com/)
+
+## Example with Categorical Interaction
+
+| Variable Name | Description | 
+| :-------------: | :-------------------- |
+| Subject | subject number in the study | 
+| Metabol | first–pass metabolism of alcohol in the stomach (in mmol/liter-hour) |
+| Gastric  | gastric alcohol dehydrogenase activity in the stomach (in mumol/min/g of tissue) | 
+| Sex | sex of the subject | 
+| Alcohol | whether the subject is alcoholic or not | 
+
+
+## Data Exploration: Metabolism by Gastric Activity
+
+```{r, echo=F}
+library(readr)
+library(ggplot2)
+metabol <- read_csv("metab.csv")
+ggplot(metabol, aes(Gastric, Metabol)) + geom_point() + geom_smooth(method="lm", se=FALSE) + 
+  xlab("GAD Activity mumol/min/g") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+
+## Data Exploration: Metabolism by Sex
+
+```{r, echo=F}
+ggplot(metabol, aes(Sex, Metabol)) + geom_boxplot()  + 
+  xlab("Sex") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+
+
+
+
+## Data Exploration: Metabolism by Alcoholism
+
+```{r, echo=F}
+ggplot(metabol, aes(Alcohol, Metabol)) + geom_boxplot()  + 
+  xlab("Alcoholism") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+
+
+
+## Data Exploration: Metabolism by Gastric and Sex
+
+```{r, echo=F}
+ggplot(metabol, aes(Gastric, Metabol, color=Sex)) + geom_point() + geom_smooth(method="lm", se=FALSE) + 
+  xlab("GAD Activity mumol/min/g") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+
+
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric +Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric*Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+
+
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric +Gastric:Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+
+## Interpretation
+
+- We have to consider the model that we have:
+
+$$Metabolism = \beta_0 + \beta_1 Gastric + \beta_2 Gastric*Male$$
+- Females: 
+$$ Metabolism = \beta_0 + \beta_1 Gastric$$
+- Males:
+$$ Metabolism = \beta_0 + (\beta_1+\beta_2) Gastric$$
+
+## Continuous Interaction
+
+- This is a little harder to figure out when it is happening. 
+- We have simulated data of GPA based on work ethic and GPA
+
+```{r, echo=F}
+set.seed(150)
+# 250 subjects    
+n <- 250    
+# Work ethic average 2.75 
+x <- rnorm(n, 2.75, .75)    
+#We want a normal distribution of IQ (Z)
+z <- rnorm(n, 100, 15)   
+#We then create Y using a regression equation (adding a bit of random noise)    
+y <- .7*x + 1*z + 7*x*z + rnorm(n, sd = 5)
+#Fix GPA so it is max of 4
+y = (y - min(y)) / (max(y) - min(y))*4
+#Finally, we put our data together with the data.frame() function 
+gpa_data <- data.frame(gpa=y, work_ethic=x, iq=z)
+
+```
+
+
+## Data Exploration
+
+```{r, echo=F}
+ggplot(gpa_data, aes(work_ethic, gpa)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+
+
+## Data Exploration
+
+```{r, echo=F}
+ggplot(gpa_data, aes(iq, gpa)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+
+
+
+## Check for Interaction: Try Quantiles
+
+```{r}
+gpa_data %>%
+  summarise(`0%`=quantile(iq, probs=0),
+            `33%`=quantile(iq, probs=0.33),
+            `66%`=quantile(iq, probs=0.66),
+            `100%`=quantile(iq,probs=1))
+```
+
+
+## Create a Factor
+
+```{r}
+gpa_data <-gpa_data %>%
+    mutate(iq_fact = cut(iq, 3, labels =c('low', 'medium', 'high')))
+
+```
+
+
+
+## Graph Interaction
+
+```{r, echo=F}
+ggplot(gpa_data, aes(work_ethic, gpa, color=iq_fact)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+
+
+
+## Linear Model
+
+```{r}
+mod <- lm(data=gpa_data, gpa~work_ethic*iq)
+tidy(mod, conf.int = T)[,-c(3:4)]
+```
