@@ -3,6 +3,7 @@ layout: default
 title: Calendar
 ---
 
+
 <table>
 <thead>
 <tr>
@@ -38,7 +39,7 @@ Week 1
 Course Introduction / What is Regression?
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-01-Intro/intro.pdf">PDF Slides</a> <a href="../Notes/Lec-01-Intro/intro.html">HTML Slides</a>
+<a href="../Notes/Lec-01-Intro/intro.pdf">PDF</a> <a href="../Notes/Lec-01-Intro/intro.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapters 1 - 3
@@ -58,7 +59,7 @@ Week 2
 Simple and Multiple Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-02-Linear/linear.pdf">PDF Slides</a> <a href="../Notes/Lec-02-Linear/linear.html">HTML Slides</a>
+<a href="../Notes/Lec-02-Linear/linear.pdf">PDF</a> <a href="../Notes/Lec-02-Linear/linear.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 5
@@ -77,7 +78,7 @@ Read FOX: Chapter 5
 Inference for Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-03-Lin-Inf/mult-linear.pdf">PDF Slides</a> <a href="../Notes/Lec-03-Lin-Inf/mult-linear.html">HTML Slides</a>
+<a href="../Notes/Lec-03-Lin-Inf/mult-linear.pdf">PDF</a> <a href="../Notes/Lec-03-Lin-Inf/mult-linear.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 6
@@ -94,6 +95,7 @@ Read FOX: Chapter 6
 Lab1: Rmarkdown/Dplyr/Manipulating Data in R
 </td>
 <td style="text-align:left;">
+<a href="https://www.youtube.com/watch?v=MIlzQpXlJNk">Rmarkdown Tutorial</a> <a href="https://www.youtube.com/watch?v=jWjqLW-u3hc&amp;t=2s">dplyr Basics</a>
 </td>
 <td style="text-align:left;">
 </td>
@@ -111,6 +113,7 @@ Week 3
 Factors and Interactions
 </td>
 <td style="text-align:left;">
+<a href="../Notes/Lec-04-fact-inter/factor-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factor-interactions.pdf">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 7
@@ -125,9 +128,10 @@ Read FOX: Chapter 7
 7-Feb
 </td>
 <td style="text-align:left;">
-Unusual and Influential Data
+Diagnostics for Linear Regression
 </td>
 <td style="text-align:left;">
+<a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.pdf">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 11
@@ -158,7 +162,7 @@ Week 4
 12-Feb
 </td>
 <td style="text-align:left;">
-Diagnostics for Linear Regression
+Unusual and Influential Data
 </td>
 <td style="text-align:left;">
 </td>
