@@ -21,7 +21,28 @@ knitr::opts_chunk$set(cache=F)
 ```
 
 
+```{r, echo=F}
+library(tidyverse)
+library(ggplot2)
+library(broom)
+mod1 <- lm(y1 ~ x1, data=anscombe)
+mod2 <- lm(y2 ~ x2, data=anscombe)
+mod3 <- lm(y3 ~ x3, data=anscombe)
+mod4 <- lm(y4 ~ x4, data=anscombe)
+```
 
+```{r,echo=F}
+library(broom)
+library(dplyr)
+tidy1 <- tidy(mod1, conf.int = T)
+tidy2 <- tidy(mod2, conf.int = T)
+tidy3 <- tidy(mod3, conf.int = T)
+tidy4 <- tidy(mod4, conf.int = T)
+glance1 <- glance(mod1)
+glance2 <- glance(mod2)
+glance3 <- glance(mod3)
+glance4 <- glance(mod4)
+```
 
 ## Leverage and Outliers
 
@@ -70,7 +91,7 @@ plot(mod3, 5)
 
 - We can decide to remove the point and re-run the regression. 
 
-```{r}
+```{r, eval=F}
 mod3a <- lm(y3~x3, data=anscombe[-3,])
 
 tidy3a <- tidy(mod3a, conf.int = T)
@@ -81,199 +102,21 @@ knitr::kable(bind_rows(glance3, glance3a))
 ```
 
 
-# Evaluating Model Fit
-
-
-## Evaluating Model Fit
-
-- We will consider Model fit with the following tools:
-    - $R^2$ and Adjusted $R^2$
-    - AIC, BIC, Mallows $C_p$
-    - Marginal Model Plots
-
-
-## $R^2$ and Adjusted $R^2$
-
-- Linear Models have a great measure called $R^2$. 
-\[R^2 = 1- \dfrac{\sum_{i=1}^n \left(Y_i - \hat{Y}_i\right)^2}{\sum_{i=1}^n\left(Y_i - \bar{Y}\right)} = \dfrac{SSR}{SST}\]
-- With the formula above we can see that this is a measure of total variation explained in a model. 
-- This is given with any R output that we have seen before:
-
-
-## $R^2$ and Adjusted $R^2$
-
-```{R}
-summary(mod_syst)
-```
-
-## Glance Function
-
-- We can call this simply by using the glance function. 
-` glance(mod_syst)`
+## What can we do with this point?
 
 ```{r, echo=F}
-knitr::kable(glance(mod_syst))
+mod3a <- lm(y3~x3, data=anscombe[-3,])
+tidy3a <- tidy(mod3a, conf.int = T)
+knitr::kable(bind_rows(tidy3, tidy3a)[-c(3,4)])
 ```
 
-## What Does this mean? 
 
-- So our model with Systolic Blood pressure regressed on BMI and age produces an $R^2 = 0.24$ meaning that it explains 24\% of the variation of systolic blood pressure among the patients.
-- This is a low amount of variation explained. 
-- One needs to be cautious about $R^2$ though. 
-
-
-
-## Anscombe $R^2$
-
-- Recall our Anscombe's models
-
+## What can we do with this point?
 
 ```{r, echo=F}
-knitr::kable(bind_rows(glance1, glance2, glance3, glance4))
+glance3a <- glance(mod3a)
+knitr::kable(bind_rows(glance3, glance3a))
 ```
-
-
-## Anscombe $R^2$
-
-- In all of the models the regression analysis was the same including the $R^2$ value. 
-- This shows that while it may account for total variation it does not account for whether or not the model is truly linear. 
-- Verify that the model is truly a correct linear model.
-
-
-## More Issues with $R^2$
-
-- Another issue with $R^2$ will be illustrated below. 
-- We will first add a row of data into our dataset `fhs`. 
-- This row will just be a random number between 0 and 1. We will then add that to our model of systolic blood pressure regressed on BMI and age. 
-
-
-
-## More Issues with $R^2$
-
-```{r, eval=F}
-
-fhs$worthless <- runif(nrow(fhs),0,1)
-
-fit_r <- lm(sysbp1t ~ bmi1 + age1 + worthless, data=fhs)
-
-knitr::kable(bind_rows(glance(mod_syst), glance(fit_r)))
-```
-
-
-
-## More Issues with $R^2$
-
-```{r, echo=F}
-
-fhs$worthless <- runif(nrow(fhs),0,1)
-
-fit_r <- lm(sysbp1t ~ bmi1 + age1 + worthless, data=fhs)
-
-knitr::kable(bind_rows(glance(mod_syst), glance(fit_r)))
-```
-
-- Now we can see that the $R^2$ value has actually increased from the previous model. 
-
-
-## Did that Increase matter?
-
-- It did not go up by much but it did increase. 
-- Which means we created a worthless variable added to our model and achieved a higher $R^2$. 
-- Did this help though?
-
-
-
-## In Comes Adjusted $R^2$
-
-- `worthless` has nothing to do with systolic blood pressure which is expected because we generated random numbers for this. - This leads us to **Adjusted $R^2$** which is
-\[R^2_{adj} = 1-\dfrac{\dfrac{SSR}{n-(k+1)}}{\dfrac{SST}{n-1}} = 1- \left(1-R^2\right) \dfrac{n-1}{n-(k+1)}\]
-
-where $k$ is the number of predictors in the model and $n$ is the sample size. 
-- This essentially penalizes $R^2$ for the addition of extra variables. 
-
-## Adjusted $R^2$
-
-- This also exists in the `glance()` output:
-
-```{r, echo=F}
-
-fhs$worthless <- runif(nrow(fhs),0,1)
-
-fit_r <- lm(sysbp1t ~ bmi1 + age1 + worthless, data=fhs)
-
-knitr::kable(bind_rows(glance(mod_syst), glance(fit_r)))
-```
-
-
-## What Does this mean for our Example?
-
-- In this case we can see that when we added `worthless` into the model that $R^2_{adj}$ actually decreased. 
-- This means if we used $R^2_{adj}$ to determine the worth of the model, we would not want the variable `worthless` in the model. 
-
-
-
-## AIC,  Mallow's C$_{p}$ and BIC 
-
-- There are a number of other criteria for evaluating a model.
-- All of them with the same aim as with adjusted $R^2$. We will define them and then discuss how to use them in R. 
-
-
-## Akaike Information Criterion (AIC)
-
-- We begin with AIC:
-\[\text{AIC} = 2p-\ln(L)\]
-- where $p$ is the number of parameters in the model and $L$ is the maximum values of the likelihood function. 
-- We prefer to have an AIC value that is the minimum. 
-
-
-## How Does this work?
-
-- This function allows us to judge models in 2 ways. 
-- The first is that ``good" models with have a high likelihood value so this will make AIC smaller. 
-- The second way is that for each additional $k$ essentially adds a penalty making it require a larger likelihood value to make it worthwhile. 
-
-
-## Mallows C$_p$
-
-- We then move onto Mallow's C$_{p}$ or just C$_{p}$:
-\[C_{p} = \dfrac{(n-p)S^2_p}{S^2} - (n-2p)\]
-- where
-    - $S^2_p$ is the residual mean square from the model with $p$ terms. 
-    - $S^2$ is the residual mean square from the full model. 
-    
-
-## What does this Tell us?
-
--  If the model is adequate we get $S^2_p\approx S^2$ and this leads to $C_p\approx p$. 
-- If the model is not adequate we get $S^2_p> S^2$ and this leads to $C_p> p$. 
-
-
-## Bayesian Information Criterion (BIC)
-
-- Finally we move onto BIC or Schwarz Criterion (SBC) 
-which is
-\[BIC = p\ln(n) - 2\ln(L)\]
-- This is similar to AIC but the difference being that the penalty of $2p$ in AIC is replaced by $p\ln(n)$, we see that if $n>8$ that $\ln(n) >2$ so the penalty for more predictors in the model is greater than AIC. 
-
-
-
-
-## Which Do We use?
-
-- The difficult question is which of these 4 ideas do we use. 
-- The answer most won't like is: ***it depends***. 
-- Adjusted $R^2$ is nice because it is included in every output of R, Stata and SAS. 
-- AIC is nice and works well with data but tends to choose larger models and overfit the data. 
-- BIC is also nice but tends to err on the side of caution and choose models that underfit. 
-- Mallow's C$_p$ can be easily used by creating a table or graph and picking the model that has a C$_p$ closest to its $p$. 
-
-
-## Which Do We use?
-
-- In short the best way may be to use multiple of these criterion and compare them with what you have. 
-- There are multiple papers our there that discuss these in more detail but the math involved in them is beyond the depth of this class and are difficult reads for PhD statisticians at times as well. 
-
-
 
 
 ## Marginal Model Plots
@@ -285,6 +128,14 @@ which is
 
 
 ## Marginal Model Plots
+
+```{r, echo=F}
+library(haven)
+fhs <- read_dta("fhs.dta")
+mod <- lm(sysbp1 ~ bmi1 + age1, data=fhs)
+fhs <- fhs %>% mutate(sysbp1t = log(sysbp1))
+mod_syst <- lm(sysbp1t ~ bmi1 + age1, data=fhs)
+```
 
 ```{r, eval=F}
   library(car)
