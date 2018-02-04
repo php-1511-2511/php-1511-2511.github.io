@@ -490,7 +490,7 @@ ggplot(mod2a, aes(.fitted, .resid)) + geom_point()</pre>
 </article></slide><slide class=""><hgroup><h2>How do We know what to Do?</h2></hgroup><article  id="how-do-we-know-what-to-do">
 
 <ul>
-<li>We will conside the framingham heart study data for this.</li>
+<li>We will consider the framingham heart study data for this.</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>library(haven)
@@ -657,13 +657,34 @@ fhs &lt;- read_dta(&quot;fhs.dta&quot;)</pre>
 </article></slide><slide class=""><hgroup><h2>Interpreting Transformed Regressions</h2></hgroup><article  id="interpreting-transformed-regressions">
 
 <ul>
-<li>Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure:</li>
+<li>Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure.</li>
+<li>We need to consider the math of what is happening.</li>
+<li>We know that:</li>
 </ul>
+
+<p>\[ \begin{align*}
+\log(\mu_Y) &amp;= \beta_0 + \beta_1 X \\
+\mu_Y &amp;= \exp(\beta_0 + \beta_1 X)\\
+\mu_Y &amp;= e^{\beta_0}e^{\beta_1X}
+\end{align*}
+\]</p>
 
 </article></slide><slide class=""><hgroup><h2>Interpreting Transformed Regressions</h2></hgroup><article  id="interpreting-transformed-regressions-1">
 
 <ul>
-<li>This shows that for those who are the same age a one unit increase in BMI leads to an increase in systolic blood pressure of 1.</li>
+<li>Then consider a change in \(\mu_Y\) by a change in \(X\):</li>
+</ul>
+
+<p>\[ \begin{align*}
+\dfrac{\partial\mu_Y}{\partial X}= \beta_1 e^{\beta_0}e^{\beta_1X}\\
+&amp;= \beta_1 * \mu_Y
+\end{align*}
+\] - Thus a one unit change in \(X\) leads to \(\beta_1\) times \(\mu_y\), so if \(\beta_1=0.3\) we would see a \(\mu_Y\) change by \(0.3\mu_Y\) or a 30% increase.</p>
+
+</article></slide><slide class=""><hgroup><h2>Interpreting Transformed Regressions</h2></hgroup><article  id="interpreting-transformed-regressions-2">
+
+<ul>
+<li>This shows that for those who are the same age a one unit increase in BMI leads to an increase in systolic blood pressure of 1.1%.</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Tools for Checking Validity of a Model</h2></hgroup><article  id="tools-for-checking-validity-of-a-model">

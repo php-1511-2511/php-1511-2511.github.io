@@ -322,7 +322,7 @@ ggplot(mod2a, aes(.fitted, .resid)) + geom_point()
 
 ## How do We know what to Do?
 
-- We will conside the framingham heart study data for this. 
+- We will consider the framingham heart study data for this. 
 
 ```{r}
 library(haven)
@@ -409,14 +409,35 @@ knitr::kable(glance(mod_syst))
 
 ## Interpreting Transformed Regressions
 -  Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure. 
-- We need to interpret
+- We need to consider the math of what is happening. 
+- We know that:
+
+$$ \begin{align*}
+\log(\mu_Y) &= \beta_0 + \beta_1 X \\
+\mu_Y &= \exp(\beta_0 + \beta_1 X)\\
+\mu_Y &= e^{\beta_0}e^{\beta_1X}
+\end{align*}
+$$
+
+
+## Interpreting Transformed Regressions
+
+- Then consider a change in $\mu_Y$ by a change in $X$:
+
+$$ \begin{align*}
+\dfrac{\partial\mu_Y}{\partial X}= \beta_1 e^{\beta_0}e^{\beta_1X}\\
+&= \beta_1 * \mu_Y
+\end{align*}
+$$
+- Thus a one unit change in $X$ leads to $\beta_1$ times $\mu_y$, so if $\beta_1=0.3$ we would see a $\mu_Y$ change by $0.3\mu_Y$ or a 30% increase. 
+
 
 
 
 
 ## Interpreting Transformed Regressions
 
-- This shows that for those who are the same age a one unit increase in BMI leads to an  increase in systolic blood pressure of 1. 
+- This shows that for those who are the same age a one unit increase in BMI leads to an  increase in systolic blood pressure of 1.1%. 
 
 
 ## Tools for Checking Validity of a Model
