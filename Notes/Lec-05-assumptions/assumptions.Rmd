@@ -147,10 +147,10 @@ knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
 ```{r, eval=F}
 library(ggplot2)
 library(gridExtra)
-p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
 grid.arrange(p1,p2,p3, p4, ncol=2)
 ```
 
@@ -163,10 +163,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 ```{r, echo=F}
 library(ggplot2)
 library(gridExtra)
-p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)
-p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
 grid.arrange(p1,p2,p3, p4, ncol=2)
 ```
 
@@ -206,10 +206,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 
 ```{R, eval=F}
 library(ggplot2)
-p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() 
-p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()
-p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()
-p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()
+p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() +theme_bw()
+p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()+theme_bw()
+p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()+theme_bw()
+p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()+theme_bw()
 grid.arrange(p1,p2,p3, p4, ncol=2)
 
 ```
@@ -219,10 +219,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 
 ```{R, echo=F}
 
-p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() 
-p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()
-p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()
-p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()
+p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() +theme_bw()
+p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()+theme_bw()
+p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()+theme_bw()
+p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()+theme_bw()
 grid.arrange(p1,p2,p3, p4, ncol=2)
 
 ```
@@ -275,7 +275,7 @@ mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
 tidy(mod2a, conf.int=T)[,-c(3,4)]
 glance(mod2a)
 
-ggplot(mod2a, aes(.fitted, .resid)) + geom_point()
+ggplot(mod2a, aes(.fitted, .resid)) + geom_point()+theme_bw()
 ```
 
 
@@ -304,7 +304,7 @@ knitr::kable(glance(mod2a))
 
 
 ```{r, echo=F}
-ggplot(mod2a, aes(.fitted, .resid)) + geom_point()
+ggplot(mod2a, aes(.fitted, .resid)) + geom_point()+theme_bw()
 ```
 
 
@@ -483,9 +483,11 @@ When fitting a regression model we will take these steps to verify the validity 
 ## Standardized Residuals Plots
 
 ```{r, eval=F}
-par(mfrow=c(1,2))
-plot(anscombe$x1, resid(mod1), xlab="x1", ylab="Residuals")
-plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
+p3<-ggplot(mod2, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
+    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
+    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
+    p3<-p3+ggtitle("Scale-Location")+theme_bw()
+    p3
 ```
 
 
@@ -494,9 +496,11 @@ plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
 ## Standardized Residuals Plots
 
 ```{r, echo=F}
-par(mfrow=c(1,2))
-plot(anscombe$x1, resid(mod1), xlab="x1", ylab="Residuals")
-plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
+p3<-ggplot(mod2, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
+    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
+    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
+    p3<-p3+ggtitle("Scale-Location")+theme_bw()
+    p3
 ```
 
 ## Standardized Residuals Plots
@@ -506,15 +510,26 @@ plot(anscombe$x1, rstandard(mod1),xlab="x1", ylab=" Standardized Residuals")
 ## Assessing Normality of Residuals: QQ-Plot
 
 - Recall our Transformed Systolic Blood Pressure. 
-```{r, echo=F}
-plot(mod_syst, 2)
+```{r, echo=F,message=F, warning=F, error=F}
+# Find the slope and intercept of the line that passes through the 1st and 3rd
+# quartile of the normal q-q plot
+
+y     <- quantile(rstandard(mod_syst), c(0.25, 0.75)) # Find the 1st and 3rd quartiles
+x     <- qnorm( c(0.25, 0.75))         # Find the matching normal values on the x-axis
+slope <- diff(y) / diff(x)             # Compute the line slope
+int   <- y[1] - slope * x[1]           # Compute the line intercept
+
+ggplot(mod_syst, aes(sample=.stdresid)) + stat_qq() + 
+     geom_abline(intercept=int, slope=slope) + 
+      xlab("Theoretical Quantiles")+ylab("Standardized Residuals") +
+  theme_bw()
 ```
 
 
 ## Assessing Normality of Residuals: Histogram
 
 ```{r,echo=F}
-hist(rstandard(mod_syst))
+ggplot(mod_syst, aes(.stdresid)) + geom_histogram()+theme_bw()
 ```
 
 
@@ -530,8 +545,12 @@ mean(mod_syst$residuals)
 
 ## Homoscedasticity of residuals
 
-```{r, echo=F}
-plot(mod_syst, 3)
+```{r, echo=F, message=F, warning=F}
+p3<-ggplot(mod_syst, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
+    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
+    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
+    p3<-p3+ggtitle("Scale-Location")+theme_bw()
+    p3
 ```
 
 
@@ -546,8 +565,12 @@ plot(mod_syst, 3)
 
 ## Untransformed Systolic Blood Pressure
 
-```{r,echo=F}
-plot(mod, 1)
+```{r, echo=F}
+p3<-ggplot(mod, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
+    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
+    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
+    p3<-p3+ggtitle("Scale-Location")+theme_bw()
+    p3
 ```
 
 
@@ -568,9 +591,15 @@ cor.test(anscombe$x2sq, mod2a$residuals)
 ```{r, echo=F}
 
 cor.test(anscombe$x2, mod2$residuals)
-cor.test(anscombe$x2sq, mod2a$residuals)
 
 ```
 
 
 
+## Correlation of Residuals and Covariates:
+
+```{r, echo=F}
+
+cor.test(anscombe$x2sq, mod2a$residuals)
+
+```
