@@ -3,7 +3,6 @@ layout: default
 title: Calendar
 ---
 
-
 <table>
 <thead>
 <tr>
@@ -113,7 +112,7 @@ Week 3
 Factors and Interactions
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-04-fact-inter/factor-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factor-interactions.pdf">HTML</a>
+<a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 7
@@ -131,7 +130,7 @@ Read FOX: Chapter 7
 Diagnostics for Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.pdf">HTML</a>
+<a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 11
