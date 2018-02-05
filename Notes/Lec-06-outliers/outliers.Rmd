@@ -60,7 +60,36 @@ glance4 <- glance(mod4)
 - Instead of trying to parse both of these concepts out we will focus on a plot that helps us consider influential points as a whole. 
 
 
+## Cook's D 
 
+- Cook's distance attempts to tell us how much $\hat{\beta}$ changes due to the inclusion of the $i^{th}$ observation. 
+
+$$D_i= \dfrac{\sum_{j=1}^n \left( \hat{y}_j - \hat{y}_{j(i)}\right)^2}{(p+1)\hat{\sigma}^2}$$
+
+## DFFITS
+
+- This quantity measures how much the regression function changes at the  $i$-th case / observation when the  $i$-th case / observation is deleted.
+- For small/medium datasets: value of 1 or greater is “suspicious” (RABE). For large dataset: value of  $2\sqrt{(p+1)/n}$.
+
+$$DFFITS_i=\dfrac{\hat{Y_i} - \hat{Y_{i(i)}}}{\hat{\sigma}_{(i)}\sqrt{h_{ii}}}$$
+
+## What is $h_{ii}$?
+
+- In regression we have something we call the hat matrix, for a matrix $X$:
+$$H=X(X^TX)^{-1}X^T$$
+- We actually solve regression by performing this operation:
+$$\hat{y} = Hy$$
+## What is $h_{ii}$?
+
+- This ends up meaning that we have:
+$$\hat{y}_i = h_{i1}y_1 + h_{i2}y_2 + \cdots + h_{ii}y_i + \cdots + h_{in}y_n$$
+
+
+## DFBETAS
+
+- This quantity measures how much the coefficients change when the $i$-th case is deleted.
+$$DFBETAS_{j(i)}= \dfrac{\hat{\beta}_j - \hat{\beta}_{j(i)}}{\sqrt{\hat{\sigma}^2_{(i)}(X^TX)^{-1}_{jj}}}$$
+- For small/medium datasets: absolute value of 1 or greater is “suspicious”. For large dataset: absolute value of  $2/\sqrt{n}$ .
 ## Cook's D Plot For Models 1 and 3
 
 ```{r, eval=F}
@@ -84,8 +113,8 @@ plot(mod3, 5)
 ## Cook's D 
 
 - Cook's distance attempts to tell us how much $\hat{\beta}$ changes due to the inclusion of the $i^{th}$ observation. 
-- We are concerned with values that are near or greater than 1 when dealing with standardized residuals.
-- The previous figures shows that for model 1 the largest  is 0.5 however for model 3 the 3rd observation is an influential point being that it is close to 1.5.
+
+$$D_i= \dfrac{\sum_{j=1}^n \left( \hat{y}_j - \hat{y}_{j(i)}\right)^2}{pMSE}$$
 
 ## What can we do with this point?
 
@@ -211,5 +240,34 @@ mmps(mod3)
 ```{r, echo=F}
 mmps(mod3a)
 ```
+
+
+## Further Example with Outliers
+
+- Let's Make some outliers
+
+```{r}
+cars1 <- cars[1:30, ]  
+cars_outliers <- data.frame(speed=c(19,19,20,20,20), dist=c(190, 186, 210, 220, 218))  
+cars2 <- rbind(cars1, cars_outliers)  
+```
+
+
+
+## Marginal Model Plots with Outliers
+
+```{r, eval=FALSE}
+mod_cars2 <- lm(dist ~ speed, data=cars2)
+mmps(mod_cars2)
+```
+
+
+## Marginal Model Plot Without Outliers
+
+```{r, eval=FALSE}
+mod_cars1 <- lm(dist ~ speed, data=cars1)
+mmps(mod_cars1)
+```
+
 
 
