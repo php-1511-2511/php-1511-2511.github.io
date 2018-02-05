@@ -3,6 +3,7 @@ layout: default
 title: Calendar
 ---
 
+
 <table>
 <thead>
 <tr>
@@ -91,7 +92,7 @@ Read FOX: Chapter 6
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab1: Rmarkdown/Dplyr/Manipulating Data in R
+Lab0: Rmarkdown/Dplyr/Manipulating Data in R
 </td>
 <td style="text-align:left;">
 <a href="https://www.youtube.com/watch?v=MIlzQpXlJNk">Rmarkdown Tutorial</a> <a href="https://www.youtube.com/watch?v=jWjqLW-u3hc&amp;t=2s">dplyr Basics</a>
@@ -144,9 +145,10 @@ Read FOX: Chapter 11
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 2: Basics of Regression in R / Graphing in R
+Lab 1: Basics of Regression in R / Graphing in R
 </td>
 <td style="text-align:left;">
+<a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a>
 </td>
 <td style="text-align:left;">
 </td>
@@ -194,7 +196,7 @@ Read FOX: Chapter 13
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 3: Regression Diagnostics in R
+Lab 2: Regression Diagnostics in R
 </td>
 <td style="text-align:left;">
 </td>
@@ -243,7 +245,7 @@ Read FOX: Chapter 14
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 4: Logistic Regression
+Lab 3: Logistic Regression
 </td>
 <td style="text-align:left;">
 </td>
@@ -293,7 +295,7 @@ Read FOX: Chapter 15
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 5: More Logistic Regression
+Lab 4: More Logistic Regression
 </td>
 <td style="text-align:left;">
 </td>
@@ -343,7 +345,7 @@ Read FOX: Chapter 15
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 6: Midterm Review
+Lab 5: Midterm Review
 </td>
 <td style="text-align:left;">
 </td>
@@ -441,7 +443,7 @@ Read FOX: Chapter 18
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 7: Additional Regression in R
+Lab 6: Additional Regression in R
 </td>
 <td style="text-align:left;">
 </td>
@@ -536,7 +538,7 @@ Cox-Proportional Hazards Regression
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 8: Survival Data in R
+Lab 7: Survival Data in R
 </td>
 <td style="text-align:left;">
 </td>
@@ -586,7 +588,7 @@ Read FOX: Chapter 22
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 9: Advanced Modeling Techniques in R
+Lab 8: Advanced Modeling Techniques in R
 </td>
 <td style="text-align:left;">
 </td>
@@ -635,7 +637,7 @@ Linear Mixed Effects Models
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 10: EDA with Longitudinal Data
+Lab 9: EDA with Longitudinal Data
 </td>
 <td style="text-align:left;">
 </td>
@@ -684,7 +686,7 @@ Read FOX: Chapter 24
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 11: GLMM in R
+Lab 10: GLMM in R
 </td>
 <td style="text-align:left;">
 </td>
@@ -732,7 +734,7 @@ Overflow
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
-Lab 12: Final Review
+Lab 11: Final Review
 </td>
 <td style="text-align:left;">
 </td>

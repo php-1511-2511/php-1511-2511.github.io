@@ -1,0 +1,156 @@
+---
+title: "Lab 1 - Single and Multiple Regression"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+## Introduction
+This lab will be using R and R studio. Please have these on your computer prior to coming to lab. If you would like to work with R Markdown and learn that more, please download the R markdown file that created this, [Lab 1](https://php-1511-2511.github.io/labs/lab1.Rmd)
+
+
+
+**Dataset**: Poverty. 
+
+You will be using data from the paper [The Statistics of Poverty and Inequality](http://www.amstat.org/publications/jse/datasets/poverty.dat.txt). There is the following data from 97 countries:
+
+* **birthrate**: Live Birth Rate per 1,000 of population
+* **deathrate**: Death Rate per 1,000 of population
+* **infdeath**: Infant deaths per 1,000 of population(under 1 yr old)
+* **le.male**: Life expectancy at birth for males
+* **le.female**: life expectancy at birht for females
+* **gnp**: Gross National Product (GNP) per capita
+* **group**: Group
+  1.  Eastern Europe
+  2.  South America and Mexico
+  3.  Western Europe, North America, Japan, Australia, New Zealand
+  4.  Middle East
+  5.  Asia
+  6.  Africa
+* **country**: Country
+
+
+
+You can copy and paste the text below to read the data into R:
+
+```{r}
+
+poverty<- read.table(file="http://www.amstat.org/publications/jse/datasets/poverty.dat.txt", header=FALSE, sep="")
+```
+
+
+When you open this data you will see that there are no column names to show what these variables are. We can go ahead and add these with the following command:
+
+```{r}
+library(tidyverse)
+  colnames(poverty)<- c("birthrate", "deathrate", "infdeath", "le.male", "le.female",
+"gnp", "group", "country")
+
+#This will print some of the beginning rows of data
+head(poverty)
+```
+
+If we start to look at the data we realize that when the authors of this data set had missing data they used an * symbol to represent missing data. R does not handle this kind of data so we will fix this. We can also see that gnp is not being treated as a numeric variable and need to correct this.
+
+```{r}
+library(tidyverse)
+#R thinks gnp is factor(group) data
+class(poverty$gnp)
+
+
+#Replace the * values with NA
+poverty[poverty=="*"] <- NA
+
+# Tell R that gnp is numeric data 
+poverty$gnp <- as.numeric(as.character(poverty$gnp))
+
+#log.gnp most economic models use log.gnp instead of gnp
+poverty$log.gnp <- log(poverty$gnp)
+```
+
+The above few steps allow us to load our data into R and do a little cleaning. We want you to do these steps so you can grow and gain experience with real data. 
+
+## Looking at Data
+It is always a good idea to take an informal look at the data before model fitting. First take the time to start by exploring the data using various graphs
+```{r}
+library(ggplot2)
+#Histogram
+ggplot(poverty, aes(birthrate)) + geom_histogram()
+
+#Boxplots
+ggplot(poverty, aes(x= "", y=le.female)) + geom_boxplot() + xlab("")
+
+
+#Scatter Plots
+ggplot(poverty, aes(x=le.female, y=infdeath)) + geom_point()
+
+```
+
+Take some time to explore each this data and perform some basic number summaries. For example:
+```{r, message=F, warning=F, results="asis"}
+#install.packages("stargazer")
+library(tidyverse)
+library(stargazer)
+poverty %>%
+  stargazer(., type="html", title="Descriptive statistics", digits=2)
+```
+For more on stargazer, here is a [cheatsheet](https://www.jakeruss.com/cheatsheets/stargazer/)
+
+
+
+
+## Fitting a Regression Model
+We will begin exploring the modeling potential of this data by considering the relationship between Life Expectancy of Females and Infant Death Rates. Using the **lm()** function we will regress the infant death rates onto life expectancy of females
+
+```{r}
+library(broom)
+fit1 <- lm(infdeath ~ le.female, data=poverty)
+tidy(fit1, conf.int=T)[,-c(3:4)]
+```
+
+1. Create a scatter plot of infant death rates and life expectancy of females to see what this relationship looks like. Describe this relationship. 
+
+2. What is the slope of this regression line? What is the intercept?
+
+3. Perform a t-test for significance of the slope. What are your findings?
+
+4. Interpret the intercept of this model. Does this have meaning in our problem?
+
+5. Interpret the slope of this model. What conclusions might you draw from this?
+
+6. Use the **confint()** function to find the confidence intervals of the coefficients of the the model. 
+
+
+7. Using these confidence intervals would you make the same conclusion as the t-test performed in question 3? 
+
+## Testing Further Relationships
+
+8. Quickly go through questions 1-7 for other relationships (On Your Own)
+* Infant Death Rate on log gnp
+* Infant Death Rate on birthrate
+
+
+
+## Multiple Regressions
+
+
+9. Build a multiple linear regression model predicting `infdeath` with the following variables:
+*  `le.female`
+*  `birthrate`
+* `log.gnp`
+
+
+10. What is the adjusted $R^2$ for this model. What does this number tell you? 
+
+11. How does the combined adjusted $R^2$ model compare to the single variable  model $R^2$'s? 
+
+
