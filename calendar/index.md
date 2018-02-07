@@ -3,7 +3,7 @@ layout: default
 title: Calendar
 ---
 
-
+<center>
 <table>
 <thead>
 <tr>
@@ -113,7 +113,7 @@ Week 3
 Factors and Interactions
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">HTML</a>
+<a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factors-interactions.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 7
@@ -131,7 +131,7 @@ Read FOX: Chapter 7
 Diagnostics for Linear Regression
 </td>
 <td style="text-align:left;">
-<a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.html">HTML</a>
+<a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.html">HTML</a> <a href="https://vimeo.com/254726535">Video</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 11
@@ -166,6 +166,7 @@ Week 4
 Unusual and Influential Data
 </td>
 <td style="text-align:left;">
+<a href="../Notes/Lec-06-outliers/outliers.pdf">PDF</a> <a href="../Notes/Lec-06-outliers/outliers.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 12
@@ -745,3 +746,4 @@ Lab 11: Final Review
 </tr>
 </tbody>
 </table>
+</center>
