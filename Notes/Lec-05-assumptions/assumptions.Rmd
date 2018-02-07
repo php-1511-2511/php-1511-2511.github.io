@@ -205,28 +205,41 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 ## Enter Residual Plots
 
 ```{R, eval=F}
-library(ggplot2)
-p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() +theme_bw()
-p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()+theme_bw()
-p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()+theme_bw()
-p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()+theme_bw()
-grid.arrange(p1,p2,p3, p4, ncol=2)
-
+library(olsrr)
+ols_rvsp_plot(mod1)
+ols_rvsp_plot(mod2)
+ols_rvsp_plot(mod3)
+ols_rvsp_plot(mod4)
 ```
 
 
 ## Enter Residual Plots
 
 ```{R, echo=F}
-
-p1 <- ggplot(mod1, aes(.fitted, .resid)) + geom_point() +theme_bw()
-p2 <- ggplot(mod2, aes(.fitted, .resid)) + geom_point()+theme_bw()
-p3 <- ggplot(mod3, aes(.fitted, .resid)) + geom_point()+theme_bw()
-p4 <- ggplot(mod4, aes(.fitted, .resid)) + geom_point()+theme_bw()
-grid.arrange(p1,p2,p3, p4, ncol=2)
-
+library(olsrr)
+ols_rvsp_plot(mod1)
 ```
 
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod2)
+```
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod3)
+```
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod4)
+```
 
 
 ## What do we see?
@@ -275,8 +288,10 @@ mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
 tidy(mod2a, conf.int=T)[,-c(3,4)]
 glance(mod2a)
 
-ggplot(mod2a, aes(.fitted, .resid)) + geom_point()+theme_bw()
+
+ols_rvsp_plot(mod2a)
 ```
+
 
 
 
@@ -304,140 +319,8 @@ knitr::kable(glance(mod2a))
 
 
 ```{r, echo=F}
-ggplot(mod2a, aes(.fitted, .resid)) + geom_point()+theme_bw()
+ols_rvsp_plot(mod2a)
 ```
-
-
-
-## Transformations
-
-- When we run into issues with some sort of pattern in the residuals it can often help to transform the data in order to run a model over this transformation. 
-- One popular method is a log transform. 
-- We will consider this in R. 
-
-
-
-
-
-
-## How do We know what to Do?
-
-- We will consider the framingham heart study data for this. 
-
-```{r}
-library(haven)
-fhs <- read_dta("fhs.dta")
-```
-
-
-
-## Systolic Blood Pressure in FHS
-
-```{r, echo=F}
-p1 = ggplot(fhs, aes(sysbp1))  + geom_histogram() + xlab("Systolic Blood Pressure mm/Hg")
-p2 = ggplot(fhs, aes(sysbp1))  + geom_density() + xlab("Systolic Blood Pressure mm/Hg")
-grid.arrange(p1,p2, ncol=2)
-```
-
-
-
-
-## What do we see?
-
-- This looks skewed so we can try and determine the best transformation so that this is normally distributed. 
-- Sometimes a log transform helps to pull in skewed values. 
-
-
-
-
-
-## What do we see?
-
-
-```{r, message=F, warning=F, echo=F}
-fhs <- fhs %>% mutate(sysbp1t = log(sysbp1))
-p1 = ggplot(fhs, aes(sysbp1t))  + geom_histogram() + xlab("log Systolic Blood Pressure mm/Hg")
-p2 = ggplot(fhs, aes(sysbp1t))  + geom_density() + xlab("log Systolic Blood Pressure mm/Hg")
-grid.arrange(p1,p2, ncol=2)
-```
-
-
-
-
-## Model with Regular Data
-
-- We can then run this transformed variable back into the model we had for this.  
-- Consider the model of Systolic Blood Pressure on BMI considering age as a confounder as well. 
-
-```{r}
-mod <- lm(sysbp1 ~ bmi1 + age1, data=fhs)
-```
-
-
-## Model Diagnostics and Coefficients
-
-```{r, echo=F}
-knitr::kable(tidy(mod, conf.int=T)[,-c(3,4)])
-knitr::kable(glance(mod))
-```
-
-
-
-
-
-## Regression on Transformed data
-
-
-
-
-```{r, echo=F}
-mod_syst <- lm(sysbp1t ~ bmi1 + age1, data=fhs)
-knitr::kable(tidy(mod_syst, conf.int=T)[,-c(3,4)])
-knitr::kable(glance(mod_syst))
-```
-
-
-
-## What do we notice?
-
-- When we see this latter model it appears that there is a large difference in coefficients. 
-- We need to remember that the coefficient for BMI in this case reflects an average change in the transformed $Y$. 
-- So in our case we see that for people of the same age a one unit increase in BMI leads to a `r round(summary(mod_syst)$coef[2,1],8)` increase in log systolic blood pressure.
-- This really does not have any meaning for us. 
-- **NEVER interpret regression coefficients in the context of a transformed variable**. 
-
-
-## Interpreting Transformed Regressions
--  Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure. 
-- We need to consider the math of what is happening. 
-- We know that:
-
-$$ \begin{align*}
-\log(\mu_Y) &= \beta_0 + \beta_1 X \\
-\mu_Y &= \exp(\beta_0 + \beta_1 X)\\
-\mu_Y &= e^{\beta_0}e^{\beta_1X}
-\end{align*}
-$$
-
-
-## Interpreting Transformed Regressions
-
-- Then consider a change in $\mu_Y$ by a change in $X$:
-
-$$ \begin{align*}
-\dfrac{\partial\mu_Y}{\partial X}= \beta_1 e^{\beta_0}e^{\beta_1X}\\
-&= \beta_1 * \mu_Y
-\end{align*}
-$$
-- Thus a one unit change in $X$ leads to $\beta_1$ times $\mu_y$, so if $\beta_1=0.3$ we would see a $\mu_Y$ change by $0.3\mu_Y$ or a 30% increase. 
-
-
-
-
-
-## Interpreting Transformed Regressions
-
-- This shows that for those who are the same age a one unit increase in BMI leads to an  increase in systolic blood pressure of 1.1%. 
 
 
 ## Tools for Checking Validity of a Model
@@ -464,73 +347,61 @@ When fitting a regression model we will take these steps to verify the validity 
 
 
 
-## Standardized Residuals
-
-- When we are concerned with residuals, everything is in context with the original values of the problem. 
-- A standardized residual takes into account the standard deviation of the residual
-
-\[\text{Standardized } \hat{\varepsilon}_i= \dfrac{\hat{\varepsilon}_i}{sd\left(\hat{\varepsilon}_i\right)}\]
-
-
-
-## Why Standardize?
-
-- This way we already assumed that $E\left(\varepsilon\right) = 0$ and the $var\left(\varepsilon\right) = \sigma^2$. 
-- By standardizing we now have a mean of 0 still but this time a variance of 1. 
-- This means that with the residuals being roughly normal we expect to see about 95\% of our residuals falling between $\pm2$. 
-
-
-## Standardized Residuals Plots
+## Residuals Plots
 
 ```{r, eval=F}
-p3<-ggplot(mod2, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
-    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
-    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
-    p3<-p3+ggtitle("Scale-Location")+theme_bw()
-    p3
+ols_rvsp_plot(mod2)
 ```
 
 
 
 
-## Standardized Residuals Plots
+## Residuals Plots
 
 ```{r, echo=F}
-p3<-ggplot(mod2, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
-    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
-    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
-    p3<-p3+ggtitle("Scale-Location")+theme_bw()
-    p3
+ols_rvsp_plot(mod2)
 ```
 
-## Standardized Residuals Plots
+## Residuals Plots
 
 - The residuals shows us that the residuals did not change by much and we can still see the pattern is the exact same as before but the range of the residuals is what has changed. 
 
 ## Assessing Normality of Residuals: QQ-Plot
 
-- Recall our Transformed Systolic Blood Pressure. 
+- Recall our model 2a. 
+```{r, eval=F,message=F, warning=F, error=F}
+
+ols_rsd_qqplot(mod2a)
+```
+
+## Assessing Normality of Residuals: QQ-Plot
+
+
 ```{r, echo=F,message=F, warning=F, error=F}
-# Find the slope and intercept of the line that passes through the 1st and 3rd
-# quartile of the normal q-q plot
 
-y     <- quantile(rstandard(mod_syst), c(0.25, 0.75)) # Find the 1st and 3rd quartiles
-x     <- qnorm( c(0.25, 0.75))         # Find the matching normal values on the x-axis
-slope <- diff(y) / diff(x)             # Compute the line slope
-int   <- y[1] - slope * x[1]           # Compute the line intercept
+ols_rsd_qqplot(mod2a)
+```
 
-ggplot(mod_syst, aes(sample=.stdresid)) + stat_qq() + 
-     geom_abline(intercept=int, slope=slope) + 
-      xlab("Theoretical Quantiles")+ylab("Standardized Residuals") +
-  theme_bw()
+## Assessing Normality of Residuals: Histogram
+
+```{r,eval=F}
+ols_rsd_hist(mod2a)
 ```
 
 
 ## Assessing Normality of Residuals: Histogram
 
 ```{r,echo=F}
-ggplot(mod_syst, aes(.stdresid)) + geom_histogram()+theme_bw()
+ols_rsd_hist(mod2a)
 ```
+
+
+## Assessing Normality of Residuals: Hypothesis Tests
+
+```{r}
+ols_norm_test(mod2a)
+```
+
 
 
 ## Mean of Residuals
@@ -538,7 +409,7 @@ ggplot(mod_syst, aes(.stdresid)) + geom_histogram()+theme_bw()
 - We can test if the mean of residuals is zero with a simple mean function. 
 
 ```{R}
-mean(mod_syst$residuals)
+mean(mod2a$residuals)
 ```
 
 
@@ -546,11 +417,7 @@ mean(mod_syst$residuals)
 ## Homoscedasticity of residuals
 
 ```{r, echo=F, message=F, warning=F}
-p3<-ggplot(mod_syst, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
-    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
-    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
-    p3<-p3+ggtitle("Scale-Location")+theme_bw()
-    p3
+ols_rvsp_plot(mod2a)
 ```
 
 
@@ -563,43 +430,49 @@ p3<-ggplot(mod_syst, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
 - If we saw a pattern like a cone shape then we would not have homoscedasticity. 
 
 
-## Untransformed Systolic Blood Pressure
+## Residuals Plot
 
 ```{r, echo=F}
-p3<-ggplot(mod, aes(.fitted, sqrt(abs(.stdresid))))+geom_point(na.rm=TRUE)
-    p3<-p3+stat_smooth(method="loess", na.rm = TRUE)+xlab("Fitted Value")
-    p3<-p3+ylab(expression(sqrt("|Standardized residuals|")))
-    p3<-p3+ggtitle("Scale-Location")+theme_bw()
-    p3
+ols_rvsp_plot(mod2a)
 ```
 
 
+## Homoscedasticity of residuals: Score Test
 
-## Correlation of Residuals and Covariates:
+```{R}
+ols_score_test(mod2a)
+```
+
+## Homoscedasticity of residuals: F-Test
+
+```{R}
+ols_f_test(mod2a, rhs=TRUE)
+```
+
+
+## Correlation of Residuals and Expected Values of Residuals:
 
 ```{r, eval=F}
+ols_corr_test(mod2)
+ols_corr_test(mod2a)
+```
 
-cor.test(anscombe$x2, mod2$residuals)
-cor.test(anscombe$x2sq, mod2a$residuals)
+
+
+## Correlation of Residuals and Expected Values of Residuals:
+
+```{r, echo=F}
+
+ols_corr_test(mod2)
 
 ```
 
 
 
-## Correlation of Residuals and Covariates:
+## Correlation of Residuals and Expected Values of Residuals:
 
 ```{r, echo=F}
 
-cor.test(anscombe$x2, mod2$residuals)
-
-```
-
-
-
-## Correlation of Residuals and Covariates:
-
-```{r, echo=F}
-
-cor.test(anscombe$x2sq, mod2a$residuals)
+ols_corr_test(mod2a)
 
 ```

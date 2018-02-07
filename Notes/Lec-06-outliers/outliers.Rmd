@@ -21,28 +21,6 @@ knitr::opts_chunk$set(cache=F)
 ```
 
 
-```{r, echo=F}
-library(tidyverse)
-library(ggplot2)
-library(broom)
-mod1 <- lm(y1 ~ x1, data=anscombe)
-mod2 <- lm(y2 ~ x2, data=anscombe)
-mod3 <- lm(y3 ~ x3, data=anscombe)
-mod4 <- lm(y4 ~ x4, data=anscombe)
-```
-
-```{r,echo=F}
-library(broom)
-library(dplyr)
-tidy1 <- tidy(mod1, conf.int = T)
-tidy2 <- tidy(mod2, conf.int = T)
-tidy3 <- tidy(mod3, conf.int = T)
-tidy4 <- tidy(mod4, conf.int = T)
-glance1 <- glance(mod1)
-glance2 <- glance(mod2)
-glance3 <- glance(mod3)
-glance4 <- glance(mod4)
-```
 
 ## Leverage and Outliers
 
@@ -79,6 +57,7 @@ $$DFFITS_i=\dfrac{\hat{Y_i} - \hat{Y_{i(i)}}}{\hat{\sigma}_{(i)}\sqrt{h_{ii}}}$$
 $$H=X(X^TX)^{-1}X^T$$
 - We actually solve regression by performing this operation:
 $$\hat{y} = Hy$$
+
 ## What is $h_{ii}$?
 
 - This ends up meaning that we have:
@@ -90,85 +69,188 @@ $$\hat{y}_i = h_{i1}y_1 + h_{i2}y_2 + \cdots + h_{ii}y_i + \cdots + h_{in}y_n$$
 - This quantity measures how much the coefficients change when the $i$-th case is deleted.
 $$DFBETAS_{j(i)}= \dfrac{\hat{\beta}_j - \hat{\beta}_{j(i)}}{\sqrt{\hat{\sigma}^2_{(i)}(X^TX)^{-1}_{jj}}}$$
 - For small/medium datasets: absolute value of 1 or greater is “suspicious”. For large dataset: absolute value of  $2/\sqrt{n}$ .
-## Cook's D Plot For Models 1 and 3
+
+
+## Simulating Data
+
+```{R}
+set.seed(12345)
+X = runif(150, .5, 3.5)
+beta0 = 1.0
+beta1 = 1.5
+sigma = 0.7
+Y = beta0 + beta1*X + sigma*rnorm(150) # The regular process
+# Contaminated data: Four cases
+X.suspect1 = 1.5; Y.suspect1 = 3.3
+X.suspect2 = 1.5; Y.suspect2 = 9.7
+X.suspect3 = 9.0; Y.suspect3 = 14.5
+X.suspect4 = 9.3; Y.suspect4 = 0.6
+Y.all1 = c(Y, Y.suspect1); X.all1 = c(X, X.suspect1)
+Y.all2 = c(Y, Y.suspect2); X.all2 = c(X, X.suspect2)
+Y.all3 = c(Y, Y.suspect3); X.all3 = c(X, X.suspect3)
+Y.all4 = c(Y, Y.suspect4); X.all4 = c(X, X.suspect4)
+
+
+```
+
+
+## Plots of Data
+
+```{r, echo=F}
+library(tidyverse)
+library(gridExtra)
+library(ggplot2)
+data <- as_data_frame(cbind(X.all1, X.all2, X.all3, X.all4, Y.all1, Y.all2, Y.all3, Y.all4))
+
+p1 <- ggplot(data, aes(X.all1, Y.all1)) + geom_point() +
+annotate("point", x = X.suspect1, y = Y.suspect1, colour = "red", size=3) + xlab("X") + ylab("Y")
+
+p2 <- ggplot(data, aes(X.all2, Y.all2)) + geom_point() +
+  annotate("point", x = X.suspect2, y = Y.suspect2, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+p3 <- ggplot(data, aes(X.all3, Y.all3)) + geom_point() +
+  annotate("point", x = X.suspect3, y = Y.suspect3, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+p4 <- ggplot(data, aes(X.all4, Y.all4)) + geom_point() +
+  annotate("point", x = X.suspect4, y = Y.suspect4, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+
+grid.arrange(p1,p2,p3,p4, ncol=2)
+
+```
+
+## Run the 4 Regressions
+
+```{r}
+out1 <- lm(data=data, Y.all1~X.all1 )
+out2 <- lm(data=data, Y.all2~X.all2 )
+out3 <- lm(data=data, Y.all3~X.all3 )
+out4 <- lm(data=data, Y.all4~X.all4 )
+```
+
+
+## Outliers and Influential Points Plots
+
 
 ```{r, eval=F}
-par(mfrow=c(1,2))
-plot(mod1, 5)
-plot(mod3, 5)
+library(olsrr)
+ols_cooksd_barplot(out1)
+ols_dfbetas_panel(out1)
+ols_dffits_plot(out1)
 ```
-  
+
+
+## Outliers and Influential Points Plots: Cook's D
+
+```{r}
+library(olsrr)
+ols_cooksd_barplot(out1)
+```
+
+## Outliers and Influential Points Plots: DFBETAS
+
+```{r}
+library(olsrr)
+ols_dfbetas_panel(out1)
+```
+
+## Outliers and Influential Points Plots: DFFITS
+
+```{r}
+library(olsrr)
+ols_dffits_plot(out1)
+```
 
 
 
-## Cook's D Plot
+
+## Outliers and Influential Points Plots
+
 
 ```{r, eval=F}
-par(mfrow=c(1,2))
-plot(mod1, 5)
-plot(mod3, 5)
+library(olsrr)
+ols_cooksd_barplot(out4)
+ols_dfbetas_panel(out4)
+ols_dffits_plot(out4)
+```
+
+## Outliers and Influential Points Plots: Cook's D
+
+```{r}
+library(olsrr)
+ols_cooksd_barplot(out4)
+```
+
+## Outliers and Influential Points Plots: DFBETAS
+
+```{r}
+library(olsrr)
+ols_dfbetas_panel(out4)
+```
+
+## Outliers and Influential Points Plots: DFFITS
+
+```{r}
+library(olsrr)
+ols_dffits_plot(out4)
 ```
 
 
-## Cook's D 
 
-- Cook's distance attempts to tell us how much $\hat{\beta}$ changes due to the inclusion of the $i^{th}$ observation. 
 
-$$D_i= \dfrac{\sum_{j=1}^n \left( \hat{y}_j - \hat{y}_{j(i)}\right)^2}{pMSE}$$
+
 
 ## What can we do with this point?
 
 - We can decide to remove the point and re-run the regression. 
 
 ```{r, eval=F}
-mod3a <- lm(y3~x3, data=anscombe[-3,])
+library(broom)
+out4a <- lm(data=data[-151,], Y.all4~X.all4 )
 
-tidy3a <- tidy(mod3a, conf.int = T)
-knitr::kable(bind_rows(tidy3, tidy3a)[-c(3,4)])
+tidy4a <- tidy(out4a, conf.int = T)
+tidy4 <- tidy(out4, conf.int = T)
+knitr::kable(bind_rows(tidy4, tidy4a)[-c(3,4)])
 
-glance3a <- glance(mod3a)
-knitr::kable(bind_rows(glance3, glance3a))
+glance4a <- glance(out4a)
+glance4 <- glance(out4)
+knitr::kable(bind_rows(glance4, glance4a))
 ```
 
 
 ## What can we do with this point?
 
 ```{r, echo=F}
-mod3a <- lm(y3~x3, data=anscombe[-3,])
-tidy3a <- tidy(mod3a, conf.int = T)
-knitr::kable(bind_rows(tidy3, tidy3a)[-c(3,4)])
+library(broom)
+out4a <- lm(data=data[-151,], Y.all4~X.all4 )
+
+tidy4a <- tidy(out4a, conf.int = T)
+tidy4 <- tidy(out4, conf.int = T)
+knitr::kable(bind_rows(tidy4, tidy4a)[-c(3,4)])
+
 ```
 
 
 ## What can we do with this point?
 
 ```{r, echo=F}
-glance3a <- glance(mod3a)
-knitr::kable(bind_rows(glance3, glance3a))
+glance4a <- glance(out4a)
+glance4 <- glance(out4)
+knitr::kable(bind_rows(glance4, glance4a))
 ```
 
 
 ## Marginal Model Plots
 
-- We have been using this example of Systolic Blood Pressure regressed onto BMI and Age.
-- It may not have been clear as to how we knew that we needed to consider transforming the data and that our model may not be sufficient. 
 - We will consider the next level of plots called Marginal Model Plots. 
 - The aim of these plots is to show how well out model fits the data. 
 
 
-## Marginal Model Plots
 
-```{r, echo=F}
-library(haven)
-fhs <- read_dta("fhs.dta")
-mod <- lm(sysbp1 ~ bmi1 + age1, data=fhs)
-fhs <- fhs %>% mutate(sysbp1t = log(sysbp1))
-mod_syst <- lm(sysbp1t ~ bmi1 + age1, data=fhs)
-```
 
 ```{r, eval=F}
   library(car)
-mmps(mod)
+mmps(out4)
 ```
 
 
@@ -178,7 +260,7 @@ mmps(mod)
 
 ```{r, echo=F}
   library(car)
-mmps(mod)
+mmps(out4)
 ```
 
 
@@ -186,88 +268,60 @@ mmps(mod)
 ## What Can we See?
 
 - From the figure we can see that the blue line represents a loess(smoothing) line for the data and the dashed line represents the model which R fitted. 
-- If we consider BMI we can see that for large BMI values our model gives values lower than actual data values. 
+- We can see that our data is very skewed by the outlier 
 - Also we can see that the loess line is more curved than our data model. 
-- For age the fit appears to be good but overall for the predicted values we are seeing the curve that our model does not represent. 
 
 
-## What happens when we Transform?
+## What happens when we Delete points?
 
-- We then transform the data and run these plots again.  
+- When we remove the point the difference is drastic 
 ```{r, eval=F}
-mmps(mod_syst)
+mmps(out4a)
 ```
 
 
-## What happens when we Transform?
+## What happens when we Delete Points??
 
 
 ```{r, echo=F}
-mmps(mod_syst)
+mmps(out4a)
 ```
 
+## Outlier Treatment
 
 
-## What Happens when We Transform?
+- Once the outliers are identified and you have decided to make amends as per the nature of the problem, you may consider one of the following approaches.
+    1. Imputation
+    2. Capping
+    3. Prediction
+    
 
-- The results of the transformation. We already saw that this transformation made systolic blood pressure normally distributed and now we can see the impact of this on the model. 
-- All 3 plots show a better fit than they did with the untransformed data. 
+## Imputation
+
+We can impute the value by replacing it with:
+
+- mean
+- median
+- mode
+- Other Regression techniques
+
+We will consider this further in missing Data. 
 
 
+## Capping
 
-## Using Marginal Model Plots with Outliers
-
-- We can also use Marginal Model Plots with Outliers:
-
-```{r, eval=F}
-mmps(mod3)
-mmps(mod3a)
+- For missing values that lie outside the 1.5*IQR limits, we could cap it by replacing those observations outside the lower limit with the value of 5th %ile and those that lie above the upper limit, with the value of 95th %ile. 
+- Below is a sample code that achieves this.
+```
+x <- dataframe$variable_of)interest
+qnt <- quantile(x, probs=c(.25, .75), na.rm = T)
+caps <- quantile(x, probs=c(.05, .95), na.rm = T)
+H <- 1.5 * IQR(x, na.rm = T)
+x[x < (qnt[1] - H)] <- caps[1]
+x[x > (qnt[2] + H)] <- caps[2]
 ```
 
+## Prediction
 
-
-
-## Using Marginal Model Plots with Outliers
-
-```{r, echo=F}
-mmps(mod3)
-```
-
-
-
-## Using Marginal Model Plots with Outliers
-
-```{r, echo=F}
-mmps(mod3a)
-```
-
-
-## Further Example with Outliers
-
-- Let's Make some outliers
-
-```{r}
-cars1 <- cars[1:30, ]  
-cars_outliers <- data.frame(speed=c(19,19,20,20,20), dist=c(190, 186, 210, 220, 218))  
-cars2 <- rbind(cars1, cars_outliers)  
-```
-
-
-
-## Marginal Model Plots with Outliers
-
-```{r, eval=FALSE}
-mod_cars2 <- lm(dist ~ speed, data=cars2)
-mmps(mod_cars2)
-```
-
-
-## Marginal Model Plot Without Outliers
-
-```{r, eval=FALSE}
-mod_cars1 <- lm(dist ~ speed, data=cars1)
-mmps(mod_cars1)
-```
-
-
-
+- In yet another approach, the outliers can be replaced with missing values (NA) and then can be predicted by considering them as a response variable. 
+- We will discuss this when considering missing data. 
