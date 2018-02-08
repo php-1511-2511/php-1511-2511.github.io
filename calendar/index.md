@@ -148,11 +148,7 @@ Read FOX: Chapter 11
 Lab 1: Basics of Regression in R / Graphing in R
 </td>
 <td style="text-align:left;">
-<<<<<<< HEAD
 <a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254726535">Video</a>
-=======
-<a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a>
->>>>>>> 0f6a98e85e4affdf2f55503e0287b633160a5c59
 </td>
 <td style="text-align:left;">
 </td>
@@ -752,4 +748,5 @@ Lab 11: Final Review
 </tr>
 </tbody>
 </table>
+
 </center>
