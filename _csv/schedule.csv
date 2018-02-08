@@ -5,7 +5,7 @@ Week 2,29-Jan,Simple and Multiple Linear Regression,[PDF](../Notes/Lec-02-Linear
 ,,Lab0: Rmarkdown/Dplyr/Manipulating Data in R,[Rmarkdown Tutorial](https://www.youtube.com/watch?v=MIlzQpXlJNk) [dplyr Basics ](https://www.youtube.com/watch?v=jWjqLW-u3hc&t=2s),,
 Week 3,5-Feb,Factors and Interactions,[PDF](../Notes/Lec-04-fact-inter/factors-interactions.pdf)  [HTML](../Notes/Lec-04-fact-inter/factors-interactions.html)  ,Read  FOX: Chapter 7,
 ,7-Feb,Diagnostics for Linear Regression,[PDF](../Notes/Lec-05-assumptions/assumptions.pdf)  [HTML](../Notes/Lec-05-assumptions/assumptions.html)  [Video](https://vimeo.com/254726535),Read  FOX: Chapter 11,[Guidelines](../homework/guidelines.html) [HW2](../homework/hw2.html)
-,,Lab 1: Basics of Regression in R / Graphing in R,[HTML](../labs/lab1.html) [Rmd](../labs/lab1.Rmd) [Video](https://vimeo.com/254726535),,
+,,Lab 1: Basics of Regression in R / Graphing in R,[HTML](../labs/lab1.html) [Rmd](../labs/lab1.Rmd) [Video](https://vimeo.com/254748467/7723da70df),,
 Week 4,12-Feb,Unusual and Influential Data,[PDF](../Notes/Lec-06-outliers/outliers.pdf)  [HTML](../Notes/Lec-06-outliers/outliers.html) ,Read  FOX: Chapter 12,
 ,14-Feb,Collinearity,,Read  FOX: Chapter 13,
 ,,Lab 2: Regression Diagnostics in R,,,
