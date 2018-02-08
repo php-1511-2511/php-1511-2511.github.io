@@ -1,0 +1,50 @@
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+# General Homework Notes
+
+
+## Basic Homework Guidelines
+
+- You are encouraged to discuss problem sets with your fellow students (and with the Course Instructor of course), but you must write your own final answers, in your own words. 
+- Solutions prepared ``in committee'' or by copying someone else's paper are not acceptable.  
+- This violates the Brown standards of plagiarism, and you will not have the benefit of having thought about and worked the problem when you take the examinations.
+- All answers must be in complete sentences and all graphs must be properly labeled.
+
+
+## Content Guidelines
+
+- Code:
+    - All code should be hidden from the main part of the assignment: You can hide code with:
+    `knitr::opts_chunk$set(echo=FALSE)` in the setup, this will make code chunks hidden in printout. 
+    - Code used can be attached at the end of the assignment in an R file. When you are finished with your assignment, you can run the following code to extract your code from the Rmd:
+      ```
+      library(knitr)
+      purl("/path/to/your/homework.Rmd")
+      ```
+    - Code should be commented with which problem the code refers to. This can be done most easily by adding a comment to each code chunk you create. 
+- Graphs:
+    - When creating multiple graphs try to combine ones used for the same problem. You can do this with the following code:
+    ```
+    library(gridExtra)
+    p1 <- ggplot()
+    p2 <- ggplot()
+    grid.arrange(p1,p2, ncol=?, nrow=?)
+    ```
+    Fill the `?` in with appropriate numbers. 
+    - Make sure graphs are labeled. 
+- Summaries and Tables:
+    - Make sure to try and combine summaries and tables for example, if you run 9 simple regressions use the `tidy()` function to combine results into one table. 
+    - Do print the `summary()` of regression models, use `tidy()` to extract coefficients and `glance()` to extract model fit information. 
+- Overall:
+    - Try to organize your work so that it is neat and concise. 
+    - Starting with homework 2, we will start taking off points for assignments that are extremely long and/or do not follow the above guidelines. 
+    
+    and an R file may be attached with the

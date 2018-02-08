@@ -65,7 +65,7 @@ Simple and Multiple Linear Regression
 Read FOX: Chapter 5
 </td>
 <td style="text-align:left;">
-<a href="../homework/php2511_hw1.html">HTML</a>
+<a href="../homework/hw1.html">HW1</a>
 </td>
 </tr>
 <tr>
@@ -137,6 +137,7 @@ Diagnostics for Linear Regression
 Read FOX: Chapter 11
 </td>
 <td style="text-align:left;">
+<a href="../homework/guidelines.html">Guidelines</a> <a href="../homework/hw2.html">HW2</a>
 </td>
 </tr>
 <tr>
@@ -748,5 +749,6 @@ Lab 11: Final Review
 </tr>
 </tbody>
 </table>
+
 
 </center>
