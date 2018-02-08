@@ -148,7 +148,11 @@ Read FOX: Chapter 11
 Lab 1: Basics of Regression in R / Graphing in R
 </td>
 <td style="text-align:left;">
+<<<<<<< HEAD
+<a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254726535">Video</a>
+=======
 <a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a>
+>>>>>>> 0f6a98e85e4affdf2f55503e0287b633160a5c59
 </td>
 <td style="text-align:left;">
 </td>
@@ -230,9 +234,10 @@ Week 5
 21-Feb
 </td>
 <td style="text-align:left;">
-Logistic Regression
+Generalized Linear Regression Basics
 </td>
 <td style="text-align:left;">
+<a href="../Notes/Lec-08-basic-glm/glm.pdf">PDF</a> <a href="../Notes/Lec-08-basic-glm/glm.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 14
@@ -266,6 +271,7 @@ Week 6
 Logistic Regression
 </td>
 <td style="text-align:left;">
+<a href="../Notes/Lec-09-logistic/logistic.pdf">PDF</a> <a href="../Notes/Lec-09-logistic/logistic.html">HTML</a>
 </td>
 <td style="text-align:left;">
 Read FOX: Chapter 14
@@ -280,7 +286,7 @@ Read FOX: Chapter 14
 28-Feb
 </td>
 <td style="text-align:left;">
-Generalized Linear Regression
+Logistic Regression
 </td>
 <td style="text-align:left;">
 </td>

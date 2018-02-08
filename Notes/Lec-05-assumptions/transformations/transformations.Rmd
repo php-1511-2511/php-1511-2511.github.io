@@ -1,0 +1,132 @@
+
+
+## Transformations
+
+- When we run into issues with some sort of pattern in the residuals it can often help to transform the data in order to run a model over this transformation. 
+- One popular method is a log transform. 
+- We will consider this in R. 
+
+
+
+
+
+
+## How do We know what to Do?
+
+- We will consider the framingham heart study data for this. 
+
+```{r}
+library(haven)
+fhs <- read_dta("fhs.dta")
+```
+
+
+
+## Systolic Blood Pressure in FHS
+
+```{r, echo=F}
+p1 = ggplot(fhs, aes(sysbp1))  + geom_histogram() + xlab("Systolic Blood Pressure mm/Hg")
+p2 = ggplot(fhs, aes(sysbp1))  + geom_density() + xlab("Systolic Blood Pressure mm/Hg")
+grid.arrange(p1,p2, ncol=2)
+```
+
+
+
+
+## What do we see?
+
+- This looks skewed so we can try and determine the best transformation so that this is normally distributed. 
+- Sometimes a log transform helps to pull in skewed values. 
+
+
+
+
+
+## What do we see?
+
+
+```{r, message=F, warning=F, echo=F}
+fhs <- fhs %>% mutate(sysbp1t = log(sysbp1))
+p1 = ggplot(fhs, aes(sysbp1t))  + geom_histogram() + xlab("log Systolic Blood Pressure mm/Hg")
+p2 = ggplot(fhs, aes(sysbp1t))  + geom_density() + xlab("log Systolic Blood Pressure mm/Hg")
+grid.arrange(p1,p2, ncol=2)
+```
+
+
+
+
+## Model with Regular Data
+
+- We can then run this transformed variable back into the model we had for this.  
+- Consider the model of Systolic Blood Pressure on BMI considering age as a confounder as well. 
+
+```{r}
+mod <- lm(sysbp1 ~ bmi1 + age1, data=fhs)
+```
+
+
+## Model Diagnostics and Coefficients
+
+```{r, echo=F}
+knitr::kable(tidy(mod, conf.int=T)[,-c(3,4)])
+knitr::kable(glance(mod))
+```
+
+
+
+
+
+## Regression on Transformed data
+
+
+
+
+```{r, echo=F}
+mod_syst <- lm(sysbp1t ~ bmi1 + age1, data=fhs)
+knitr::kable(tidy(mod_syst, conf.int=T)[,-c(3,4)])
+knitr::kable(glance(mod_syst))
+```
+
+
+
+## What do we notice?
+
+- When we see this latter model it appears that there is a large difference in coefficients. 
+- We need to remember that the coefficient for BMI in this case reflects an average change in the transformed $Y$. 
+- So in our case we see that for people of the same age a one unit increase in BMI leads to a `r round(summary(mod_syst)$coef[2,1],8)` increase in log systolic blood pressure.
+- This really does not have any meaning for us. 
+- **NEVER interpret regression coefficients in the context of a transformed variable**. 
+
+
+## Interpreting Transformed Regressions
+-  Instead you must go back and find out what a one unit increase in BMI will do for systolic blood pressure. 
+- We need to consider the math of what is happening. 
+- We know that:
+
+$$ \begin{align*}
+\log(\mu_Y) &= \beta_0 + \beta_1 X \\
+\mu_Y &= \exp(\beta_0 + \beta_1 X)\\
+\mu_Y &= e^{\beta_0}e^{\beta_1X}
+\end{align*}
+$$
+
+
+## Interpreting Transformed Regressions
+
+- Then consider a change in $\mu_Y$ by a change in $X$:
+
+$$ \begin{align*}
+\dfrac{\partial\mu_Y}{\partial X}= \beta_1 e^{\beta_0}e^{\beta_1X}\\
+&= \beta_1 * \mu_Y
+\end{align*}
+$$
+- Thus a one unit change in $X$ leads to $\beta_1$ times $\mu_y$, so if $\beta_1=0.3$ we would see a $\mu_Y$ change by $0.3\mu_Y$ or a 30% increase. 
+
+
+
+
+
+## Interpreting Transformed Regressions
+
+- This shows that for those who are the same age a one unit increase in BMI leads to an  increase in systolic blood pressure of 1.1%. 
+
