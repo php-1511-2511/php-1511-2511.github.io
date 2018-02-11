@@ -1,9 +1,3 @@
----
-layout: default
-title: Calendar
----
-
-<center>
 <table>
 <thead>
 <tr>
@@ -765,5 +759,3 @@ Lab 11: Final Review
 </tbody>
 </table>
    
-
-</center>
