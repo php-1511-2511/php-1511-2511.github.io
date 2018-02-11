@@ -4,7 +4,9 @@ title: Calendar
 ---
 
     
-<center>
+<center
+    
+
 <table>
 <colgroup>
     <col width="8%" />
@@ -124,7 +126,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 3: Logistic Regression</td>
+<td align="left">Lab 3: Final Linear Regressions</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -148,7 +150,7 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 4: More Logistic Regression</td>
+<td align="left">Lab 4: Logistic Regression</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -156,15 +158,15 @@ title: Calendar
 <tr class="odd">
 <td align="left">Week 7</td>
 <td align="left">5-Mar</td>
-<td align="left">Poisson Regression</td>
-<td align="left"></td>
+<td align="left">Logistic Regression</td>
+<td align="left"><a href="../Notes/Lec-11-logistic-3/logistic-3.pdf">PDF</a> <a href="../Notes/Lec-11-logistic-3/logistic-3.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left">7-Mar</td>
-<td align="left">Diagnositics for Generalized Linear Regression</td>
+<td align="left">Poisson Regression</td>
 <td align="left"></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
@@ -172,7 +174,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 5: Midterm Review</td>
+<td align="left">Lab 5: Logistic and Poisson</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -180,7 +182,7 @@ title: Calendar
 <tr class="even">
 <td align="left">Week 8</td>
 <td align="left">12-Mar</td>
-<td align="left">Extending the Generalize Linear Model</td>
+<td align="left">Extending the Generalized Linear Model</td>
 <td align="left"></td>
 <td align="left">Read FOX: Chapter 16</td>
 <td align="left"></td>
@@ -196,7 +198,7 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 6: Midterm Review</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -220,7 +222,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 6: Additional Regression in R</td>
+<td align="left">Lab 7: Additional Regression in R</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -268,7 +270,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 7: Survival Data in R</td>
+<td align="left">Lab 8: Survival Data in R</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -292,7 +294,7 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 8: Advanced Modeling Techniques in R</td>
+<td align="left">Lab 9: Advanced Modeling Techniques in R</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -316,7 +318,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 9: EDA with Longitudinal Data</td>
+<td align="left">Lab 10: EDA with Longitudinal Data</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -340,7 +342,7 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 10: GLMM in R</td>
+<td align="left">Lab 11: GLMM in R</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -364,11 +366,12 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 11: Final Review</td>
+<td align="left">Lab 12: Final Review</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 </tbody>
 </table>
+
 </center>

@@ -1,0 +1,451 @@
+---
+title: "Logistic Regression Part 3"
+author: "Adam J Sullivan, PhD"
+date: "02/28/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=T)
+```
+
+
+# Logistic Regression: Part 3
+
+- We will begin model building with an example. 
+- We will look at a set of data which considers a self-assessed health exam. 
+- There is a natural ordering in the health rating so we would assume that the probability of death to change with the categories. 
+- Our data contains 1600 subjects and they are measured on 
+
+
+## SAH Variables
+
+
+----------------------------------------------------
+Variable    Description
+----------  ----------------------------------------
+id          Identification Number
+
+age         Age (years)
+
+male        Sex 
+            
+            1 = Male
+            
+            0 = Female
+            
+sah         Self Assessed Health
+
+            1 = Excellent
+            
+            2 = Good
+            
+            3 = Fair
+            
+            4= Poor
+------------------------------------------------
+
+
+## SAH Variables
+
+
+----------------------------------------------------
+Variable    Description
+----------  ----------------------------------------            
+pperf       Phsical Performance Scale (0-12)
+
+pefr        Peak Expiratory Flow Rate (average of 3)
+
+cogerr      Number of cognitive errors on SPMSQ
+
+sbp         Systolic Blood Pressure (mmHg)
+
+mile        Ability to Walk 1 mile
+
+            0 = No
+            
+            1 = Yes
+            
+digit     Use of digitalis
+
+            0 = No
+            
+            1 = Yes
+------------------------------------------------
+
+
+## SAH Variables
+
+
+----------------------------------------------------
+Variable    Description
+----------  ---------------------------------------- 
+loop      Use of Loop Diuretics
+
+            0 = No
+            
+            1 = Yes
+
+untrt     Diagnosed but untreated diabetes
+
+            0 = No
+            
+            1 = Yes
+
+trtdb     Treated Diabetes
+
+            0 = No
+            
+            1 = Yes
+
+dead      Dead by 1991
+
+
+            0 = No
+            
+            1 = Yes
+
+time      Follow up (years)
+------------------------------------------------------
+
+---
+
+For Self-Assessed Health Study we need to consider how we model certian variables
+
+* Age: this is critcal since subjects were asked to compare their health to others
+
+* Count variables: `pperf` and `cogerr`
+
+* Measured Variables: `sbp` and `pefr`
+
+* Diabetes is in 2 variables `untrt` and `trtdb`
+
+* other binary variables: `male`, `mile`, `loop`, `digit` and `death`
+
+---
+
+```{r}
+library(haven)
+sah <- read_dta("sah.dta") 
+```
+
+
+```{r, echo=F}
+
+library(MASS)
+sah2 <- as.numeric(sah$sah)
+Full <- glm(formula = dead ~ sah2 + age + male + pperf + perf + cogerr + sbp + mile + digit + loop + untrt + trtdp, family = binomial(link = "logit"), data = sah)
+mod.back.auto <- stepAIC(Full,scope = .~1, direction="backward",k=2)
+summary(mod.back.auto)
+```
+
+## Self-Assessed Health
+
+With our data we are mainly interested in how well self-assessed health predicts death. There are 11 other variables that are possible confounders for this relationship. This means that if we consider all of this we have the possibility of 12 main effects and 11 possible 2 way interactions with self assessed health. This could be a very large model and we are only thinking of 2-way interactions here. 
+
+Due to these large possibilites we turn to automated procedures.
+
+##Assessing Model Fit
+
+Once we begin building models we need to know how to assess model fit.  We have previously covered the likelihood ratio test where we can compare one model versus another. Now we move to assessing the fit of one model.
+
+What affects model fit?
+
+* Omitted covariates (Main effects, interactions, polynomial terms)
+
+* Poor choice of link function
+
+* Unusual subjects 
+
+
+
+
+We usually determine the goodness of fit for logistic regression based on 
+
+1. ***Calibration*** - A model is well *calibrated* if the observed and predicted probabilities based on the model are reasonably close. 
+
+2. ***Discrimination*** - A model has good *discrimination* if the distribution of risk scores for cases and controls separate out. 
+    a. This means Cases tend to have higher scores. 
+    b. This means Controls tend to have lower scores.
+    c. There is little overlap.
+    
+    
+##Calibration
+
+We will use the Hosmer-Lemeshow Goodness of Fit test to assess calibration in logistic regression models:
+
+
+With this test we have:
+
+$$\hat{p}_i = \dfrac{\exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}{1 + \exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}$$
+
+where $i=1,\ldots,n$ and $K$ is the number of covariates in the model. 
+
+
+---
+
+
+We then reorder the subjects in the order of the fitted probabilities so that
+
+$$\hat{p}_1<\hat{p}_2< \cdots < \hat{p}_n$$
+
+
+We then group this data in `G` approximately equal sized groups based on the ordered $\hat{p}$. 
+
+The default is typically `G=10` to create deciles of increasing risk. Then we have
+
+---
+
+$$
+\begin{aligned}
+O_j &= \sum_{i\in group_j} y_i = \text{ Observed number of events in group }j\\
+E_j &= \sum_{i\in group_j} \hat{p}_i = \text{ Expected number of events in group }j\\
+\bar{p}_j &= \dfrac{E_j}{n_j} \;\;\;\; n_j=\text{ number of subjects in group} j=1,\ldots,G\\
+\end{aligned}
+$$
+
+We then compute the test statistic:
+
+$$ X^2_{HL} = \sum_{j=1}^G \dfrac{\left(O_j - E_J\right)^2}{n_j\bar{p}_j\left(1-\bar{p}_j\right)}\sim \chi^2_{G-2}$$
+
+---
+
+This test statistic is for the following hypothesis
+
+$$H_0: \text{ The fitted Model is Correct}$$
+$$\text{vs}$$
+$$H_1: \text{ The fitted Model is Not Correct}$$
+
+In order for this to work well $G\ge6$ and $n_j$ should be large.
+
+
+---
+
+Recall our model chosen from our last selection technique:
+```{r}
+summary(mod.back.auto)
+```
+
+---
+
+We can test the calibration of this below:
+
+```{r}
+library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
+```
+
+---
+
+We get a warning message about factors. When this happens we need to check out data:
+```{r}
+class(sah$dead)
+table(sah$dead)
+```
+
+---
+
+We can see that `dead` is a factor without the 0 and 1 that we wanted to have for it. Basically this Stata dataset had labels and those labels are what R imported. 
+
+
+```{r}
+sah$dead <- as.numeric(sah$dead)
+table(sah$dead)
+```
+
+---
+
+We can now see that we have `1 = Not Dead` and `2 = Dead`, we need this to be 0 and 1 respectively
+```{R}
+sah$dead <- sah$dead - 1
+table(sah$dead)
+```
+
+---
+
+Now we can rerun our test
+```{r}
+library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
+```
+
+---
+
+This time we get get a p-value of `r hoslem.test(sah$dead, fitted(mod.back.auto), g=10)$p.value`. This means our model is a good fit and it is calibrated well. We could try other values of $G$ to make sure:
+```{r}
+library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=6)
+```
+
+---
+
+```{r}
+library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=8)
+```
+
+---
+
+```{r}
+library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=12)
+```
+
+---
+
+In each case our p-values are still showing this is a good fit. 
+
+---
+
+
+##Discrimination
+
+We then assess discrimination. To do this we use something called ***Concordance*** or ***C Statistic***
+
+To understand what this is consider 2 different subjects
+
+1. Subject 1 is dead
+2. Subject 2 is not dead.
+
+---
+
+
+If we consider our model from above it predicts:
+
+1. $\hat{p}_1$ the proability that subject 1 is dead.
+1. $\hat{p}_2$ the proability that subject 2 is dead.
+
+---
+
+The ***C Statistic*** is given by
+
+$$\Pr\left(\hat{p}_1 > \hat{p}_2\right)$$
+
+* If the risk prediction is worthless we find that $C=0.5$ or essentially the same as flipping a coin. 
+
+* If the risk is larger for all who are dead than all who are not dead than we have $C=1$. 
+
+---
+
+We typically find this value with a Receiver Operating Characteristic (ROC) curve. This curve is:
+
+* For probability $p$ those with $\hat{p}>p$ are predicted to have the outcome and those with $\hat{p}<p$ are predicted to not have the outcome.
+
+---
+
+##Sensitivity and Specificity
+
+* ***Sensitivity*** 
+    * True Positive
+    * $\dfrac{ \text{Num. with Outcome and }\hat{p}>p}{\text{num. with Outcome}}$
+    * $\Pr(\hat{p}>p|\text{Has Disease})$
+
+* ***Specificity***
+    * True Negative
+    * $\dfrac{ \text{Num. without Outcome and }\hat{p}<p}{\text{num. with Outcome}}$
+    * $\Pr(\hat{p}<p|\text{No Disease})$
+
+---    
+    
+##ROC Curves
+
+* $p$ is arbitrary. 
+* If we increase $p$ we increase the Specificity but descrease the Sensitvity. 
+* An ROC curve has the Sensitivity on the y-axis and 1-Specificity on the x-axis. 
+* It graphs those points over all choices of $p$.
+
+---
+
+##ROC Curves
+
+* If the prediction rule is non-discriminatory then the ROC curve will be a straight line from the points (0,0) to (1,1)
+* From the ROC curve, it can be shown that the Area under this Curve (AUC) is the same as the C-statistic or
+$$AUC=C = \Pr\left(\text{Subject with Disease's Risk} > \text{Subject without Disease's Risk}\right)$$
+
+---
+
+```{r, eval=FALSE}
+
+library(ggplot2)
+library(ROCR)
+
+
+prob <- predict(mod.back.auto)
+pred <- prediction(prob, sah$dead)
+perf <- performance(pred, "tpr", "fpr")
+# I know, the following code is bizarre. Just go with it.
+auc <- performance(pred, measure = "auc")
+auc <- auc@y.values[[1]]
+
+roc.data <- data.frame(fpr=unlist(perf@x.values),
+                       tpr=unlist(perf@y.values),
+                       model="GLM")
+ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
+    geom_ribbon(alpha=0.2) + geom_abline(intercept = 0, slope = 1, colour = "gray")+
+    geom_line(aes(y=tpr)) +
+    ggtitle(paste0("ROC Curve w/ AUC=", auc))
+```
+
+---
+
+```{r, echo=FALSE}
+
+library(ggplot2)
+library(ROCR)
+
+
+prob <- predict(mod.back.auto)
+pred <- prediction(prob, sah$dead)
+perf <- performance(pred, "tpr", "fpr")
+# I know, the following code is bizarre. Just go with it.
+auc <- performance(pred, measure = "auc")
+auc <- auc@y.values[[1]]
+
+roc.data <- data.frame(fpr=unlist(perf@x.values),
+                       tpr=unlist(perf@y.values),
+                       model="GLM")
+ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
+    geom_ribbon(alpha=0.2) + geom_abline(intercept = 0, slope = 1, colour = "gray")+
+    geom_line(aes(y=tpr)) +
+    ggtitle(paste0("ROC Curve w/ AUC=", auc))
+```
+
+---
+
+
+We can see with the plot above that we have an AUC of `r auc`. This is a decent fit for the model.
+
+--------------------------
+AUC       Model Fit
+--------  ----------------
+0.5       Random
+
+0.6       Mediocre
+
+0.7       Decent
+
+0.8       Good
+
+0.9       Excellent
+------------------------
+
+---
+
+## Calibration vs Discrimination
+
+1. A logistic model with good agreement between observed and predicted outcomes may fail to sharply distinguish between those with a disease and those without. 
+
+  * If the range of predicted risk across the deciles is narrow. 
+  
+2. A model that does a good job of distinguishing between those with and without the disease may get risks of events wrong if the calibration is poor. 
