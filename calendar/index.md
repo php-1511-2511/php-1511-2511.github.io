@@ -3,15 +3,17 @@ layout: default
 title: Calendar
 ---
 
+    
+<center>
 <table>
 <colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="29%" />
-<col width="10%" />
-<col width="20%" />
-<col width="25%" />
-</colgroup>
+    <col width="8%" />
+    <col width="8%" />
+    <col width="29%" />
+    <col width="10%" />
+    <col width="20%" />
+    <col width="25%" />
+    </colgroup>
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -139,7 +141,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">28-Feb</td>
 <td align="left">Logistic Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-10-logistic-2/logistic-2.pdf">PDF</a> <a href="../Notes/Lec-10-logistic-2/logistic-2.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
 </tr>
@@ -369,6 +371,4 @@ title: Calendar
 </tr>
 </tbody>
 </table>
-
-
 </center>
