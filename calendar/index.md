@@ -5,11 +5,11 @@ title: Calendar
 
 <table>
 <colgroup>
-<col width="2%" />
-<col width="2%" />
-<col width="12%" />
-<col width="36%" />
-<col width="6%" />
+<col width="10%" />
+<col width="10%" />
+<col width="20%" />
+<col width="10%" />
+<col width="10%" />
 <col width="40%" />
 </colgroup>
 <thead>
