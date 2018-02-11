@@ -7,7 +7,7 @@ Week 3,5-Feb,Factors and Interactions,[PDF](../Notes/Lec-04-fact-inter/factors-i
 ,7-Feb,Diagnostics for Linear Regression,[PDF](../Notes/Lec-05-assumptions/assumptions.pdf)  [HTML](../Notes/Lec-05-assumptions/assumptions.html)  [Video](https://vimeo.com/254726535),Read  FOX: Chapter 11,[Guidelines](../homework/guidelines.html) [HW2](../homework/hw2.html)
 ,,Lab 1: Basics of Regression in R / Graphing in R,[HTML](../labs/lab1.html) [Rmd](../labs/lab1.Rmd) [Video](https://vimeo.com/254748467/7723da70df),,
 Week 4,12-Feb,Unusual and Influential Data,[PDF](../Notes/Lec-06-outliers/outliers.pdf)  [HTML](../Notes/Lec-06-outliers/outliers.html) ,Read  FOX: Chapter 12,
-,14-Feb,Collinearity,,Read  FOX: Chapter 13,
+,14-Feb,Collinearity,[PDF](../Notes/Lec-07-collinearity/collinearity.pdf)  [HTML](../Notes/Lec-07-collinearity/collinearity.html) ,Read  FOX: Chapter 13,
 ,,Lab 2: Regression Diagnostics in R,,,
 Week 5,19-Feb,***NO CLASS LONG WEEKEND***,,,
 ,21-Feb,Generalized Linear Regression Basics,[PDF](../Notes/Lec-08-basic-glm/glm.pdf)  [HTML](../Notes/Lec-08-basic-glm/glm.html) ,Read  FOX: Chapter 14,
