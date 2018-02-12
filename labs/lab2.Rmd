@@ -1,0 +1,125 @@
+---
+title: "Lab 2 - Multiple Regression and Model Testing"
+author: "Your Name"
+output: 
+  html_document
+runtime: shiny
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+## Introduction
+This lab will be using R and R studio. Please have these on your computer prior to coming to lab. If you would like to work with R Markdown and learn that more, please download the R markdown file that created this,  [Lab 2](https://php-1511-2511.github.io/labs/lab2.Rmd).
+
+
+
+You will notice that this is the same data set as last lab:
+
+```{r}
+
+poverty<- read.table(file="http://www.amstat.org/publications/jse/datasets/poverty.dat.txt",
+                 header=FALSE, sep="")
+
+colnames(poverty) <- c("birthrate", "deathrate", "infdeath", "le.male", "le.female",
+"gnp", "group", "country")
+
+#This will print some of the beginning rows of data
+head(poverty)
+
+#R thinks gnp is factor(group) data
+class(poverty$gnp)
+
+#Replace the * values with NA
+poverty[poverty=="*"] <- NA
+
+# Tell R that gnp is numeric data 
+poverty$gnp <- as.numeric(as.character(poverty$gnp))
+
+#log.gnp
+poverty$log.gnp <- log(poverty$gnp)
+
+# just work with complete cases, we delete 6 here
+poverty <- poverty[complete.cases(poverty),]
+rownames(poverty) = 1:nrow(poverty) #rename the row name data
+```
+
+
+##Data Exploration
+
+We should always begin with a data exploration. In order to make this proceed faster in lab, below is an embedded graph that will allow you to explore the relationships of all the variables in the lab. 
+
+```{r, echo = FALSE, eval=TRUE}
+library(shiny)
+library(ggplot2)
+data <- poverty
+shinyApp(
+  
+
+
+
+
+ 
+# Define UI for iris application
+shinyUI(pageWithSidebar(
+ 
+  # Application title
+  headerPanel(""),
+ 
+  # Sidebar with controls to select the variable to plot against mpg
+  # and to specify whether outliers should be included
+  sidebarPanel(
+    selectInput("variable", "First variable:",
+                list(
+"birthrate", "deathrate", "infdeath",  "le.male",   "le.female", "gnp",    "log.gnp"
+                                          )),
+ 
+    selectInput("variable2", "Second variable:",
+                list(
+"birthrate", "deathrate", "infdeath",  "le.male",   "le.female", "gnp",    "log.gnp"
+                                          ))
+  ),
+
+
+  mainPanel(
+     h3(textOutput("caption")),
+     plotOutput("plot")
+  )
+)),
+
+
+ 
+
+ 
+# Define server logic required to plot variables
+shinyServer(function(input, output) {
+ 
+  # Create a reactive text
+  text <- reactive({
+     paste(input$variable, 'versus', input$variable2)
+  })
+ formulaText <- reactive({
+    paste(input$variable, "~", input$variable2)
+  })
+  # Return as text the selected variables
+  output$caption <- renderText({
+    text()
+  })
+ 
+  # Generate a plot of the requested variables
+ output$plot <- renderPlot({
+     p <- ggplot(data, aes_string(x=input$variable, y=input$variable2)) + geom_point()
+     print(p)
+  })
+}),
+
+ options = list(height = 600)
+  
+)
+```

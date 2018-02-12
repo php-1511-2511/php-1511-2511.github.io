@@ -1,4 +1,7 @@
-    <colgroup>
+    
+
+<table>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -6,16 +9,6 @@
     <col width="20%" />
     <col width="25%" />
     </colgroup>
-
-<table>
-<colgroup>
-<col width="2%" />
-<col width="2%" />
-<col width="12%" />
-<col width="36%" />
-<col width="6%" />
-<col width="40%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -87,7 +80,7 @@
 <td align="left">Week 4</td>
 <td align="left">12-Feb</td>
 <td align="left">Unusual and Influential Data</td>
-<td align="left"><a href="../Notes/Lec-06-outliers/outliers.pdf">PDF</a> <a href="../Notes/Lec-06-outliers/outliers.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-06-outliers/outliers.pdf">PDF</a> <a href="../Notes/Lec-06-outliers/outliers.html">HTML</a> <a href="https://vimeo.com/255465189/6495d70d8e">Video</a></td>
 <td align="left">Read FOX: Chapter 12</td>
 <td align="left"></td>
 </tr>
@@ -103,7 +96,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Regression Diagnostics in R</td>
-<td align="left"></td>
+<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
