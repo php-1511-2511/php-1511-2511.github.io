@@ -1,7 +1,7 @@
 ---
 title: "Logistic Regression Part 3"
 author: "Adam J Sullivan, PhD"
-date: "02/28/2018"
+date: "03/05/2018"
 output:
    ioslides_presentation: 
     widescreen: true
@@ -17,11 +17,13 @@ knitr::opts_chunk$set(error = TRUE)
 knitr::opts_chunk$set(warning=FALSE)
 knitr::opts_chunk$set(message=FALSE)
 knitr::opts_chunk$set(results="hold")
-knitr::opts_chunk$set(cache=T)
+knitr::opts_chunk$set(cache=F)
 ```
 
 
 # Logistic Regression: Part 3
+
+## Logistic Regression
 
 - We will begin model building with an example. 
 - We will look at a set of data which considers a self-assessed health exam. 
@@ -29,7 +31,7 @@ knitr::opts_chunk$set(cache=T)
 - Our data contains 1600 subjects and they are measured on 
 
 
-## SAH Variables
+## 
 
 
 ----------------------------------------------------
@@ -57,7 +59,7 @@ sah         Self Assessed Health
 ------------------------------------------------
 
 
-## SAH Variables
+##
 
 
 ----------------------------------------------------
@@ -77,7 +79,7 @@ mile        Ability to Walk 1 mile
             
             1 = Yes
             
-digit     Use of digitalis
+digit       Use of digitalis
 
             0 = No
             
@@ -85,41 +87,48 @@ digit     Use of digitalis
 ------------------------------------------------
 
 
-## SAH Variables
+## 
 
 
 ----------------------------------------------------
 Variable    Description
 ----------  ---------------------------------------- 
-loop      Use of Loop Diuretics
+loop        Use of Loop Diuretics
 
             0 = No
             
             1 = Yes
 
-untrt     Diagnosed but untreated diabetes
+untrt       Diagnosed but untreated diabetes
+
+            0 = No
+            
+            1 = Yes
+---------------------------------
+
+
+## 
+
+
+----------------------------------------------------
+Variable    Description
+----------  ---------------------------------------- 
+trtdb       Treated Diabetes
 
             0 = No
             
             1 = Yes
 
-trtdb     Treated Diabetes
+dead        Dead by 1991
 
             0 = No
             
             1 = Yes
 
-dead      Dead by 1991
-
-
-            0 = No
-            
-            1 = Yes
-
-time      Follow up (years)
+time        Follow up (years)
 ------------------------------------------------------
 
----
+## 
 
 For Self-Assessed Health Study we need to consider how we model certian variables
 
@@ -133,7 +142,7 @@ For Self-Assessed Health Study we need to consider how we model certian variable
 
 * other binary variables: `male`, `mile`, `loop`, `digit` and `death`
 
----
+## 
 
 ```{r}
 library(haven)
@@ -193,7 +202,7 @@ $$\hat{p}_i = \dfrac{\exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\bet
 where $i=1,\ldots,n$ and $K$ is the number of covariates in the model. 
 
 
----
+## 
 
 
 We then reorder the subjects in the order of the fitted probabilities so that
@@ -205,7 +214,7 @@ We then group this data in `G` approximately equal sized groups based on the ord
 
 The default is typically `G=10` to create deciles of increasing risk. Then we have
 
----
+## 
 
 $$
 \begin{aligned}
@@ -219,7 +228,7 @@ We then compute the test statistic:
 
 $$ X^2_{HL} = \sum_{j=1}^G \dfrac{\left(O_j - E_J\right)^2}{n_j\bar{p}_j\left(1-\bar{p}_j\right)}\sim \chi^2_{G-2}$$
 
----
+## 
 
 This test statistic is for the following hypothesis
 
@@ -230,23 +239,23 @@ $$H_1: \text{ The fitted Model is Not Correct}$$
 In order for this to work well $G\ge6$ and $n_j$ should be large.
 
 
----
+## 
 
 Recall our model chosen from our last selection technique:
 ```{r}
 summary(mod.back.auto)
 ```
 
----
+## 
 
 We can test the calibration of this below:
 
-```{r}
+```{r, eval=F}
 library(ResourceSelection)
 hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
 ```
 
----
+## 
 
 We get a warning message about factors. When this happens we need to check out data:
 ```{r}
@@ -254,7 +263,7 @@ class(sah$dead)
 table(sah$dead)
 ```
 
----
+## 
 
 We can see that `dead` is a factor without the 0 and 1 that we wanted to have for it. Basically this Stata dataset had labels and those labels are what R imported. 
 
@@ -264,7 +273,7 @@ sah$dead <- as.numeric(sah$dead)
 table(sah$dead)
 ```
 
----
+## 
 
 We can now see that we have `1 = Not Dead` and `2 = Dead`, we need this to be 0 and 1 respectively
 ```{R}
@@ -272,41 +281,43 @@ sah$dead <- sah$dead - 1
 table(sah$dead)
 ```
 
----
+## 
 
 Now we can rerun our test
+
 ```{r}
 library(ResourceSelection)
 hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
 ```
 
----
+## 
 
 This time we get get a p-value of `r hoslem.test(sah$dead, fitted(mod.back.auto), g=10)$p.value`. This means our model is a good fit and it is calibrated well. We could try other values of $G$ to make sure:
+
 ```{r}
 library(ResourceSelection)
 hoslem.test(sah$dead, fitted(mod.back.auto), g=6)
 ```
 
----
+## 
 
 ```{r}
 library(ResourceSelection)
 hoslem.test(sah$dead, fitted(mod.back.auto), g=8)
 ```
 
----
+## 
 
 ```{r}
 library(ResourceSelection)
 hoslem.test(sah$dead, fitted(mod.back.auto), g=12)
 ```
 
----
+## 
 
 In each case our p-values are still showing this is a good fit. 
 
----
+## 
 
 
 ##Discrimination
@@ -318,7 +329,7 @@ To understand what this is consider 2 different subjects
 1. Subject 1 is dead
 2. Subject 2 is not dead.
 
----
+## 
 
 
 If we consider our model from above it predicts:
@@ -326,7 +337,7 @@ If we consider our model from above it predicts:
 1. $\hat{p}_1$ the proability that subject 1 is dead.
 1. $\hat{p}_2$ the proability that subject 2 is dead.
 
----
+## 
 
 The ***C Statistic*** is given by
 
@@ -336,13 +347,13 @@ $$\Pr\left(\hat{p}_1 > \hat{p}_2\right)$$
 
 * If the risk is larger for all who are dead than all who are not dead than we have $C=1$. 
 
----
+## 
 
 We typically find this value with a Receiver Operating Characteristic (ROC) curve. This curve is:
 
 * For probability $p$ those with $\hat{p}>p$ are predicted to have the outcome and those with $\hat{p}<p$ are predicted to not have the outcome.
 
----
+## 
 
 ##Sensitivity and Specificity
 
@@ -356,7 +367,7 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
     * $\dfrac{ \text{Num. without Outcome and }\hat{p}<p}{\text{num. with Outcome}}$
     * $\Pr(\hat{p}<p|\text{No Disease})$
 
----    
+##     
     
 ##ROC Curves
 
@@ -365,7 +376,7 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
 * An ROC curve has the Sensitivity on the y-axis and 1-Specificity on the x-axis. 
 * It graphs those points over all choices of $p$.
 
----
+## 
 
 ##ROC Curves
 
@@ -373,7 +384,7 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
 * From the ROC curve, it can be shown that the Area under this Curve (AUC) is the same as the C-statistic or
 $$AUC=C = \Pr\left(\text{Subject with Disease's Risk} > \text{Subject without Disease's Risk}\right)$$
 
----
+## 
 
 ```{r, eval=FALSE}
 
@@ -397,7 +408,7 @@ ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
     ggtitle(paste0("ROC Curve w/ AUC=", auc))
 ```
 
----
+## 
 
 ```{r, echo=FALSE}
 
@@ -421,7 +432,7 @@ ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
     ggtitle(paste0("ROC Curve w/ AUC=", auc))
 ```
 
----
+## 
 
 
 We can see with the plot above that we have an AUC of `r auc`. This is a decent fit for the model.
@@ -440,7 +451,7 @@ AUC       Model Fit
 0.9       Excellent
 ------------------------
 
----
+## 
 
 ## Calibration vs Discrimination
 
