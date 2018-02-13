@@ -1,11 +1,11 @@
+       
 
-
-<table>
-    <colgroup>
-<col width="15%" />
-<col width="15%" />
-<col width="50%" />
-</colgroup>
+<table style="width:100%;">
+ <colgroup>
+    <col width="15%" />
+    <col width="15%" />
+    <col width="50%" />
+    </colgroup>
 <thead>
 <tr class="header">
 <th align="left">Deadline</th>
@@ -16,12 +16,12 @@
 <tbody>
 <tr class="odd">
 <td align="left">2/23/2018</td>
-<td align="left">Choose Project</td>
+<td align="left"><a href="#pick-a-paper-or-data-that-you-will-be-using">Pick Data that you will be using</a></td>
 <td align="left">Choose a partner and e-mail all 3 of us with 3 potential papers to replicate, including a 2-3 sentence explanation of why you are considering each paper. Papers can be from any literature but should be recent.</td>
 </tr>
 <tr class="even">
 <td align="left">3/7/2018</td>
-<td align="left">Get Data</td>
+<td align="left"><a href="#get-data-and-have-plan-approved">Get your plan approved</a></td>
 <td align="left">We will ask you to verify that you have the data by this point. It may not be easy to gather the data, this is why you are picking 3 possible topics.</td>
 </tr>
 <tr class="odd">
