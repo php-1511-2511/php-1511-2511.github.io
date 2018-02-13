@@ -22,16 +22,6 @@ The secondary goals of this project are to
 
 For the project, you must follow the schedule and meet certian technical requirements.
 
-Here are the six steps to the project:
-
-- [Pick Data that you will be using](#pick-a-paper-or-data-that-you-will-be-using)
-- [Get your plan approved](#get-your-plan-approved)
-- [Analyze the data](#analyze-the-data)
-- [Write up your analysis](#write-up-your-analysis)
-
-
- 
-
 
 Follow the Calendar Below for Deadlines. ***Note: these are in addition to regular homework***
 
@@ -267,7 +257,7 @@ Include the following in this proposal:
 
 #### Replication of Paper
 
-If your goal is to reproduce a paper. You need to reproduce the results exactly. 
+Your goal is to reproduce a paper. You need to try reproduce the results exactly. 
 You should be able to re-create every table and graph in the paper. Focus on the replicating the content of the tables and not the layout.  
 
 Begin your replication by creating a document with images of each table and each figure. Next, add the parts of the text where the authors describe how the results were generated. Finally, create code that reproduces the results. This document will be highly structured. For example,
