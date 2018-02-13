@@ -3,7 +3,6 @@ title: "Lab 2 - Multiple Regression and Model Testing"
 author: "Your Name"
 output: 
   html_document
-runtime: shiny
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
@@ -12,6 +11,7 @@ knitr::opts_chunk$set(warning=FALSE)
 knitr::opts_chunk$set(message=FALSE)
 knitr::opts_chunk$set(results="hold")
 knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=F)
 ```
 
 
@@ -45,9 +45,6 @@ poverty$gnp <- as.numeric(as.character(poverty$gnp))
 #log.gnp
 poverty$log.gnp <- log(poverty$gnp)
 
-# just work with complete cases, we delete 6 here
-poverty <- poverty[complete.cases(poverty),]
-rownames(poverty) = 1:nrow(poverty) #rename the row name data
 ```
 
 
@@ -55,7 +52,22 @@ rownames(poverty) = 1:nrow(poverty) #rename the row name data
 
 We should always begin with a data exploration. In order to make this proceed faster in lab, below is an embedded graph that will allow you to explore the relationships of all the variables in the lab. 
 
-```{r, echo = FALSE, eval=TRUE}
+
+To get the shiny below to run, replace the header at the top with this:
+
+```
+---
+title: "Lab 2 - Multiple Regression and Model Testing"
+author: "Your Name"
+output: 
+  html_document
+runtime: shiny
+---
+```
+
+then run the document and your code below will allow you to explore the data more. 
+
+```{r}
 library(shiny)
 library(ggplot2)
 data <- poverty
@@ -123,3 +135,77 @@ shinyServer(function(input, output) {
   
 )
 ```
+
+
+1. Use the graphs to explore the basic relationships in the data. Make sure to make note of them. 
+
+
+## Model Fitting
+
+Recall the following models
+```{r}
+fit1 <- lm(infdeath ~ le.female, data=poverty)
+fit2 <- lm(infdeath ~ le.male, data=poverty)
+fit3 <- lm(infdeath ~ gnp, data=poverty)
+fit4 <-  lm(infdeath ~ birthrate, data=poverty)
+fit5 <-  lm(infdeath ~ deathrate, data=poverty)
+fit6 <- lm(infdeath~log.gnp, data=poverty)
+mfit <- lm(infdeath ~ le.female + birthrate  + log.gnp, data=poverty)
+```
+
+
+Last time we finished off with `mfit`. We will need to consider the model fit on this now. It will be our goal to use various plots to check the fit of our model and then we will use automated model procedures to see if this model is what R would automatically build. 
+
+
+2. The following code will create standardized residual plots. Use these to describe what you see about the model.
+    a. Is the model a correct fit? 
+    b. Does the homogenous variance assumption hold?
+    
+```{r}
+library(olsrr)
+ols_rvsp_plot(mfit)
+ols_score_test(mfit)
+ols_f_test(mfit)
+```
+
+
+3. Create a marginal model plot for `mfit`. Does this fit our data well?
+```{r}
+#blue line represents a loess(smoothing) line for the data and the dashed line represents 
+#the model which R fitted
+mmps(mfit)
+```
+
+3. Create a marginal model plot for `mfit`. Does this fit our data well?
+4. Plot the cooks distance, DFBETAs and DFFITs. 
+5. What do you notice?
+6. We can see that above highlights 5 possible values for outliers. Once doing this run a new model called `mfit.ex.outliers` which excludes outliers. The code to remove the outliers is as follows:
+```{r}
+outliers <- c(18, 41, 55, 76, 79, 90)
+poverty2 <- poverty[-outliers,]
+```
+    a. Does the summary of `mfit.ex.outliers` differ much from `mift`? 
+    b. What happens when you run the cooks distance plot on this data with outliers removed?
+    c. Use residual plots and `mmps()` to evaluate the model fit after deleting the outliers. 
+    d. Does this new model fit the data better with the outliers removed?
+
+*Above shows us that there is more involved than just cook's distance and removing outliers. We can get stuck in an endless loop of removing things and each time we find that our model fit decreases and we have more and more outliers. We will proceed with the model `mfit` since out regression results did not change much and our fit got worse as we went.*
+
+
+7. Fit the following models:
+```{r}
+fit.best.2 <- lm(infdeath ~ le.female + le.male, data=poverty)
+fit.best.3 <- lm(infdeath ~ le.female + le.male + birthrate, data=poverty)
+fit.best.4 <- lm(infdeath ~ le.female + le.male + birthrate + log.gnp, data=poverty)
+```
+8. Compare the adjusted $R^2$ values from these models. Which one would you consider the best and why?
+9. Use the `anova()` function in R to preform an $F$-test comparing these models. Which model would you choose based on this? Does it confirm your model chosen in question 9? 
+11. **On your own** With your final model run the model diagnostic plots again and see how well this fits your data. 
+
+
+
+
+
+
+
+
