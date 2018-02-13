@@ -1,0 +1,28 @@
+---
+title: "Untitled"
+author: "Adam J Sullivan"
+date: "January 23, 2018"
+output: md_document
+---
+
+```
+    <colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="50%" />
+</colgroup>
+```
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=F, warning=F, results='asis', echo=F}
+library(readr)
+schedule <- read_csv("../_csv/project.csv")
+options(knitr.kable.NA = '')
+knitr::kable(schedule, format="markdown", row.names = FALSE)
+```
+
