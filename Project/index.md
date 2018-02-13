@@ -13,8 +13,8 @@ The secondary goals of this project are to
 
 1. Give you practice learning how to evaluate published research. 
 2. Give you practice interpreting a research question into statistical methods.
-3) Give you practice learning apply statistical methods and computational techniques.
-4) Display the true complexities to working with real data and and an open ended question. 
+3. Give you practice learning apply statistical methods and computational techniques.
+4. Display the true complexities to working with real data and and an open ended question. 
 
 
 
