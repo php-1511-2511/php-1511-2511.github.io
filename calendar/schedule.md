@@ -1,6 +1,6 @@
     
 
-<table>
+<table style="width:100%;">
 <colgroup>
     <col width="8%" />
     <col width="8%" />
@@ -88,7 +88,7 @@
 <td align="left"></td>
 <td align="left">14-Feb</td>
 <td align="left">Collinearity</td>
-<td align="left"><a href="../Notes/Lec-07-collinearity/collinearity.pdf">PDF</a> <a href="../Notes/Lec-07-collinearity/collinearity.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-07-collinearity/collinearity.pdf">PDF</a> <a href="../Notes/Lec-07-collinearity/collinearity.html">HTML</a> <a href="https://vimeo.com/255908753/891f8f4551">Video</a></td>
 <td align="left">Read FOX: Chapter 13</td>
 <td align="left"></td>
 </tr>
