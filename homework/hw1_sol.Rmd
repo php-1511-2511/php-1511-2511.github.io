@@ -1,6 +1,6 @@
 ---
-title: "Homework 1"
-author: "Your Name"
+title: "Homework 1 solutions"
+author: "PHP2511/1511"
 date: "February 7, 2018 at 11:59pm"
 output:
   html_document: default
@@ -15,6 +15,9 @@ knitr::opts_chunk$set(results="hold")
 knitr::opts_chunk$set(cache=TRUE)
 knitr::opts_chunk$set(echo=FALSE)
 ```
+
+
+
 
 ### Homework Policies:
 
@@ -59,10 +62,7 @@ p3 <- ggplot(hw1a, aes(x1,x2)) + geom_point()
 grid.arrange(p1,p2,p3,ncol=2)
 ```
 
-<br>
-<font color="blue">
-<b> We can see that it is hard to tell if there is a relationship between `X1` and `Y`. However there does appear to be a positive linear relationship between `X2` and $Y$. We can also see a strong relationship between `X1` and `X2`. </b>
-</font>
+**We can see that it is hard to tell if there is a relationship between `X1` and `Y`. However there does appear to be a positive linear relationship between `X2` and $Y$. We can also see a strong relationship between `X1` and `X2`. **
     
     
   b. Next, examine the simple linear regressions of each predictor to explain `Y`. Comment on whether the predictors seem to relate to `Y`. What percent of the variability in Y does each predictor explain by itself?
@@ -81,10 +81,7 @@ glance2 <- glance(fit.x2)[,c(1:5)]
 knitr::kable(bind_rows(glance1,glance2))
 ```
 
-<br>
-<font color="blue">
-<b>We can see in `fit.x1` that `X1` does not have a significant relationship with `Y`. The model explains <1% of the variation in `Y`. For `fit.x2` we can see that it has a significant positive relationship with `Y`. This model explains 19.3% of the variation in `Y`.</b>
-</font>
+**We can see in `fit.x1` that `X1` does not have a significant relationship with `Y`. The model explains <1% of the variation in `Y`. For `fit.x2` we can see that it has a significant positive relationship with `Y`. This model explains 19.3% of the variation in `Y`.**
   
   c. Now use `lm()` to build a multiple regression model using both predictor variables `X1` and `X2`. Comment on the fit and the statistical significance of each predictor variable. What percent of the variability in Y is explained by the model now that both predictors are included? Give an explanation for what you think is happening with both predictors in the model.
   
@@ -97,15 +94,11 @@ knitr::kable(tidy3)
 knitr::kable(glance3)
 ```
 
-<font color="blue">
-<b>We can see that when we include `X1` and `X2` in the model together that `x2` remains significant but has an increased estimated effect given a level of `X2`. This time `X1` has a significant effect and it shows to be negative given a level of `X2`. Togteher they explain 97.94% of the variation in `Y`. It is hard to say what exactly is going on without investigating further. It seems that when controlling for both `X1` and ` X2` at the same time we are able to account  for more variation in `Y`.   </b>
-</font>
+**We can see that when we include `X1` and `X2` in the model together that `x2` remains significant but has an increased estimated effect given a level of `X2`. This time `X1` has a significant effect and it shows to be negative given a level of `X2`. Togteher they explain 97.94% of the variation in `Y`. It is hard to say what exactly is going on without investigating further. It seems that when controlling for both `X1` and ` X2` at the same time we are able to account  for more variation in `Y`.**
 
   d. Comment on the change in the estimated coefficients from the simple linear regression models compared to those from the multiple regression model. Are the changes qualitative (direction), quantitative (magnitude) or both?
   
-<font color="blue">
-<b>With `X1` there is a change in both qualitative (direction) and quantitative (magnitude). With `X2` there is only a  quantitative (magnitude) change.</b>
-</font>
+**With `X1` there is a change in both qualitative (direction) and quantitative (magnitude). With `X2` there is only a  quantitative (magnitude) change.**
   
   e. Run the following code to create a 3d scatterplot. Notice that multiple linear regression is now a plane and not just a line. Why do you think `X1` and `X2` predict `Y` so well together when they do not alone? 
 
@@ -123,9 +116,7 @@ p <- plot_ly(hw1a, x = ~x1, y = ~x2, z = ~y) %>%
 p
 ```
 
-<font color="blue">
-<b>We can see that the relationship between all of these is actually a plane. This suggests that it requires more to explain the variability in `Y` than just one variable alone. Everything we have seen shows that when you have the same level of `X1` that an increase in `X2` will lead to an increase in `Y`. However when you have the same level of `X2` an increase in `X1` leads to a decrease in `Y`. This partitioning of the data allows us greater understanding of the variance of `Y`.  </b>
-</font>
+**We can see that the relationship between all of these is actually a plane. This suggests that it requires more to explain the variability in `Y` than just one variable alone. Everything we have seen shows that when you have the same level of `X1` that an increase in `X2` will lead to an increase in `Y`. However when you have the same level of `X2` an increase in `X1` leads to a decrease in `Y`. This partitioning of the data allows us greater understanding of the variance of `Y`. **
 
 ---
 
@@ -187,18 +178,61 @@ Variable    Minimum   1st Qua.  Median   Mean       3rd. Qua.  Maximum
 
 ```{r}
 library(car)
-par(mfrow=c(1,2), bg="ivory")
+par(mfrow=c(2,4))
+Boxplot(hw1b$so2)
+Boxplot(hw1b$temp)
 Boxplot(hw1b$empl20)
 Boxplot(hw1b$pop)
+Boxplot(hw1b$wind)
+Boxplot(hw1b$precipin)
+Boxplot(hw1b$precipdays)
+
 ```
     
-<font color="blue">
-<b>From the above graphs we can see that there do appear to be some extreme values with population and number of companies with 20 or more eomployees. Record 11 seems to the the largest of these values.</b>
+**From the above graphs we can see that there do appear to be some extreme values with population and number of companies with 20 or more eomployees. Record 11 seems to the the largest of these values.**
 
-</font>
+**Another way to find the outliers, recall this from second set of notes in 1510/2510**
+
+**outliers of so2**
+```{r, echo=T}
+which(hw1b$so2>1.5*IQR(hw1b$so2)+quantile(hw1b$so2, 0.75)|hw1b$so2<quantile(hw1b$so2, 0.25)-1.5*IQR(hw1b$so2))
+```
+
+**outliers of temp**
+```{r, echo=T}
+which(hw1b$temp>1.5*IQR(hw1b$temp)+quantile(hw1b$temp, 0.75)|hw1b$temp<quantile(hw1b$temp, 0.25)-1.5*IQR(hw1b$temp))
+```
+
+**outliers of empl20**
+```{r, echo=T}
+which(hw1b$empl20>1.5*IQR(hw1b$empl20)+quantile(hw1b$empl20, 0.75)|hw1b$empl20<quantile(hw1b$empl20, 0.25)-1.5*IQR(hw1b$empl20))
+```
+
+
+**outliers of pop**
+```{r, echo=T}
+which(hw1b$pop>1.5*IQR(hw1b$pop)+quantile(hw1b$pop, 0.75)|hw1b$pop<quantile(hw1b$pop, 0.25)-1.5*IQR(hw1b$pop))
+```
+
+**outliers of wind**
+```{r, echo=T}
+which(hw1b$wind>1.5*IQR(hw1b$wind)+quantile(hw1b$wind, 0.75)|hw1b$wind<quantile(hw1b$wind, 0.25)-1.5*IQR(hw1b$wind))
+```
+
+**outliers of precipin**
+```{r,echo=T}
+which(hw1b$precipin>1.5*IQR(hw1b$precipin)+quantile(hw1b$precipin, 0.75)|hw1b$precipin<quantile(hw1b$precipin, 0.25)-1.5*IQR(hw1b$precipin))
+```
+
+**outliers of precipdays**
+```{r, echo=T}
+which(hw1b$precipdays>1.5*IQR(hw1b$precipdays)+quantile(hw1b$precipdays, 0.75)|hw1b$precipdays<quantile(hw1b$precipdays, 0.25)-1.5*IQR(hw1b$precipdays))
+```
+
+
   b. Start your model building by looking at simple linear regressions for each of the 6 predictor variables. Display and Examine relevant plots. Summarize the simple linear regression results using the broom package. Note that you can combine tidy statements:
   
-<font color="blue">
+
 ```{r}
 mod1 <- lm(so2 ~ temp, hw1b)
 mod2 <- lm(so2 ~ empl20, hw1b)
@@ -228,18 +262,16 @@ glance6 <- glance(mod6)[,c(1:5)]
 knitr::kable(bind_rows(glance1, glance2, glance3, glance4, glance5, glance6))
 ```
 
-<br>
 
-<b>We can see that with temperature we do have a significant negative predicted value which explains about 19% of the variation in So2 levels. With the number of companies with 20+ employees we have a positive highly significant relationship that explains about 42% of the variation in So2 levels. With population we see that we have a significant positive relationship that explains about 24% of the variation in So2 levels. With Average annual wind we have an insignificant relationship and it explains about 1% of the variation. With Average annual precipitation we have an insignificant relationship and it explains <1% of the variation. With Average annual days of precipitation we have an significant positive relationship and it explains about 14% of the variation.</b>
+**We can see that with temperature we do have a significant negative predicted value which explains about 19% of the variation in So2 levels. With the number of companies with 20+ employees we have a positive highly significant relationship that explains about 42% of the variation in So2 levels. With population we see that we have a significant positive relationship that explains about 24% of the variation in So2 levels. With Average annual wind we have an insignificant relationship and it explains about 1% of the variation. With Average annual precipitation we have an insignificant relationship and it explains <1% of the variation. With Average annual days of precipitation we have an significant positive relationship and it explains about 14% of the variation.**
 
 
-</font>
+
 
   c. Build a multiple regression model by sequentially adding variables that you feel are important from the simple linear regressions.
   
-<font color="blue">
 
-<br>From our discussion above we will begin with the 2 variables with the best fit. Which is companies with 20+ employees and population.<b>
+**From our discussion above we will begin with the 2 variables with the best fit. Which is companies with 20+ employees and population.**
 ```{r}
 mod7 <- lm(so2 ~ empl20 + pop, hw1b)
 tidy7 <- tidy(mod7, conf.int=TRUE)[,-c(3:4)]
@@ -248,7 +280,7 @@ knitr::kable(tidy7)
 knitr::kable(glance7)
 ```
 
-<b>We can see from the model summary that both `empl20` and `pop` have significant effects on `So2`. `empl120` shows a positive relationship given `pop` which is actually larger than it was before adjusting for `pop`. When adjusting for `empl20` the population actually has a negative relationship with `so2`. From here I will try and add in temperature. </b>
+**We can see from the model summary that both `empl20` and `pop` have significant effects on `So2`. `empl120` shows a positive relationship given `pop` which is actually larger than it was before adjusting for `pop`. When adjusting for `empl20` the population actually has a negative relationship with `so2`. From here I will try and add in temperature. **
 
 ```{r}
 mod8 <- lm(so2 ~ empl20 + pop +temp, hw1b)
@@ -259,18 +291,13 @@ knitr::kable(glance8)
 ```
 
 
-<b> With the addition of temperaure. My adjusted $R^2$ increased only a small amount to 0.6125. This would suggest that temperature does add something. </b>
+**With the addition of temperaure. My adjusted $R^2$ increased only a small amount to 0.6125. This would suggest that temperature does add something.**
 
-</font>    
-<font color="red">
-
-<b>I proceeded checking different models in this fashion. Below I will discuss the final model I chose. </b></font> 
-
+**I proceeded checking different models in this fashion. Below I will discuss the final model I chose.**
 
 
 d. State your final multiple regression model, interpret the parameter estimates and the R2. Comment on any differences in coefficients between the simple linear regression models and the multiple regression model.
 
-<font color="blue">
 ```{r}
 mod9 <- lm(so2 ~ empl20 + pop + precipin + wind + temp, hw1b)
 tidy9 <- tidy(mod9, conf.int=TRUE)[,-c(3:4)]
@@ -279,16 +306,14 @@ knitr::kable(tidy9)
 knitr::kable(glance9)
 ```
 
-Your answer may differ from mine but here is my reasoning for why I chose my model. <b>I chose to go back to my model with the predictors of `pop` ,`empl20`, `precipin`, `wind` and `temp`. This model has an overall $R^2$ of 0.6685. So it explains about 67% of the variation. If you compare this model to other subsets you will find that it also have the largest adjusted $R^2$ out of them. We can see that `population` and `wind` changes both in magnidute and in direction of effect. Even though in this model `precipin` and `wind` are not significant, the model allows me to explain about 6% more variation than if I left them out. </b>
-</font>
+**Your answer may differ from mine but here is my reasoning for why I chose my model. I chose to go back to my model with the predictors of `pop` ,`empl20`, `precipin`, `wind` and `temp`. This model has an overall $R^2$ of 0.6685. So it explains about 67% of the variation. If you compare this model to other subsets you will find that it also have the largest adjusted $R^2$ out of them. We can see that `population` and `wind` changes both in magnidute and in direction of effect. Even though in this model `precipin` and `wind` are not significant, the model allows me to explain about 6% more variation than if I left them out. **
+
 
   e. Complete the following with the final model you built in part d. 
     i. What does the adjusted $R^2$ tell you about your model fit?
-    <font color="blue">
-   <b> Adjusted $R^2$ is a way for us to compare models. It is a way of weighting the $R^2$ to show the effect of adding extra variables.  </b>
-    </font>
+   
+    **Adjusted $R^2$ is a way for us to compare models. It is a way of weighting the $R^2$ to show the effect of adding extra variables. Here, the adjusted $R^2$ indicates that the model fit is good.**
+  
     ii. Perform a hypothesis test on the slope estimates for each variable in the model. 
-    <font color="blue">
-   <b> If we look at the p-values in the table  above we can see that `empl20` is significant with a p-value of 0.0002. We can also see that `pop` is signifianct with a a p-value of 0.012. Finally, `temp` is significant with a p-value of 0.011. The rest have p-values over 0.05 </b>
-    </font>
-
+    
+    **If we look at the p-values in the table  above we can see that `empl20` is significant with a p-value of 0.0002. We can also see that `pop` is signifianct with a a p-value of 0.012. Finally, `temp` is significant with a p-value of 0.011. The rest have p-values over 0.05**

@@ -13,11 +13,15 @@ css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Sp
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE)
-knitr::opts_chunk$set(warning=FALSE)
-knitr::opts_chunk$set(message=FALSE)
-knitr::opts_chunk$set(results="hold")
-knitr::opts_chunk$set(cache=F)
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=F)
+opts_chunk$set(  tidy=TRUE,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
 ```
 
 
@@ -31,7 +35,7 @@ knitr::opts_chunk$set(cache=F)
 
 ## Why Bother?
 
-- By learning the *Generalized Linear Models* we can understand how to fit, linear, logistic, poisson, multinomial, data from distributions like Gamma and Inverse Gamma, longitudinal data and multivariate data.
+- By learning the *Generalized Linear Models* we can understand how to fit, linear, logistic, Poisson, multinomial, data from distributions like Gamma and Inverse Gamma, longitudinal data and multivariate data.
 - We will not have time to learn all of these in this class but this is a very versatile model. 
 - The mathematics behind these models are matrix related but we will focus on the application of them. 
 
@@ -95,18 +99,18 @@ $$\mathbf{\eta} = \mathbf{X\beta} $$
 - In other words:
 $$\mathbf{\eta}= 
 \left[\begin{array}{c}
-     \eta_1  
-     \vdots 
+     \eta_1  \\
+     \vdots \\
      \eta_N
 \end{array} \right]= \left[\begin{array}{cccc}
-     1&  x_{11} & \ldots & x_{1p}  
-     1& x_{21} & \ldots & x_{2p} 
-     \vdots& \vdots &  \vdots & \vdots
+     1&  x_{11} & \ldots & x_{1p}  \\
+     1& x_{21} & \ldots & x_{2p} \\
+     \vdots& \vdots &  \vdots & \vdots\\
      1& x_{N1} & \ldots & x_{Np}
 \end{array}\right]\left[\begin{array}{c}
-     \beta_0
-     \beta_1 
-     \vdots
+     \beta_0\\
+     \beta_1 \\
+     \vdots\\
      \beta_p
 \end{array}\right]= \mathbf{X}\mathbf{\beta}$$
 - This linear predictor allows the least squares regression approach to be generalized to a wide range of models. 
@@ -144,9 +148,9 @@ $$g(\mu_i) = \eta_i$$
  Random             Link              Outcome       Explanatory
 Component         Function             Variable       Variable        Model
 -------------  --------------------  ---------------  --------------  -----------------------
-   Normal       Indentity             Continuous      Factor          ANOVA
+   Normal       Identity             Continuous      Factor          ANOVA
    
-   Normal       Indentity             Continuous      Continuous      Regression  
+   Normal       Identity             Continuous      Continuous      Regression  
    
   Binomial      Logit                 Binary          Mixed           Logistic Regression
   
@@ -218,8 +222,8 @@ $$g(\mu_i) = \mu_i$$
 - We have the identity function:
 $$
 \begin{aligned}
-        \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} 
-        g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} 
+        \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+        g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
         g(E(y_i)) &= E(y_i)
     \end{aligned}
 $$
@@ -244,7 +248,7 @@ $$
 
 $$
 Y = \begin{cases} 
-1 & \text{if sucess}
+1 & \text{if sucess}\\
 0 & \text{if failure}
 \end{cases}
 $$
@@ -285,10 +289,10 @@ $$p_i= \dfrac{\exp\left(\beta_0 + \beta_1x\right)}{1+\exp\left(\beta_0 + \beta_1
 
 $$
 \begin{aligned}
-    p_i &= \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+\exp\left(\beta_0 + \beta_1x_i\right)}
-    p_i\left(1+\exp\left(\beta_0 + \beta_1x_i\right)\right)&=\exp\left(\beta_0 + \beta_1x_i\right)
-    p_i &= \exp\left(\beta_0 + \beta_1x_i\right)\left(1-p_i\right)
-    \log\left(\dfrac{p_i}{1-p_i}\right) &= \beta_0 + \beta_1x_i
+    p_i &= \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+\exp\left(\beta_0 + \beta_1x_i\right)}\\
+    p_i\left(1+\exp\left(\beta_0 + \beta_1x_i\right)\right)&=\exp\left(\beta_0 + \beta_1x_i\right)\\
+    p_i &= \exp\left(\beta_0 + \beta_1x_i\right)\left(1-p_i\right)\\
+    \log\left(\dfrac{p_i}{1-p_i}\right) &= \beta_0 + \beta_1x_i\\
     logit\left(p_i\right) &= \beta_0 + \beta_1x_i 
 \end{aligned}
 $$
@@ -304,8 +308,8 @@ Then if we consider the logit:
 
 $$
 \begin{aligned}
-\text{If } p= 0 & \text{then } \log\left(\dfrac{p}{1-p}\right)=-\infty
-    \text{If } p= \tfrac{1}{2} & \text{then } \log\left(\dfrac{p}{1-p}\right)=0
+\text{If } p= 0 & \text{then } \log\left(\dfrac{p}{1-p}\right)=-\infty\\
+    \text{If } p= \tfrac{1}{2} & \text{then } \log\left(\dfrac{p}{1-p}\right)=0\\
     \text{If } p= 1 & \text{then } \log\left(\dfrac{p}{1-p}\right)=\infty
 \end{aligned}
 $$
@@ -352,10 +356,11 @@ $$logit\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1 + \cdots + \beta_px_p$
 
 - Where $E(y_i|y_{i1},\ldots, x_{ip}) = p_i$ therefore what we have is
     * **Link Function**: We can see from above that with $p_i$ being the mean that we have the logit as the link function:
+    
 $$
     \begin{aligned}
-        \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} 
-        g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} 
+        \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+        g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
         g(p_i) &= logit\left(p_i\right) 
     \end{aligned}
 $$
@@ -380,8 +385,8 @@ $$\Pr(Y_i=1|x_i) = \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+ \exp\left(\b
 
 $$
 \begin{aligned}
-    \Pr(Y_i=0|x_i) &= 1- \Pr(Y_i=1|x_i)
-    &= 1 - \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}
+    \Pr(Y_i=0|x_i) &= 1- \Pr(Y_i=1|x_i)\\
+    &= 1 - \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}\\
     &= \dfrac{1}{1+ \exp\left(\beta_0+\beta_1x_i\right)}
 \end{aligned}
 $$
