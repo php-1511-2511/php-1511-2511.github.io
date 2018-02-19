@@ -13,11 +13,15 @@ css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Sp
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE)
-knitr::opts_chunk$set(warning=FALSE)
-knitr::opts_chunk$set(message=FALSE)
-knitr::opts_chunk$set(results="hold")
-knitr::opts_chunk$set(cache=F)
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=F)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
 ```
 
 
@@ -31,7 +35,7 @@ knitr::opts_chunk$set(cache=F)
 - Our data contains 1600 subjects and they are measured on 
 
 
-## 
+## Variables
 
 
 ----------------------------------------------------
@@ -65,7 +69,7 @@ sah         Self Assessed Health
 ----------------------------------------------------
 Variable    Description
 ----------  ----------------------------------------            
-pperf       Phsical Performance Scale (0-12)
+pperf       Physical Performance Scale (0-12)
 
 pefr        Peak Expiratory Flow Rate (average of 3)
 
@@ -128,11 +132,11 @@ dead        Dead by 1991
 time        Follow up (years)
 ------------------------------------------------------
 
-## 
+## Special Considerations
 
-For Self-Assessed Health Study we need to consider how we model certian variables
+For Self-Assessed Health Study we need to consider how we model certain variables
 
-* Age: this is critcal since subjects were asked to compare their health to others
+* Age: this is critical since subjects were asked to compare their health to others
 
 * Count variables: `pperf` and `cogerr`
 
@@ -142,7 +146,7 @@ For Self-Assessed Health Study we need to consider how we model certian variable
 
 * other binary variables: `male`, `mile`, `loop`, `digit` and `death`
 
-## 
+## Read in the Data
 
 ```{r}
 library(haven)
@@ -161,60 +165,52 @@ summary(mod.back.auto)
 
 ## Self-Assessed Health
 
-With our data we are mainly interested in how well self-assessed health predicts death. There are 11 other variables that are possible confounders for this relationship. This means that if we consider all of this we have the possibility of 12 main effects and 11 possible 2 way interactions with self assessed health. This could be a very large model and we are only thinking of 2-way interactions here. 
-
-Due to these large possibilites we turn to automated procedures.
-
-##Assessing Model Fit
-
-Once we begin building models we need to know how to assess model fit.  We have previously covered the likelihood ratio test where we can compare one model versus another. Now we move to assessing the fit of one model.
-
-What affects model fit?
-
-* Omitted covariates (Main effects, interactions, polynomial terms)
-
-* Poor choice of link function
-
-* Unusual subjects 
+- With our data we are mainly interested in how well self-assessed health predicts death.
+- There are 11 other variables that are possible confounders for this relationship. This means that if we consider all of this we have the possibility of 12 main effects and 11 possible 2 way interactions with self assessed health. 
+- This could be a very large model and we are only thinking of 2-way interactions here. 
 
 
+
+## Assessing Model Fit
+
+- Once we begin building models we need to know how to assess model fit.  
+- We have previously covered the likelihood ratio test where we can compare one model versus another. 
+- Now we move to assessing the fit of one model.
+- What affects model fit?
+    * Omitted covariates (Main effects, interactions, polynomial terms)
+    * Poor choice of link function
+    * Unusual subjects 
+
+## Assessing Model Fit
 
 
 We usually determine the goodness of fit for logistic regression based on 
 
-1. ***Calibration*** - A model is well *calibrated* if the observed and predicted probabilities based on the model are reasonably close. 
+1. ***Calibration:*** A model is well *calibrated* if the observed and predicted probabilities based on the model are reasonably close. 
 
-2. ***Discrimination*** - A model has good *discrimination* if the distribution of risk scores for cases and controls separate out. 
-    a. This means Cases tend to have higher scores. 
-    b. This means Controls tend to have lower scores.
-    c. There is little overlap.
+2. ***Discrimination:***  A model has good *discrimination* if the distribution of risk scores for cases and controls separate out. 
+    - This means Cases tend to have higher scores. 
+    - This means Controls tend to have lower scores.
+    - There is little overlap.
     
     
 ##Calibration
 
-We will use the Hosmer-Lemeshow Goodness of Fit test to assess calibration in logistic regression models:
-
-
-With this test we have:
+- We will use the Hosmer-Lemeshow Goodness of Fit test to assess calibration in logistic regression models:
+- With this test we have:
 
 $$\hat{p}_i = \dfrac{\exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}{1 + \exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}$$
-
-where $i=1,\ldots,n$ and $K$ is the number of covariates in the model. 
-
-
-## 
+- where $i=1,\ldots,n$ and $K$ is the number of covariates in the model. 
 
 
-We then reorder the subjects in the order of the fitted probabilities so that
+## How Do We Perform it?
 
+- We then reorder the subjects in the order of the fitted probabilities so that
 $$\hat{p}_1<\hat{p}_2< \cdots < \hat{p}_n$$
+- We then group this data in `G` approximately equal sized groups based on the ordered $\hat{p}$. 
+- The default is typically `G=10` to create deciles of increasing risk. 
 
-
-We then group this data in `G` approximately equal sized groups based on the ordered $\hat{p}$. 
-
-The default is typically `G=10` to create deciles of increasing risk. Then we have
-
-## 
+##  With G Groups we have:
 
 $$
 \begin{aligned}
@@ -223,27 +219,24 @@ E_j &= \sum_{i\in group_j} \hat{p}_i = \text{ Expected number of events in group
 \bar{p}_j &= \dfrac{E_j}{n_j} \;\;\;\; n_j=\text{ number of subjects in group} j=1,\ldots,G\\
 \end{aligned}
 $$
-
-We then compute the test statistic:
-
+- We then compute the test statistic:
 $$ X^2_{HL} = \sum_{j=1}^G \dfrac{\left(O_j - E_J\right)^2}{n_j\bar{p}_j\left(1-\bar{p}_j\right)}\sim \chi^2_{G-2}$$
 
-## 
+##  Our Test Statistic
 
-This test statistic is for the following hypothesis
-
+- This test statistic is for the following hypothesis
 $$H_0: \text{ The fitted Model is Correct}$$
 $$\text{vs}$$
 $$H_1: \text{ The fitted Model is Not Correct}$$
+- In order for this to work well $G\ge6$ and $n_j$ should be large.
 
-In order for this to work well $G\ge6$ and $n_j$ should be large.
+
+##
 
 
-## 
-
-Recall our model chosen from our last selection technique:
-```{r}
-summary(mod.back.auto)
+```{r, echo=F}
+library(broom)
+kable(tidy(mod.back.auto, exponentiate=T, conf.int=T)[-1,-c(3:4)])
 ```
 
 ## 
@@ -273,17 +266,9 @@ sah$dead <- as.numeric(sah$dead)
 table(sah$dead)
 ```
 
-## 
 
-We can now see that we have `1 = Not Dead` and `2 = Dead`, we need this to be 0 and 1 respectively
-```{R}
-sah$dead <- sah$dead - 1
-table(sah$dead)
-```
+## Our Test Again
 
-## 
-
-Now we can rerun our test
 
 ```{r}
 library(ResourceSelection)
@@ -334,8 +319,8 @@ To understand what this is consider 2 different subjects
 
 If we consider our model from above it predicts:
 
-1. $\hat{p}_1$ the proability that subject 1 is dead.
-1. $\hat{p}_2$ the proability that subject 2 is dead.
+1. $\hat{p}_1$ the probability that subject 1 is dead.
+1. $\hat{p}_2$ the probability that subject 2 is dead.
 
 ## 
 
@@ -353,9 +338,9 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
 
 * For probability $p$ those with $\hat{p}>p$ are predicted to have the outcome and those with $\hat{p}<p$ are predicted to not have the outcome.
 
-## 
 
-##Sensitivity and Specificity
+
+## Sensitivity and Specificity
 
 * ***Sensitivity*** 
     * True Positive
@@ -367,18 +352,18 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
     * $\dfrac{ \text{Num. without Outcome and }\hat{p}<p}{\text{num. with Outcome}}$
     * $\Pr(\hat{p}<p|\text{No Disease})$
 
-##     
     
-##ROC Curves
+    
+## ROC Curves
 
 * $p$ is arbitrary. 
-* If we increase $p$ we increase the Specificity but descrease the Sensitvity. 
+* If we increase $p$ we increase the Specificity but decrease the Sensitivity. 
 * An ROC curve has the Sensitivity on the y-axis and 1-Specificity on the x-axis. 
 * It graphs those points over all choices of $p$.
 
-## 
+ 
 
-##ROC Curves
+## ROC Curves
 
 * If the prediction rule is non-discriminatory then the ROC curve will be a straight line from the points (0,0) to (1,1)
 * From the ROC curve, it can be shown that the Area under this Curve (AUC) is the same as the C-statistic or
@@ -451,7 +436,7 @@ AUC       Model Fit
 0.9       Excellent
 ------------------------
 
-## 
+
 
 ## Calibration vs Discrimination
 

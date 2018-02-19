@@ -1,7 +1,7 @@
-    
+   
 
 <table style="width:100%;">
-<colgroup>
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -34,7 +34,7 @@
 <td align="left">Simple and Multiple Linear Regression</td>
 <td align="left"><a href="../Notes/Lec-02-Linear/linear.pdf">PDF</a> <a href="../Notes/Lec-02-Linear/linear.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 5</td>
-<td align="left"><a href="../homework/hw1.html">HW1</a></td>
+<td align="left"><a href="../homework/hw1.html">HW1</a> <a href="../homework/hw1_sol.html">SOL</a></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -160,7 +160,7 @@
 <td align="left"></td>
 <td align="left">7-Mar</td>
 <td align="left">Poisson Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-12-poisson/poisson.pdf">PDF</a> <a href="../Notes/Lec-12-poisson/poisson.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
 </tr>

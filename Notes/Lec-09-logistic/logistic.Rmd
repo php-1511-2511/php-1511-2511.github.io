@@ -13,12 +13,17 @@ css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Sp
 ---
 
 ```{r setup, include = FALSE, cache = FALSE}
-knitr::opts_chunk$set(error = TRUE)
-knitr::opts_chunk$set(warning=FALSE)
-knitr::opts_chunk$set(message=FALSE)
-knitr::opts_chunk$set(results="hold")
-knitr::opts_chunk$set(cache=F)
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=F)
+opts_chunk$set(  tidy=TRUE,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
 ```
+
 
 
 
@@ -183,7 +188,7 @@ tidy(fit.cont, conf.int=TRUE)[,-c(3:4)]
 
 ```{r, echo=FALSE}
 tab <- wcgs %>% group_by(chd69, arcus) %>% tally()
-knitr::kable(tab)
+kable(tab)
 ```
 
 
@@ -328,7 +333,7 @@ $$\text{OR} = \exp(\beta_1\cdot2) = e^{2\beta_1}= e^{\beta_1}e^{\beta_1}$$
 
 ## Continuos Covariate
 
-* If there are 2 people who differ in age by one year the older person would on average have an odss of CHD `r exp(summary(fit.cont)$coef[2,1])` times that of the younger. 
+* If there are 2 people who differ in age by one year the older person would on average have an odds of CHD `r exp(summary(fit.cont)$coef[2,1])` times that of the younger. 
 * On average a person has an odds of CHD  `r exp(summary(fit.cont)$coef[2,1])-1` higher than someone a year younger. 
 * On average a person has an odds of CHD `r (exp(summary(fit.cont)$coef[2,1])-1)*100`% higher than someone a year younger. 
 
@@ -347,7 +352,8 @@ $$\text{OR} = \exp(\beta_1\cdot2) = e^{2\beta_1}= e^{\beta_1}e^{\beta_1}$$
 
 ## Multiple Logistic Regression
 
-When we work with clinical and epidemiological data we tend to focus on mutliple predictors. For example:
+When we work with clinical and epidemiological data we tend to focus on multiple predictors. For example:
+
 * A few categorical predictors
     * Contingency Tables
     * Stratified Contingency Tables
@@ -387,7 +393,7 @@ $$\Pr(Y=1|X_1,\ldots,X_p) = \dfrac{\exp\left( \beta_0 + \beta_1X_1 + \cdots + \b
 
 ```{r, eval=F}
 fit.mult <- glm(chd69 ~ age + arcus + chol + sbp, data=wcgs, family=binomial(link="logit"))
-tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)
+tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)[,-c(3:4)]
 ```
 
 
@@ -398,7 +404,7 @@ tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)
 
 ```{r, echo=F}
 fit.mult <- glm(chd69 ~ age + arcus + chol + sbp, data=wcgs, family=binomial(link="logit"))
-tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)
+kable(tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)[,-c(3:4)])
 ```
 
 
@@ -406,10 +412,11 @@ tidy(fit.mult, conf.int=TRUE, exponentiate=TRUE)
 
 
 - Calculate the log odds of CHD for a 60 year old with 253 mg/dL of  total cholesterol, 136 mmHg SBP and the presence of Arcus Senilis. 
-- We achieve this solution by taking our regression equation and intserting the values from the problem. 
+- We achieve this solution by taking our regression equation and inserting the values from the problem. 
 
 ```{r}
-    log.odd <-fit.mult$coefficients[1] + fit.mult$coefficients[2]*60 + fit.mult$coefficients[3]*1 + fit.mult$coefficients[4]*253 +     fit.mult$coefficients[5]*136
+    log.odd <-fit.mult$coefficients[1] + fit.mult$coefficients[2]*60 + fit.mult$coefficients[3]*1 +
+              fit.mult$coefficients[4]*253 + fit.mult$coefficients[5]*136
     log.odd
 ```
 
