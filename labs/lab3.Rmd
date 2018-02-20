@@ -1,0 +1,119 @@
+---
+title: "Lab 3 - Linear Regression Final Model"
+author: "Your Name"
+output: 
+  html_document
+runtime: shiny
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=T)
+```
+
+
+## Introduction
+
+
+We will consider the data from the article [Getting what you pay for: the debate over equity in public school expenditures](http://www.uvm.edu/~dguber/research/JSE99.pdf). We can load the data as follows:
+
+```{r}
+load("sat.Rdata")
+```
+
+
+##Data Exploration
+
+We should always begin with a data exploration. In order to make this proceed faster in lab, below is an embedded graph that will allow you to explore the relationships of all the variables in the lab. 
+
+
+To get the shiny below to run, replace the header at the top with this:
+
+```
+---
+title: "Lab 3 - Linear Regression Final Model"
+author: "Your Name"
+output: 
+  html_document
+runtime: shiny
+---
+```
+
+then run the document and your code below will allow you to explore the data more. 
+
+```{r}
+library(shiny)
+library(ggplot2)
+data <- sat
+shinyApp(
+  
+
+
+
+
+ 
+# Define UI for iris application
+shinyUI(pageWithSidebar(
+ 
+  # Application title
+  headerPanel(""),
+ 
+  # Sidebar with controls to select the variable to plot against mpg
+  # and to specify whether outliers should be included
+  sidebarPanel(
+    selectInput("variable", "First variable:",
+                list(
+"expend", "ratio", "salary", "frac", "verbal", "math", "sat"
+                                          )),
+ 
+    selectInput("variable2", "Second variable:",
+                list(
+"expend", "ratio", "salary", "frac", "verbal", "math", "sat"
+                                          ))
+  ),
+
+
+  mainPanel(
+     h3(textOutput("caption")),
+     plotOutput("plot")
+  )
+)),
+
+
+ 
+
+ 
+# Define server logic required to plot variables
+shinyServer(function(input, output) {
+ 
+  # Create a reactive text
+  text <- reactive({
+     paste(input$variable, 'versus', input$variable2)
+  })
+ formulaText <- reactive({
+    paste(input$variable, "~", input$variable2)
+  })
+  # Return as text the selected variables
+  output$caption <- renderText({
+    text()
+  })
+ 
+  # Generate a plot of the requested variables
+ output$plot <- renderPlot({
+     p <- ggplot(data, aes_string(x=input$variable, y=input$variable2)) + geom_point()
+     print(p)
+  })
+}),
+
+ options = list(height = 600)
+  
+)
+```
+
+
+1. Use the graphs to explore the basic relationships in the data. Make sure to make note of them. 
+
