@@ -4,6 +4,7 @@ title: Calendar
 ---
 
        
+   
 
 <table style="width:100%;">
  <colgroup>
@@ -101,7 +102,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Regression Diagnostics in R</td>
-<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="">Video</a></td>
+<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -371,3 +372,4 @@ title: Calendar
 </tr>
 </tbody>
 </table>
+
