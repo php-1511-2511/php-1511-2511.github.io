@@ -145,18 +145,18 @@ $$g(\mu_i) = \eta_i$$
 
 
 ----------------------------------------------------------------------------------
- Random             Link              Outcome       Explanatory
-Component         Function             Variable       Variable        Model
+ Random             Link              Outcome          Explanatory
+Component         Function             Variable        Variable        Model
 -------------  --------------------  ---------------  --------------  -----------------------
-   Normal       Identity             Continuous      Factor          ANOVA
+   Normal       Identity             Continuous        Factor          ANOVA
    
-   Normal       Identity             Continuous      Continuous      Regression  
+   Normal       Identity             Continuous        Continuous      Regression  
    
-  Binomial      Logit                 Binary          Mixed           Logistic Regression
+  Binomial      Logit                 Binary            Mixed           Logistic Regression
   
- Multinomial    Generalized logit     Binary          Mixed           Multinomial Regression
+ Multinomial    Generalized logit     Binary             Mixed           Multinomial Regression
  
- Poisson           Log                  Count         Mixed           Poisson Regression
+ Poisson           Log                  Count           Mixed           Poisson Regression
 ---------------------------------------------------------------------------------  
 
 ## What Does this Mean? 
@@ -181,8 +181,6 @@ Component         Function             Variable       Variable        Model
 
 - Linear Relationship between link function and systematic component. 
 - Errors are independent. 
--  Uses Maximum Likelihood Estimation rather than Least Squares Estimation. 
--  For goodness-of-fit tests need large sample sizes. *(Rule of thumb not more than 20\% of cell counts in tables are less than 5).* 
 
 ## What Assumptions are not needed? 
 
@@ -190,6 +188,13 @@ Component         Function             Variable       Variable        Model
     *  We do **NOT** need a linear relationship between the dependent variable and the independent variables. 
     *  We do **NOT** need need normally distributed errors. 
     *  We do **NOT** need homogeneity of errors.
+
+
+## What Elses is Different? 
+
+-  Uses Maximum Likelihood Estimation rather than Least Squares Estimation. 
+-  For goodness-of-fit tests need large sample sizes. *(Rule of thumb not more than 20\% of cell counts in tables are less than 5).* 
+
 
 
 # The Case of Linear Regression
@@ -341,9 +346,9 @@ ggplot(dat, aes(p, logit)) + geom_line() + xlab("p") + ylab("logit(p)") + theme_
 ## Logistic as a GLM
 
 - From the above work we can see that with logistic regression we have
-$$logit\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1$$
+$$log\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1$$
 $$\text{or}$$
-$$logit\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1 + \cdots + \beta_px_p$$
+$$log\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1 + \cdots + \beta_px_p$$
 
 ## Logistic as a GLM
 
