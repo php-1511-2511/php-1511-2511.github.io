@@ -112,11 +112,16 @@
 <li><em>Y=3</em>: Other CV Death</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section">
+</article></slide><slide class=""><hgroup><h2>What Is Different than Logistic?</h2></hgroup><article  id="what-is-different-than-logistic">
 
 <ul>
 <li>We may not want to just focus on successes and failures but all of the categories.</li>
-<li><p>Instead of a binomial distribution like in logistic regression we have a multinomial distribution.</p></li>
+<li>Instead of a binomial distribution like in logistic regression we have a multinomial distribution.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>The Multinomial Distribution</h2></hgroup><article  id="the-multinomial-distribution">
+
+<ul>
 <li>The <strong><em>Multinomial Distribution</em></strong> is a generalization of the binomial distribution.
 
 <ul>
@@ -125,77 +130,86 @@
 </ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-1">
+</article></slide><slide class=""><hgroup><h2>The Multinomial Distribution</h2></hgroup><article  id="the-multinomial-distribution-1">
 
-<p>Let\(N_i\) denote a count of the number of type \(i\) outcomes in the \(n\) trials, \(i=1,2,\ldots,r\). For the joint function we are concerned with a sequence of trials that gives us \(N_1=n_1,\ldots,n_r=n_r\) which occurs with probability \(p_1^{n_1}\cdots p_r^{n_r}\). \</p>
+<ul>
+<li>Let $ N_i$ denote a count of the number of type \(i\) outcomes in the \(n\) trials, \(i=1,2,\ldots,r\).</li>
+<li>For the joint function we are concerned with a sequence of trials that gives us \(N_1=n_1,\ldots,n_r=n_r\) which occurs with probability \(p_1^{n_1}\cdots p_r^{n_r}\).</li>
+<li>The number of ways to order \(n\) outcomes is \[\binom{n}{n_1\cdots n_r} = \dfrac{n!}{n_1!\cdots n_r!}\] thus the joint PMF is \[ p(n_1,\ldots, n_r) =\binom{n}{n_1\cdots n_r} p_1^{n_1}\cdots p_r^{n_r}\]</li>
+</ul>
 
-<p>The number of ways to order \(n\) outcomes is \[\binom{n}{n_1\cdots n_r} = \dfrac{n!}{n_1!\cdots n_r!}\] thus the joint PMF is \[ p(n_1,\ldots, n_r) =\binom{n}{n_1\cdots n_r} p_1^{n_1}\cdots p_r^{n_r}\]</p>
+</article></slide><slide class=""><hgroup><h2>Further About the Categories</h2></hgroup><article  id="further-about-the-categories">
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2">
+<ul>
+<li>This looks very much like the binomial distribution with the exception that there are more categories a subject can be in.</li>
+<li>We have two situations that can come from this data and that informs how we analyze it. We can have
 
-<p>This looks very much like the binomial distribution with the exception that there are more categories a subject can be in.</p>
-
-<p>We have two situations that can come from this data and that informs how we analyze it. We can have</p>
-
-<ol>
+<ul>
 <li>Nominal Categories</li>
 <li>Ordinal Categories</li>
-</ol>
+</ul></li>
+</ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3">
+</article></slide><slide class=""><hgroup><h2>Types of Regressions</h2></hgroup><article  id="types-of-regressions">
 
-<p>With these types of categories we will proceed with 2 types of multinomial regressions:</p>
+<ul>
+<li>With these types of categories we will proceed with 2 types of multinomial regressions:
 
-<ol>
+<ul>
 <li>Baseline Category Logit</li>
 <li>Adjacent Category Logit</li>
 <li>Proportional-Odds Cumulative Logit</li>
-</ol>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4">
+</ul></li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Baseline Category Logit</h2></hgroup><article  id="baseline-category-logit">
 
-<p>If you recall in logistic regression we have 2 probabilities:</p>
+<ul>
+<li>If you recall in logistic regression we have 2 probabilities:
 
 <ul>
 <li>\(\pi_1\): Probability of having a success.</li>
 <li>\(\pi_0\): Probability of having a failure.</li>
+</ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5">
-
-<p>We then run our logistic regression as</p>
-
-<p>\[\log\left(\dfrac{\pi_1}{\pi_0}\right) = logit(\pi_1) = \beta_0  + \beta_1 x_1 + \cdots+ \beta_k x_k\]</p>
-
-<p>With baseline category logit we have multiple probabilities:</p>
+</article></slide><slide class=""><hgroup><h2>Baseline Category Logit</h2></hgroup><article  id="baseline-category-logit-1">
 
 <ul>
-<li>\(\pi_1\): Probability of being in category 1.</li>
-<li>\(\pi_2\): Probability of being in category 2.</li>
+<li>We then run our logistic regression as \[\log\left(\dfrac{\pi_1}{\pi_0}\right) = logit(\pi_1) = \beta_0  + \beta_1 x_1 + \cdots+ \beta_k x_k\]</li>
+<li>With baseline category logit we have multiple probabilities:
+
+<ul>
+<li>\(\pi_1\;\): Probability of being in category 1.</li>
+<li>\(\pi_2\;\): Probability of being in category 2.</li>
 <li>\(\qquad\qquad\vdots\)</li>
-<li>\(\pi_J\): probability of being in category \(J\).</li>
+<li>\(\pi_J\;\): probability of being in category \(J\).</li>
+</ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-6">
+</article></slide><slide class=""><hgroup><h2>How Do we Do It?</h2></hgroup><article  id="how-do-we-do-it">
 
 <p>We first pick category \(J\) to be our baseline, we then proceed to fit \(J-1\) logistic regressions simultaneously:</p>
 
 <p>\[\begin{aligned}
 \log\left(\dfrac{\pi_1}{\pi_J}\right)  &amp;= \alpha_1  + \beta_{1,1} x_1 + \cdots+ \beta_{k,1} x_k\\
 \log\left(\dfrac{\pi_2}{\pi_J}\right)  &amp;= \alpha_2  + \beta_{1,2} x_1 + \cdots+ \beta_{k,2} x_k\\
-&amp;\vdots \\
+&amp;\vdots\\
 \log\left(\dfrac{\pi_{J-1}}{\pi_J}\right)  &amp;= \alpha_{J-1}  + \beta_{1,J-1} x_1 + \cdots+ \beta_{k,J-1} x_k\\
 \end{aligned}\]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-7">
+</article></slide><slide class=""><hgroup><h2>Interpreting?</h2></hgroup><article  id="interpreting">
 
-<p>We then can interpret the odds ratios exactly as we have before. The only difference is that this time it is not odds of having outcome vs not having the outcome but being in a particular category vs category \(J\).</p>
+<ul>
+<li>We then can interpret the odds ratios exactly as we have before.</li>
+<li>The only difference is that this time it is not odds of having outcome vs not having the outcome but being in a particular category vs category \(J\).</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Comparisons of Any Pair of Categories</h2></hgroup><article  id="comparisons-of-any-pair-of-categories">
 
-<p>We can then take any 2 categories, say \(a\) and \(b\) and find a logit function to compare them:</p>
+<ul>
+<li>We can then take any 2 categories, say \(a\) and \(b\) and find a logit function to compare them:</li>
+</ul>
 
 <p>\[\begin{aligned}
 \log\left(\dfrac{\pi_a}{\pi_b}\right) &amp;= \log\left(\dfrac{\tfrac{\pi_a}{\pi_J}}{\tfrac{\pi_b}{\pi_J}}\right)\\
@@ -205,7 +219,11 @@
 
 </article></slide><slide class=""><hgroup><h2>An Example</h2></hgroup><article  id="an-example">
 
-<p>We begin with an example from The General Social Surveys (1991). Among the questions asked to American citizens were questions regarding beliefs in an after life. The table below displays the data for this:</p>
+<ul>
+<li>We begin with an example from The General Social Surveys (1991).</li>
+<li>Among the questions asked to American citizens were questions regarding beliefs in an after life.</li>
+<li>The table below displays the data for this:</li>
+</ul>
 
 <style type="text/css">
     table.tableizer-table {
@@ -462,20 +480,21 @@ Male
 
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-8">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section">
 
 <p>We can read this data into R:</p>
 
-<pre class = 'prettyprint lang-r'>after.life &lt;- read.table(&quot;https://drive.google.com/uc?export=download&amp;id=0B8CsRLdwqzbzRlROcWlHNE4wS2c&quot;, header=TRUE, sep=&quot;,&quot;)
+<pre class = 'prettyprint lang-r'>after.life &lt;- read.table(&quot;after_life.csv&quot;, header=TRUE, sep=&quot;,&quot;)
 after.life$race &lt;- factor(after.life$race, levels = c(0,1), labels=c(&quot;Black&quot;, &quot;White&quot;))
 after.life$sex &lt;- factor(after.life$sex, levels = c(0,1), labels=c(&quot;Male&quot;, &quot;Female&quot;))
-after.life$belief &lt;- factor(after.life$belief, levels = c(2,1,3), labels=c(&quot;Undecided&quot;,&quot;Yes&quot;,  &quot;No&quot;))</pre>
+after.life$belief &lt;- factor(after.life$belief, levels = c(2,1,3), 
+                            labels=c(&quot;Undecided&quot;,&quot;Yes&quot;,  &quot;No&quot;))</pre>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-9">
+</article></slide><slide class=""><hgroup><h2>Our Model</h2></hgroup><article  id="our-model">
 
 <p>Then we can fit a baseline category logit model:</p>
 
-<pre class = 'prettyprint lang-r'>suppressMessages(library(VGAM))
+<pre class = 'prettyprint lang-r'>library(VGAM)
 fit1 &lt;- vglm(belief ~ race + sex, data=after.life, weights=count, family=multinomial)</pre>
 
 <table class = 'rmdtable'>
@@ -530,15 +549,24 @@ fit1 &lt;- vglm(belief ~ race + sex, data=after.life, weights=count, family=mult
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-10">
+</article></slide><slide class=""><hgroup><h2>What Do We See?</h2></hgroup><article  id="what-do-we-see">
 
-<p>We can see that very little is significant here. However we will interpret one value that is significant: <code>sexFemale:2</code>, We can use the table for the odds ratio and find that for people of the same race females have 50% higher odds of &quot;undecided&quot; vs &quot;no&quot; on after life beliefs than males do.</p>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-11">
+<ul>
+<li>We can see that very little is significant here.</li>
+<li>However we will interpret one value that is significant: <code>sexFemale:2</code>, We can use the table for the odds ratio and find that for people of the same race females have 50% higher odds of &quot;undecided&quot; vs &quot;no&quot; on after life beliefs than males do.</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Adjacent Category Logit</h2></hgroup><article  id="adjacent-category-logit">
 
-<p>When we have ordinal data we can use different methods than before. One of those methods is called adjacent category logits. In this case we can assume that our outcome has \(r\) levels which are ordered. Then we set out to compare the probabilities of</p>
+<ul>
+<li>When we have ordinal data we can use different methods than before.</li>
+<li>One of those methods is called adjacent category logits.</li>
+<li>In this case we can assume that our outcome has \(r\) levels which are ordered.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Adjacent Category Logit</h2></hgroup><article  id="adjacent-category-logit-1">
+
+<p>Then we set out to compare the probabilities of</p>
 
 <ul>
 <li>outcome 1 vs outcome 2</li>
@@ -548,20 +576,22 @@ fit1 &lt;- vglm(belief ~ race + sex, data=after.life, weights=count, family=mult
 <li>outcome \(r-1\) vs outcome \(r\)</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-12">
+</article></slide><slide class=""><hgroup><h2>Our Logits</h2></hgroup><article  id="our-logits">
 
-<p>This would then lead to the following logits:</p>
+<ul>
+<li>This would then lead to the following logits:</li>
+</ul>
 
 <p>\[\begin{aligned}
 L_1 =\log\left(\dfrac{\pi_1}{\pi_2}\right)  &amp;= \alpha_1  + \beta_{1,1} x_1 + \cdots+ \beta_{k,1} x_k\\
 L_2=\log\left(\dfrac{\pi_2}{\pi_3}\right)  &amp;= \alpha_2  + \beta_{1,2} x_1 + \cdots+ \beta_{k,2} x_k\\
-&amp;\vdots \\
+&amp;\vdots\\
 L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_{1,r-1} x_1 + \cdots+ \beta_{k,r-1} x_k\\
 \end{aligned}\]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-13">
+</article></slide><slide class=""><hgroup><h2>Out Models</h2></hgroup><article  id="out-models">
 
-<p>We can also use these models to create the baseline category logit model with say reference is category 1:</p>
+<p>We can also use these models to create the baseline category logit model with say reference as category 1:</p>
 
 <p>\[\begin{aligned}
 \log\left(\dfrac{\pi_{2}}{\pi_1}\right) &amp;= -L_1\\
@@ -571,11 +601,7 @@ L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_
 \log\left(\dfrac{\pi_{r}}{\pi_1}\right) &amp;= -L_{r-1} - \cdots-L_3-L_2-L_1\\
 \end{aligned}\]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-14">
-
-</article></slide><slide class=""><hgroup><h2>An Example</h2></hgroup><article  id="an-example-1">
-
-<p>Recall our previous data example with Self Assessed Health:</p>
+</article></slide><slide class=""><hgroup><h2>Recall Self Assessed Health</h2></hgroup><article  id="recall-self-assessed-health">
 
 <table class = 'rmdtable'>
 <col width="16%" />
@@ -605,28 +631,20 @@ L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_
 <td align="left">0 = Female</td>
 </tr>
 <tr class="even">
-<td align="left">sah</td>
-<td align="left">Self Assessed Health</td>
+<td align="left">pperf</td>
+<td align="left">Physical Performance Scale (0-12)</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left">1 = Excellent</td>
+<td align="left">pefr</td>
+<td align="left">Peak Expiratory Flow Rate (average of 3)</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left">2 = Good</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">3 = Fair</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left">4= Poor</td>
+<td align="left">cogerr</td>
+<td align="left">Number of cognitive errors on SPMSQ</td>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-15">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-1">
 
 <table class = 'rmdtable'>
 <col width="16%" />
@@ -636,48 +654,36 @@ L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_
 <th align="left">Description</th>
 </tr>
 <tr class="odd">
-<td align="left">pperf</td>
-<td align="left">Physical Performance Scale (0-12)</td>
-</tr>
-<tr class="even">
-<td align="left">pefr</td>
-<td align="left">Peak Expiratory Flow Rate (average of 3)</td>
-</tr>
-<tr class="odd">
-<td align="left">cogerr</td>
-<td align="left">Number of cognitive errors on SPMSQ</td>
-</tr>
-<tr class="even">
 <td align="left">sbp</td>
 <td align="left">Systolic Blood Pressure (mmHg)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">mile</td>
 <td align="left">Ability to Walk 1 mile</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"></td>
 <td align="left">0 = No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"></td>
 <td align="left">1 = Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">digit</td>
 <td align="left">Use of digitalis</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"></td>
 <td align="left">0 = No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"></td>
 <td align="left">1 = Yes</td>
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-16">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2">
 
 <table class = 'rmdtable'>
 <col width="16%" />
@@ -722,6 +728,37 @@ L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_
 <td align="left"></td>
 <td align="left">1 = Yes</td>
 </tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3">
+
+<table class = 'rmdtable'>
+<col width="16%" />
+<col width="72%" />
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Description</th>
+</tr>
+<tr class="odd">
+<td align="left">sah</td>
+<td align="left">Self Assessed Health</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">1 = Excellent</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">2 = Good</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">3 = Fair</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">4= Poor</td>
+</tr>
 <tr class="even">
 <td align="left">dead</td>
 <td align="left">Dead by 1991</td>
@@ -740,21 +777,27 @@ L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &amp;= \alpha_{r-1}  + \beta_
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-17">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4">
 
-<pre class = 'prettyprint lang-r'>suppressMessages(library(foreign))
-sah &lt;- read.dta(&quot;https://drive.google.com/uc?export=download&amp;id=0B8CsRLdwqzbzR2xuOTYxQ0txOEU&quot;) 
+<pre class = 'prettyprint lang-r'>library(haven)
+sah &lt;- read_dta(&quot;sah.dta&quot;) 
 str(sah$sah)
 #Reverse order for self assessed health
 sah$sah &lt;- factor(sah$sah, levels=rev(levels(sah$sah)))
 str(sah$sah)</pre>
 
-<pre >##  Factor w/ 4 levels &quot;excellent&quot;,&quot;good&quot;,..: 2 2 2 4 3 1 2 3 1 2 ...
-##  Factor w/ 4 levels &quot;poor&quot;,&quot;fair&quot;,..: 3 3 3 1 2 4 3 2 4 3 ...</pre>
+<pre >## Class &#39;labelled&#39;  atomic [1:1600] 2 2 2 4 3 1 2 3 1 2 ...
+##   ..- attr(*, &quot;label&quot;)= chr &quot;Self assessed health&quot;
+##   ..- attr(*, &quot;format.stata&quot;)= chr &quot;%8.0g&quot;
+##   ..- attr(*, &quot;labels&quot;)= Named num [1:4] 1 2 3 4
+##   .. ..- attr(*, &quot;names&quot;)= chr [1:4] &quot;excellent&quot; &quot;good&quot; &quot;fair&quot; &quot;poor&quot;
+##  Factor w/ 0 levels: NA NA NA NA NA NA NA NA NA NA ...</pre>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-18">
+</article></slide><slide class=""><hgroup><h2>Our Model</h2></hgroup><article  id="our-model-1">
 
-<p>Before we were interested in modeling <code>death</code> this time we will attempt to model <code>sah</code>. We will attempt to build a model with the following covariates:</p>
+<ul>
+<li>Before we were interested in modeling <code>death</code> this time we will attempt to model <code>sah</code>.</li>
+<li>We will attempt to build a model with the following covariates:
 
 <ul>
 <li><code>pperf</code></li>
@@ -763,12 +806,15 @@ str(sah$sah)</pre>
 <li><code>mile</code></li>
 <li><code>loop</code></li>
 <li><code>age</code></li>
+</ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-19">
+</article></slide><slide class=""><hgroup><h2>Running the Model</h2></hgroup><article  id="running-the-model">
 
-<pre class = 'prettyprint lang-r'>suppressMessages(library(VGAM))
+<pre class = 'prettyprint lang-r'>library(VGAM)
 fit2 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah,  family=acat(reverse=TRUE))</pre>
+
+<pre >## Error in model.matrix.default(mt, mf, contrasts): variable 1 has no levels</pre>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -822,7 +868,7 @@ fit2 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-20">
+</article></slide><slide class=""><hgroup><h2>More of the Table</h2></hgroup><article  id="more-of-the-table">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -897,7 +943,7 @@ fit2 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-21">
+</article></slide><slide class=""><hgroup><h2>More of the Table</h2></hgroup><article  id="more-of-the-table-1">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -958,53 +1004,59 @@ fit2 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-22">
+</article></slide><slide class=""><hgroup><h2>Interpreting</h2></hgroup><article  id="interpreting-1">
 
-<p>We will not spend time interpreting this as the next method is more used than adjacent category logits.</p>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-23">
+<ul>
+<li>We will not spend time interpreting this as the next method is more used than adjacent category logits.</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Proportional-Odds Cumulative Logit</h2></hgroup><article  id="proportional-odds-cumulative-logit">
 
-<p>Proportional-Odds Cumulative Logit is the most popular for ordinal categorical outcome analysis. it consists of probabilities</p>
+<ul>
+<li>Proportional-Odds Cumulative Logit is the most popular for ordinal categorical outcome analysis.</li>
+<li>It consists of probabilities
 
 <ul>
 <li>\(\pi_1\): Probability of being in category 1.</li>
 <li>\(\pi_2\): Probability of being in category 2.</li>
 <li>\(\qquad\qquad\vdots\)</li>
 <li>\(\pi_J\): probability of being in category \(J\).</li>
+</ul></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-24">
+</article></slide><slide class=""><hgroup><h2>Our Probabilities</h2></hgroup><article  id="our-probabilities">
 
-<p>We also consider 2 more probabilities</p>
+<ul>
+<li>We also consider 2 more probabilities
 
 <ul>
 <li>\(\Pr(Y\le j) = \pi_1 + \cdots + \pi_j\)</li>
 <li>\(\Pr(Y&gt; j) = \pi_{j+1} + \cdots + \pi_J\)</li>
+</ul></li>
+<li>We define the cumulative logit as</li>
 </ul>
-
-<p>We define the cumulative logit as</p>
 
 <p>\[\log\left(\dfrac{\Pr(Y\le j)}{\Pr(Y&gt; j)}\right) = \log\left(\dfrac{\Pr(Y\le j)}{1-\Pr(Y\le j)}\right) = \log\left(\dfrac{\pi_1 + \cdots + \pi_j}{\pi_{j+1}+ \cdots + \pi_J}\right)\]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-25">
+</article></slide><slide class=""><hgroup><h2>Cumulative Logits</h2></hgroup><article  id="cumulative-logits">
 
-<p>We then have the following cumulative logits \[\begin{aligned}
+<ul>
+<li>We then have the following cumulative logits \[\begin{aligned}
 L_1 &amp;= \log\left( \dfrac{\pi_1}{\pi_2 + \pi_3+ \cdots + \pi_J}\right)\\
 L_2 &amp;= \log\left( \dfrac{\pi_1+ \pi_2}{\pi_3 + \pi_4 \cdots + \pi_J}\right)\\
 &amp;\vdots\\
 L_{J-1} &amp;= \log\left( \dfrac{\pi_1+ \pi_2 + \cdots + \pi_{J-1}}{\pi_J}\right)\\
-\end{aligned}\]</p>
+\end{aligned}\]</li>
+</ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-26">
-
-</article></slide><slide class=""><hgroup><h2>An Example</h2></hgroup><article  id="an-example-2">
+</article></slide><slide class=""><hgroup><h2>An Example</h2></hgroup><article  id="an-example-1">
 
 <p>We can continue on with out Self Assessed Health and run the following model:</p>
 
-<pre class = 'prettyprint lang-r'>suppressMessages(library(VGAM))
+<pre class = 'prettyprint lang-r'>library(VGAM)
 fit3 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah,  family=cumulative)</pre>
+
+<pre >## Error in model.matrix.default(mt, mf, contrasts): variable 1 has no levels</pre>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -1058,7 +1110,7 @@ fit3 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-27">
+</article></slide><slide class=""><hgroup><h2>More of the Table</h2></hgroup><article  id="more-of-the-table-2">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -1133,7 +1185,7 @@ fit3 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-28">
+</article></slide><slide class=""><hgroup><h2>More of the Table</h2></hgroup><article  id="more-of-the-table-3">
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -1194,14 +1246,19 @@ fit3 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-29">
+</article></slide><slide class=""><hgroup><h2>What Can We See?</h2></hgroup><article  id="what-can-we-see">
 
-<p>Before we move on, we notice that our coefficients do not seem to be that different between logits. We can change this so that instead of having a coefficient of <code>pperf</code> for each cumulative logit we can have one coefficient that is the same for all of the models giving each of them different intercepts only:</p>
+<ul>
+<li>Before we move on, we notice that our coefficients do not seem to be that different between logits.</li>
+<li>We can change this so that instead of having a coefficient of <code>pperf</code> for each cumulative logit we can have one coefficient that is the same for all of the models giving each of them different intercepts only:</li>
+</ul>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-30">
+</article></slide><slide class=""><hgroup><h2>The Model</h2></hgroup><article  id="the-model">
 
-<pre class = 'prettyprint lang-r'>suppressMessages(library(VGAM))
+<pre class = 'prettyprint lang-r'>library(VGAM)
 fit4 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah,  family=cumulative(parallel = TRUE))</pre>
+
+<pre >## Error in model.matrix.default(mt, mf, contrasts): variable 1 has no levels</pre>
 
 <table class = 'rmdtable'>
 <tr class="header">
@@ -1276,15 +1333,16 @@ fit4 &lt;- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, dat
 </tr>
 </table>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-31">
+</article></slide><slide class=""><hgroup><h2>Interpretations</h2></hgroup><article  id="interpretations">
 
-<p>Then we can interpret <code>mile</code> as:</p>
+<ul>
+<li>Then we can interpret <code>mile</code> as:
 
-<p><strong><em>For a two people a person who can walk a mile has 63.4% lower odds of falling into a a self-assessed health category or lower compared to another person who cannot walk a mile and has all of the same other health characterstics included in this model.</em></strong></p>
-
-<p>The same things can be done to our other two models by adding the <code>parallel=TRUE</code> option in the family statement.</p>
-
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-32"></article></slide>
+<ul>
+<li><strong><em>For a two people a person who can walk a mile has 63.4% lower odds of falling into a a self-assessed health category or lower compared to another person who cannot walk a mile and has all of the same other health characterstics included in this model.</em></strong></li>
+</ul></li>
+<li>The same things can be done to our other two models by adding the <code>parallel=TRUE</code> option in the family statement.</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>
