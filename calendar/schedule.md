@@ -1,7 +1,6 @@
-   
 
 <table style="width:100%;">
- <colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -9,6 +8,7 @@
     <col width="20%" />
     <col width="25%" />
     </colgroup>
+
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -112,9 +112,9 @@
 <td align="left"></td>
 <td align="left">21-Feb</td>
 <td align="left">Generalized Linear Regression Basics</td>
-<td align="left"><a href="../Notes/Lec-08-basic-glm/glm.pdf">PDF</a> <a href="../Notes/Lec-08-basic-glm/glm.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-08-basic-glm/glm.pdf">PDF</a> <a href="../Notes/Lec-08-basic-glm/glm.html">HTML</a> <a href="https://vimeo.com/256993187/1efd672855">Video</a></td>
 <td align="left">Read FOX: Chapter 14</td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw3.html">HW3</a></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>

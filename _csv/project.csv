@@ -1,32 +1,32 @@
-﻿Deadline,Task,Description
-2/23/2018 ,[Pick Data that you will be using](#pick-a-paper-or-data-that-you-will-be-using),"Choose a partner and e-mail all 3 of us with 3 potential papers to replicate, including a 2-3 sentence explanation of why you are considering each paper. Papers can be from any literature but should be recent."
-3/7/2018 ,[Get your plan approved](#get-data-and-have-plan-approved),"We will ask you to verify that you have the data by this point. It may not be easy to gather the data, this is why you are picking 3 possible topics. "
-3/14/2018 ,First Steps,Replication Project including: 
-,,RMarkdown  file of characteristic tables and figures
-,,Data which you are using
-,,PDF of original Paper
-,,You will need to give the 2 other groups whose projects you were assigned to a zipped copy of this. 
-3/21/2018 ,Peer Review 1,Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
-,,All of the original files
-,,"Files with comments on the replication status, code, clarity and appearance of work. "
-4/4/2018 ,2nd Steps,Create an outline of how you plan to extend the work in the paper as well as finish up replicating parts you were unable to previously. 
-,,Outline the tables and figures you wish to include into your proposal. 
-,,Submit a zipped folder to peer review groups and teaching staff including:
-,,Rmarkdown file with tables and figures including outline and description of new tables and figures. 
-,,All of the previous files as well. 
-4/11/2018 ,Peer Review 2,Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
-,,All of the original files
-,,"Files with comments on the replication status, code, clarity and appearance of work. "
-4/18/2018 ,Final Steps,Complete the rest of your coding as well as your additional models. 
-,,Submit a zipped folder to peer review groups and teaching staff including:
-,,Rmarkdown file with tables and figures. 
-,,All of the previous files as well. 
-,,Rough Draft of Paper
-4/25/2018 ,Peer Review 3,Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
-,,Comments on Rough Draft
-,,All previous files.
-5/2/2018 ,Final Draft,Send your final draft to the peer review groups. 
-,,
-5/12/2018 ,Final Peer Reviews,Final Review of the Papers
-,,Be sure to comment on changes made from past iterations.
-,,Comment on completeness and quality. 
+Deadline	Task	Description
+2/23/2018	[Pick Data that you will be using](#pick-a-paper-or-data-that-you-will-be-using)	"Choose a partner and submit a document on canvas with  3 potential papers to replicate, including a 2-3 sentence explanation of why you are considering each paper. Papers can be from any literature but should be recent."
+3/7/2018	[Get your plan approved](#get-data-and-have-plan-approved)	"We will ask you to verify that you have the data by this point. It may not be easy to gather the data, this is why you are picking 3 possible topics. "
+3/14/2018	First Steps	Replication Project including: 
+		RMarkdown  file of characteristic tables and figures
+		Data which you are using
+		PDF of original Paper
+		You will need to give the 2 other groups whose projects you were assigned to a zipped copy of this. 
+3/21/2018	Peer Review 1	Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
+		All of the original files
+		"Files with comments on the replication status, code, clarity and appearance of work. "
+4/4/2018	2nd Steps	Create an outline of how you plan to extend the work in the paper as well as finish up replicating parts you were unable to previously. 
+		Outline the tables and figures you wish to include into your proposal. 
+		Submit a zipped folder to peer review groups and teaching staff including:
+		Rmarkdown file with tables and figures including outline and description of new tables and figures. 
+		All of the previous files as well. 
+4/11/2018	Peer Review 2	Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
+		All of the original files
+		"Files with comments on the replication status, code, clarity and appearance of work. "
+4/18/2018	Final Steps	Complete the rest of your coding as well as your additional models. 
+		Submit a zipped folder to peer review groups and teaching staff including:
+		Rmarkdown file with tables and figures. 
+		All of the previous files as well. 
+		Rough Draft of Paper
+4/25/2018	Peer Review 3	Each group will be peer reviewing 2 others. E-mail zipped folder to that team and the teaching staff including: 
+		Comments on Rough Draft
+		All previous files.
+5/2/2018	Final Draft	Send your final draft to the peer review groups. 
+		
+5/12/2018	Final Peer Reviews	Final Review of the Papers
+		Be sure to comment on changes made from past iterations.
+		Comment on completeness and quality. 
