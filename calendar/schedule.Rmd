@@ -16,8 +16,6 @@ output: md_document
 </colgroup>
 ```
 
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```

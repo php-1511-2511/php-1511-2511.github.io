@@ -1,0 +1,119 @@
+---
+title: "Lab 4 - Logistic Regression - Part 1"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+
+## The Data 
+
+
+We will begin with an example of simple logistic regression with a sample of the [Western Collaborative Group Study](https://clinicaltrials.gov/ct2/show/NCT00005174).  This study began in 1960 with 3154 men ages 39-59, who were employed in one of 11 California based companies.  They were followed until 1969 during this time, 257 of these men developed coronary heart disease (CHD).  You can read this data in with the code below. [Lab 4 Markdown](https://php-1511-2511.github.io/labs/lab4.Rmd)
+
+## Reading in the Data
+
+```{r, tidy=TRUE}
+
+library(haven)
+wcgs <- read_dta("wcgs2.dta")
+wcgs <- wcgs[,-16]
+```
+
+## The Variables
+
+
+-----------------------------------------------------------
+Name    Description
+------- -------------------------------------------
+id      Subject identification number
+
+
+age     Age in years
+
+height  Height in inches
+
+weight  Weight in lbs.
+
+sbp     Systolic blood pressure in mm 
+
+dbp     Diastolic blood pressure in mm Hg
+
+chol    Fasting serum cholesterol in mm 
+
+behpat  Behavior
+
+        1 = A1
+
+        2 = A2
+
+        3 = B3
+
+        4 = B4
+
+ncigs   Cigarettes per day
+
+dibpat  Behavior
+
+        1 = type A
+
+        2 = type B
+
+chd69   Coronary heart disease
+
+        1 = Yes
+
+        0 = no
+
+typechd Type of CHD
+
+        1 = myocardial infarction or death
+
+        2 = silent myocardial infarction
+
+        3 = angina perctoris
+
+time169 Time of CHD event or end of follow-up
+
+arcus   Arcus senilis
+
+        0 = absent
+
+        1 = present
+
+bmi     Body Mass Index
+-----------------------------------------------------------
+
+
+
+1. Begin by exploring the data and relationships further. What kind od relationships do you notice with out outcome of Coronary Heart Disease (CHD)? Make sure to use appropriate tables, graphs or summaries. 
+
+2. Create logistic regressions with the following variables:
+    - `age`
+    - `bmi`
+    - `sbp`
+    - `dbp`
+    - `behpat`
+    - `ncigs`
+    - `dibpat`
+    - `arcus`
+    Create a table with these univariate regressions. Interpret them. 
+
+
+3. Consider a multiple with all of the above variables. 
+    a. Comment on the changes you see in coefficients from the univariate to multiple regression model.     b. Pick the 3 most significant coefficients and interpret them. 
+
+4. What is the log odds of CHD for a 65 year old with bmi of 36, sbp of 136, dbp 78, behpat A2, ncigs=3, dibpat Type B and No Arcus. 
+
+
+5. What is the probability of CHD for a 65 year old with bmi of 36, sbp of 136, dbp 78, behpat A2, ncigs=3, dibpat Type B and No Arcus. 
+

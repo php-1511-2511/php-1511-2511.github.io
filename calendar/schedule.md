@@ -144,7 +144,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 4: Logistic Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
