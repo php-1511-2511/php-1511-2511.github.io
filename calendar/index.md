@@ -4,7 +4,8 @@ title: Calendar
 ---
 
 
-<table style="width:100%;">
+
+<table>
     <colgroup>
     <col width="8%" />
     <col width="8%" />
@@ -13,7 +14,6 @@ title: Calendar
     <col width="20%" />
     <col width="25%" />
     </colgroup>
-
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -133,7 +133,7 @@ title: Calendar
 <td align="left">Week 6</td>
 <td align="left">26-Feb</td>
 <td align="left">Logistic Regression</td>
-<td align="left"><a href="../Notes/Lec-09-logistic/logistic.pdf">PDF</a> <a href="../Notes/Lec-09-logistic/logistic.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-09-logistic/logistic.pdf">PDF</a> <a href="../Notes/Lec-09-logistic/logistic.html">HTML</a> <a href="https://vimeo.com/257947309/b9f7480ac9">Video</a></td>
 <td align="left">Read FOX: Chapter 14</td>
 <td align="left"></td>
 </tr>
@@ -141,7 +141,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">28-Feb</td>
 <td align="left">Logistic Regression</td>
-<td align="left"><a href="../Notes/Lec-10-logistic-2/logistic-2.pdf">PDF</a> <a href="../Notes/Lec-10-logistic-2/logistic-2.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-10-logistic-2/logistic-2.pdf">PDF</a> <a href="../Notes/Lec-10-logistic-2/logistic-2.html">HTML</a> <a href="https://vimeo.com/257947361/8dc814d730">Video</a></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
 </tr>
@@ -172,8 +172,8 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 5: Logistic and Poisson</td>
-<td align="left"></td>
+<td align="left">Lab 5: Logistic Part 2</td>
+<td align="left"><a href="../labs/lab5.html">HTML</a> <a href="../labs/lab5.Rmd">Rmd</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -189,7 +189,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">14-Mar</td>
 <td align="left">Midterm</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Midterm-review/midterm-practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm-practice-output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm-practice-solutions.pdf">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>

@@ -1,0 +1,111 @@
+---
+title: "Lab 5 - Logistic Regression - Part 2"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+
+The goal of this study was to identify risk factors associated with giving birth to a low birth weight baby (weighing less than 2500 grams). Data were collected on 189 women, 59 of which had low birth weight babies and 130 of which had normal birth weight babies.  Four variables which were thought to be of importance were age, weight of the subject at her last menstrual period, race, and the number of physician visits during the first trimester of pregnancy.
+
+Low birth weight is an outcome that has been of concern to physicians for years. This is due to the fact that infant mortality rates and birth defect rates are very high for low birth weight babies. A woman's behavior during pregnancy (including diet, smoking habits, and receiving prenatal care) can greatly alter the chances of carrying the baby to term and, consequently, of delivering a baby of normal birth weight.
+        
+The variables identified in the code sheet given in the table have been shown to be associated with low birth weight in the obstetrical literature. The goal of the current study was to ascertain if these variables were important in the population being served by the medical center where the data were collected. This data is from [Hosmer et al. , 2013](http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470582472.html). 
+
+----------------------------------------------------------------------
+Variable Name   Description
+--------------- -------------------------------------------------------
+id              Identification Code
+
+low             0 = Birthweight $\ge$ 2500g
+
+                1=Birthweight< 2500g
+                
+age             Age of mother in years
+
+lwt             Weight in Pounds at last menstrual period
+
+race            1 = white
+      
+                2 = black
+                
+                3 = other
+
+ptl             History of Premature Labor (0=none, 1= One, ...)
+
+ht              History of hyptertension
+
+ui              Presence of Uterine Irritability
+
+                0 = No
+                
+                1 = Yes
+                
+ftv             Number of Physician visits during first trimester (0=none, 1=One, ...)
+
+btw             Birth weight in grams
+----------------------------------------------------------------------
+
+
+You can read the data in with the command below.
+
+```{R}
+low.weight <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzMzJyVkt5QkdvVnM", header=TRUE, sep=",")
+```
+
+
+## Model Building
+
+
+
+1. Your goal will be to build a model to predict low birth weight. Begin by using number summaries and graphs to start to explore relationships of variables in this data set and `low`. 
+
+
+2. The variables of `low`, `race` and `ui` are categorical variables but they are not yet factors. Code them in R to be factors in the data. Then make sure they have correct level names. 
+
+
+3. Start your model building by looking at simple logistic regressions for each of the 8 predictor variables. Display and Examine relevant plots. Summarize the simple logistic regression results using a table (hide the intercepts when combining your `tidy()` commands).
+
+```{r}
+
+        fit1 <- lm(low ~ age, low.weight)
+        fit2 <- lm(low ~ lwt, low.weight)
+        fit3 <- lm(low ~ factor(race), low.weight)
+        fit4 <- lm(low ~ smoke, low.weight)
+        fit5 <- lm(low ~ ptl, low.weight)
+        fit6 <- lm(low ~ ht, low.weight)
+        fit7 <- lm(low ~ ui, low.weight)
+        fit8 <- lm(low ~ ftv, low.weight)
+```
+
+
+
+
+
+
+
+4. Comment of the significance of the 8 variables. What variables do you think would best be used in a multiple linear regression?
+
+
+
+
+5. Explore the possibility of interaction between smoking and race. Display a graph that would allow you to explore this and then run a regression with the interaction term. Interpret the results of this model. 
+
+
+
+
+6. Build a multiple regression model with what you have found in problems 4 and 5. Do the coefficients change from the simple regressions? Comment on both direction and magnitude changes. 
+    
+7. Use the plots we have identified to check the model fit. 
+    a. Are the assumptions of linear regression met by this?
+    b. How does this model fit?
+    c. Comment on if you see any possible outliers or collinearity. 

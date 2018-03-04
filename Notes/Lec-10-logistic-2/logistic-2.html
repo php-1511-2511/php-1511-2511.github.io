@@ -391,7 +391,8 @@ log&amp;\left(\dfrac{p_{1,x}}{1-p_{1,x}}\right) - \log\left(\dfrac{p_{0,x}}{1-p_
 <li>We can run these models now:</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>mod1 &lt;- glm(crc ~ alcohol.use+ age, phscrc, family=binomial(link=&quot;logit&quot;))
+<pre class = 'prettyprint lang-r'>library(tidyverse)
+mod1 &lt;- glm(crc ~ alcohol.use+ age, phscrc, family=binomial(link=&quot;logit&quot;))
 mod2 &lt;- glm(crc ~ alcohol.use*age, phscrc, family=binomial(link=&quot;logit&quot;))
 phscrc &lt;- phscrc %&gt;%
   mutate(age.cent = age - mean(age,na.rm=TRUE))
@@ -502,27 +503,27 @@ mod3 &lt;- glm(crc ~ alcohol.use*age.cent, phscrc, family=binomial(link=&quot;lo
 </tr>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">-8.580</td>
+<td align="right">-4.657</td>
 <td align="right">0.000</td>
-<td align="right">-10.202</td>
-<td align="right">-7.038</td>
+<td align="right">-5.017</td>
+<td align="right">-4.340</td>
 </tr>
 <tr class="even">
 <td align="left">alcohol.useyes</td>
-<td align="right">0.672</td>
-<td align="right">0.461</td>
-<td align="right">-1.088</td>
-<td align="right">2.491</td>
+<td align="right">0.394</td>
+<td align="right">0.040</td>
+<td align="right">0.033</td>
+<td align="right">0.786</td>
 </tr>
 <tr class="odd">
-<td align="left">age</td>
+<td align="left">age.cent</td>
 <td align="right">0.074</td>
 <td align="right">0.000</td>
 <td align="right">0.048</td>
 <td align="right">0.100</td>
 </tr>
 <tr class="even">
-<td align="left">alcohol.useyes:age</td>
+<td align="left">alcohol.useyes:age.cent</td>
 <td align="right">-0.005</td>
 <td align="right">0.724</td>
 <td align="right">-0.034</td>
