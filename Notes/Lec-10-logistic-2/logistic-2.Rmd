@@ -234,7 +234,7 @@ $$H_0:\beta_3=0 \text{ vs }H_1:\beta_3\ne0$$
 
 - We can run these models now:
 ```{r}
-
+library(tidyverse)
 mod1 <- glm(crc ~ alcohol.use+ age, phscrc, family=binomial(link="logit"))
 mod2 <- glm(crc ~ alcohol.use*age, phscrc, family=binomial(link="logit"))
 phscrc <- phscrc %>%
@@ -269,7 +269,7 @@ kable(tidy(mod2, conf.int=T)[,-c(3:4)])
 - Finally our model with centered age and effect modification
 ```{R, echo=F}
 library(broom)
-kable(tidy(mod2, conf.int=T)[,-c(3:4)])
+kable(tidy(mod3, conf.int=T)[,-c(3:4)])
 ```
 
 -  This time we can interpret the coefficient of alcohol use. For men at the average age in the study, `r mean(phscrc$age,na.rm=TRUE)`, a man who drinks more than once a month will have `r (exp(mod3$coefficients[2])-1)*100`% increase in odds compared to a man who drinks less than once a month. 
