@@ -66,7 +66,7 @@
 <td align="left">Diagnostics for Linear Regression</td>
 <td align="left"><a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.html">HTML</a> <a href="https://vimeo.com/254726535">Video</a></td>
 <td align="left">Read FOX: Chapter 11</td>
-<td align="left"><a href="../homework/guidelines.html">Guidelines</a> <a href="../homework/hw2.html">HW2</a></td>
+<td align="left"><a href="../homework/guidelines.html">Guidelines</a> <a href="../homework/hw2.html">HW2</a> <a href="../homework/hw2_sol.html">SOL</a></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
