@@ -1,7 +1,7 @@
-
+ 
 
 <table>
-    <colgroup>
+   <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -144,7 +144,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 4: Logistic Regression</td>
-<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a></td>
+<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a> <a href="https://vimeo.com/258696228/4181a70e33">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -184,7 +184,7 @@
 <td align="left"></td>
 <td align="left">14-Mar</td>
 <td align="left">Midterm</td>
-<td align="left"><a href="../Notes/Midterm-review/midterm-practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm-practice-output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm-practice-solutions.pdf">Solutions</a></td>
+<td align="left"><a href="../Notes/Midterm-review/midterm_practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm_practice_output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm_practice_solutions.pdf">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
