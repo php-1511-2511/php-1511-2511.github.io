@@ -1,7 +1,7 @@
- 
+    
 
 <table>
-   <colgroup>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -152,7 +152,7 @@
 <td align="left">Week 7</td>
 <td align="left">5-Mar</td>
 <td align="left">Logistic Regression</td>
-<td align="left"><a href="../Notes/Lec-11-logistic-3/logistic-3.pdf">PDF</a> <a href="../Notes/Lec-11-logistic-3/logistic-3.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-11-logistic-3/logistic-3.pdf">PDF</a> <a href="../Notes/Lec-11-logistic-3/logistic-3.html">HTML</a> <a href="https://vimeo.com/258723905/53d7afef1d">Video</a></td>
 <td align="left">Read FOX: Chapter 15</td>
 <td align="left"></td>
 </tr>
