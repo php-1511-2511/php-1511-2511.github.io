@@ -105,7 +105,3 @@ low.weight <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRL
 
 6. Build a multiple regression model with what you have found in problems 4 and 5. Do the coefficients change from the simple regressions? Comment on both direction and magnitude changes. 
     
-7. Use the plots we have identified to check the model fit. 
-    a. Are the assumptions of linear regression met by this?
-    b. How does this model fit?
-    c. Comment on if you see any possible outliers or collinearity. 
