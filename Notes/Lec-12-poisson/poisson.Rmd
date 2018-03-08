@@ -28,6 +28,8 @@ options(digits = 3, scipen = 3)
 
 # Poisson Regression
 
+## Poisson Regression
+
 - Another situation where we can use a GLM is with Poisson data. 
 - The poisson model fits data where
     - Response is a count that follows a Poisson distribution. 

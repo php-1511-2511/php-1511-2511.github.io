@@ -344,12 +344,12 @@ We typically find this value with a Receiver Operating Characteristic (ROC) curv
 
 * ***Sensitivity*** 
     * True Positive
-    * $\dfrac{ \text{Num. with Outcome and }\hat{p}>p}{\text{num. with Outcome}}$
+    * $\dfrac{ \text{Num. with Outcome and }\hat{p}>p}{\text{num. with Disease}}$
     * $\Pr(\hat{p}>p|\text{Has Disease})$
 
 * ***Specificity***
     * True Negative
-    * $\dfrac{ \text{Num. without Outcome and }\hat{p}<p}{\text{num. with Outcome}}$
+    * $\dfrac{ \text{Num. without Outcome and }\hat{p}<p}{\text{num. without disease}}$
     * $\Pr(\hat{p}<p|\text{No Disease})$
 
     

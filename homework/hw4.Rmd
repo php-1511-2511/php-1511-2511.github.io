@@ -1,0 +1,92 @@
+---
+title: "Homework 4"
+author: "Your Name"
+date: "March 16, 2018 at 11:59pm"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+### Homework Guidelines:
+
+Please read [Homework Guidelines](../homework/guidelines.html). You must follow these guidelines. 
+
+
+### Turning the Homework in:
+
+*Please turn the homework in through canvas. You may use a pdf, html or word doc file to turn the assignment in.*
+
+[PHP 1511 Assignment Link](https://canvas.brown.edu/courses/1075279/assignments/7690890)
+
+[PHP 2511 Assignment Link](https://canvas.brown.edu/courses/1075280/assignments/7690891)
+
+
+***For the R Markdown Version of this assignment: [HW4.Rmd](../homework/hw4.Rmd)***
+
+
+## Part 1: Both PHP 1511 and 2511 
+
+We will be considering the Titanic Dataset. The variables in this dataset are:
+
+--------------------------------------------------------
+variable    Description
+----------- ------------------------------------------------
+survival	  Survival	0 = No, 1 = Yes
+
+pclass	    Ticket class	1 = 1st, 2 = 2nd, 3 = 3rd
+
+sex	        Sex
+
+Age	        Age in years	
+
+sibsp	      # of siblings / spouses aboard the Titanic
+
+parch	      # of parents / children aboard the Titanic	
+
+ticket	    Ticket number	
+
+fare	      Passenger fare	
+
+cabin	      Cabin number	
+
+embarked	  Port of Embarkation	C = Cherbourg, Q = Queenstown, S = Southampton
+-------------------------------------------------------------
+
+You can read this data in with the following code:
+
+```{r}
+load("titanic.RData")
+```
+
+
+Your goal will be to consider a logistic regression to model Survival. The thought behind survival was that it was about women and children first. Your goal will be to model this relationship and to understand what else might have played a role in survival. 
+
+1. Display through tables or plots:
+    a. Survival by age
+    b. Survival by sex
+    c. Survival by embarked
+    d. Survival by pclass
+    Then comment on what you notice about these relationships. 
+
+2. Build a logistic regression model with main effects only. Start with a table of univariate models and display a final multiple variable model. Include:
+    - A few sentences on what you notice in simple regressions.
+    - A sentence or two about why you chose your multiple model.
+    - Does your model suggest that survival was about women and children? 
+
+
+3. Is this model well calibrate? Explain and display results or a figure to back your explanations. 
+
+4. Does this model discriminate well? Explain and display results or a figure to back your explanations. 
+    
+
+## Part 2: 2511 Only
+
+
+5. Build a Logistic regression model exploring the interaction between sex and class by including the interaction into your multiple regression model above. Include:
+    - a sentence or two on how this changes your above results.
+    - a sentence or two on what this tells you about sex and class. 
+    - interpret the survival for females and then interpret the survival for males. 
+    
+6. How is the calibration and discrimination of this model?

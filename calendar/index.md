@@ -6,7 +6,7 @@ title: Calendar
     
 
 <table>
-<colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -167,7 +167,7 @@ title: Calendar
 <td align="left">Poisson Regression</td>
 <td align="left"><a href="../Notes/Lec-12-poisson/poisson.pdf">PDF</a> <a href="../Notes/Lec-12-poisson/poisson.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 15</td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw4.html">HW4</a></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
