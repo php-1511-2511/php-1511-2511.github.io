@@ -100,7 +100,10 @@ low.weight <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRL
 
 5. Explore the possibility of interaction between smoking and race. Display a graph that would allow you to explore this and then run a regression with the interaction term. Interpret the results of this model. 
 
-
+```{r}
+mod <- glm(dead~sah*age, data=sah, family="binomial")
+summary(mod)
+```
 
 
 6. Build a multiple regression model with what you have found in problems 4 and 5. Do the coefficients change from the simple regressions? Comment on both direction and magnitude changes. 
