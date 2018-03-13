@@ -4,8 +4,8 @@ title: Calendar
 ---
 
       
-
-<table style="width:110%;">
+    
+<table style="width:100%;">
 <colgroup>
     <col width="8%" />
     <col width="8%" />
@@ -15,6 +15,7 @@ title: Calendar
     <col width="25%" />
     <col width="10%" />
     </colgroup>
+
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -132,7 +133,7 @@ title: Calendar
 <td align="left">Generalized Linear Regression Basics</td>
 <td align="left"><a href="../Notes/Lec-08-basic-glm/glm.pdf">PDF</a> <a href="../Notes/Lec-08-basic-glm/glm.html">HTML</a> <a href="https://vimeo.com/256993187/1efd672855">Video</a></td>
 <td align="left">Read FOX: Chapter 14</td>
-<td align="left"><a href="../homework/hw3.html">HW3</a></td>
+<td align="left"><a href="../homework/hw3.html">HW3</a> <a href="../homework/hw3_sol.html">SOL</a></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
