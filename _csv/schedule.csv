@@ -21,8 +21,8 @@ Week 7,5-Mar,Logistic Regression Part 3,[PDF](../Notes/Lec-11-logistic-3/logisti
 Week 8,12-Mar,Poisson Regression,[PDF](../Notes/Lec-12-poisson/poisson.pdf)  [HTML](../Notes/Lec-12-poisson/poisson.html) [Video](https://vimeo.com/259903459/dda7398718),Read  FOX: Chapter 16,,
 ,14-Mar,Midterm,[Practice](../Notes/Midterm-review/midterm_practice.pdf) [Output](../Notes/Midterm-review/midterm_practice_output.pdf) [Solutions](../Notes/Midterm-review/midterm_practice_solutions.pdf) ,,,
 ,,,,,,
-Week 9,19-Mar,Basics of Survival Data,,Read  FOX: Chapter 17,,
-,21-Mar,Cox-Proportional Hazards Regression,,Read  FOX: Chapter 18,,First Steps Due
+Week 9,19-Mar,Basics of Survival Data,[PDF](../Notes/Lec-13-survival/survival.pdf)  [HTML](../Notes/Lec-13-survival/survival.html) ,Read  FOX: Chapter 17,,
+,21-Mar,Cox-Proportional Hazards Regression,[PDF](../Notes/Lec-14-survival-2/survival-2.pdf)  [HTML](../Notes/Lec-14-survival-2/survival-2.html) ,Read  FOX: Chapter 18,,First Steps Due
 ,,Lab 6:  Survival Data in R,,,,
 Week 10,26-Mar,***NO CLASS SPRING BREAK***,,,,
 ,28-Mar,***NO CLASS SPRING BREAK***,,,,
