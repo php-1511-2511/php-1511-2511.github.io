@@ -1,0 +1,534 @@
+---
+title: "Survival Analysis part 2"
+author: "Adam J Sullivan, PhD"
+date: "03/21/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=TRUE,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+
+
+# Cox-PH Regression
+
+
+## Physicians Health Study and Aspirin
+
+Recall the Colorectal Cancer component of the Physicians Health Study
+
+-----------------------------------------------------------
+Name        Description
+----------- -------------------------------------------
+age         Age in years at time of Randomization
+
+asa         0 - placebo, 1 - aspirin
+
+bmi         Body Mass Index (kg/$m^2$)
+
+hypert      1 - Hypertensive at baseline, 0 - Not
+
+alcohol     0 - less than monthly, 1 - monthly to less than daily, 2 - daily consumption
+-----------------------------------------------------------
+
+---
+
+-----------------------------------------------------------
+Name        Description
+----------- -------------------------------------------
+dm          0 = No diabetes Mellitus, 1 - diabetes Mellitus
+
+sbp         Systolic BP (mmHg)
+
+exer        0 - No regular, 1 - Sweat at least once per week
+
+csmoke      0 - Not currently, 1 - < 1 pack per day, 2 - $\ge$ 1 pack per day
+
+psmoke      0 - never smoked, 1 - former < 1 pack per day, 2 - former $\ge$ 1 pack per day
+
+pkyrs       Total lifetime packs of cigarettes smoked
+
+crc         0 - No colorectal Cancer, 1 - Colorectal cancer
+
+cayrs       Years to colorectal cancer, or death, or end of follow-up.
+------------------------------------------------------------------------
+
+---
+
+For this study each participant contributed 2 pieces of information during follow-up:
+
+1. Information on whether of not they had a Colorectal Cancer(CRC) during follow-up
+2. Follow-up time in years, specified as time from randomization until first of
+    + end of Study
+    + death
+    + Colorectal Cancer
+    + Loss to follow-up
+
+---    
+  
+
+We can load this data into R.
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(haven)
+phscrc <- read_dta("phscrc.dta")
+phscrc <- phscrc %>%
+            mutate(age.cat = cut(age, c(40,50,60,70, 90), right=FALSE)) %>%
+            mutate(alcohol.use = factor(alcohol>1, labels=c("no", "yes"))) %>%
+           mutate(obese = factor(bmi>30, labels=c("Not Obese", "Obese")))
+```
+
+
+
+
+## Proportional Hazards Model
+
+
+
+The general ***Proportional Hazards Model*** is
+$$h(t|X_1,\ldots, X_p) = h_0(t)\exp\left(\beta_1x_1 + \cdots + \beta_px_p\right)$$
+
+ $$\text{or}$$
+ 
+$$\log\left[h(t|X_1,\ldots, X_p)\right] = \log\left[h_0(t)\right] + \beta_1x_1 + \cdots + \beta_px_p$$
+
+where $h_0(t)$ is the baseline hazard function and the "intercept" is $\log\left[h_0(t)\right]$. 
+
+
+## Semi-Parametric Regression
+
+- Weibull and Exponential are examples of parametric proportional hazards models, where $h_0(t)$ is a specified function. 
+- In 1972, Cox generalized these types of models so that we can make inferences on the 
+$\beta_1, \ldots,\beta_p$ without specifying $h_0(t)$. 
+- We call Cox a semi-parametric regression model
+- We fit this using something called *Partial Likelihood Estimation*
+- Once again we use an algorithm to maximize the partial likelihood. 
+
+
+
+## Interpeting the Model
+
+Let 
+
+- $X=0$ be the control group
+- $X=1$ be the treatment group
+
+Then
+
+$$\begin{aligned}
+h(t|X=x) &= h_0(t)\exp(\beta x)\\
+h(t|X=0) &= h_0(t)\\
+&= \text{ baseline hazard for control group}\\
+h(t|X=1) &= h_0(t)\exp(\beta)\\
+&= \text{ hazard for treated group}\\
+\exp(\beta) &= \dfrac{h(t|X=1)}{h(t|X=0)}\\
+\end{aligned}$$
+
+
+
+## What Does This Mean? 
+
+- This means that the hazard ratio is constant over time (**Proportional Hazards**)
+- $\beta$ is the log hazard ratio or log-relative risk
+- According to the Cox model
+
+$$\begin{aligned}
+\log\left[h]h(t|X=0)\right] &= \log\left[h_0(t)\right]\\
+\log\left[h]h(t|X=1)\right] &= \log\left[h_0(t)\right] + \beta\\
+\end{aligned}$$
+
+- This means the log of the hazard functions are parallel over time. 
+- We make no assumptions about $h_0(t)$. 
+
+
+##  Verifying Proportional Hazards Assumption
+
+Recall 
+$$S(t) = \exp\left(-\Lambda(t)\right)$$
+with a binary $X$ we have that
+
+$$\begin{aligned}
+\Lambda_1(t) &= \Lambda_0(t)\exp(\beta)\\
+S_0(t) &= \exp(\Lambda_0(t))\\
+-\log(S_0(t)) &= \Lambda_0(t)\\
+\log(-\log(S_0(t))) &=\log(\Lambda_0(t))\\
+\end{aligned}$$
+$$\begin{aligned}
+S_1(t) = exp(-\Lambda_1(t)) &= \exp\left[\Lambda_0(t)\exp(\beta)\right]\\
+-\log(S_1(t)) &= \Lambda_0(t)\exp(\beta)\\
+\log(-\log(S_1(t))) &= \log(\Lambda_0(t)) + \beta\\
+\end{aligned}$$
+
+
+##  Verifying Proportional Hazards Assumption
+
+- Thus we can see that under the assumption of ***proportional hazards***
+    - $\log(-\log(K-M))$ should be parallel over time. 
+    - We typically verify this graphically. 
+    - Recall the CRC study: 
+    
+
+## Example:  Kaplan-Meier Survival
+
+```{r, eval=F}
+library(survival)
+
+model <- survfit(Surv(cayrs,crc) ~ alcohol.use,
+          data = subset(phscrc, cayrs>0))
+model
+
+```
+
+
+
+
+## Example:  Kaplan-Meier Survival
+
+```{r, eval=F}
+library(survival)
+
+model <- survfit(Surv(cayrs,crc) ~ alcohol.use,
+          data = subset(phscrc, cayrs>0))
+model
+
+```
+
+
+
+## Plotting the Kaplan-Meier
+
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+
+library(survminer)
+ggsurvplot(model, legend.labs = 
+             c("Non-Drinker", "Drinker"),
+           break.time.by=2, fun="cloglog")
+```
+
+
+
+## Plotting the Kaplan-Meier
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(survminer)
+ggsurvplot(model, legend.labs = 
+             c("Non-Drinker", "Drinker"),
+           break.time.by=2, fun="cloglog")
+```
+
+
+## Cox PH in R
+
+- We can run the Cox PH in R:
+
+```{r, eval=FALSE}
+cox.crc <- coxph(Surv(cayrs,crc) ~ alcohol.use,
+          data = subset(phscrc, cayrs>0))
+summary(cox.crc)
+```
+
+
+
+
+## Cox PH in R
+
+
+
+```{r, echo=FALSE}
+cox.crc <- coxph(Surv(cayrs,crc) ~ alcohol.use,
+          data = subset(phscrc, cayrs>0))
+summary(cox.crc)
+```
+
+
+
+##Interpretation
+
+
+- This would suggest that the hazard of Colorectal Cancer for those who drink daily is 51% higher than those who drink less than daily.  
+
+
+
+## Continuous Example of Cox PH
+
+
+- Let's consider `age` and `smoking`:
+
+```{R, eval=FALSE}
+library(survival)
+crc.cox <- coxph(Surv(cayrs, crc) ~ csmok + age , data= subset(phscrc, cayrs>0))
+summary(crc.cox)
+```
+
+
+
+
+## Continuous Example of Cox PH
+
+
+
+```{R, echo=FALSE}
+library(survival)
+crc.cox <- coxph(Surv(cayrs, crc) ~ csmok + age , data= subset(phscrc, cayrs>0))
+summary(crc.cox)
+```
+
+
+## Interpretation 
+
+- Then we could say that for two people with the same smoking status a one year increase in age would lead to an 8.2% increase in the hazard of colorectal cancer with a 95% CI of 6.9% to 9.6%. 
+- We would also be able to say that for 2 people the same age, a person who is a current smoker would have a 37% increase in hazard of colorectal cancer than a non smoker. 
+
+
+
+
+
+# Cox-PH Regression
+
+
+## Assessing Diagnostics and Model Fit with Cox-PH
+
+- With the Cox PH model we will consider 2 things
+    - Checking Proportional Hazards Assumption
+    - Checking for Influential Observations
+    
+
+
+## The Data
+
+- We will consider Recidivism of 432 male patients. 
+- They all were observed for 1 year prior to release from prison.
+- The following slides will contain the variables. 
+
+## Variables
+
+
+
+----------------------------------------------------
+Variable      Description
+------------  ----------------------------------------
+week          week of first arrest after release, or censoring time.
+
+arrest        the event indicator, equal to 1 for those arrested during the period of the study and 0 for those who were not arrested.
+
+fin           a factor, with levels yes if the individual received financial aid after release from prison, and no if he did not; financial aid was a randomly assigned factor manipulated by the researchers.
+------------------------------------------------------
+
+
+## Variables
+
+
+----------------------------------------------------
+Variable          Description
+----------------  ----------------------------------------
+age               in years at the time of release.
+
+wexp              a factor with levels yes if the individual had full-time work experience prior to incarceration and no if he did not.
+
+mar               a factor with levels married if the individual was married at the time of release and not married if he was not.
+
+paro              a factor coded yes if the individual was released on parole and no if he was not. 
+
+prior             number of prior convictions.
+-------------------------------------------------------
+
+
+
+
+## Variables
+
+
+----------------------------------------------------
+Variable          Description
+----------------  ----------------------------------------
+educ              education, a categorical variable coded numerically, with codes 2 (grade 6 or less), 3 (grades 6 through 9), 4 (grades 10 and 11), 5 (grade 12), or 6 (some post-secondary).6
+
+emp1 – emp52      factors coded yes if the individual was employed in the corresponding week of the study and no otherwise.
+
+
+race              a factor with levels black and other.
+----------------------------------------
+
+
+## Reading Data in
+
+```{r}
+url <- "http://socserv.mcmaster.ca/jfox/Books/Companion/data/Rossi.txt"
+Rossi <- read.table(url, header=TRUE)
+```
+
+
+
+
+## Our Model
+
+```{r, eval=FALSE}
+library(survival)
+mod1 <- coxph(Surv(week,arrest)~ fin + age + race + 
+                wexp + mar + paro + prio, 
+              data=Rossi)
+tidy1 <- tidy(mod1, exponentiate=T)
+knitr::kable(tidy1[-c(3,4)])
+```
+
+
+
+
+
+## Our Model
+
+```{r, echo=FALSE}
+library(survival)
+mod1 <- coxph(Surv(week,arrest)~ fin + age + race + 
+                wexp + mar + paro + prio, 
+              data=Rossi)
+tidy1 <- tidy(mod1, exponentiate=T)
+knitr::kable(tidy1[-c(3,4)])
+```
+
+
+
+## Plotting Regression
+
+
+```{r, eval=F}
+library(ggplot2)
+library(ggfortify)
+autoplot(survfit(mod1), surv.linetype = 'dashed', surv.colour = 'blue',
+         conf.int.fill = 'dodgerblue3', conf.int.alpha = 0.5, censor = FALSE)
+```
+
+
+
+
+## Plotting Regression
+
+
+```{r, echo=F}
+library(ggplot2)
+library(ggfortify)
+autoplot(survfit(mod1), surv.linetype = 'dashed', surv.colour = 'blue',
+         conf.int.fill = 'dodgerblue3', conf.int.alpha = 0.5, censor = FALSE)
+```
+
+
+
+
+## Checking Proportional Hazards
+
+- We have tested these before with Schoenfeld Residuals
+- We can do this with the `cox.zph()` function. 
+
+## Checking Proportional Hazards
+
+```{R}
+cox.zph(mod1)
+```
+
+
+## Conclusion
+
+- We see there is an issue
+    - `age` is an issue
+    - `wexp` is an issue as well. 
+- What do we do???
+
+
+## Enter Stratification
+
+
+- We can adjust for a variable that does not meet the proportional hazards assumption by stratification. 
+- Assume we have $Z$ which does not allow for PH
+$$h(t|X, Z=j) = h_j(t)exp(X\beta)$$
+- $j=1,ldots,C$ levels of Z. 
+
+
+## Create Age Categories
+
+
+```{R}
+Rossi$age.cat <- cut(Rossi$age, c(0, 19, 25, 30, Inf))
+xtabs(~age.cat, data=Rossi)
+```
+
+## Re Run the Model
+
+```{r}
+mod2  <- coxph(Surv(week,arrest)~ fin + race + 
+                mar + paro + prio + strata(wexp, age.cat), 
+              data=Rossi)
+tidy2 <- tidy(mod2, exponentiate=T)
+knitr::kable(tidy2[-c(3,4)])
+```
+
+
+
+
+## PH Assumption
+
+```{r}
+cox.zph(mod2)
+```
+
+
+
+
+## Influential Observations
+
+
+- to test this let's build a smaller model
+
+```{r}
+mod3 <-  coxph(Surv(week, arrest) ~ fin + 
+                 prio + strata(age.cat), data=Rossi)
+```
+
+
+
+## Influential Observations
+
+- With Cox PH we will use DFBETA to tell.
+- DFBETA's measure how much an observation has effected the estimated coefficient. 
+- We look for values to be under $\dfrac{2}{\sqrt{n}}$. 
+
+## DFBETA in R
+
+
+```{r}
+library(survminer)
+2/sqrt(dim(Rossi)[1])
+```
+```{r, eval=F}
+ggcoxdiagnostics(mod3,  type = "dfbeta",
+                 linear.predictions = FALSE, ggtheme = theme_bw())
+```
+
+
+## DFBETA in R
+
+```{r, echo=F}
+ggcoxdiagnostics(mod3,  type = "dfbeta",
+                 linear.predictions = FALSE, ggtheme = theme_bw())
+```
+
+
+
+

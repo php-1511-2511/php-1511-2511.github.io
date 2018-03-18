@@ -1,6 +1,7 @@
-    
+   
+
 <table style="width:100%;">
-<colgroup>
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -9,7 +10,6 @@
     <col width="25%" />
     <col width="10%" />
     </colgroup>
-
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -224,7 +224,7 @@
 <td align="left">Week 9</td>
 <td align="left">19-Mar</td>
 <td align="left">Basics of Survival Data</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-13-survival/survival.pdf">PDF</a> <a href="../Notes/Lec-13-survival/survival.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 17</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -233,7 +233,7 @@
 <td align="left"></td>
 <td align="left">21-Mar</td>
 <td align="left">Cox-Proportional Hazards Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-14-survival-2/survival-2.pdf">PDF</a> <a href="../Notes/Lec-14-survival-2/survival-2.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 18</td>
 <td align="left"></td>
 <td align="left">First Steps Due</td>
