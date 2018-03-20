@@ -143,11 +143,17 @@
 <li>What is the event of interest?</li>
 <li>How is it specifically defined?</li>
 </ul></li>
-<li>The Origin</li>
+<li>The Origin
+
+<ul>
 <li>What is the initial starting point?</li>
 <li>This must be before anyone in the study has had the event of interest.</li>
-<li>The Metric for time</li>
+</ul></li>
+<li>The Metric for time
+
+<ul>
 <li>What is the scale in which events are recorded.</li>
+</ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Examples</h2></hgroup><article  id="examples">
@@ -163,7 +169,7 @@
 <li>Length of stay in hospital for patients who suffered a heart attack.
 
 <ul>
-<li><em>Event</em>: Length of Stay.</li>
+<li><em>Event</em>: Leaving Hospital.</li>
 <li><em>Origin</em>: Admission to Hospital.</li>
 <li><em>Time Metric</em>: Hours.</li>
 </ul></li>
@@ -204,7 +210,7 @@
 <li>\(S(t)\) decreases as events happen over \(t\)
 
 <ul>
-<li>So that if \(t_2\ge t_1\) then \(S(t_2)\ge S(t_1)\).</li>
+<li>So that if \(t_2\ge t_1\) then \(S(t_2)\le S(t_1)\).</li>
 <li>They are non-increasing functions.</li>
 </ul></li>
 </ul>
@@ -262,7 +268,7 @@
 <li>The hypothesis being tested are:</li>
 </ul>
 
-<p>\[H_o: S_1(t) = S_2(t) \text{ for all }t\] \[\text{and}\] \[H_o: S_1(t) \ne  S_2(t) \text{ for some }t\]</p>
+<p>\[H_0: S_1(t) = S_2(t) \text{ for all }t\] \[\text{and}\] \[H_1: S_1(t) \ne  S_2(t) \text{ for some }t\]</p>
 
 </article></slide><slide class=""><hgroup><h2>Log Rank Test</h2></hgroup><article  id="log-rank-test-1">
 
@@ -315,8 +321,8 @@
 </table>
 
 <p>where \[\begin{aligned}
-n_{1i} &amp;= \text{ numer at risk at } t_i \text{ from Control}\\
-n_{2i} &amp;= \text{ numer at risk at } t_i \text{ from Treated}\\
+n_{1i} &amp;= \text{ number at risk at } t_i \text{ from Control}\\
+n_{2i} &amp;= \text{ number at risk at } t_i \text{ from Treated}\\
 m_{1i} &amp;= \text{ number of failures at } t_i\\
 m_{2i} &amp;= \text{ number surviving past } t_i\\
 n_i &amp;= \text{ total numer at risk at } t_i\\
