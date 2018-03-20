@@ -6,8 +6,9 @@ title: Calendar
 
    
 
+
 <table style="width:100%;">
- <colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -247,8 +248,8 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 6: Survival Data in R</td>
-<td align="left"></td>
+<td align="left">Lab 6: Survey Data in R / Poisson Regression</td>
+<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
