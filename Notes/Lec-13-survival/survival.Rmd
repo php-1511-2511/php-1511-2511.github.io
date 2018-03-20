@@ -63,10 +63,10 @@ options(digits = 3, scipen = 3)
     + What is the event of interest? 
     + How is it specifically defined?
 - The Origin
-  + What is the initial starting point?
-  + This must be before anyone in the study has had the event of interest. 
+    + What is the initial starting point?
+    + This must be before anyone in the study has had the event of interest. 
 - The Metric for time
-  + What is the scale in which events are recorded. 
+    + What is the scale in which events are recorded. 
 
 
 
@@ -79,7 +79,7 @@ options(digits = 3, scipen = 3)
     
     
 - Length of stay in hospital for patients who suffered a heart attack.
-    + *Event*: Length of Stay.
+    + *Event*: Leaving Hospital.
     + *Origin*: Admission to Hospital.
     + *Time Metric*: Hours.
 
@@ -122,7 +122,7 @@ $$0\le S(t)\le1, \qquad \text{ for each } t\ge0$$
 
 - At time, $t=0$, $S(0)=1$.
 - $S(t)$ decreases as events happen over $t$
-    + So that if $t_2\ge t_1$ then $S(t_2)\ge S(t_1)$. 
+    + So that if $t_2\ge t_1$ then $S(t_2)\le S(t_1)$. 
     + They are non-increasing functions.
     
 ##Features of $S(t)$
@@ -173,9 +173,9 @@ The control group was easy to analyze as it had no censoring so we could calcula
 - The Logrank Test is a hypothesis test for 2 or more independent samples of survival data. 
 - The hypothesis being tested are:
 
-$$H_o: S_1(t) = S_2(t) \text{ for all }t$$
+$$H_0: S_1(t) = S_2(t) \text{ for all }t$$
 $$\text{and}$$
-$$H_o: S_1(t) \ne  S_2(t) \text{ for some }t$$
+$$H_1: S_1(t) \ne  S_2(t) \text{ for some }t$$
 
 
 ## Log Rank Test
@@ -210,8 +210,8 @@ total | $m_{1i}$ | $m_{2i}$ | $n_i$
 
 where
 $$\begin{aligned}
-n_{1i} &= \text{ numer at risk at } t_i \text{ from Control}\\
-n_{2i} &= \text{ numer at risk at } t_i \text{ from Treated}\\
+n_{1i} &= \text{ number at risk at } t_i \text{ from Control}\\
+n_{2i} &= \text{ number at risk at } t_i \text{ from Treated}\\
 m_{1i} &= \text{ number of failures at } t_i\\
 m_{2i} &= \text{ number surviving past } t_i\\
 n_i &= \text{ total numer at risk at } t_i\\
