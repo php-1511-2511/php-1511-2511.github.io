@@ -18,7 +18,7 @@ opts_chunk$set(error = TRUE)
 opts_chunk$set(warning=FALSE)
 opts_chunk$set(message=FALSE)
 opts_chunk$set(results="hold")
-opts_chunk$set(cache=T)
+opts_chunk$set(cache=F)
 opts_chunk$set(  tidy=TRUE,size="small")
 opts_chunk$set(tidy.opts=list(width.cutoff=60))
 options(digits = 3, scipen = 3)
@@ -187,7 +187,7 @@ S_1(t) = exp(-\Lambda_1(t)) &= \exp\left[\Lambda_0(t)\exp(\beta)\right]\\
 
 ## Example:  Kaplan-Meier Survival
 
-```{r, eval=F}
+```{r,eval=F}
 library(survival)
 
 model <- survfit(Surv(cayrs,crc) ~ alcohol.use,
@@ -201,7 +201,7 @@ model
 
 ## Example:  Kaplan-Meier Survival
 
-```{r, eval=F}
+```{r, echo=F}
 library(survival)
 
 model <- survfit(Surv(cayrs,crc) ~ alcohol.use,
@@ -382,6 +382,8 @@ Rossi <- read.table(url, header=TRUE)
 
 ```{r, eval=FALSE}
 library(survival)
+library(tidyverse)
+library(broom)
 mod1 <- coxph(Surv(week,arrest)~ fin + age + race + 
                 wexp + mar + paro + prio, 
               data=Rossi)
@@ -397,6 +399,8 @@ knitr::kable(tidy1[-c(3,4)])
 
 ```{r, echo=FALSE}
 library(survival)
+library(tidyverse)
+library(broom)
 mod1 <- coxph(Surv(week,arrest)~ fin + age + race + 
                 wexp + mar + paro + prio, 
               data=Rossi)
