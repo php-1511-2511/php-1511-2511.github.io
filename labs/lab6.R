@@ -46,11 +46,7 @@ brfss$orientation[brfss$sxorient==4] <- 4
 #1-straight 2-lesbian gay 3-bisexual 4-other
 
 
-brfss$military = NULL #1- yes, 0- no
-brfss$military[brfss$veteran3==1] = 1
-brfss$military[brfss$veteran3==2] = 0
-#served on active duty in the United States Armed Forces
-#0-no, 1-yes
+
 
 
 
