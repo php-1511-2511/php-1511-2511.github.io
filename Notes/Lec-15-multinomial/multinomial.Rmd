@@ -1,0 +1,508 @@
+---
+title: "Multinomial Regression"
+author: "Adam J Sullivan, PhD"
+date: "04/02/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+# Multinomial Regression
+-
+
+## Multinomial 
+
+Many times our data is not just in a success or failure format. For example in the Physicians' Health Study the primary cardiovascular endpoint was:
+
+- *Y=0*: No Cardiovascular Disease
+- *Y=1*: Myocardial Infarction
+- *Y=2*: Stroke
+- *Y=3*: Other CV Death
+
+## What Is Different than Logistic?
+
+- We may not want to just focus on successes and failures but all of the categories. 
+- Instead of a binomial distribution like in logistic regression we have a multinomial distribution. 
+
+
+## The Multinomial Distribution
+
+- The ***Multinomial Distribution*** is a generalization of the binomial distribution. 
+    + The binomial distribution had $n$ independent trials and each trial had 2 outcomes, `Success` and `Failure`.
+    + In the Multinomial there are $r$ outcomes for each of the $n$ trials. and each outcome has probability $p_1,\ldots,p_r$ of occurring $(p_1 + \cdots p_r=1)$. 
+    
+## The Multinomial Distribution
+
+
+- Let $ N_i$ denote a count of the number of type $i$ outcomes in the $n$ trials, $i=1,2,\ldots,r$. 
+- For the joint function we are concerned with a sequence of trials that gives us $N_1=n_1,\ldots,n_r=n_r$ which occurs with probability $p_1^{n_1}\cdots p_r^{n_r}$.
+- The number of ways to order $n$ outcomes is 
+\[\binom{n}{n_1\cdots n_r} = \dfrac{n!}{n_1!\cdots n_r!}\]
+thus the joint PMF is
+\[ p(n_1,\ldots, n_r) =\binom{n}{n_1\cdots n_r} p_1^{n_1}\cdots p_r^{n_r}\]
+
+## Further About the Categories
+
+- This looks very much like the binomial distribution with the exception that there are more categories a subject can be in. 
+- We have two situations that can come from this data and that informs how we analyze it. We can have
+    + Nominal Categories
+    + Ordinal Categories
+
+## Types of Regressions
+
+- With these types of categories we will proceed with 2 types of multinomial regressions:
+    +  Baseline Category Logit
+    + Adjacent Category Logit
+    + Proportional-Odds Cumulative Logit
+
+
+
+## Baseline Category Logit
+
+- If you recall in logistic regression we have 2 probabilities:
+    - $\pi_1$: Probability of having a success.
+    - $\pi_0$: Probability of having a failure.
+
+
+## Baseline Category Logit
+
+- We then run our logistic regression as
+$$\log\left(\dfrac{\pi_1}{\pi_0}\right) = logit(\pi_1) = \beta_0  + \beta_1 x_1 + \cdots+ \beta_k x_k$$
+- With baseline category logit we have multiple probabilities:
+    - $\pi_1\;$: Probability of being in category 1.
+    - $\pi_2\;$: Probability of being in category 2. 
+    - $\qquad\qquad\vdots$
+    - $\pi_J\;$: probability of being in category $J$. 
+
+## How Do we Do It?
+
+We first pick category $J$ to be our baseline, we then proceed to fit $J-1$ logistic regressions simultaneously:
+
+$$\begin{aligned}
+\log\left(\dfrac{\pi_1}{\pi_J}\right)  &= \alpha_1  + \beta_{1,1} x_1 + \cdots+ \beta_{k,1} x_k\\
+\log\left(\dfrac{\pi_2}{\pi_J}\right)  &= \alpha_2  + \beta_{1,2} x_1 + \cdots+ \beta_{k,2} x_k\\
+&\vdots\\
+\log\left(\dfrac{\pi_{J-1}}{\pi_J}\right)  &= \alpha_{J-1}  + \beta_{1,J-1} x_1 + \cdots+ \beta_{k,J-1} x_k\\
+\end{aligned}$$
+
+## Interpreting?
+
+
+- We then can interpret the odds ratios exactly as we have before. 
+- The only difference is that this time it is not odds of having outcome vs not having the outcome but being in a particular category vs category $J$. 
+
+
+
+## Comparisons of Any Pair of Categories
+
+- We can then take any 2 categories, say $a$ and $b$ and find a logit function to compare them:
+
+$$\begin{aligned}
+\log\left(\dfrac{\pi_a}{\pi_b}\right) &= \log\left(\dfrac{\tfrac{\pi_a}{\pi_J}}{\tfrac{\pi_b}{\pi_J}}\right)\\
+&= \log\left(\dfrac{\pi_a}{\pi_J}\right) - \log\left(\dfrac{\pi_b}{\pi_J}\right)\\
+&= (\alpha_a - \alpha_b) + \left(\beta_{1,a} - \beta_{1,b}\right)x_1 + \cdots + \left(\beta_{k,a} - \beta_{k,b}\right)x_k\\
+\end{aligned}$$
+
+
+
+## An Example
+
+- We begin with an example from The General Social Surveys (1991). 
+- Among the questions asked to American citizens were questions regarding beliefs in an after life. 
+- The table below displays the data for this:
+
+
+<style type="text/css">
+	table.tableizer-table {
+		font-size: 12px;
+		font-family: Arial, Helvetica, sans-serif;
+		width: 80%;
+    margin-left:10%; 
+    margin-right:10%;
+	} 
+	.tableizer-table td {
+		margin: 3px;
+		font-weight: bold;
+		}
+	.tableizer-table th {
+		background-color: #104E8B; 
+		color: #FFF;
+		font-weight: bold;
+	}
+</style>
+<table class="tableizer-table">
+<thead><tr class="tableizer-firstrow"><th></th><th>&nbsp;</th><th colspan="3" >Belief in Afterlife</th></tr>
+ <tr class="tableizer-firstrow"><th>Race</th><th>Sex</th><th width="117">Yes</th><th>Undecided</th><th>No</th></tr></thead><tbody>
+ <tr><td>White</td><td>Female</td><td>372</td><td>49</td><td>74</td></tr>
+ <tr><td>&nbsp;</td><td>Male</td><td>250</td><td>45</td><td>71</td></tr>
+ <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+ <tr><td>Black</td><td>Female</td><td>64</td><td>9</td><td>15</td></tr>
+ <tr><td>&nbsp;</td><td>Male</td><td>252</td><td>5</td><td>13</td></tr>
+</tbody></table>
+
+
+##
+
+We can read this data into R: 
+```{r}
+
+after.life <- read.table("after_life.csv", header=TRUE, sep=",")
+after.life$race <- factor(after.life$race, levels = c(0,1), labels=c("Black", "White"))
+after.life$sex <- factor(after.life$sex, levels = c(0,1), labels=c("Male", "Female"))
+after.life$belief <- factor(after.life$belief, levels = c(2,1,3), 
+                            labels=c("Undecided","Yes",  "No"))
+```
+
+## Our Model
+
+Then we can fit a baseline category logit model:
+
+```{r}
+library(VGAM)
+fit1 <- vglm(belief ~ race + sex, data=after.life, weights=count, 
+             family=multinomial)
+```
+
+##
+
+```{r,echo=FALSE}
+mod <-fit1
+better.table <- cbind("Estimate" = round(coef(mod), 3), 
+                      "Odds Ratio"= round(exp(coef(mod)), 3),
+                      "95% CI of OR"=  paste("(", round(exp(summary(mod)@coef3[,1] - 1.96* summary(mod)@coef3[,2]), 3), ",", round(exp(summary(mod)@coef3[,1] + 1.96* summary(mod)@coef3[,2]),3) , ")"),
+                       "p-Value " = round(summary(mod)@coef3[,4], 4)     )          
+ 
+knitr::kable(better.table, format='markdown')
+```
+
+## What Do We See?
+
+- We can see that very little is significant here. 
+- However we will interpret one value that is significant: `sexFemale:2`, 
+We can use the table for the odds ratio and find that for people of the same race females have 50% higher odds of "undecided"  vs "no" on after life beliefs than males do. 
+
+
+
+## Adjacent Category Logit
+
+- When we have ordinal data we can use different methods than before. 
+- One of those methods is called adjacent category logits. 
+- In this case we can assume that our outcome has $r$ levels which are ordered. 
+
+## Adjacent Category Logit
+
+Then we set out to compare the probabilities of
+
+- outcome 1 vs outcome 2
+- outcome 2 vs outcome 3
+- outcome 3 vs outcome 4
+- $\qquad\qquad\vdots$
+- outcome $r-1$ vs outcome $r$
+
+## Our Logits
+
+- This would then lead to the following logits:
+
+$$\begin{aligned}
+L_1 =\log\left(\dfrac{\pi_1}{\pi_2}\right)  &= \alpha_1  + \beta_{1,1} x_1 + \cdots+ \beta_{k,1} x_k\\
+L_2=\log\left(\dfrac{\pi_2}{\pi_3}\right)  &= \alpha_2  + \beta_{1,2} x_1 + \cdots+ \beta_{k,2} x_k\\
+&\vdots\\
+L_{r-1}=\log\left(\dfrac{\pi_{r-1}}{\pi_r}\right)  &= \alpha_{r-1}  + \beta_{1,r-1} x_1 + \cdots+ \beta_{k,r-1} x_k\\
+\end{aligned}$$
+
+## Out Models
+
+We can also use these models to create the baseline category logit model with say reference as category 1:
+
+$$\begin{aligned}
+\log\left(\dfrac{\pi_{2}}{\pi_1}\right) &= -L_1\\
+\log\left(\dfrac{\pi_{3}}{\pi_1}\right) &= -L_2-L_1\\
+\log\left(\dfrac{\pi_{4}}{\pi_1}\right) &= -L_3-L_2-L_1\\
+&\vdots\\
+\log\left(\dfrac{\pi_{r}}{\pi_1}\right) &= -L_{r-1} - \cdots-L_3-L_2-L_1\\
+\end{aligned}$$
+
+
+
+## Recall Self Assessed Health
+
+
+-------------------------------------------------
+Variable    Description
+----------  ----------------------------------------
+id          Identification Number
+
+age         Age (years)
+
+male        Sex 
+            
+            1 = Male
+            
+            0 = Female
+
+pperf       Physical Performance Scale (0-12)
+
+pefr        Peak Expiratory Flow Rate (average of 3)
+
+cogerr      Number of cognitive errors on SPMSQ
+----------------------------------------------------
+
+##
+
+----------------------------------------------------
+Variable    Description
+----------  ----------------------------------------            
+sbp         Systolic Blood Pressure (mmHg)
+
+mile        Ability to Walk 1 mile
+
+            0 = No
+            
+            1 = Yes
+            
+digit       Use of digitalis
+
+            0 = No
+            
+            1 = Yes
+----------------------------------------------------
+
+##
+
+----------------------------------------------------
+Variable    Description
+----------  ---------------------------------------- 
+loop        Use of Loop Diuretics
+
+            0 = No
+            
+            1 = Yes
+
+untrt       Diagnosed but untreated diabetes
+
+            0 = No
+            
+            1 = Yes
+
+trtdb       Treated Diabetes
+
+            0 = No
+            
+            1 = Yes
+-------------------------------------------
+
+
+##
+
+----------------------------------------------------
+Variable    Description
+----------  ----------------------------------------            
+sah         Self Assessed Health
+
+            1 = Excellent
+            
+            2 = Good
+            
+            3 = Fair
+            
+            4= Poor
+
+
+dead        Dead by 1991
+
+            0 = No
+            
+            1 = Yes
+
+time        Follow up (years)
+------------------------------------------------------
+
+##
+
+```{r, eval=F}
+library(haven)
+sah <- read_dta("sah.dta") 
+str(sah$sah)
+#Reverse order for self assessed health
+sah$sah2 <- factor(sah$sah, labels = names(attributes(sah$sah)$labels))
+sah$sah <- factor(sah$sah2, levels = rev(levels(sah$sah2)))
+
+```
+
+
+```{r, echo=F}
+library(haven)
+sah <- read_dta("sah.dta") 
+str(sah$sah)
+#Reverse order for self assessed health
+sah$sah2 <- factor(sah$sah, labels = names(attributes(sah$sah)$labels))
+sah$sah <- factor(sah$sah2, levels = rev(levels(sah$sah2)))
+
+```
+
+## Our Model
+
+- Before we were interested in modeling `death` this time we will attempt to model `sah`. 
+- We will attempt to build a model with the following covariates:
+    - `pperf`
+    - `perf`
+    - `cogerr`
+    - `mile`
+    - `loop`
+    - `age`
+
+
+## Running the Model
+
+```{r}
+library(VGAM)
+fit2 <- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah, 
+             family=acat(reverse=TRUE))
+```
+
+##
+
+```{r,echo=FALSE}
+mod <-fit2
+better.table <- cbind("Estimate" = round(coef(mod), 3), 
+                      "Odds Ratio"= round(exp(coef(mod)), 3),
+                      "95% CI of OR"=  paste("(", round(exp(summary(mod)@coef3[,1] - 1.96* summary(mod)@coef3[,2]), 3), ",", round(exp(summary(mod)@coef3[,1] + 1.96* summary(mod)@coef3[,2]),3) , ")"),
+                       "p-Value " = round(summary(mod)@coef3[,4], 4)     )          
+ 
+knitr::kable(better.table[1:6,])
+```
+
+## More of the Table
+
+```{r,echo=FALSE}
+knitr::kable(better.table[7:15,])
+```
+
+## More of the Table
+
+
+
+```{r,echo=FALSE}
+knitr::kable(better.table[15:21,])
+```
+
+## Interpreting
+
+- We will not spend time interpreting this as the next method is more used than adjacent category logits. 
+
+
+
+## Proportional-Odds Cumulative Logit
+
+- Proportional-Odds Cumulative Logit is the most popular for ordinal categorical outcome analysis. 
+- It consists of probabilities 
+    - $\pi_1$: Probability of being in category 1.
+    - $\pi_2$: Probability of being in category 2. 
+    - $\qquad\qquad\vdots$
+    - $\pi_J$: probability of being in category $J$. 
+
+## Our Probabilities
+
+- We also consider 2 more probabilities
+    - $\Pr(Y\le j) = \pi_1 + \cdots + \pi_j$
+    - $\Pr(Y> j) = \pi_{j+1} + \cdots + \pi_J$
+- We define the cumulative logit as
+
+$$\log\left(\dfrac{\Pr(Y\le j)}{\Pr(Y> j)}\right) = \log\left(\dfrac{\Pr(Y\le j)}{1-\Pr(Y\le j)}\right) = \log\left(\dfrac{\pi_1 + \cdots + \pi_j}{\pi_{j+1}+ \cdots + \pi_J}\right)$$
+
+## Cumulative Logits
+
+- We then have the following cumulative logits
+$$\begin{aligned}
+L_1 &= \log\left( \dfrac{\pi_1}{\pi_2 + \pi_3+ \cdots + \pi_J}\right)\\
+L_2 &= \log\left( \dfrac{\pi_1+ \pi_2}{\pi_3 + \pi_4 \cdots + \pi_J}\right)\\
+&\vdots\\
+L_{J-1} &= \log\left( \dfrac{\pi_1+ \pi_2 + \cdots + \pi_{J-1}}{\pi_J}\right)\\
+\end{aligned}$$
+
+
+
+##An Example
+
+We can continue on with out Self Assessed Health and run the following model:
+
+```{r}
+library(VGAM)
+fit3 <- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah, 
+             family=cumulative)
+```
+
+##
+
+```{r,echo=FALSE}
+mod <-fit3
+better.table <- cbind("Estimate" = round(coef(mod), 3), 
+                      "Odds Ratio"= round(exp(coef(mod)), 3),
+                      "95% CI of OR"=  paste("(", round(exp(summary(mod)@coef3[,1] - 1.96* summary(mod)@coef3[,2]), 3), ",", round(exp(summary(mod)@coef3[,1] + 1.96* summary(mod)@coef3[,2]),3) , ")"),
+                       "p-Value " = round(summary(mod)@coef3[,4], 4)     )          
+ 
+knitr::kable(better.table[1:6,])
+```
+
+## More of the Table
+
+```{r,echo=FALSE}
+knitr::kable(better.table[7:15,])
+```
+
+## More of the Table
+
+
+
+```{r,echo=FALSE}
+knitr::kable(better.table[15:21,])
+```
+
+## What Can We See?
+
+- Before we move on, we notice that our coefficients do not seem to be that different between logits. 
+- We can change this so that instead of having a coefficient of `pperf` for each cumulative logit we can have one coefficient that is the same for all of the models giving each of them different intercepts only:
+
+## The Model
+
+```{r}
+library(VGAM)
+fit4 <- vglm(as.ordered(sah) ~ pperf + perf + cogerr + mile + loop + age, data=sah,  
+             family=cumulative(parallel = TRUE))
+```
+
+##
+
+```{r,echo=FALSE}
+mod <-fit4
+better.table <- cbind("Estimate" = round(coef(mod), 3), 
+                      "Odds Ratio"= round(exp(coef(mod)), 3),
+                      "95% CI of OR"=  paste("(", round(exp(summary(mod)@coef3[,1] - 1.96* summary(mod)@coef3[,2]), 3), ",", round(exp(summary(mod)@coef3[,1] + 1.96* summary(mod)@coef3[,2]),3) , ")"),
+                       "p-Value " = round(summary(mod)@coef3[,4], 4)     )          
+ 
+knitr::kable(better.table)
+```
+
+## Interpretations
+
+- Then we can interpret `mile` as:
+    - ***For a two people a person who can walk a mile has 63.4% lower odds of falling into a a self-assessed health category or lower compared to another person who cannot walk a mile and has all of the same other  health characterstics included in this model.***
+- The same things can be done to our other two models by adding the `parallel=TRUE` option in the family statement. 
