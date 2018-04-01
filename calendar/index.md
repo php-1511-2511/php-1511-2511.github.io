@@ -3,10 +3,10 @@ layout: page
 title: Calendar
 ---
 
-
+   
 
 <table style="width:100%;">
-    <colgroup>
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -283,7 +283,7 @@ title: Calendar
 <td align="left">Week 11</td>
 <td align="left">2-Apr</td>
 <td align="left">Multinomial Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -292,7 +292,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">4-Apr</td>
 <td align="left">Model Selection and Validation</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-16-model-selection/model-selection.pdf">PDF</a> <a href="../Notes/Lec-16-model-selection/model-selection.html">HTML</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Peer Review 1 Due</td>
