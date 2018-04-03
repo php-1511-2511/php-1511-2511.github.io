@@ -280,7 +280,7 @@
 <td align="left">Multinomial Regression</td>
 <td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a></td>
 <td align="left"></td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw5.html">HW5</a></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
