@@ -94,6 +94,16 @@ fhs$sysbp1t <-bcPower(fhs$sysbp1,p$lambda)
  cursmoke1 + cigpday1 + bpmeds1, data=fhs, nbest=1)
 
 summary(leaps)
+
+
+names(summary(leaps))
+
+
+min(summary(leaps)$bic)
+
+
+which(summary(leaps)$bic == min(summary(leaps)$bic))
+
 ```
 
 

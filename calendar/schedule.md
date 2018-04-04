@@ -207,7 +207,7 @@
 <td align="left">14-Mar</td>
 <td align="left">Midterm</td>
 <td align="left"><a href="../Notes/Midterm-review/midterm_practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm_practice_output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm_practice_solutions.pdf">Solutions</a></td>
-<td align="left"><a href="../exams/php_1511_midterm_2018.pdf">1511 Exam</a> <a href="../exams/php_2511_midterm_2018.pdf">2511 Exam</a> <a href="../exams/php_1511_midterm_2018_solutions.pdf">Solutions</a></td>
+<td align="left"><a href="../exams/php_1511_midterm_2018.pdf">1511 Exam</a> <a href="../exams/php2511_midterm_2018.pdf">2511 Exam</a> <a href="../exams/php2511_midterm_2018_solutions.pdf">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
