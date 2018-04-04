@@ -1,5 +1,4 @@
    
-
 <table style="width:100%;">
  <colgroup>
     <col width="8%" />
@@ -10,6 +9,7 @@
     <col width="25%" />
     <col width="10%" />
     </colgroup>
+
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -207,7 +207,7 @@
 <td align="left">14-Mar</td>
 <td align="left">Midterm</td>
 <td align="left"><a href="../Notes/Midterm-review/midterm_practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm_practice_output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm_practice_solutions.pdf">Solutions</a></td>
-<td align="left"></td>
+<td align="left"><a href="../exams/php_1511_midterm_2018.pdf">1511 Exam</a> <a href="../exams/php_2511_midterm_2018.pdf">2511 Exam</a> <a href="../exams/php_1511_midterm_2018_solutions.pdf">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -233,7 +233,7 @@
 <td align="left"></td>
 <td align="left">21-Mar</td>
 <td align="left">Cox-Proportional Hazards Regression</td>
-<td align="left"><a href="../Notes/Lec-14-survival-2/survival-2.pdf">PDF</a> <a href="../Notes/Lec-14-survival-2/survival-2.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-14-survival-2/survival-2.pdf">PDF</a> <a href="../Notes/Lec-14-survival-2/survival-2.html">HTML</a> <a href="https://vimeo.com/263158326/73a96355a2">Video</a></td>
 <td align="left">Read FOX: Chapter 18</td>
 <td align="left"></td>
 <td align="left">First Steps Due</td>
@@ -278,7 +278,7 @@
 <td align="left">Week 11</td>
 <td align="left">2-Apr</td>
 <td align="left">Multinomial Regression</td>
-<td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a> <a href="https://vimeo.com/263158300/29f6c8b0be">Video</a></td>
 <td align="left"></td>
 <td align="left"><a href="../homework/hw5.html">HW5</a></td>
 <td align="left"></td>

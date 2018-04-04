@@ -1,0 +1,30 @@
+---
+title: "Longitudinal Data Analysis"
+author: "Adam J Sullivan, PhD"
+date: "04/11/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+# Longitudinal Data Analysis
+
+## Longitudinal vs Cross Sectional

@@ -204,7 +204,7 @@ $(document).ready(function () {
 </tbody>
 </table>
 <pre class="r"><code>suppressMessages(library(foreign))
-phscrc &lt;- read.dta(&quot;https://drive.google.com/uc?export=download&amp;id=0B8CsRLdwqzbzSno1bFF4SUpVQWs&quot;)</code></pre>
+phscrc &lt;- read.dta(&quot;phscrc.dta&quot;)</code></pre>
 <ol style="list-style-type: decimal">
 <li><p>Fit a Poisson regression model that predicts the incidence of CRC with the following independent variables: continuous age, continuous SBP, pack-years of cigarettes consumed, continuous BMI and an indicator of diabetes mellitus. Provide interpretation of the relationship of SBP with rates of CRC from this model, based on comparison of the adjusted relative rate in two men differing by 10 mmHg, with a relevant 95% confidence interval.</p></li>
 <li><p>Obtain and plot Kaplan-Meier estimates of the probability of developing CRC among those with and without elevated SBP (<span class="math inline">\(\ge\)</span> 140 mmHg). Give estimated probabilities of developing CRC at 1, 5, and 10 years in each SBP group.</p></li>

@@ -64,7 +64,7 @@ cayrs       Years to colorectal cancer, or death, or end of follow-up.
 
 ```{r, eval=FALSE}
 suppressMessages(library(foreign))
-phscrc <- read.dta("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzSno1bFF4SUpVQWs")
+phscrc <- read.dta("phscrc.dta")
 ```
 
 
