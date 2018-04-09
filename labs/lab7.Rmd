@@ -1,0 +1,110 @@
+---
+title: "Lab 7 - Survival Analysis"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=F)
+```
+
+
+#Kaplan Meier Estimates and Log-Rank Test
+
+
+We reconsider the data from Pike (Biometrics, 1982) on times from insult with the carcinogen DMBA to mortality from vaginal cancer in rats. The groups were distinguished by a pretreatment regimen. In Lab 4 where we introduced these data, we noted limitations of classical methods for incidence and cumulative incidence to analyze these data. Note the advantages of the alternatives considered here.\\
+
+
+Days to vaginal cancer mortality in rats: 
+
+- Group 1 : 143, 164, 188, 188, 190, 192, 206, 209, 213, 216, 220, 227, 230, 234, 246, 265, 304, 216+ , 244+
+- Group 2 : 142, 156, 163, 198, 205, 232, 232, 233, 233, 233, 233, 239, 240, 261, 280, 280, 296, 296, 323, 204+ , 344+
+
+
+Plus signed observations are censored. Censorship for the four rats may have occurred because they died of causes unrelated to the application of the carcinogen and were free of tumor at death, or they may simply not have developed tumor at the time of the data analysis.
+
+
+1. First use a two-sample test of proportions to compare these data. Specifically, compare the proportions dead at 230 days of follow-up in the two groups. Delete from this analysis the rats in each group who was censored before 230 days. Are the proportions significantly different?
+Comment on the somewhat arbitrary decision we made (e.g., we might alternatively have assumed that these two rats survived to 230 days, or died before 230 days) to force these data into a setting where comparison of proportions is appropriate.  After deleting the one rat in each group who was censored before 230 days, we have n1=18, n2=20, Y1=11, Y2=5.
+
+```{r}
+grp1 <- c(143, 164, 188, 188, 190, 192, 206, 209, 213, 216, 220, 227, 230, 234, 246, 265, 304 , 244 )
+grp2 <- c(142, 156, 163, 198, 205, 232, 232, 233, 233, 233, 233, 239, 240, 261, 280, 280, 296, 296, 323 , 344)
+
+sum(grp1<230)/length(grp1) 
+sum(grp2<230)/length(grp2)
+
+prop.test(x=c(sum(grp1<230),sum(grp2<230)), n=c(length(grp1), length(grp2)))
+```
+
+
+
+
+2. Now compare the death rates in these two populations, assuming uniform incidence rates over time. To do this, we read the data on outcomes in each rat from a file. Note that the variable `status` is coded 1 if the rat dies and 0 if she is censored. Calculate the incidence rates for vaginal cancer mortality. 
+
+
+```{r}
+
+
+rat <- read.table("rat.dat", quote="\"", comment.char="")
+names(rat) <- c("group", "days", "status")
+
+sum(rat$status[which(rat$group==1)])/sum(rat$days[which(rat$group==1)])
+sum(rat$status[which(rat$group==2)])/sum(rat$days[which(rat$group==2)])
+#Load data
+rat.pois <- glm(status~ group + offset(log(days)), data=rat ,family="poisson")
+summary(rat.pois)
+exp(confint(rat.pois))
+```
+
+
+
+
+
+3. Comment on the different conclusions with regard to statistical significance from the two approaches. Which approach is more principled?
+
+
+
+
+4. Now obtain Kaplan-Meier survival estimates for these two treatment groups. In question 1, we compared survival at 230 days between groups.  Make this comparison based on estimated survival functions, and comment on the advantages of this approach.
+
+
+```{r}
+suppressMessages(library(survival))
+rats <- survfit(Surv(days, status)~group, data=rat)
+summary(rats)
+```
+
+
+
+
+5.  Does the assumption of a constant death rate over time appear reasonable? (Hint: Consider a plot of the Nelson-Aalen estimator of the cumulative hazard function).
+
+```{r}
+suppressMessages(library(survminer))
+rats.haz <- survfit(Surv(days, status)~group, data=rat, type="fleming")
+
+ggsurvplot(rats.haz, conf.int = TRUE,
+           risk.table = TRUE, risk.table.col = "strata",
+           fun = "cumhaz", legend.labs = c("Group 1", "Group 2"),
+          break.time.by=20)
+```
+
+
+
+
+6. Test the significance of the difference between survival in these two groups using the log-rank test. State the assumptions of the log-rank test and compare this method to the the previous approach in question 1.
+
+
+```{R}
+survdiff(Surv(days, status)~group, data=rat)
+```
+
+
+

@@ -27,4 +27,38 @@ options(digits = 3, scipen = 3)
 
 # Longitudinal Data Analysis
 
-## Longitudinal vs Cross Sectional
+## Cross-Sectional Studies
+
+- Up until this point we have focused on what we call Cross-sectional data. 
+- Cross-sectional data is data that is contained at a single time point. 
+- This is basically a snapshot in time so there is no way to measure how things change over the course of time. 
+- These are affordable to run and can measure many things at the same time. 
+
+## Longitudinal Studies
+
+- Longitudinal studies observe a group of subjects over a certain period of time.  
+- This means that there are at least 2 time points of measuring variables. 
+- Longitudinal studies allow you to observe how a treatment impacts things. 
+
+
+## Longitudinal vs Cross-sectional
+
+- Cross-sectional are quicker and cheaper to run. 
+- Many times cross-sectional studies are run first to test for associations prior to a longitudinal. 
+- Longitudinal allows for causality to be explored. 
+- Longitudinal data is more difficult to analyze. 
+
+## What makes Longitudinal Data Different? 
+
+- **Correlation**
+    - In cross-sectional studies we assume that data points are independent of each other. 
+    - We cannot do this in longitudinal because each subjects data are completely dependent. 
+    - If a subject has high cholesterol at one occasion they are likely to be high at the next occasion. 
+    
+    
+## What makes Longitudinal Data Different? 
+
+- **Variability**
+
+    
+

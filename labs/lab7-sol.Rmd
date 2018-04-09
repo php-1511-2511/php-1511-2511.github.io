@@ -1,0 +1,142 @@
+---
+title: "Lab 7 - Survival Analysis Solutions"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=F)
+```
+
+
+#Kaplan Meier Estimates and Log-Rank Test
+
+
+We reconsider the data from Pike (Biometrics, 1982) on times from insult with the carcinogen DMBA to mortality from vaginal cancer in rats. The groups were distinguished by a pretreatment regimen. In Lab 4 where we introduced these data, we noted limitations of classical methods for incidence and cumulative incidence to analyze these data. Note the advantages of the alternatives considered here.\\
+
+
+Days to vaginal cancer mortality in rats: 
+
+- Group 1 : 143, 164, 188, 188, 190, 192, 206, 209, 213, 216, 220, 227, 230, 234, 246, 265, 304, 216+ , 244+
+- Group 2 : 142, 156, 163, 198, 205, 232, 232, 233, 233, 233, 233, 239, 240, 261, 280, 280, 296, 296, 323, 204+ , 344+
+
+
+Plus signed observations are censored. Censorship for the four rats may have occurred because they died of causes unrelated to the application of the carcinogen and were free of tumor at death, or they may simply not have developed tumor at the time of the data analysis.
+
+
+1. First use a two-sample test of proportions to compare these data. Specifically, compare the proportions dead at 230 days of follow-up in the two groups. Delete from this analysis the rats in each group who was censored before 230 days. Are the proportions significantly different?
+Comment on the somewhat arbitrary decision we made (e.g., we might alternatively have assumed that these two rats survived to 230 days, or died before 230 days) to force these data into a setting where comparison of proportions is appropriate.  After deleting the one rat in each group who was censored before 230 days, we have n1=18, n2=20, Y1=11, Y2=5.
+
+```{r}
+grp1 <- c(143, 164, 188, 188, 190, 192, 206, 209, 213, 216, 220, 227, 230, 234, 246, 265, 304 , 244 )
+grp2 <- c(142, 156, 163, 198, 205, 232, 232, 233, 233, 233, 233, 239, 240, 261, 280, 280, 296, 296, 323 , 344)
+
+sum(grp1<230)/length(grp1) 
+sum(grp2<230)/length(grp2)
+
+prop.test(x=c(sum(grp1<230),sum(grp2<230)), n=c(length(grp1), length(grp2)))
+```
+
+
+<font color="blue">
+***We observe that 67% of the rats in one group die of vaginal cancer by day 230 compared to 25% of the rats in the other group. A 2-sample test of proportions finds these percentages to  be significantly different (P=0.024). The choice of 230 days was, indeed, arbitrary, and was actually selected here because the groups might be different at that time.  Searching the data for a cutpoint that yields statistical significance is an invalid procedure.  The arbitrary choice of how to handle the rats censored before the cutpoint is also problematic.***
+</font>
+
+
+2. Now compare the death rates in these two populations, assuming uniform incidence rates over time. To do this, we read the data on outcomes in each rat from a file. Note that the variable `status` is coded 1 if the rat dies and 0 if she is censored. Calculate the incidence rates for vaginal cancer mortality. 
+
+
+```{r}
+
+
+rat <- read.table("rat.dat", quote="\"", comment.char="")
+names(rat) <- c("group", "days", "status")
+
+sum(rat$status[which(rat$group==1)])/sum(rat$days[which(rat$group==1)])
+sum(rat$status[which(rat$group==2)])/sum(rat$days[which(rat$group==2)])
+#Load data
+rat.pois <- glm(status~ group + offset(log(days)), data=rat ,family="poisson")
+summary(rat.pois)
+exp(confint(rat.pois))
+```
+
+
+
+
+<font color="blue">
+***The death rates from vaginal cancer are 3.8 deaths per 1000 days in group 1 and 4.2 deaths from vaginal cancer per 1000 days in group 2. The relative death rate is 0.91 with 95% CI: 0.47-1.77. We do not reject the null hypothesis of no difference between groups in these rates (p-value=0.78).***
+
+***We assume that relative death rates remain uniform over time between the two treatment groups. We also assume that, within a group, the incidence rate does not change over time.  This second assumption is questionable.  In particular, note that no rat dies of vaginal cancer for at least 142 days.  After about 200 days, deaths are common.  This raises questions about the applicability of the Poisson distribution.  We will consider alternative methods to characterize death rates that vary with time later in the course.***
+</font>
+
+
+3. Comment on the different conclusions with regard to statistical significance from the two approaches. Which approach is more principled?
+
+<font color="blue">
+***In spite of the limitation just noted with regard to the comparison of incidence rates, this second approach has some notable advantages. The choice of 225 days in the first approach was arbitrary and was, in fact, chosen upon inspection of the data because the overall per-centage of deaths appeared most different at about this time. Also, the approach to handling the 2 rats censored before 225 days in the first approach is also arbitrary. Neither approach is optimal, and we should be motivated by examples such as this to consider the additional methods to be introduced in class later in the course. ***
+</font>
+
+
+4. Now obtain Kaplan-Meier survival estimates for these two treatment groups. In question 1, we compared survival at 230 days between groups.  Make this comparison based on estimated survival functions, and comment on the advantages of this approach.
+
+
+```{r}
+suppressMessages(library(survival))
+rats <- survfit(Surv(days, status)~group, data=rat)
+summary(rats)
+```
+
+<font color="blue">
+***The estimated probabilities of surviving to 225 days with corresponding 95% confidence in??tervals are: ***
+
+- ***Group 1: 0.2961 (0.145, 0.606)***
+
+- ***Group 2: 0.7589 (0.595, 0.968)***
+
+***This approach is a more principled way to handle those rats who were censored before 230 days.  ***
+
+</font>
+
+
+5.  Does the assumption of a constant death rate over time appear reasonable? (Hint: Consider a plot of the Nelson-Aalen estimator of the cumulative hazard function).
+
+```{r}
+suppressMessages(library(survminer))
+rats.haz <- survfit(Surv(days, status)~group, data=rat, type="fleming")
+
+ggsurvplot(rats.haz, conf.int = TRUE,
+           risk.table = TRUE, risk.table.col = "strata",
+           fun = "cumhaz", legend.labs = c("Group 1", "Group 2"),
+          break.time.by=20)
+```
+
+<font color="blue">
+***The assumption of a constant death rate over time does not appear to be reasonable. The plot of the Nelson-Aalen estimator of the cumulative hazard function suggests strong deviations from a straight line in both groups. Specifically, estimated incidence is 0 for the first 140 days, then incidence increases, at first slowly, then more rapidly. If we follow populations throughout their lifespan, aging implies increased death rates in later life. The assumption of uniform incidence may be tenable over short time periods. ***
+</font>
+
+
+6. Test the significance of the difference between survival in these two groups using the log-rank test. State the assumptions of the log-rank test and compare this method to the the previous approach in question 1.
+
+
+```{R}
+survdiff(Surv(days, status)~group, data=rat)
+```
+
+
+
+<font color="blue">
+***The difference between survival in these two groups is not significant (p-value=0.0772) at the 0.05 level but is at the 0.10 level. ***
+
+***The log-rank test is a nonparametric test and only requires independent samples. The log-rank test is most powerful when the hazards are proportional (or when the hazard ratio is constant). The log-rank test will have low power if the hazards cross with time; e.g. if hazard is greater in group 0 early in life, but greater in group 1 later in life. ***
+
+***In question 1, we examined incidence rates and cumulative incidence to compare these two groups. In our analysis of cumulative incidence, we tested whether the proportion of deaths (due to vaginal cancer) occurring within the first 230 days of follow-up differed between the two groups. We then tested for a difference in the death rates for the two groups, assuming uniform incidence rates over time. ***
+
+***Analysis of the cumulative incidence is limited because it requires an arbitrary choice of the cutpoint (230 days) and excludes two censored observations. Our analysis of the incidence rates is suspect, since the assumption of uniformity does not appear to be valid (as demonstrated by the Nelson-Aalen cumulative hazard). In comparison to these methods, the log-rank test is clearly preferable, as it meets all assumptions and uses all of the data, taking into account length of follow-up and censoring information. ***
+ 
+</font>
