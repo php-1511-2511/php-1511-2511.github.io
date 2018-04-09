@@ -1,0 +1,443 @@
+---
+title: "Lab 8 - Survival Model Build"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=F)
+```
+
+
+## The Data
+
+The data consists of remission survival times on 42 leukemia patients, half of whom get a certain new treatment therapy and the other half of whom get a standard treatment therapy.
+
+
+
+-----------------------------------------------------------------
+Variable Name     Description
+----------------- -----------------------------------------------
+`rx`              0 = New Treatment
+
+                  1 = Standard Treatment
+                  
+`logwbc`          Log of White Blood Cell Counts
+
+`sex`             0 = Female
+
+                  1 = Male
+                  
+`survt`           Survival Time
+
+`status`          0 = Censored
+
+                  1 = Relapsed
+                  
+`lwbc3`           1 = Low White Blood Cell Count (<10)
+
+                  2 = Medium White Blood Cell Count [10 - 20)
+                  
+                  3 = High White Blood Cell Count [20+ )
+-------------------------------------------------------------------
+
+
+
+## Loading in The Data
+
+```{R}
+library(foreign)
+leuk <- read.dta("http://web1.sph.emory.edu/dkleinb/allDatasets/surv2datasets/anderson.dta")
+leuk$lwbc3 <- factor(leuk$lwbc3)
+```
+
+```{R}
+library(survival)
+leuk$SurvObj <- with(leuk, Surv(survt, status))
+```
+
+
+## Explore Data
+
+
+```{r}
+
+model <- survfit(SurvObj~ sex,  data = leuk)
+library(survminer)
+ggsurvplot(model, conf.int=TRUE, risk.table=TRUE,
+           risk.table.col="strata", break.time.by=5)
+```
+
+
+
+## Cox PH Model
+
+
+```{r}
+mod1 <- coxph(SurvObj~sex, data=leuk)
+mod2 <- coxph(SurvObj~logwbc, data=leuk)
+mod3 <- coxph(SurvObj~rx, data=leuk)
+mod4 <- coxph(SurvObj~lwbc3, data=leuk)
+tidy1 <- tidy(mod1, exponentiate=T)[,-c(3,4)]
+tidy2 <- tidy(mod2, exponentiate=T)[,-c(3,4)]
+tidy3 <- tidy(mod3, exponentiate=T)[,-c(3,4)]
+tidy4 <- tidy(mod4, exponentiate=T)[,-c(3,4)]
+knitr::kable(bind_rows(tidy1, tidy2, tidy3, tidy4))
+```
+
+
+
+## Proportional Hazards
+```{r}
+cox.zph(mod1)
+cox.zph(mod2)
+cox.zph(mod3)
+cox.zph(mod4)
+
+```
+
+
+```{r}
+anova(mod2, mod4)
+```
+
+
+
+## Multivariate Cox-PH
+
+```{r}
+mod5 <- coxph(SurvObj~sex + lwbc3 + rx, data=leuk)
+tidy5 <- tidy(mod5, exponentiate=T)[,-c(3,4)]
+knitr::kable(tidy5)
+```
+
+
+```{r}
+cox.zph(mod5)
+```
+
+
+## Stratified by sex
+
+```{r}
+mod6 <- coxph(formula = SurvObj ~ lwbc3 + rx + strata(sex), data    = leuk)
+mod7 <- coxph(formula = SurvObj ~ logwbc + rx + strata(sex), data    = leuk)
+anova(mod6, mod7)
+```
+
+
+```{r}
+cox.zph(mod6)
+```
+
+
+## Separate models for females and males
+
+```{r}
+mod6.sep <- lapply(split(leuk, leuk$sex),
+                       FUN = function(DF) {
+
+                           coxph(SurvObj ~ lwbc3 + rx, DF)
+                       })
+mod6.sep
+```
+
+
+
+## What about Interactions?
+
+
+An interaction model allows for different coefficients for different strata.
+
+```{r}
+mod6.int <- coxph(formula = SurvObj ~ (lwbc3 + rx)*sex - sex + strata(sex),
+                             data    = leuk)
+mod6.int
+```
+
+## Comparing stratified model and stratified with interaction model
+```{R}
+anova(mod6.int, mod6)
+```
+
+
+
+## Further Example
+
+The dataset “vets.dat” considers survival times in days for 137 patients from the Veteran’s Administration Lung Cancer Trial cited by Kalbfleisch and Prentice in their text (The Statistical Analysis of Survival Time Data, Wiley, 2002). A complete list of the variables is given below.
+
+------------------------------------------------------
+Variable Name     Description
+----------------- ------------------------------------
+`tx`              Treatment
+
+                  1 = Standard
+                  
+                  2= Test
+
+`ct1`             Indicator of Large Cell
+
+`ct2`             Indicator of Adeno Cell
+
+`ct3`             Indicator of Small Cell
+
+`ct4`             Indicator of Squamos Cell
+
+`survt`           Survival Time (days)
+
+`perf`            Performance (0 - 100)
+
+`dd`              Disease Duration (Months)
+
+`age`             Age in Years
+
+`status`          0 =  Censored
+                  
+                  1 = Died
+-------------------------------------------------------------------------------
+
+
+## Load vets.dta dataset
+```{r}
+vets <- read.dta("http://web1.sph.emory.edu/dkleinb/allDatasets/surv2datasets/vets.dta")
+head(vets)
+```
+
+
+```{r}
+
+vets <- within(vets, {
+     tx <- factor(tx, levels = 1:2, labels = c("standard","test"))
+
+     priortx <- factor(priortx, levels = c(0,10), labels = c("none","some"))
+
+     require(survival)
+     SurvObj <- Surv(survt, status)
+ })
+
+
+## Multiple dummy variables to one variable
+## http://stackoverflow.com/questions/5450538/going-from-multiple-dummy-variables-to-a-single-variable
+dummies <- vets[, paste0("ct", 1:4)]
+vets$CellType <- names(dummies)[apply(dummies == 1, MARGIN = 1, FUN = which)]
+vets$CellType <- factor(vets$CellType)
+```
+
+## Fit an additive contribution model without interaction
+
+```{r}
+all.additive.model <- coxph(SurvObj ~ tx + ct1 + ct2 + ct3 + perf + dd + age + priortx, data = vets)
+```
+
+
+## Check for PH
+```{r}
+res.zph <- cox.zph(all.additive.model)
+res.zph
+```
+
+
+## Plot
+```{r}
+plot(res.zph)
+```
+
+## Create dichotomous PSbin variable
+
+```{r}
+vets$PSbin <- as.numeric(with(vets, perf >= 60))
+```
+
+
+## Create a single stratification variable using interaction()
+
+```{r}
+vets$Z <- with(vets, interaction(CellType, PSbin))
+```
+
+
+## Change reference 
+
+```{r}
+vets$Z <- relevel(vets$Z, ref = "ct4.0")
+```
+
+## Stratified by cell type and PSbin
+
+```{r}
+stratified1 <- coxph(SurvObj ~ tx + age + strata(Z), data = vets)
+stratified1
+```
+
+## Create 0,1 tx.num variable to avoid overparametrization
+
+```{r}
+vets$tx.num <- as.numeric(vets$tx == "test")
+```
+
+
+## Interaction model allowing for different coefficients in each stratum
+
+```{r}
+strat.int1 <- coxph(SurvObj ~ (tx.num + age)*Z - Z + strata(Z), data = vets)
+strat.int1
+
+```
+
+ 
+
+## Model comparison between no interaction vs interaction
+
+```{r}
+anova(stratified1, strat.int1)
+```
+
+
+## Interaction for both tx and age vs age only
+
+```{r}
+strat.int2 <- coxph(SurvObj ~ tx.num + age*Z - Z + strata(Z), data = vets)
+strat.int2
+```
+
+```{r}
+anova(strat.int1, strat.int2)
+```
+
+
+## Interaction for both tx and age vs tx only
+
+```{r}
+strat.int3 <- coxph(SurvObj ~ age + tx.num*Z - Z + strata(Z), data = vets)
+strat.int3
+```
+
+```{R}
+anova(strat.int1, strat.int3)
+```
+
+A graphical view of the stratified Cox approach
+
+
+```{R}
+## Create dataset to predict survival for
+newdat <- expand.grid(rx = 0:1, sex = 0:1)
+
+## Define log(-log(S)) vs log(time) plot function
+plot.fun <- function(MODEL, newdata = newdat) {
+    ## Plot
+    plot(survfit(MODEL, newdata = newdata),
+         log = "x", fun = function(S) log(-log(S)),
+         lty = rep(1:2, 2), col = rep(c("red","blue"), each = 2)
+         )
+
+    ## Add legend
+    legend("topleft", legend = strata(newdat, sep = ":"),
+           lty = rep(1:2, 2), col = rep(c("red","blue"), each = 2))
+}
+```
+
+
+
+## PH for both rx and sex without interaction between rx and sex
+
+```{r}
+model1 <- coxph(formula = SurvObj ~ rx + sex,
+                data    = leuk)
+model1
+```
+
+```{R} 
+plot.fun(model1)
+title("Same baselines, same effects
+all parallel with same distance")
+```
+
+
+## PH for both rx and sex with interaction between rx and sex
+
+```{r}
+model2 <- coxph(formula = SurvObj ~ rx * sex,
+                data    = leuk)
+model2
+```
+
+
+
+```{r}
+plot.fun(model2)
+title("Same baselines, different effects
+all parallel with different distances")
+````
+
+c. Stratified by sex, PH for rx
+
+## PH for rx, stratified by sex
+
+```{r}
+model3 <- coxph(formula = SurvObj ~ rx + strata(sex),
+                data    = leuk)
+model3
+```
+
+```{r}
+plot.fun(model3, newdata = data.frame(rx = 0:1))
+title("Different baselines, same effects
+parallel within each stratum with equal distance")
+```
+
+
+
+## PH for rx, stratified by sex, interaction with sex
+
+```{r}
+model4 <- coxph(formula = SurvObj ~ rx + rx:sex + strata(sex),
+                data    = leuk)
+model4
+```
+
+## Model for female
+
+```{r}
+model4.0 <- coxph(formula = SurvObj ~ rx,
+                data    = leuk, subset = (sex == 0))
+```
+
+
+## Model for male
+
+```{r}
+model4.1 <- coxph(formula = SurvObj ~ rx,
+                data    = leuk, subset = (sex == 1))
+```
+
+```{r}
+plot.fun2 <- function(MODEL, ...){
+    plot(survfit(MODEL, newdata = data.frame(rx = 0:1)),
+         log = "x", fun = function(S) log(-log(S)),
+         lty = 1:2, xlim = c(1,35), ylim = c(-4,1.5), ...
+         )
+}
+```
+
+
+## Plot female curves
+
+```{r}
+plot.fun2(model4.0, col = "red")
+## Add male curves
+par(new = T)
+plot.fun2(model4.1, col = "blue", bty = "n", xaxt = "n", yaxt = "n")
+## Add legend
+legend("topleft", legend = strata(newdat, sep = ":"),
+       lty = rep(1:2, 2), col = rep(c("blue","red"), each = 2))
+title("Different baselines, Different effects
+parallel within each stratum with different distances")
+
+```
