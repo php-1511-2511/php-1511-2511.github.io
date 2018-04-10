@@ -23,13 +23,13 @@ Week 8,12-Mar,Poisson Regression,[PDF](../Notes/Lec-12-poisson/poisson.pdf)  [HT
 ,,,,,,
 Week 9,19-Mar,Basics of Survival Data,[PDF](../Notes/Lec-13-survival/survival.pdf)  [HTML](../Notes/Lec-13-survival/survival.html) ,Read  FOX: Chapter 17,,
 ,21-Mar,Cox-Proportional Hazards Regression,[PDF](../Notes/Lec-14-survival-2/survival-2.pdf)  [HTML](../Notes/Lec-14-survival-2/survival-2.html) [Video](https://vimeo.com/263158326/73a96355a2),Read  FOX: Chapter 18,,First Steps Due
-,,Lab 6:  Survey Data in R / Poisson Regression,[HTML](../labs/lab6.html) [Rmd](../labs/lab6.Rmd),,,
+,,Lab 6:  Survey Data in R / Poisson Regression,[HTML](../labs/lab6.html) [Rmd](../labs/lab6.Rmd) [Video](https://vimeo.com/263953564/8a847023c5),,,
 Week 10,26-Mar,***NO CLASS SPRING BREAK***,,,,
 ,28-Mar,***NO CLASS SPRING BREAK***,,,,
 ,,,,,,
 Week 11,2-Apr,Multinomial Regression,[PDF](../Notes/Lec-15-multinomial/multinomial.pdf)  [HTML](../Notes/Lec-15-multinomial/multinomial.html) [Video](https://vimeo.com/263158300/29f6c8b0be),, [HW5](../homework/hw5.html),
-,4-Apr,Model Selection and Validation,[PDF](../Notes/Lec-16-model-selection/model-selection.pdf)  [HTML](../Notes/Lec-16-model-selection/model-selection.html) ,,,Peer Review 1 Due
-,,Lab 7: Survival Analysis,[HTML](../labs/lab7.html) [Rmd](../labs/lab7.Rmd) [Solutions](../labs/lab7-sol.Rmd),,,
+,4-Apr,Model Selection and Validation,[PDF](../Notes/Lec-16-model-selection/model-selection.pdf)  [HTML](../Notes/Lec-16-model-selection/model-selection.html) [Video](https://vimeo.com/263953930/f0fabcdc0e),,,Peer Review 1 Due
+,,Lab 7: Survival Analysis,[HTML](../labs/lab7.html) [Rmd](../labs/lab7.Rmd) [Solutions](../labs/lab7-sol.Rmd) [Video](https://vimeo.com/263977315/037644c2c7),,,
 ,,Lab 8: Survey Model build,[HTML](../labs/lab8.html) [Rmd](../labs/lab8.Rmd) ,,,
 Week 12,9-Apr,Survey Analysis,[PDF](../Notes/Lec-17-surveys/survey.pdf)  [HTML](../Notes/Lec-17-surveys/survey.html) ,Read  FOX: Chapter 21,,
 ,11-Apr,Nature of Longitudinal Data,,Read  FOX: Chapter 22,,2nd Steps Due
