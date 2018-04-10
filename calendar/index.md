@@ -3,7 +3,7 @@ layout: page
 title: Calendar
 ---
 
-     
+        
 
 <table style="width:100%;">
  <colgroup>
@@ -247,7 +247,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 6: Survey Data in R / Poisson Regression</td>
-<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a></td>
+<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a> <a href="https://vimeo.com/263953564/8a847023c5">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -292,7 +292,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">4-Apr</td>
 <td align="left">Model Selection and Validation</td>
-<td align="left"><a href="../Notes/Lec-16-model-selection/model-selection.pdf">PDF</a> <a href="../Notes/Lec-16-model-selection/model-selection.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-16-model-selection/model-selection.pdf">PDF</a> <a href="../Notes/Lec-16-model-selection/model-selection.html">HTML</a> <a href="https://vimeo.com/263953930/f0fabcdc0e">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Peer Review 1 Due</td>
@@ -301,7 +301,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 7: Survival Analysis</td>
-<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a></td>
+<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/263977315/037644c2c7">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
