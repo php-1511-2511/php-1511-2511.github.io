@@ -59,6 +59,442 @@ options(digits = 3, scipen = 3)
 ## What makes Longitudinal Data Different? 
 
 - **Variability**
+    - In typical linear regression we assume that we have homoscedasticity. 
+    - In longitudinal data the variability at the beginning of the study is likely different than at the end. 
+    
+## Notation
+
+- We must consider sum new notation as we now have multiple variable observations for each subject. 
+- $Y_{ij}$ which is the outcome variable for the $i^{th}$ subject $(i=1,\ldots,N)$ at the $j^{th}$ occasion $(j=1,\ldots,n)$. 
+- We use this notation when we have measures that are equally separated over time. 
+
+
+## How does this data look?
+
+- Each individual has data that looks like:
+
+$$ Y_i = 
+\begin{bmatrix}
+Y_{i1}\\
+Y{i2}\\
+\vdots\\
+Y_{in}\\
+\end{bmatrix} $$
+
 
     
 
+## How does this data look?
+
+- That means the whole data looks like:
+
+$$\begin{bmatrix}
+ Y_{11} & Y_{12} & Y_{13} & \dots  & Y_{1n} \\
+    Y_{21} & Y_{22} & Y_{23} & \dots  & Y_{2n} \\
+    \vdots & \vdots & \vdots & \ddots & \vdots \\
+    Y_{N1} & Y_{N2} & Y_{N3} & \dots  & Y_{Nn}\\
+\end{bmatrix}$$
+
+
+
+## Exploring Longitudinal Data
+
+- We will first consider graphs to explore longitudinal data. 
+- We will consider some data from [Gapminder](https://www.gapminder.org/). 
+- This tracks data for all countries over the world. 
+- Our data will consider looking at life expectancy over the course of time. 
+
+## Exploring Longitudinal Data
+
+- The data
+
+```{r, eval =F}
+library(gapminder)
+gapminder
+```
+
+
+
+## Exploring Longitudinal Data
+
+
+
+```{r, echo =F}
+library(gapminder)
+gapminder
+```
+
+
+## Exploring Longitudinal Data
+
+- Spaghetti plot
+
+```{r, eval=F}
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+gapminder %>% 
+  ggplot(aes(year, lifeExp, group = country)) +
+    geom_line(alpha = 1/3)
+```
+
+
+
+## Exploring Longitudinal Data
+
+```{r, echo=F}
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+gapminder %>% 
+  ggplot(aes(year, lifeExp, group = country)) +
+    geom_line(alpha = 1/3)
+```
+
+
+## Exploring Longitudinal Data
+
+- What do we see?
+
+
+## Exploring Data
+
+- Consider basic Regression Models
+- Lets do this for just one country. 
+- We will consider say the country of Kenya
+
+```{r}
+kenya <- gapminder %>%
+  filter(country=="Kenya")
+kenya_mod <- lm(lifeExp ~year, data=kenya)
+```
+
+## Exploring Data - Full Data Line
+
+```{r, eval= F}
+kenya %>%
+  ggplot(aes(year, lifeExp)) + 
+  geom_line() 
+```
+
+
+## Exploring Data- Full Data Line
+
+```{r, echo= F}
+kenya %>%
+  ggplot(aes(year, lifeExp)) + 
+  geom_line() 
+```
+
+
+## Linear Trend of Data - Linear Model
+
+```{r, eval=F}
+library(modelr)
+kenya %>% 
+  add_predictions(kenya_mod) %>%
+  ggplot(aes(year, pred)) + 
+  geom_line() 
+```
+
+
+
+## Linear Trend of Data - Linear Model
+
+```{r, echo=F}
+library(modelr)
+kenya %>% 
+  add_predictions(kenya_mod) %>%
+  ggplot(aes(year, pred)) + 
+  geom_line() 
+```
+
+
+
+## Linear Trend of Data - Left Over
+
+```{r, eval=F}
+library(modelr)
+kenya %>% 
+  add_residuals(kenya_mod) %>%
+  ggplot(aes(year, resid)) + 
+  geom_hline(yintercept = 0, colour = "white", size = 3) + 
+  geom_line()
+```
+
+## Linear Trend of Data - Left Over
+
+```{r, echo=F}
+library(modelr)
+kenya %>% 
+  add_residuals(kenya_mod) %>%
+  ggplot(aes(year, resid)) + 
+  geom_hline(yintercept = 0, colour = "white", size = 3) + 
+  geom_line()
+```
+
+
+## Exploring Data for All Countries
+
+- Setting up the data
+
+```{r, eval=F}
+by_country <- gapminder %>% 
+  group_by(country, continent) %>% 
+  nest()
+
+by_country
+```
+
+
+## Exploring Data for All Countries
+
+- Setting up the data
+
+```{r, echo=F}
+by_country <- gapminder %>% 
+  group_by(country, continent) %>% 
+  nest()
+
+by_country
+```
+
+
+## Modeling with Our Current Tools
+
+- Let's just consider simple linear models for each country to explore the data. 
+- We are violating assumptions so we cannot interpret these models for effects but we can use them to explore the data in a simple manner. 
+
+## Modeling with our Current Tools
+
+```{R, eval=F}
+country_model <- function(df) {
+  lm(lifeExp ~ year, data = df)
+}
+
+by_country <- by_country %>% 
+  mutate(model = map(data, country_model))
+by_country
+```
+
+
+## Modeling with our Current Tools
+
+```{R, echo=F}
+country_model <- function(df) {
+  lm(lifeExp ~ year, data = df)
+}
+
+by_country <- by_country %>% 
+  mutate(model = map(data, country_model))
+by_country
+```
+
+
+
+## Our New Data
+
+```{r, eval=F}
+by_country %>% 
+  filter(continent == "Americas")
+```
+
+
+## Our New Data
+
+```{r, echo=F}
+by_country %>% 
+  filter(continent == "Americas")
+```
+
+## Adding in Residuals
+
+```{r, eval=F}
+by_country <- by_country %>% 
+  mutate(
+    resids = map2(data, model, add_residuals)
+  )
+by_country
+```
+
+
+
+## Adding in Residuals
+
+```{r, echo=F}
+by_country <- by_country %>% 
+  mutate(
+    resids = map2(data, model, add_residuals)
+  )
+by_country
+```
+
+
+## Unnest Data
+
+```{r, eval=F}
+resids <- unnest(by_country, resids)
+resids
+```
+
+
+
+## Unnest Data
+
+```{r, echo=F}
+resids <- unnest(by_country, resids)
+resids
+```
+
+
+## Plotting all Residuals
+
+```{r, eval=F}
+resids %>% 
+  ggplot(aes(year, resid)) +
+    geom_line(aes(group = country), alpha = 1 / 3) + 
+    geom_smooth(se = FALSE)
+```
+
+
+
+## Plotting all Residuals
+
+```{r, echo=F}
+resids %>% 
+  ggplot(aes(year, resid)) +
+    geom_line(aes(group = country), alpha = 1 / 3) + 
+    geom_smooth(se = FALSE)
+```
+
+
+## What do we see? 
+
+
+- Some of the residuals fit well. 
+- Others seem to have issues
+
+
+## Graph fit by Continent
+
+```{r, eval=F}
+resids %>% 
+  ggplot(aes(year, resid, group = country)) +
+    geom_line(alpha = 1 / 3) + 
+    facet_wrap(~continent)
+```
+
+
+## Graph fit by Continent
+
+```{r, echo=F}
+resids %>% 
+  ggplot(aes(year, resid, group = country)) +
+    geom_line(alpha = 1 / 3) + 
+    facet_wrap(~continent)
+```
+
+
+
+## What do we see? 
+
+
+## Let's Check Fit Further
+
+- We will look at our $R^2$ values. 
+
+```{r, eval=F}
+glance <- by_country %>% 
+  mutate(glance = map(model, broom::glance)) %>% 
+  unnest(glance, .drop = TRUE)
+glance
+```
+
+
+## Let's Check Fit Further
+
+
+```{r, echo=F}
+glance <- by_country %>% 
+  mutate(glance = map(model, broom::glance)) %>% 
+  unnest(glance, .drop = TRUE)
+glance
+```
+
+
+
+## How are the $R^2$
+
+```{R, eval=F}
+glance %>% 
+  arrange(r.squared)
+```
+
+
+
+## How are the $R^2$
+
+```{R, echo=F}
+glance %>% 
+  arrange(r.squared)
+```
+
+
+
+## Graph $R^2$
+
+```{r, eval=F}
+glance %>% 
+  ggplot(aes(continent, r.squared)) + 
+    geom_jitter(width = 0.5)
+```
+
+
+## Graph $R^2$
+
+```{r, echo=F}
+glance %>% 
+  ggplot(aes(continent, r.squared)) + 
+    geom_jitter(width = 0.5)
+```
+
+
+
+## Examining the worst Fits
+
+```{r, eval=F}
+bad_fit <- filter(glance, r.squared < 0.25)
+
+gapminder %>% 
+  semi_join(bad_fit, by = "country") %>% 
+  ggplot(aes(year, lifeExp, colour = country)) +
+    geom_line()
+```
+
+
+## Examining the worst Fits
+
+```{r, echo=F}
+bad_fit <- filter(glance, r.squared < 0.25)
+
+gapminder %>% 
+  semi_join(bad_fit, by = "country") %>% 
+  ggplot(aes(year, lifeExp, colour = country)) +
+    geom_line()
+```
+
+
+## What Do We See?
+
+
+## Issues with this?
+
+- Our models do not all fit that well. 
+- We cannot interpret these models as the years are correlated with each other in each country. 
+- These models are also by country so we cannot get a specific average for the world from this. 
+
+## Next Steps
+
+- Begin to understand the correlation. 
+- Learn models that can fit this data all at once. 
+- Begin analyzing more complex data than just one variable by year .
