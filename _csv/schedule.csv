@@ -32,7 +32,7 @@ Week 11,2-Apr,Multinomial Regression,[PDF](../Notes/Lec-15-multinomial/multinomi
 ,,Lab 7: Survival Analysis,[HTML](../labs/lab7.html) [Rmd](../labs/lab7.Rmd) [Solutions](../labs/lab7-sol.Rmd) [Video](https://vimeo.com/263977315/037644c2c7),,,
 ,,Lab 8: Survey Model build,[HTML](../labs/lab8.html) [Rmd](../labs/lab8.Rmd) ,,,
 Week 12,9-Apr,Survey Analysis,[PDF](../Notes/Lec-17-surveys/survey.pdf)  [HTML](../Notes/Lec-17-surveys/survey.html) ,Read  FOX: Chapter 21,,
-,11-Apr,Nature of Longitudinal Data,,Read  FOX: Chapter 22,,2nd Steps Due
+,11-Apr,Nature of Longitudinal Data,[PDF](../Notes/Lec-18-longitudinal-1/longitudinal-1.pdf)  [HTML](../Notes/Lec-18-longitudinal-1/longitudinal-1.html) ,Read  FOX: Chapter 22,,2nd Steps Due
 ,,Lab 9: EDA with Longitudinal Data,,,,
 Week 13,16-Apr,Linear Mixed Effects Models,,Read FOX: Chapter 23,,
 ,18-Apr,Linear Mixed Effects Models,,,,Peer Review 2 Due

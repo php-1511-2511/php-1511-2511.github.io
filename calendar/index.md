@@ -4,9 +4,10 @@ title: Calendar
 ---
 
         
+            
 
 <table style="width:100%;">
- <colgroup>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -328,7 +329,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">11-Apr</td>
 <td align="left">Nature of Longitudinal Data</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-18-longitudinal-1/longitudinal-1.pdf">PDF</a> <a href="../Notes/Lec-18-longitudinal-1/longitudinal-1.html">HTML</a></td>
 <td align="left">Read FOX: Chapter 22</td>
 <td align="left"></td>
 <td align="left">2nd Steps Due</td>
