@@ -1,0 +1,493 @@
+---
+title: "Longitudinal Data Analysis"
+author: "Adam J Sullivan, PhD"
+date: "04/16/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+# Longitudinal Data Covariance and Correlation
+
+
+
+## Ideas for Analyzing Longitudinal Data
+
+
+- Many of the studies we use attempt to follow people over a period of time rather than just a cross-sectional analysis. 
+- The primary goal of these longitudinal studies is to characterize the changing in response over time and the factors that influence change. 
+
+
+
+## Ideas for Analyzing Longitudinal Data
+
+
+- Longitudinal data require different statistical techniques than we have previously considered because 
+    - Repeated measures on the same individual are often positively correlated. 
+    - Variability is often heterogeneous across measurement occasions. 
+- We must consider this correlation and heterogeneity in order to obtain valid inferences. 
+
+
+
+## General Linear Model for Longitudinal Data
+
+- With this model we assume that there are $n_i$ repeated measures on the i$^{\text{th}}$ subject and there is a $Y_{ij}$ observed at each time $t_{ij}$. 
+
+- Also we have various $X_{ij}$'s that we believe are associated with $Y_{ij}$. 
+
+
+## General Linear Model for Longitudinal Data
+
+
+
+- We can consider *linear* regression models for change in mean response over time
+$$Y_{ij} = \beta_1 X_{ij1} + \beta_2 X_{ij2} + \cdots + \beta_pX_{ijp} + e_{ij}, \qquad j=1,\ldots,n_i$$
+- The $e_{ij}$ are random error terms with mean 0. We then have that:
+$$E\left(Y_{ij}|\mathbf{X}_{ij}\right) = \beta_1 X_{ij1} + \beta_2 X_{ij2} + \cdots + \beta_pX_{ijp} $$
+
+
+## General Linear Model for Longitudinal Data: Vector Format
+
+
+
+- Many times we write this in a vector format as:
+
+$$E\left(Y_{ij}|\mathbf{X}_{ij}\right) = X_i\beta$$
+
+
+
+
+
+## Assumptions of General Linear Model
+
+1. The individuals represent a random sample from the population. 
+2. Observations from different individuals are independent, while repeated measurements of the same individual are not assumed to be independent. 
+3. $Y_{i1}, \ldots, Y_{in_i}$$ have a multivariate normal distribution with means
+$$\mu_{ij} = E\left(Y_{ij}|\mathbf{X}_{ij}\right) = \beta_1 X_{ij1} + \beta_2 X_{ij2} + \cdots + \beta_pX_{ijp}$$
+and covariance matrix $\Sigma_i$. 
+4. If there are missing data they are assumed to be "Ignorable".
+
+
+
+
+
+
+## Missing Data
+
+- We assume that the missing data is ignorable. 
+- This missingness comes from a subject not having been evaluated at one or more time points. 
+- In order to be ignorable we need one of the two following situation.
+
+
+## Missing Data
+
+- Before listing these we define the following notation:
+
+$$Y^{(o)}\text{ are observed measurements}$$
+$$\text{and}$$
+$$Y^{(m)}\text{ are missing measurements}$$
+
+
+## Missing Data Assumptions
+
+
+1. Data are **Missing Completely at Random** ( ***MCAR***) when the probability that an individual value will be missing is independent from $Y^{(o)}$ and $Y^{(m)}$. We can then use Maximum Likelihood and other complete cases analysis in order to estimate in these situations. 
+2. Data are **Missing at Random** (***MAR***) when the probability that an individual will be missing is independent of $Y^{(m)}$ but may be dependent on $Y^{(o)}$. We can then use some likelihood based methods to estimate. This is when a subject's attrition is related to a previous performance. 
+
+
+
+
+## Modeling Longitudinal Data
+
+- Longitudinal data present two aspects of the data that require modeling:
+    1. Mean response over time. 
+    2. Covariance among the repeated measures. 
+- We must model both of these jointly. 
+
+
+
+
+
+## Mixed Effect Models for Longitudinal Data. 
+
+- There are many ways to analyze these models for example:
+- Modeling the mean through:
+    1. Analysis of Response Profiles.
+    2. Parametric or Semi-parametric methods. 
+
+
+
+## Mixed Effects Covariance
+
+- Modeling the covariance through:
+    1. Unstructured or arbitrary pattern of covariance
+    2. Covariance pattern models.
+    3. Random effects covariance structures.
+
+
+
+## Two-Stage (Two-Level) Formulation
+
+- We will proceed with Linear Mixed effects models. 
+- They are very useful in longitudinal as well as other hierarchical aspects. 
+- The basic idea of the model is that we assume
+    1. **Stage 1**: A straight line (or more generally  a "growth" curve) fits the observed responses for each subject. 
+    2. **Stage 2**: A Regression model relating the mean of the individual intercepts and slopes to the subject specific effects. 
+
+
+
+
+
+
+## Stage 1
+
+- In the first stage we assume that all subjects have their own unique trajectory. 
+- So for subject $i$:
+$$Y_{ij}= Z_{ij}\beta_i + \varepsilon_{ij}, \qquad j=1,\ldots,n_i$$
+- where $\beta_i$ is a vector of subject-specific regression parameters, the errors are typically considered independent within a subject. 
+
+## Stage 1: Subject Specific Effects
+
+- Many times we use a model with subject specific intercepts and slope:
+$$Y_{ij} = \beta_{1i} + \beta_{2i}t_{ij} + e_{ij}$$
+- So in stage 1 each subject has their own unique regression model. 
+    - Basically we allow each subject to have their own line. 
+    - We restrict the covariates in these models to be ones that vary over time. 
+- Any covariates that do not vary over time or refer to between-subject changes (sex, gender, treatment group, exposure group,...) are not included at this stage. 
+
+
+
+
+## Stage 2
+
+- In this stage we assume that the $\beta_i$'s (subject-specific effects) are random and come from some distribution (IE. normal or some other). 
+- We then model the mean and covariance of the $\beta_i$'s in the population. 
+$$\beta_i = A_i \beta + b_i, \text{ where } b_i \sim N(0,G)$$
+
+## Stage 2
+
+
+- Where 
+    - $A_i$ are the between subject covariates
+    - $b_i = \left( \begin{array}{c}
+      b_{1i}\\
+b_{2i}\\
+\end{array}\right)$ are the random effects for individuals
+    - $G= \left[ \begin{array}{cc}
+var(b_{1i}) & cov(b_{1i},b_{2i})\\
+cov(b_{1i},b_{2i}) & var(b_{2i})\\
+\end{array}
+\right]$ is the covariance matrix for the subject specific effects. 
+
+
+
+
+
+## Quick Example
+
+- Consider a treatment vs control setting where we have subject specific intercept, $\beta_{1i}$, and slope $\beta_{2i}$. 
+- Then we would model the subject specific effects with a group effect:
+
+$$\begin{aligned}
+E(\beta_{1i} ) &= \beta_1 + \beta_2 \text{GROUP}_i\\
+E(\beta_{1i} ) &= \beta_3 + \beta_4 \text{GROUP}_i\\
+\end{aligned}$$
+
+## Quick Example
+
+
+- Where $\text{GROUP}_i$ is an indicator variable for treatment. 
+- Then in this example we would have the following models for means:
+
+
+## Quick Example
+
+- For the control group:
+$$\begin{aligned}
+E(\beta_{1i} ) &= \beta_1\\
+E(\beta_{1i} ) &= \beta_3 \\
+\end{aligned}$$
+
+## Quick Example
+
+- for the treatment group:
+
+$$\begin{aligned}
+E(\beta_{1i} ) &= \beta_1 + \beta_2\\
+E(\beta_{1i} ) &= \beta_3 + \beta_4\\
+\end{aligned}$$
+
+
+
+
+
+
+## How do we fit these models:
+
+- One approach has been coined as the "NIH Method" since it was popularized by statisticians working at the NIH. 
+- What they did was:
+    1. Fit a regression to the response data for each subject. 
+    2. Regress the estimates of the individual intercepts and slopes on subject specific covariates. 
+- This method was very easy to perform because it did not require any special form of regression software. 
+- This works very well with balanced data. 
+
+# Mixed Effects Models 
+
+
+## Mixed Effects Models
+- In contrast what we tend to do now is consider a *Mixed Effects* model that contains the 2 stages but fits everything all at once:
+
+
+$$\begin{aligned}
+Y_{ij} &= Z_{ij}\beta_i + \varepsilon_{ij}\\
+&= Z_{ij}(A_i \beta + b_i) + \varepsilon_{ij}\\
+&= Z_{ij}A_i \beta + Z_{ij}b_i + \varepsilon_{ij}\\
+&= X_{ij}\beta + Z_{ij}b_i + \varepsilon_{ij}\\
+\end{aligned}$$
+
+## Mixed Effects Models
+
+
+- We then have:
+    - $X_{ij}\beta$ fixed effects (population)
+    - $Z_{ij}b_i$ random effects (individual)
+
+
+
+## An Example
+
+- To illustrate this we consider a study done on orthodontic measurement. 
+- Investigators at the University of North Carolina Dental School followed the growth of 27 children (16 males, 11 females) from age 8 until age 14. 
+- Every two years they measured the distance between the pituitary and the pterygomaxillary fissure, two points that are easily identified on x-ray exposures of the side of the head.
+
+## An Example 
+
+```{R}
+library(nlme)
+head(Orthodont)
+Orthodont$age <- Orthodont$age - 8
+```
+
+## Example: Another Spaghetti Plot
+
+
+
+```{r, eval=F}
+library(lattice)
+xyplot( distance ~ age , data= Orthodont, groups=Subject, type='l', auto.key=list(space="top", columns=4, 
+                       title="Subject", cex.title=1), main="Distance")
+```
+
+## Example: Another Spaghetti Plot
+
+
+
+```{r, echo=F}
+library(lattice)
+xyplot( distance ~ age , data= Orthodont, groups=Subject, type='l', auto.key=list(space="top", columns=4, 
+                       title="Subject", cex.title=1), main="Distance")
+```
+
+## What do you see? 
+
+
+
+## 2 Stage Approach
+
+
+
+
+- Now in the 2 stage approach we first would model the change in distance for each individual. 
+
+```{r, eval=F}
+library(nlme)
+reg.list <- lmList(distance ~ age, data=Orthodont)
+summary(reg.list)
+```
+
+## 2 Stage Approach
+
+```{r, echo=F}
+library(nlme)
+reg.list <- lmList(distance ~ age, data=Orthodont)
+summary(reg.list)
+```
+
+
+## Abstract Coefficients
+
+- We can then abstract the estimated model coefficients and the variance-covariance matrices:
+
+```{R, eval=F}
+b <- lapply(reg.list, coef)
+b
+V <- lapply(reg.list, vcov)
+V
+```
+
+
+
+
+## Abstract Coefficients
+
+
+
+```{R, echo=F}
+b <- lapply(reg.list, coef)
+b
+V <- lapply(reg.list, vcov)
+V
+```
+
+## Abstract Coefficients
+
+
+
+- An indicator variable of the estimate type (alternating intercept and slope) and a subject id variable are also needed, which can be created with:
+
+```{r, eval=F}
+
+estm <- rep(c("intercept","slope"), length(b))
+estm
+subj <- rep(names(b), each=2)
+subj
+```
+
+
+
+## Abstract Coefficients
+
+
+
+
+
+```{r, echo=F}
+
+estm <- rep(c("intercept","slope"), length(b))
+estm
+subj <- rep(names(b), each=2)
+subj
+```
+
+
+## Vector Creation
+
+
+
+- Next, we create one long vector with the model coefficients and the corresponding block-diagonal variance-covariance matrix with (the metafor package needs to be loaded for the bldiag() function):
+
+```{r, eval=F}
+library(metafor)
+b <- unlist(b)
+V <- bldiag(V)
+```
+
+
+
+
+## Vector Creation
+
+
+```{r, echo=F}
+library(metafor)
+b <- unlist(b)
+V <- bldiag(V)
+V
+```
+
+## Final Model
+
+
+- Finally, we conduct a multivariate meta-analysis with the model coefficients (since we have two correlated coefficients per subject). 
+-The V matrix contains the variances and covariances of the sampling errors.
+- We also allow for heterogeneity in the true outcomes (i.e., coefficients) and allow them to be correlated (by using an unstructured variance-covariance matrix for the true outcomes). 
+
+
+## Final Model
+
+- The model can be fitted with:
+
+```{r, eval=F}
+res2 <- rma.mv(b ~ estm-1, V, random = ~ estm | subj, struct="UN")
+summary(res2)
+```
+
+
+## Final Model
+
+```
+Multivariate Meta-Analysis Model (k = 54; method: REML)
+
+  logLik  Deviance       AIC       BIC      AICc  
+-64.4574  128.9148  138.9148  148.6710  140.2192  
+
+Variance Components: 
+
+outer factor: subj (nlvls = 27)
+inner factor: estm (nlvls = 2)
+
+            estim    sqrt  k.lvl  fixed      level
+tau^2.1    8.3710  2.8933     27     no  intercept
+tau^2.2    0.0478  0.2187     27     no      slope
+```
+
+## Final Model
+
+
+```
+           rho.intr  rho.slop    intr  slop
+intercept         1    0.7394       -    no
+slope        0.7394         1      27     -
+
+Test for Residual Heterogeneity: 
+QE(df = 52) = 1611.6315, p-val < .0001
+
+Test of Moderators (coefficient(s) 1:2): 
+QM(df = 2) = 3080.0214, p-val < .0001
+```
+
+
+## Final Model
+
+```
+Model Results:
+
+               estimate      se     zval    pval    ci.lb    ci.ub     
+estmintercept   26.8868  0.5980  44.9609  <.0001  25.7148  28.0589  ***
+estmslope        0.5762  0.0555  10.3868  <.0001   0.4675   0.6850  ***
+
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+
+```
+
+
+
+## What do we have?
+
+We have: 
+
+- We have an estimated average intercept of $b_0=22.28$ (SE=0.410)
+- an estimated average slope of $b_1=0.58$ (SE=0.056)
+- estimated standard deviations of the underlying true intercepts and slopes equal to SD($b_{0i}$)=1.987 and SD($b_{1i}$)=0.219 , respectively. 
+- A correlation between the underlying true intercepts and slopes equal to
+$\hat{\rho}= 0.20$ (no residual standard deviation is given, since that source of variability is already incorporated into the V matrix).
+

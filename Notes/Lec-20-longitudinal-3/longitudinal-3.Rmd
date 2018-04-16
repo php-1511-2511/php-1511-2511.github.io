@@ -1,0 +1,410 @@
+---
+title: "Longitudinal Data Analysis"
+author: "Adam J Sullivan, PhD"
+date: "04/18/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+# Review of 2 Stage Results
+
+## Final Model
+
+```
+Multivariate Meta-Analysis Model (k = 54; method: REML)
+
+  logLik  Deviance       AIC       BIC      AICc  
+-64.4574  128.9148  138.9148  148.6710  140.2192  
+
+Variance Components: 
+
+outer factor: subj (nlvls = 27)
+inner factor: estm (nlvls = 2)
+
+            estim    sqrt  k.lvl  fixed      level
+tau^2.1    8.3710  2.8933     27     no  intercept
+tau^2.2    0.0478  0.2187     27     no      slope
+```
+
+## Final Model
+
+
+```
+           rho.intr  rho.slop    intr  slop
+intercept         1    0.7394       -    no
+slope        0.7394         1      27     -
+
+Test for Residual Heterogeneity: 
+QE(df = 52) = 1611.6315, p-val < .0001
+
+Test of Moderators (coefficient(s) 1:2): 
+QM(df = 2) = 3080.0214, p-val < .0001
+```
+
+
+## Final Model
+
+```
+Model Results:
+
+               estimate      se     zval    pval    ci.lb    ci.ub     
+estmintercept   26.8868  0.5980  44.9609  <.0001  25.7148  28.0589  ***
+estmslope        0.5762  0.0555  10.3868  <.0001   0.4675   0.6850  ***
+
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+
+```
+
+
+
+## What do we have?
+
+We have: 
+
+- We have an estimated average intercept of $b_0=22.28$ (SE=0.410)
+- an estimated average slope of $b_1=0.58$ (SE=0.056)
+- estimated standard deviations of the underlying true intercepts and slopes equal to SD($b_{0i}$)=1.987 and SD($b_{1i}$)=0.219 , respectively. 
+- A correlation between the underlying true intercepts and slopes equal to
+$\hat{\rho}= 0.20$ (no residual standard deviation is given, since that source of variability is already incorporated into the V matrix).
+
+
+# Mixed Effects Model
+
+## Alternative with a Mixed Effects Model
+
+
+
+- Alternatively we could have fit this with a mixed model:
+
+```{r, eval=F}
+reg.mix <- lme(distance ~ age, random = ~ age | Subject, data=Orthodont)
+summary(reg.mix)
+```
+
+
+
+## Alternative with a Mixed Effects Model
+
+```
+
+Linear mixed-effects model fit by REML
+ Data: Orthodont 
+  AIC BIC logLik
+  455 471   -221
+
+Random effects:
+ Formula: ~age | Subject
+ Structure: General positive-definite, Log-Cholesky parametrization
+            StdDev Corr  
+(Intercept) 2.875  (Intr)
+age         0.226  0.767 
+Residual    1.310        
+```
+
+
+
+## Alternative with a Mixed Effects Model
+
+```
+Fixed effects: distance ~ age 
+            Value Std.Error DF t-value p-value
+(Intercept) 27.32     0.634 80    43.1       0
+age          0.66     0.071 80     9.3       0
+ Correlation: 
+    (Intr)
+age 0.762 
+
+Standardized Within-Group Residuals:
+     Min       Q1      Med       Q3      Max 
+-3.22311 -0.49376  0.00732  0.47215  3.91603 
+
+Number of Observations: 108
+Number of Groups: 27 
+
+```
+
+
+
+## What do we see? 
+
+- The estimated average distance at age 8 is $b_0= 22.04$ millimeters (SE=0.420). 
+- For each year, the distance is estimated to increase on average by $b_1=0.66$ millimeters (SE=.071). - However, there is variability in the intercepts and slopes, as reflected by their estimated standard deviations (SD($_{0i}$)=1.887 and SD($b_{1i}$)=0.226, respectively). Also, intercepts and slopes appear to be somewhat correlated ($\hat{\rho}=-0.21$ ). 
+- Finally, residual variability remains (reflecting deviations of the measurements from the subject-specific regression lines), as given by the residual standard deviation of $\hat{\sigma}=1.310$. 
+
+## How did this model compare?
+
+
+- Notice that when we fit this with one model we have smaller standard errors. 
+- With this approach we are using all of the data at the same time and fitting them together. 
+- When the model is correctly specified the mixed model approach is preferred. 
+
+
+## Adjusting for Sex
+ 
+- At the same time, it is much easier for us to consider also adjusting for sex. 
+- This would not be done at stage one but stage 2. 
+- So in the case of a mixed model we would consider this to be part of the fixed effects but not the random effects: 
+
+```{r, eval=F}
+reg.mix2 <- lme(distance ~ age + Sex, random = ~ age | Subject, data=Orthodont)
+summary(reg.mix2)
+```
+
+
+
+
+## Adjusting for Sex
+ 
+```
+Linear mixed-effects model fit by REML
+ Data: Orthodont 
+  AIC BIC logLik
+  449 468   -218
+
+Random effects:
+ Formula: ~age | Subject
+ Structure: General positive-definite, Log-Cholesky parametrization
+            StdDev Corr  
+(Intercept) 2.330  (Intr)
+age         0.226  0.636 
+Residual    1.310        
+
+```
+
+
+## Adjusting for Sex
+ 
+```
+Fixed effects: distance ~ age + Sex 
+            Value Std.Error DF t-value p-value
+(Intercept) 28.20     0.626 80    45.1   0.000
+age          0.66     0.071 80     9.3   0.000
+SexFemale   -2.15     0.757 25    -2.8   0.009
+ Correlation: 
+          (Intr) age   
+age        0.635       
+SexFemale -0.493  0.000
+
+Standardized Within-Group Residuals:
+    Min      Q1     Med      Q3     Max 
+-3.0814 -0.4568  0.0155  0.4470  3.8944 
+
+Number of Observations: 108
+Number of Groups: 27
+
+```
+
+
+## What can we see? 
+
+
+- We can see that there does not appear to be a large change in the outcomes by adding sex even though it was significant. 
+- What we can see that that for Females at the mean age of 8, there is on average a 2.15 mm smaller distance than that of Males who are the same age. 
+
+
+
+## Linear Mixed Effects Models
+
+We have the general framework
+$$Y_i = X_i\beta + Z_ib_i + \varepsilon_i$$
+
+What we have here is the ability to model population characteristics (fixed effects) and allow for subject specific effects (random effects). This allows us to understand population information as well as allow for individuals to vary differently. 
+
+
+
+
+## Random Intercept Model
+
+One approach that is often used to handle the covariance among repeated measures is to assume that is comes from a random subject effect. This would mean that each subject has an underlying difference in change that is constant over all measurements. We model this as:
+
+$$Y_{ij} = \beta_1 X_{ij1} + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp} + b_i + \varepsilon_{ij}$$
+
+Typically we have $X_{ij1}=1$ for all subjects so that our model is now: 
+
+
+$$Y_{ij} = (\beta_1 + b_i) + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp}  + \varepsilon_{ij}$$
+
+## Random Intercept Models
+
+
+- This means that we have population attributes for all $\beta_2 - \beta_p$ but we allow for individual intercepts $|beta_1 + b_i$. 
+- This is why we call it the random intercept model. 
+- This means that the population mean is:
+$$E(Y_{ij}) = \beta_1 + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp}  $$
+- because
+$$b_i \sim N(0, \sigma^2_b) \qquad\qquad \varepsilon_{ij} \sim N(0, \sigma^2)$$
+
+## 
+
+
+It is not necessary for the errors to be normal but this is the case for a linear regression. For example if we considered a simple case of a trend over time
+$$Y_{ij} = (\beta_1  + b_i) + \beta_2 t_{ij} + \varepsilon_{ij}$$
+
+##
+
+
+Consider two subjects:
+
+1. This subject responds at a higher level than the population so they would have a $b_i>0$. 
+2. This subject responds at a lower level than the population so they would have a $b_i<0$.
+
+What we would see on a plot is that Subject 1 would have a line parallel to that of the population however it would be higher. Subject 2 would be the opposite. 
+
+
+
+
+## Covariance and Correlation Structure
+
+We said before that we have two "random" terms here: 
+
+$$b_i \sim N(0, \sigma^2_b) \qquad\qquad \varepsilon_{ij} \sim N(0, \sigma^2)$$
+
+This would imply that 
+
+
+$$Var(Y_{ij} = Var(b_j) + Var(\varepsilon_{ij}) = \sigma^2_b + \sigma^2$$
+
+##
+
+
+Then by introducing a subject specific effect of $b_i$ we have induced correlation among repeated measures. For example consider subject $i$ at times points $j$ and $k$:
+
+$$Cov(Y_{ij}, Y_{ik}) = \sigma^2_b \Rightarrow Corr(Y_{ij}, Y_{ik}) = \dfrac{\sigma^2_b}{\sigma^2_b + \sigma^2}$$
+
+
+
+##
+
+
+
+We then have the following Covariance Matrix:
+
+$$\left[ \begin{array}{ccccc}
+\sigma^2_b + \sigma^2 & \sigma^2_b & \sigma^2_b & \cdots & \sigma^2_b\\
+\sigma^2_b & \sigma^2_b + \sigma^2   & \sigma^2_b & \cdots & \sigma^2_b\\
+ \sigma^2_b & \sigma^2_b &\sigma^2_b + \sigma^2 &  \cdots & \sigma^2_b\\
+\ldots & \ldots & \ldots & \cdots & \ldots\\
+\sigma^2 & \sigma^2_b & \sigma^2_b & \cdots & \sigma^2_b + \sigma^2 \\
+\end{array}\right]$$
+
+##
+
+
+We refer to this as a ***Compound Symmetry Covariance*** structure. 
+
+- *Drawbacks*: Variances and correlations are constant across time occasions.
+- *solution*: Allow for heterogeneity in trends across times. 
+
+##
+
+
+##  Random Intercept and Slope Model
+
+Instead of suggesting that individuals have a persistent constant difference across time points, we can allow their difference to change based on time. 
+
+$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
+
+
+
+
+
+Consider if we have a treatment vs control study
+
+
+$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + \beta_3 trt_i \beta_4t_{ij}\times trt_i + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
+
+
+
+
+Then for the control group:
+
+$$Y_{ij} = (\beta_1 + b_{1i} ) + (\beta_2 + b_{2i}) t_{ij} +  \varepsilon_{ij}$$
+
+##
+
+
+For the treated group we would have:
+
+$$Y_{ij} = (\beta_1 + \beta_3 +  b_{1i} ) + (\beta_2 + \beta_4  b_{2i}) t_{ij} +  \varepsilon_{ij}$$
+
+
+
+
+## Covariance and Correlation Structure
+
+Then we would have:
+
+- $b_{1i} \sim N(0,\sigma^2_{b_1})$
+- $b_{2i} \sim N(0,\sigma^2_{b_2})$
+- $Cov(b_{1i}, b_{2i}) = \sigma_{b_1,b_2}$
+- $\varepsilon_{ij} \sim N(0,\sigma^2)$
+
+##
+
+
+Thus we have that 
+
+$$\begin{aligned}
+Var(Y_{ij}) & = Var(b_{1i} + b_{2i}t_{ij}  \varepsilon_{ij})\\
+&= Var(b_1i) + 2t_{ij}Cov(b_{1i}, b_{2i}) + t^2_{ij}Var(b_{2i}) + Var(\varepsilon_{ij})\\
+&= \sigma^2_{b_1} + 2t_{ij}\sigma_{b_1,b_2} + t^2_{ij} \sigma^2_{b_2} + \sigma^2\\
+\end{aligned}$$
+
+##
+
+
+We can also show that
+
+$$Cov(Y_{ij}, Y_{ik}) =  \sigma^2_{b_1} + (t_{ij}+t_{ik})\sigma_{b_1,b_2} + t_{ij}t_{ik} \sigma^2_{b_2} + \sigma^2$$
+
+
+##
+
+
+##  Estimation Techniques
+
+We already saw that linear regression used least squares estimation unfortunately there is no simple expression for the maximum likelihood estimator of the covariance components that we have. We rely on an iterative algorithm instead. 
+
+Then what happens with this is that if we maximize the likelihood we end up with the same least squares estimator that we have before however our estimate of $\sigma^2$ is
+
+$$\hat{\sigma}^2 = \sum_{i=1}^n \dfrac{(y_i - X_i\beta)^2}{N}$$
+
+##
+
+
+where $N$ is the sample size, we could then show that 
+
+$$E(\hat{\sigma}^2) = \left(\dfrac{N-p}{N}\right)\sigma^2$$
+
+This means that if we have small samples of size $N$ than we underestimate the $\sigma^2$. Due to this we use what is called ***Residual Maximum Likelihood (REML)***
+
+
+##
+
+
+Basically the bias we saw came from the fact that we do not know the true $\beta$ so we replace this term with a $\hat{\beta}$ however this is an estimated value. We saw a similar problem when we tried to originally estimate variance and had to adjust for sample size.
+
+We will find that R, SAS and Stata use this  as the default method. 
+
+
