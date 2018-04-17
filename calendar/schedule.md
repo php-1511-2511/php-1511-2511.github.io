@@ -1,7 +1,7 @@
-
+    
 
 <table style="width:100%;">
-    <colgroup>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -296,7 +296,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 7: Survival Analysis</td>
-<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/263977315/037644c2c7">Video</a></td>
+<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -341,7 +341,7 @@
 <td align="left">Week 13</td>
 <td align="left">16-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.pdf">PDF</a> <a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.html">HTML</a></td>
+<td align="left"><a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.pdf">PDF</a> <a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.html">HTML</a> <a href="https://vimeo.com/265267573/5e1c3d3898">Video</a></td>
 <td align="left">Read FOX: Chapter 23</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -350,7 +350,7 @@
 <td align="left"></td>
 <td align="left">18-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.pdf">PDF</a> <a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.html">HTML</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Peer Review 2 Due</td>

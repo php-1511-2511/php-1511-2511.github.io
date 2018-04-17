@@ -29,13 +29,13 @@ Week 10,26-Mar,***NO CLASS SPRING BREAK***,,,,
 ,,,,,,
 Week 11,2-Apr,Multinomial Regression,[PDF](../Notes/Lec-15-multinomial/multinomial.pdf)  [HTML](../Notes/Lec-15-multinomial/multinomial.html) [Video](https://vimeo.com/263158300/29f6c8b0be),, [HW5](../homework/hw5.html),
 ,4-Apr,Model Selection and Validation,[PDF](../Notes/Lec-16-model-selection/model-selection.pdf)  [HTML](../Notes/Lec-16-model-selection/model-selection.html) [Video](https://vimeo.com/263953930/f0fabcdc0e),,,Peer Review 1 Due
-,,Lab 7: Survival Analysis,[HTML](../labs/lab7.html) [Rmd](../labs/lab7.Rmd) [Solutions](../labs/lab7-sol.Rmd) [Video](https://vimeo.com/263977315/037644c2c7),,,
+,,Lab 7: Survival Analysis,[HTML](../labs/lab7.html) [Rmd](../labs/lab7.Rmd) [Solutions](../labs/lab7-sol.Rmd) [Video](https://vimeo.com/265267538/3ab3fa6732),,,
 ,,Lab 8: Survey Model build,[HTML](../labs/lab8.html) [Rmd](../labs/lab8.Rmd) ,,,
 Week 12,9-Apr,Survey Analysis,[PDF](../Notes/Lec-17-surveys/survey.pdf)  [HTML](../Notes/Lec-17-surveys/survey.html) ,Read  FOX: Chapter 21,,
 ,11-Apr,Nature of Longitudinal Data,[PDF](../Notes/Lec-18-longitudinal-1/longitudinal-1.pdf)  [HTML](../Notes/Lec-18-longitudinal-1/longitudinal-1.html) ,Read  FOX: Chapter 22,,2nd Steps Due
 ,,Lab 9: EDA with Longitudinal Data,,,,
-Week 13,16-Apr,Linear Mixed Effects Models,[PDF](../Notes/Lec-19-longitudinal-2/longitudinal-2.pdf)  [HTML](../Notes/Lec-19-longitudinal-2/longitudinal-2.html) ,Read FOX: Chapter 23,,
-,18-Apr,Linear Mixed Effects Models,,,,Peer Review 2 Due
+Week 13,16-Apr,Linear Mixed Effects Models,[PDF](../Notes/Lec-19-longitudinal-2/longitudinal-2.pdf)  [HTML](../Notes/Lec-19-longitudinal-2/longitudinal-2.html) [Video](https://vimeo.com/265267573/5e1c3d3898),Read FOX: Chapter 23,,
+,18-Apr,Linear Mixed Effects Models,[PDF](../Notes/Lec-20-longitudinal-3/longitudinal-3.pdf)  [HTML](../Notes/Lec-20-longitudinal-3/longitudinal-3.html) [Video](),,,Peer Review 2 Due
 ,,Lab 10: Linear Mixed Effects Models,,,,
 Week 14,23-Apr,Linear Mixed Effects Models,,,,
 ,25-Apr,Bootstrapping Regression Models,,Read FOX: Chapter 24,,Final Steps
