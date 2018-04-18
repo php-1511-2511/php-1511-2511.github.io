@@ -1,7 +1,7 @@
-    
+   
 
 <table style="width:100%;">
-<colgroup>
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -350,7 +350,7 @@
 <td align="left"></td>
 <td align="left">18-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.pdf">PDF</a> <a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.pdf">PDF</a> <a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.html">HTML</a> <a href="https://vimeo.com/265442527/fa4ef689e5">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Peer Review 2 Due</td>

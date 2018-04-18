@@ -91,7 +91,7 @@ cov(b_{1i},b_{2i}) & var(b_{2i})\\
 
 $$\begin{aligned}
 E(\beta_{1i} ) &= \beta_1 + \beta_2 \text{GROUP}_i\\
-E(\beta_{1i} ) &= \beta_3 + \beta_4 \text{GROUP}_i\\
+E(\beta_{2i} ) &= \beta_3 + \beta_4 \text{GROUP}_i\\
 \end{aligned}$$
 
 ## Quick Example
@@ -106,7 +106,7 @@ E(\beta_{1i} ) &= \beta_3 + \beta_4 \text{GROUP}_i\\
 - For the control group:
 $$\begin{aligned}
 E(\beta_{1i} ) &= \beta_1\\
-E(\beta_{1i} ) &= \beta_3 \\
+E(\beta_{2i} ) &= \beta_3 \\
 \end{aligned}$$
 
 ## Quick Example
@@ -115,7 +115,7 @@ E(\beta_{1i} ) &= \beta_3 \\
 
 $$\begin{aligned}
 E(\beta_{1i} ) &= \beta_1 + \beta_2\\
-E(\beta_{1i} ) &= \beta_3 + \beta_4\\
+E(\beta_{2i} ) &= \beta_3 + \beta_4\\
 \end{aligned}$$
 
 
@@ -201,6 +201,12 @@ xyplot( distance ~ age , data= Orthodont, groups=Subject, type='l', auto.key=lis
 - Now in the 2 stage approach we first would model the change in distance for each individual. 
 
 ```{r, eval=F}
+library(nlme)
+reg.list <- lmList(distance ~ age, data=Orthodont)
+summary(reg.list)
+```
+
+```{r, results=F}
 library(nlme)
 reg.list <- lmList(distance ~ age, data=Orthodont)
 summary(reg.list)
@@ -306,6 +312,12 @@ V
 ```{R, echo=F}
 b <- lapply(reg.list, coef)
 b
+```
+
+## Abstract Coefficients
+
+
+```{r}
 V <- lapply(reg.list, vcov)
 V
 ```
@@ -447,11 +459,11 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
 We have: 
 
-- We have an estimated average intercept of $b_0=22.28$ (SE=0.410)
-- an estimated average slope of $b_1=0.58$ (SE=0.056)
-- estimated standard deviations of the underlying true intercepts and slopes equal to SD($b_{0i}$)=1.987 and SD($b_{1i}$)=0.219 , respectively. 
+- We have an estimated average intercept of $b_0=26.8868$ (SE=0.5980)
+- an estimated average slope of $b_1=0.5762$ (SE=0.0555)
+- estimated standard deviations of the underlying true intercepts and slopes equal to SD($b_{0i}$)=2.8933 and SD($b_{1i}$)=0.2187 , respectively. 
 - A correlation between the underlying true intercepts and slopes equal to
-$\hat{\rho}= 0.20$ (no residual standard deviation is given, since that source of variability is already incorporated into the V matrix).
+$\hat{\rho}= 0.7394$ (no residual standard deviation is given, since that source of variability is already incorporated into the V matrix).
 
 
 # Mixed Effects Model
@@ -513,8 +525,8 @@ Number of Groups: 27
 
 ## What do we see? 
 
-- The estimated average distance at age 8 is $b_0= 22.04$ millimeters (SE=0.420). 
-- For each year, the distance is estimated to increase on average by $b_1=0.66$ millimeters (SE=.071). - However, there is variability in the intercepts and slopes, as reflected by their estimated standard deviations (SD($_{0i}$)=1.887 and SD($b_{1i}$)=0.226, respectively). Also, intercepts and slopes appear to be somewhat correlated ($\hat{\rho}=-0.21$ ). 
+- The estimated average distance at age 8 is $b_0= 27.32$ millimeters (SE=0.634). 
+- For each year, the distance is estimated to increase on average by $b_1=0.66$ millimeters (SE=.071). - However, there is variability in the intercepts and slopes, as reflected by their estimated standard deviations (SD($_{0i}$)=2.875 and SD($b_{1i}$)=0.226, respectively). Also, intercepts and slopes appear to be somewhat correlated ($\hat{\rho}=0.767$ ). 
 - Finally, residual variability remains (reflecting deviations of the measurements from the subject-specific regression lines), as given by the residual standard deviation of $\hat{\sigma}=1.310$. 
 
 ## How did this model compare?
@@ -586,183 +598,4 @@ Number of Groups: 27
 
 - We can see that there does not appear to be a large change in the outcomes by adding sex even though it was significant. 
 - What we can see that that for Females at the mean age of 8, there is on average a 2.15 mm smaller distance than that of Males who are the same age. 
-
-
-
-## Linear Mixed Effects Models
-
-- We have the general framework
-$$Y_i = X_i\beta + Z_ib_i + \varepsilon_i$$
-- What we have here is the ability to model population characteristics (fixed effects) and allow for subject specific effects (random effects). 
-- This allows us to understand population information as well as allow for individuals to vary differently. 
-
-
-
-
-## Random Intercept Model
-
-- One approach that is often used to handle the covariance among repeated measures is to assume that is comes from a random subject effect. 
-- This would mean that each subject has an underlying difference in change that is constant over all measurements. 
-- We model this as:
-
-$$Y_{ij} = \beta_1 X_{ij1} + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp} + b_i + \varepsilon_{ij}$$
-
-
-## Random Intercept Model
-
-- Typically we have $X_{ij1}=1$ for all subjects so that our model is now: 
-
-
-$$Y_{ij} = (\beta_1 + b_i) + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp}  + \varepsilon_{ij}$$
-
-## Random Intercept Models
-
-
-- This means that we have population attributes for all $\beta_2 - \beta_p$ but we allow for individual intercepts $|beta_1 + b_i$. 
-- This is why we call it the random intercept model. 
-- This means that the population mean is:
-$$E(Y_{ij}) = \beta_1 + \beta_2 X_{ij2} + \cdots \beta_p X_{ijp}  $$
-- because
-$$b_i \sim N(0, \sigma^2_b) \qquad\qquad \varepsilon_{ij} \sim N(0, \sigma^2)$$
-
-## Random Intercept Models
-
-
-- It is not necessary for the errors to be normal but this is the case for a linear regression. 
-- For example if we considered a simple case of a trend over time
-$$Y_{ij} = (\beta_1  + b_i) + \beta_2 t_{ij} + \varepsilon_{ij}$$
-
-## What the random effects tell us
-
-
-- Consider two subjects:
-    1. This subject responds at a higher level than the population so they would have a $b_i>0$. 
-    2. This subject responds at a lower level than the population so they would have a $b_i<0$.
-- What we would see on a plot is that Subject 1 would have a line parallel to that of the population however it would be higher.
-- Subject 2 would be the opposite. 
-
-
-
-
-## Covariance and Correlation Structure
-
-- We said before that we have two "random" terms here: 
-$$b_i \sim N(0, \sigma^2_b) \qquad\qquad \varepsilon_{ij} \sim N(0, \sigma^2)$$
-- This would imply that 
-$$Var(Y_{ij} = Var(b_j) + Var(\varepsilon_{ij}) = \sigma^2_b + \sigma^2$$
-
-## Covariance and Correlation Structure
-
-
-- Then by introducing a subject specific effect of $b_i$ we have induced correlation among repeated measures. 
-- For example consider subject $i$ at times points $j$ and $k$:
-$$Cov(Y_{ij}, Y_{ik}) = \sigma^2_b \Rightarrow Corr(Y_{ij}, Y_{ik}) = \dfrac{\sigma^2_b}{\sigma^2_b + \sigma^2}$$
-
-
-
-## Variance Matrix
-
-- We then have the following Covariance Matrix:
-
-$$\left[ \begin{array}{ccccc}
-\sigma^2_b + \sigma^2 & \sigma^2_b & \sigma^2_b & \cdots & \sigma^2_b\\
-\sigma^2_b & \sigma^2_b + \sigma^2   & \sigma^2_b & \cdots & \sigma^2_b\\
- \sigma^2_b & \sigma^2_b &\sigma^2_b + \sigma^2 &  \cdots & \sigma^2_b\\
-\ldots & \ldots & \ldots & \cdots & \ldots\\
-\sigma^2 & \sigma^2_b & \sigma^2_b & \cdots & \sigma^2_b + \sigma^2 \\
-\end{array}\right]$$
-
-## Compound Symmetry Matrix
-
-
-- We refer to this as a ***Compound Symmetry Covariance*** structure. 
-    - *Drawbacks*: Variances and correlations are constant across time occasions.
-    - *solution*: Allow for heterogeneity in trends across times. 
-
-
-
-
-##  Random Intercept and Slope Model
-
-- Instead of suggesting that individuals have a persistent constant difference across time points, we can allow their difference to change based on time. 
-
-$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
-
-
-
-##  Random Intercept and Slope Model Example
-
-- Consider if we have a treatment vs control study
-
-$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + \beta_3 trt_i \beta_4t_{ij}\times trt_i + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
-- Then for the control group:
-$$Y_{ij} = (\beta_1 + b_{1i} ) + (\beta_2 + b_{2i}) t_{ij} +  \varepsilon_{ij}$$
-
-## The Treated Group
-
-
-- For the treated group we would have:
-
-$$Y_{ij} = (\beta_1 + \beta_3 +  b_{1i} ) + (\beta_2 + \beta_4  b_{2i}) t_{ij} +  \varepsilon_{ij}$$
-
-
-
-
-## Covariance and Correlation Structure
-
-- Then we would have:
-    - $b_{1i} \sim N(0,\sigma^2_{b_1})$
-    - $b_{2i} \sim N(0,\sigma^2_{b_2})$
-    - $Cov(b_{1i}, b_{2i}) = \sigma_{b_1,b_2}$
-    -  $\varepsilon_{ij} \sim N(0,\sigma^2)$
-
-## Covariance and Correlation Structure
-
-
-- Thus we have that 
-
-$$\begin{aligned}
-Var(Y_{ij}) & = Var(b_{1i} + b_{2i}t_{ij}  \varepsilon_{ij})\\
-&= Var(b_1i) + 2t_{ij}Cov(b_{1i}, b_{2i}) + t^2_{ij}Var(b_{2i}) + Var(\varepsilon_{ij})\\
-&= \sigma^2_{b_1} + 2t_{ij}\sigma_{b_1,b_2} + t^2_{ij} \sigma^2_{b_2} + \sigma^2\\
-\end{aligned}$$
-
-## Covariance and Correlation Structure
-
-
-We can also show that
-
-$$Cov(Y_{ij}, Y_{ik}) =  \sigma^2_{b_1} + (t_{ij}+t_{ik})\sigma_{b_1,b_2} + t_{ij}t_{ik} \sigma^2_{b_2} + \sigma^2$$
-
-
-
-
-
-##  Estimation Techniques
-
-- We already saw that linear regression used least squares estimation unfortunately there is no simple expression for the maximum likelihood estimator of the covariance components that we have.
-- We rely on an iterative algorithm instead. 
-
-
-## Maximizing the Likelihood 
-
-- Then what happens with this is that if we maximize the likelihood we end up with the same least squares estimator that we have before however our estimate of $\sigma^2$ is
-$$\hat{\sigma}^2 = \sum_{i=1}^n \dfrac{(y_i - X_i\beta)^2}{N}$$
-- where $N$ is the sample size, we could then show that 
-
-$$E(\hat{\sigma}^2) = \left(\dfrac{N-p}{N}\right)\sigma^2$$
-
-## Residual Maximum Likelihood
-
-- This means that if we have small samples of size $N$ than we underestimate the $\sigma^2$. 
-- Due to this we use what is called ***Residual Maximum Likelihood (REML)***
-
-
-## Residual Maximum Likelihood
-
-
-- Basically the bias we saw came from the fact that we do not know the true $\beta$ so we replace this term with a $\hat{\beta}$ however this is an estimated value. 
-- We saw a similar problem when we tried to originally estimate variance and had to adjust for sample size.
-- We will find that R, SAS and Stata use this  as the default method. 
-
 
