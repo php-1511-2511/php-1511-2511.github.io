@@ -3,11 +3,11 @@ layout: page
 title: Calendar
 ---
 
-   
-       
+
+
 
 <table style="width:100%;">
- <colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -374,7 +374,7 @@ title: Calendar
 <td align="left">Week 14</td>
 <td align="left">23-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
