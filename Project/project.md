@@ -1,11 +1,11 @@
-        
+
+
 <table>
-<colgroup>
+        <colgroup>
     <col width="15%" />
     <col width="15%" />
     <col width="50%" />
     </colgroup>
-
 <thead>
 <tr class="header">
 <th align="left">Deadline</th>
@@ -135,16 +135,21 @@
 <td align="left">Send your final draft to the peer review groups.</td>
 </tr>
 <tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"><a href="../Project/paper_description.md">Paper Description</a></td>
+</tr>
+<tr class="even">
 <td align="left">5/12/2018</td>
 <td align="left">Final Peer Reviews</td>
 <td align="left">Final Review of the Papers</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Be sure to comment on changes made from past iterations.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Comment on completeness and quality.</td>

@@ -1,0 +1,243 @@
+---
+title: "Longitudinal Data Analysis"
+author: "Adam J Sullivan, PhD"
+date: "04/25/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=F)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+```{r models, echo=F}
+library(knitr)
+library(lattice)
+library(lme4)
+library(simr)
+library(reshape2)
+
+model <-              lm(Reaction ~ 1 + Days,data=sleepstudy)
+models <-         lmList(Reaction ~ 1 + Days|Subject,data=sleepstudy)
+model.intercepts <- lmer(Reaction ~ 1+ Days + (1|Subject),data=sleepstudy)
+model.slopes <-     lmer(Reaction ~ 1 + Days + (0 + Days|Subject),data=sleepstudy)
+model.full <-       lmer(Reaction ~ 1+ Days + (1+ Days|Subject),data=sleepstudy)
+
+```
+
+# Estimation
+
+## REML vs. ML
+
+```
+Linear mixed model fit by REML ['lmerMod']
+Formula: Reaction ~ 1 + Days + (1 + Days | Subject)
+   Data: sleepstudy
+
+REML criterion at convergence: 1744
+
+Scaled residuals: 
+   Min     1Q Median     3Q    Max 
+-3.954 -0.463  0.023  0.463  5.179 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ Subject  (Intercept) 612.1    24.74        
+          Days         35.1     5.92    0.07
+ Residual             654.9    25.59
+```
+ 
+ 
+## REML vs. ML
+
+```
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   251.41       6.82    36.8
+Days           10.47       1.55     6.8
+
+Correlation of Fixed Effects:
+     (Intr)
+Days -0.138
+
+```
+
+## REML vs ML
+
+```{r}
+model.full.ml <- update(model.full,REML=FALSE)
+```
+
+
+## REML vs ML
+
+
+```
+Formula: Reaction ~ 1 + Days + (1 + Days | Subject)
+   Data: sleepstudy
+
+     AIC      BIC   logLik deviance df.resid 
+    1764     1783     -876     1752      174 
+
+Scaled residuals: 
+   Min     1Q Median     3Q    Max 
+-3.942 -0.466  0.029  0.464  5.179 
+
+Random effects:
+ Groups   Name        Variance Std.Dev. Corr
+ Subject  (Intercept) 565.5    23.78        
+          Days         32.7     5.72    0.08
+ Residual             654.9    25.59    
+```
+
+
+## REML vs ML
+
+```
+Number of obs: 180, groups:  Subject, 18
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   251.41       6.63    37.9
+Days           10.47       1.50     7.0
+
+Correlation of Fixed Effects:
+     (Intr)
+Days -0.138
+```
+
+## REML vs. ML
+
+* **REML**: Restricted Maximum Likelihood
+* Variance is the average squared distance to the *true mean*
+* Variance measured to the *ML-estimated mean* is less than true variance in finite samples
+* This is the motivation behind Bessel's correction ($n-1$ in the denominator instead of $n$ when calculating variance using SS)
+
+
+## REML vs. ML
+
+* Similar motivation for using REML in estimation of mixed-effects models: more accurate estimation of variance (and hence random effects!)
+* "log likelihood" REML-fitted models dependent on paramerization and thus not comparable across models
+* similarly:  AIC, BIC, other measures of fit not comparable across models
+* REML-models more accurate but not comparable with each other:
+    - determine model structure with comparisons between ML-estimates
+    - present final model with REML-estimates
+    - `lme4` has some built-in protections to prevent REML-based comparisons, but don't depend on these!
+
+
+## Comparing our Models with ML and LRT
+
+
+```{r, eval=F}
+m1 <- update(model.intercepts, REML=F)
+m2 <- update(model.full, REML=F)
+anova(m1,m2)
+```
+
+
+
+## Comparing our Models with ML and LRT
+
+
+```{r, echo=F}
+m1 <- update(model.intercepts, REML=F)
+m2 <- update(model.full, REML=F)
+anova(m1,m2)
+```
+
+
+## Comparing our Models with ML and LRT
+
+
+```{r, eval=F}
+m1 <- update(model.slopes, REML=F)
+m2 <- update(model.full, REML=F)
+anova(m1,m2)
+```
+
+
+
+## Comparing our Models with ML and LRT
+
+
+```{r, echo=F}
+m1 <- update(model.slopes, REML=F)
+m2 <- update(model.full, REML=F)
+anova(m1,m2)
+```
+
+# Covariance Structures
+
+
+## Variance Structure
+
+- The simplest structure is below
+$$\begin{bmatrix} \sigma_1^2 & \cdots & \cdots & \vdots\\ \vdots& \sigma_1^2 & \cdots & \vdots\\ \vdots & \cdots & \sigma_1^2 & \vdots\\ \cdots & \cdots & \cdots & \sigma_1^2 \end{bmatrix}$$
+- In this model between time points has 0 covariances. This is not usually the case with longitudinal data. 
+
+## Compound Symmetry 
+
+$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho & \rho \\ & 1.0 & \rho & \rho \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix} = \begin{bmatrix} \sigma_b^2+\sigma_e^2 & \sigma_b^2 & \sigma_b^2 & \sigma_b^2 \\ & \sigma_b^2+\sigma_e^2 & \sigma_b^2 & \sigma_b^2 \\ & & \sigma_b^2+\sigma_e^2 & \sigma_b^2 \\ & & & \sigma_b^2+\sigma_e^2 \end{bmatrix}$$
+
+- The simplest covariance structure that includes within-subject correlated errors is compound symmetry (CS). 
+- Here we see correlated errors between time points within subjects, and note that these correlations are presumed to be the same for each set of times, regardless of how distant in time the repeated measures are made.
+
+## First Order Autoregressive AR(1)
+
+
+
+$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho^2 & \rho^3 \\ & 1.0 & \rho & \rho^2 \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix}$$
+
+
+- The autoregressive (Lag 1) structure considers correlations to be highest for time adjacent times, and a systematically decreasing correlation with increasing distance between time points. 
+- For one subject, the error correlation between time 1 and time 2 would be $p^{t_1−t_2}$ . 
+
+
+## First Order Autoregressive AR(1)
+
+
+
+$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho^2 & \rho^3 \\ & 1.0 & \rho & \rho^2 \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix}$$
+
+
+- Between time 1 and time 3 the correlation would be less, and equal to $p^{t_1−t_3}$. 
+- Between time 1 and 4, the correlation is less yet, as $p^{t_1−t_4}$, and so on.
+- Note, however, that this structure is only applicable for evenly spaced time intervals for the repeated measure.
+
+## Spatial Power
+
+$$\sigma^2 \begin{bmatrix} 1.0 & \rho^{\frac{|t_1-t_2|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_4|}{|t_1-t_2|}} \\ & 1.0 & \rho^{\frac{|t_2-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_2-t_4|}{|t_1-t_2|}} \\ & & 1.0 & \rho^{\frac{|t_3-t_4|}{|t_1-t_2|}} \\ & & & 1.0 \end{bmatrix}$$
+
+
+- When time intervals are not evenly spaced, a covariance structure equivalent to the AR(1) is the spatial power (SP(POW)).
+- The concept is the same as the AR(1) but instead of raising the correlation to powers of 1, 2,, 3, … , the correlation coefficient is raised to a power that is actual difference in times (e.g. $|t_1−t_2|$ for the correlation between time 1 and time 2). 
+
+## Spatial Power
+
+$$\sigma^2 \begin{bmatrix} 1.0 & \rho^{\frac{|t_1-t_2|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_4|}{|t_1-t_2|}} \\ & 1.0 & \rho^{\frac{|t_2-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_2-t_4|}{|t_1-t_2|}} \\ & & 1.0 & \rho^{\frac{|t_3-t_4|}{|t_1-t_2|}} \\ & & & 1.0 \end{bmatrix}$$
+
+- This method requires having a quantitative expression of the times in the data so that it can be specified for calculation of the exponents in the SP(POW) structure. If an analysis is run wherein the repeated measures are equally spaced in time, the AR(1) and SP(POW) structures yield identical results.
+
+## Unstructured
+
+$$\begin{bmatrix} \sigma_1^2 & \sigma_{12} & \sigma_{13} & \sigma_{14} \\ & \sigma_2^2 & \sigma_{23} & \sigma_{24} \\ & & \sigma_3^2 & \sigma_{34}\\ & & & \sigma_4^2 \end{bmatrix}$$
+
+- The Unstructured covariance structure (UN) is the most complex because it is estimating unique correlations for each pair of time points. 
+- It is not uncommon to find out that you are not able to use this structure. 
+- R will return an error message indicating that there are too many parameters to estimate with the data.-
