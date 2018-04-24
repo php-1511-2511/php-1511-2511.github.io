@@ -86,14 +86,14 @@ $$Y_{ij} = (\beta_1  + b_i) + \beta_2 t_{ij} + \varepsilon_{ij}$$
 - We said before that we have two "random" terms here: 
 $$b_i \sim N(0, \sigma^2_b) \qquad\qquad \varepsilon_{ij} \sim N(0, \sigma^2)$$
 - This would imply that 
-$$Var(Y_{ij}) = Var(b_j) + Var(\varepsilon_{ij}) = \sigma^2_b + \sigma^2$$
+$$Var(Y_{ij}) = Var(b_i) + Var(\varepsilon_{ij}) = \sigma^2_b + \sigma^2$$
 
 ## Covariance and Correlation Structure
 
 
 - Then by introducing a subject specific effect of $b_i$ we have induced correlation among repeated measures. 
 - For example consider subject $i$ at times points $j$ and $k$:
-$$Cov(Y_{ij}, Y_{ik}) = \sigma^2_b \Rightarrow Corr(Y_{ij}, Y_{ik}) = \dfrac{\sigma^2_b}{\sigma^2_b + \sigma^2}$$
+$$Cov(Y_{ij}, Y_{ik}) = \sigma^2_b\qquad \Rightarrow \qquad Corr(Y_{ij}, Y_{ik}) = \dfrac{\sigma^2_b}{\sigma^2_b + \sigma^2}$$
 
 
 
@@ -279,7 +279,7 @@ densityplot(~est|coef,groups=method,data=many
 
 - Consider if we have a treatment vs control study
 
-$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + \beta_3 trt_i \beta_4t_{ij}\times trt_i + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
+$$Y_{ij} = \beta_1 + \beta_2 t_{ij} + \beta_3 trt_i +  \beta_4t_{ij}\times trt_i + b_{1i} + b_{2i}t_{ij} + \varepsilon_{ij} \qquad\qquad j=1,\ldots, n_i$$
 - Then for the control group:
 $$Y_{ij} = (\beta_1 + b_{1i} ) + (\beta_2 + b_{2i}) t_{ij} +  \varepsilon_{ij}$$
 
@@ -288,7 +288,7 @@ $$Y_{ij} = (\beta_1 + b_{1i} ) + (\beta_2 + b_{2i}) t_{ij} +  \varepsilon_{ij}$$
 
 - For the treated group we would have:
 
-$$Y_{ij} = (\beta_1 + \beta_3 +  b_{1i} ) + (\beta_2 + \beta_4  b_{2i}) t_{ij} +  \varepsilon_{ij}$$
+$$Y_{ij} = (\beta_1 + \beta_3 +  b_{1i} ) + (\beta_2 + \beta_4 +   b_{2i}) t_{ij} +  \varepsilon_{ij}$$
 
 
 
@@ -678,85 +678,3 @@ Days -0.138
     - determine model structure with comparisons between ML-estimates
     - present final model with REML-estimates
     - `lme4` has some built-in protections to prevent REML-based comparisons, but don't depend on these!
-
-
-## Comparing our Models with ML and LRT
-
-
-```{r, eval=F}
-m1 <- update(model.intercepts, REML=F)
-m2 <- update(model.full, REML=F)
-anova(m1,m2)
-```
-
-
-
-## Comparing our Models with ML and LRT
-
-
-```{r, echo=F}
-m1 <- update(model.intercepts, REML=F)
-m2 <- update(model.full, REML=F)
-anova(m1,m2)
-```
-
-
-# Covariance Structures
-
-
-## Variance Structure
-
-- The simplest structure is below
-$$\begin{bmatrix} \sigma_1^2 & \cdots & \cdots & \vdots\\ \vdots& \sigma_1^2 & \cdots & \vdots\\ \vdots & \cdots & \sigma_1^2 & \vdots\\ \cdots & \cdots & \cdots & \sigma_1^2 \end{bmatrix}$$
-- In this model between time points has 0 covariances. This is not usually the case with longitudinal data. 
-
-## Compound Symmetry 
-
-$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho & \rho \\ & 1.0 & \rho & \rho \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix} = \begin{bmatrix} \sigma_b^2+\sigma_e^2 & \sigma_b^2 & \sigma_b^2 & \sigma_b^2 \\ & \sigma_b^2+\sigma_e^2 & \sigma_b^2 & \sigma_b^2 \\ & & \sigma_b^2+\sigma_e^2 & \sigma_b^2 \\ & & & \sigma_b^2+\sigma_e^2 \end{bmatrix}$$
-
-- The simplest covariance structure that includes within-subject correlated errors is compound symmetry (CS). 
-- Here we see correlated errors between time points within subjects, and note that these correlations are presumed to be the same for each set of times, regardless of how distant in time the repeated measures are made.
-
-## First Order Autoregressive AR(1)
-
-
-
-$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho^2 & \rho^3 \\ & 1.0 & \rho & \rho^2 \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix}$$
-
-
-- The autoregressive (Lag 1) structure considers correlations to be highest for time adjacent times, and a systematically decreasing correlation with increasing distance between time points. 
-- For one subject, the error correlation between time 1 and time 2 would be $p^{t_1−t_2}$ . 
-
-
-## First Order Autoregressive AR(1)
-
-
-
-$$\sigma^2 \begin{bmatrix} 1.0 & \rho & \rho^2 & \rho^3 \\ & 1.0 & \rho & \rho^2 \\ & & 1.0 & \rho \\ & & & 1.0 \end{bmatrix}$$
-
-
-- Between time 1 and time 3 the correlation would be less, and equal to $p^{t_1−t_3}$. 
-- Between time 1 and 4, the correlation is less yet, as $p^{t_1−t_4}$, and so on.
-- Note, however, that this structure is only applicable for evenly spaced time intervals for the repeated measure.
-
-## Spatial Power
-
-$$\sigma^2 \begin{bmatrix} 1.0 & \rho^{\frac{|t_1-t_2|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_4|}{|t_1-t_2|}} \\ & 1.0 & \rho^{\frac{|t_2-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_2-t_4|}{|t_1-t_2|}} \\ & & 1.0 & \rho^{\frac{|t_3-t_4|}{|t_1-t_2|}} \\ & & & 1.0 \end{bmatrix}$$
-
-
-- When time intervals are not evenly spaced, a covariance structure equivalent to the AR(1) is the spatial power (SP(POW)).
-- The concept is the same as the AR(1) but instead of raising the correlation to powers of 1, 2,, 3, … , the correlation coefficient is raised to a power that is actual difference in times (e.g. $|t_1−t_2|$ for the correlation between time 1 and time 2). 
-
-## Spatial Power
-
-$$\sigma^2 \begin{bmatrix} 1.0 & \rho^{\frac{|t_1-t_2|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_1-t_4|}{|t_1-t_2|}} \\ & 1.0 & \rho^{\frac{|t_2-t_3|}{|t_1-t_2|}} & \rho^{\frac{|t_2-t_4|}{|t_1-t_2|}} \\ & & 1.0 & \rho^{\frac{|t_3-t_4|}{|t_1-t_2|}} \\ & & & 1.0 \end{bmatrix}$$
-
-- This method requires having a quantitative expression of the times in the data so that it can be specified for calculation of the exponents in the SP(POW) structure. If an analysis is run wherein the repeated measures are equally spaced in time, the AR(1) and SP(POW) structures yield identical results.
-
-## Unstructured
-
-$$\begin{bmatrix} \sigma_1^2 & \sigma_{12} & \sigma_{13} & \sigma_{14} \\ & \sigma_2^2 & \sigma_{23} & \sigma_{24} \\ & & \sigma_3^2 & \sigma_{34}\\ & & & \sigma_4^2 \end{bmatrix}$$
-
-- The Unstructured covariance structure (UN) is the most complex because it is estimating unique correlations for each pair of time points. 
-- It is not uncommon to find out that you are not able to use this structure. 
-- R will return an error message indicating that there are too many parameters to estimate with the data.

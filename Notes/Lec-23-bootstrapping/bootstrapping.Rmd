@@ -1,0 +1,61 @@
+
+---
+title: "Bootstrapping"
+author: "Adam J Sullivan, PhD"
+date: "04/30/2018"
+output:
+   ioslides_presentation: 
+    widescreen: true
+notes: ''
+link: yes
+slides: yes
+layout: page
+css:  "C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2018/website/php-1511-2511.github.io/Notes/slides.css"
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=F)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+# Boostrapping
+
+## Goal of Statistics
+
+- Make inferences about a population based on data. 
+- How??
+    - Traditional statistical inference is based on the assumption of drawing repeated samples from a population
+    -  A statistic (e.g. the mean or a regression coefficient) is assumed to be fixed in the population. 
+
+## What happens?
+
+
+- If a researcher were to draw multiple samples, the statistic would be different each time. 
+-  The term sampling distribution refers to the distribution that would result from taking multiple samples from a population and re-estimating a statistic on each new set of observations. 
+- Many times the sampling distribution is assumed to be normal, and a statistic is declared to be “significant” if the 95% confidence interval (the area under the curve excluding the smallest and largest 2.5% of values) does not include zero.
+
+
+## What if Assumptions are violated?
+
+- Many times we do not have normally distributed variables. 
+- For example, consider a linear regression, we assume the residuals are normally distributed. 
+- If we do not have normally distributed residuals then our standard errors are off and therefore our individual significance tests for the estimates in our regression are off. 
+
+## In Comes Bootstrapping!
+
+- Bootstrapping is a method of resampling. 
+- Researchers use this to help us understand the variance of different estimates. 
+
+## How does it work? 
+
+- We just discussed using a sample to make inferences about a population. 
+- In Bootstrapping, we will treat our sample data as a population. 
+- Then we will 
