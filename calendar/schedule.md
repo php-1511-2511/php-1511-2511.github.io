@@ -1,7 +1,7 @@
-
+   
 
 <table style="width:100%;">
-    <colgroup>
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -368,7 +368,7 @@
 <td align="left">Week 14</td>
 <td align="left">23-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="https://vimeo.com/266325997/2011fd2a68">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -376,8 +376,8 @@
 <tr class="even">
 <td align="left"></td>
 <td align="left">25-Apr</td>
-<td align="left">Bootstrapping Regression Models</td>
-<td align="left"></td>
+<td align="left">Linear Mixed Effects Models</td>
+<td align="left">COMING SOON</td>
 <td align="left">Read FOX: Chapter 24</td>
 <td align="left"></td>
 <td align="left">Final Steps</td>
@@ -394,7 +394,7 @@
 <tr class="even">
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
-<td align="left">Non Parametric Regression</td>
+<td align="left">Bootstrapping Regression Models</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -403,11 +403,11 @@
 <tr class="odd">
 <td align="left"></td>
 <td align="left">2-May</td>
-<td align="left">Overflow</td>
+<td align="left">Non Parametric Regression</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Final Draft to Peer Review</td>
+<td align="left"><a href="../Project/paper_description">Final Draft to Peer Review</a></td>
 </tr>
 <tr class="even">
 <td align="left">Final Week</td>

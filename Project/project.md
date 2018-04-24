@@ -1,7 +1,7 @@
-
+       
 
 <table>
-        <colgroup>
+ <colgroup>
     <col width="15%" />
     <col width="15%" />
     <col width="50%" />
@@ -137,7 +137,7 @@
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"><a href="../Project/paper_description.md">Paper Description</a></td>
+<td align="left"><a href="../Project/paper_description">Paper Description</a></td>
 </tr>
 <tr class="even">
 <td align="left">5/12/2018</td>
