@@ -170,7 +170,7 @@ Follow the Calendar Below for Deadlines. ***Note: these are in addition to regul
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"><a href="../Project/paper_description.md">Paper Description</a></td>
+<td align="left"><a href="../Project/paper_description">Paper Description</a></td>
 </tr>
 <tr class="even">
 <td align="left">5/12/2018</td>
