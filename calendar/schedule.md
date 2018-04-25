@@ -1,7 +1,7 @@
-   
+
 
 <table style="width:100%;">
- <colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -377,7 +377,7 @@
 <td align="left"></td>
 <td align="left">25-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left">COMING SOON</td>
+<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="">Video</a></td>
 <td align="left">Read FOX: Chapter 24</td>
 <td align="left"></td>
 <td align="left">Final Steps</td>
