@@ -240,4 +240,421 @@ $$\begin{bmatrix} \sigma_1^2 & \sigma_{12} & \sigma_{13} & \sigma_{14} \\ & \sig
 
 - The Unstructured covariance structure (UN) is the most complex because it is estimating unique correlations for each pair of time points. 
 - It is not uncommon to find out that you are not able to use this structure. 
-- R will return an error message indicating that there are too many parameters to estimate with the data.-
+- R will return an error message indicating that there are too many parameters to estimate with the data.
+
+## How can we fit these?
+
+- If we use the `lme4` package and the `lmer()` function then we do not need to suggest a correlation structure for these models. 
+- If we use the `nlme` package and the `lme()` function, then we can specify the covariance structure and compare the models using LRT in order to see which covariance structure works the best. 
+
+
+# Case Study
+
+## Case Study: Predicting College GPA
+
+- We will assess factors predicting college grade point average (GPA). 
+- Each of the 200 students is assessed twice a year for the first three years of their education. 
+- We also have other variables such as job status, sex, high school GPA, whether they have been admitted to a program of choice. 
+
+
+## The Data
+
+```{r, echo=F}
+load('gpa.RData')
+DT::datatable(gpa, 
+              options=list(dom='tp', 
+                           scrollX=T,  
+                           autoWidth=T,
+                           columnDefs = list(list(width = '200px', targets = 1),
+                                             list(width = '100px', targets = 3),
+                                             list(width = '50px', targets = c(0,2,5,7:9)))), 
+              rownames=F,
+              class = 'nowrap|compact')
+```
+
+## Viewing the Data
+
+
+```{r, echo=F}
+set.seed(1234)
+library(tidyverse)
+library(plotly)
+library(ggplot2)
+library(RColorBrewer)
+library(lazerhawk); library(htmltools); library(forcats); library(lme4)
+library(broom); library(pander); library(tidyverse); library(plotly); library(haven)
+gpa_lm = lm(gpa ~ occasion, data=gpa)
+# sample_students = gpa %>% filter(student %in% sample(1:200, 10))
+# occasion_sample = gpa$occasion[gpa$student %in% sample_students$student]
+# gpa_sample = gpa$gpa[gpa$student %in% sample_students$student]
+gpa %>% 
+  modelr::add_predictions(gpa_lm, var='all') %>% 
+  mutate(select = factor(student %in% sample(1:200, 10))) %>% 
+  group_by(student, select) %>% 
+  plot_ly %>% 
+  add_lines(x=~occasion, y=~gpa, opacity=.35, color=~select, colors=rev(palettes$orange$complementary), showlegend=F) %>%
+  add_lines(x=~occasion, y=~all, color=I(palettes$stan_red$stan_red), opacity=.70) %>% 
+  theme_plotly()
+```
+
+
+
+## What do we have?
+
+- All student paths are shown in blue
+- Sample of 10 shown in orange. 
+- Population Regression shown in red. 
+
+
+## What can you see?
+
+```{r, echo=F}
+gpa %>% 
+  modelr::add_predictions(gpa_lm, var='all') %>% 
+  mutate(select = factor(student %in% sample(1:200, 10))) %>% 
+  group_by(student, select) %>% 
+  plot_ly %>% 
+  add_lines(x=~occasion, y=~gpa, opacity=.35, color=~select, colors=rev(palettes$orange$complementary), showlegend=F) %>%
+  add_lines(x=~occasion, y=~all, color=I(palettes$stan_red$stan_red), opacity=.70) %>% 
+  theme_plotly()
+```
+
+## Basic Linear Model
+
+```{r, eval=F}
+gpa_lm = lm(gpa ~ occasion, data=gpa)
+```
+
+## Basic Linear Model
+
+```{r, echo=F}
+gpa_lm = lm(gpa ~ occasion, data=gpa)
+#summary(gpa_lm)
+pander(summary(gpa_lm), round=3)
+gpa_lm_by_group = gpa %>% 
+  split(.$student) %>% 
+  map(~lm(gpa ~ occasion, data=.x)) %>% 
+  map(coef) %>% 
+  do.call(rbind, .) # some day bind_rows will work as advertised
+coef_lm = coef(gpa_lm)
+```
+
+
+## What do we see?
+
+- We can see that on average students begin with a GPA of 2.6
+- Then comparing students 1 semester apart, the student one semester further along would have on average a 0.11 increase in GPA. 
+
+## Problems?
+
+- We do not meet the assumptions for regular linear regression. 
+- We noticed a lot of variability at different time points that might not be captured. 
+
+## Random Intercept Model
+
+
+```{r, eval=F}
+library(lme4)
+gpa_mixed = lmer(gpa ~ occasion + (1|student), data=gpa)
+summary(gpa_mixed)
+```
+
+
+## Random Intercept Model
+
+```{r,echo=F}
+gpa_mixed = lmer(gpa ~ occasion + (1|student), data=gpa)
+
+vcovs = tidy(VarCorr(gpa_mixed)) %>% 
+  select(vcov)  # for icc later
+pander(tidy(gpa_mixed, 'fixed') %>% 
+         mutate_if(is.numeric, arm::fround, digits=3))
+tidy(VarCorr(gpa_mixed)) %>% 
+  select(-var1, -var2) %>% 
+  rename(variance=vcov, sd=sdcor) %>%  
+  mutate_if(is.numeric, arm::fround, digits=3) %>% 
+  pander()
+```
+
+## What do we see?
+
+- We can see that on average students begin with a GPA of 2.6
+- Then comparing students 1 semester apart, the student one semester further along would have on average a 0.11 increase in GPA. 
+- We can see that the standard deviation for student error is 0.252 and the residual standard deviation is 0.241. 
+
+
+
+## Are there differences??
+
+- There are different standard errors. 
+- Intercept standard error increased
+    - this could suggest that we actually underestimated it before and now with the random effects model we can explore that variation more. 
+    
+## Why no p-values?
+
+- There are many problems with p-values in a mixed effects setting. 
+- Read this [site](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#why-doesnt-lme4-display-denominator-degrees-of-freedomp-values-what-other-options-do-i-have)
+- We can get confidence intervals though.
+
+## Confidence intervals
+
+```{r, eval=F}
+confint(gpa_mixed)
+```
+
+
+
+## Confidence Intervals
+
+```{r, echo=F}
+confint(gpa_mixed) %>% 
+  data.frame(rn = rownames(.)) %>% 
+  mutate(rn = c('student', 'residual', 'Intercept', 'occasion')) %>% 
+  select(rn, X2.5.., X97.5..) %>% 
+  rename(' '=rn,
+         `2.5%` = X2.5..,
+         `97.5%` = X97.5..) %>% 
+  pander(justify='lrr', round=3)
+```
+
+
+
+## Random Effects
+
+
+```{r, eval=F}
+ranef(gpa_mixed)$student %>% head(5)
+coef(gpa_mixed)$student %>% head(5)
+```
+
+
+
+## Random Effects
+
+```{r, echo=F}
+ranef(gpa_mixed)$student %>% head(5) %>% arm::fround(digits=3) %>% pander(justify='r')
+```
+
+## Random Effects
+
+```{r,echo=F}
+coef(gpa_mixed)$student %>% head(5) %>% arm::fround(digits=3) %>% pander(justify='rr')
+```
+
+## Random Effects and Confidence Intervals for Each
+
+```{r, echo=F}
+merTools::plotREsim(merTools::REsim(gpa_mixed)) +
+  labs(x='Student', y='Value', title='Plot of Random Effects', subtitle='Interval estimates ') +
+  geom_hline(aes(yintercept=0), color='orange', alpha=.5) +
+  theme_trueMinimal() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
+        panel.background = element_rect(fill='transparent', color=NA),   # apparently all ignored for reasons unknown
+        plot.background = element_rect(fill='transparent', color=NA),
+        strip.background =  element_rect(fill='transparent', color=NA))
+```
+
+
+
+## Predicting GPA
+
+- `re.form=NA` is ignoring the random effects 
+
+```{r, eval=F}
+predict_no_re = predict(gpa_mixed, re.form=NA)
+predict_lm = predict(gpa_lm)
+```
+
+
+## Predicting GPA
+
+```{r, echo=F}
+predict_no_re = predict(gpa_mixed, re.form=NA)
+predict_lm = predict(gpa_lm)
+data_frame(student = as.numeric(gpa$student),
+           lm = predict_lm, 
+           `lmer no re`=predict_no_re) %>% 
+  round(2) %>% 
+  DT::datatable(rownames=F, width=500, options=list(dom='pt'))
+```
+
+
+## Predicting GPA with Mixed Effects added
+
+```{r, echo=F}
+predict_with_re = predict(gpa_mixed)
+data_frame(student = as.numeric(gpa$student),
+           lm = predict_lm, 
+           `lmer no re`=predict_no_re,
+           `lmer with re`=predict_with_re) %>% 
+  round(2) %>% 
+  DT::datatable(rownames=F, width=500, options=list(dom='pt'))
+```
+
+
+## Random Slopes and Intercepts
+
+```{r, eval=F}
+gpa_mixed =  lmer(gpa ~ occasion + (1 + occasion|student), data=gpa)
+summary(gpa_mixed)
+```
+
+
+## Random Slopes and Intercepts
+
+```{r, echo=F}
+gpa_mixed =  lmer(gpa ~ occasion + (1 + occasion|student), data=gpa)
+
+pander(tidy(gpa_mixed, 'fixed', conf.int=T) %>% mutate_if(is.numeric, arm::fround, digits=3))
+
+tidy(VarCorr(gpa_mixed)) %>% 
+  slice(-3) %>%  
+  select(-var2) %>% 
+  rename(variance=vcov, sd=sdcor, re=var1) %>%  
+  mutate_if(is.numeric, arm::fround, digits=3) %>% 
+  mutate_all(function(x) ifelse(is.na(x), '', x)) %>%
+  data.frame %>% 
+  pander()
+```
+
+
+## What do we see?
+
+- We can see that on average students begin with a GPA of 2.6
+- Then comparing students 1 semester apart, the student one semester further along would have on average a 0.11 increase in GPA. 
+- We can see that the standard deviation for student error is 0.213 and the residual standard deviation is 0.206 and the standard deviation of the occasion is 0.067. 
+
+
+
+## Are there differences??
+
+- There are different standard errors than other mixed model but same as linear. 
+
+
+## Comparison Again to Separate Regressiond
+
+```{r, echo=F}
+gint = data_frame(Mixed=coef(gpa_mixed)$student[,1], Separate=gpa_lm_by_group[,1]) %>% 
+  gather(key=Model, value=Intercept) %>% 
+  ggplot(aes(x=Intercept)) +
+  geom_density(aes(color=Model, fill=Model), alpha=.25) +
+  scale_fill_manual(values=c(palettes$orange$orange, palettes$orange$complementary[2])) +
+  ggtitle('Intercepts') +
+  labs(x='', y='') +
+  xlim(c(1.5,4)) +
+  theme_trueMinimal() +
+  theme(
+    legend.key.size=unit(2, 'mm'),
+    legend.title=element_text(size=8),
+    legend.text=element_text(size=8),
+    legend.box.spacing=unit(0, 'in'),
+    legend.position=c(.75,.75))
+gslopes = data_frame(Mixed=coef(gpa_mixed)$student[,2], Separate=gpa_lm_by_group[,2]) %>% 
+  gather(key=Model, value=Occasion) %>% 
+  ggplot(aes(x=Occasion)) +
+  geom_density(aes(color=Model, fill=Model), alpha=.25, show.legend=F) +
+  scale_fill_manual(values=c(palettes$orange$orange, palettes$orange$complementary[2])) +
+  ggtitle('Slopes for occasion') +
+  labs(x='', y='') +
+  xlim(c(-.2,.4)) +
+  theme_trueMinimal() 
+
+gridExtra::grid.arrange(gint, gslopes, ncol=2)
+```
+
+
+
+## Visualizing Model Differences
+
+```{r, echo=F}
+gpa %>% 
+  modelr::add_predictions(gpa_lm, var='lm') %>% 
+  modelr::add_predictions(gpa_mixed, var='mixed') %>% 
+  group_by(student) %>% 
+  plot_ly %>% 
+  add_lines(x=~occasion, y=~lm, opacity=1, color=I('#ff5500'), name='Standard\nRegression') %>%
+  add_lines(x=~occasion, y=~mixed, opacity=.2, color=I('#03b3ff'), name='Mixed\nModel') %>%
+  theme_plotly()
+```
+
+## Further Differences
+
+```{R,echo=F}
+gpa_lm_fits_by_group = gpa %>% 
+  split(.$student) %>% 
+  map(~lm(gpa ~ occasion, data=.x)) %>% 
+  map(fitted) %>% 
+  unlist
+going_down_now = factor(rep(gpa_lm_by_group[,'occasion']<0, e=6), labels=c('Upward', 'Downward'))
+gpa %>% 
+  modelr::add_predictions(gpa_lm, var='lm') %>% 
+  mutate(stufit=gpa_lm_fits_by_group) %>% 
+  group_by(student) %>% 
+  plot_ly %>% 
+  add_lines(x=~occasion, y=~lm, opacity=1, color=I(palettes$orange$orange), name='Standard\nRegression') %>%
+  add_lines(x=~occasion, y=~stufit, color=~going_down_now, opacity=.2, color=I(palettes$orange$complementary[2]), name='Trend') %>%
+  theme_plotly()
+```
+
+
+
+## Which Model Should we use?
+
+```{r, eval=F}
+
+m1 <- lmer(gpa ~ occasion + (1|student), data=gpa, REML=F)
+m2 <- lmer(gpa ~ occasion + (1 + occasion|student), data=gpa, REML=F)
+
+anova(m1,m2)
+```
+
+
+## Which Model Should we use?
+
+```{r, echo=F}
+
+m1 <- lmer(gpa ~ occasion + (1|student), data=gpa, REML=F)
+m2 <- lmer(gpa ~ occasion + (1 + occasion|student), data=gpa, REML=F)
+
+anova(m1,m2)
+```
+
+
+
+## Random Effects and Confidence Intervals for Each
+
+```{r, echo=F}
+merTools::plotREsim(merTools::REsim(gpa_mixed)) +
+  labs(x='Student', y='Value', title='Plot of Random Effects', subtitle='Interval estimates ') +
+  geom_hline(aes(yintercept=0), color='orange', alpha=.5) +
+  theme_trueMinimal() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
+        panel.background = element_rect(fill='transparent', color=NA),   # apparently all ignored for reasons unknown
+        plot.background = element_rect(fill='transparent', color=NA),
+        strip.background =  element_rect(fill='transparent', color=NA))
+```
+
+
+
+## Predictions
+
+```{r, echo=F}
+gpa_mixed1 <- lmer(gpa ~ occasion + (1|student), data=gpa)
+gpa_mixed2 <- lmer(gpa ~ occasion + (1 + occasion|student), data=gpa)
+
+
+predict_with_re1 = predict(gpa_mixed1)
+predict_with_re2 = predict(gpa_mixed2)
+data_frame(student = as.numeric(gpa$student),
+           lm = predict_lm, 
+           `Random Int`=predict_with_re1,
+           `Random Int-Slope`=predict_with_re2) %>% 
+  round(2) %>% 
+  DT::datatable(rownames=F, width=500, options=list(dom='pt'))
+```
