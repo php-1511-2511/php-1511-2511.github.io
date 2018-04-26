@@ -1,0 +1,226 @@
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(cache=F)
+```
+
+### Homework Guidelines:
+
+Please read [Homework Guidelines](../homework/guidelines.html). You must follow these guidelines. 
+
+
+### Turning the Homework in:
+
+*Please turn the homework in through canvas. You may use a pdf, html or word doc file to turn the assignment in.*
+
+[PHP 1511 Assignment Link](https://canvas.brown.edu/courses/1075279/assignments/7690890)
+
+[PHP 2511 Assignment Link](https://canvas.brown.edu/courses/1075280/assignments/7690891)
+
+
+***For the R Markdown Version of this assignment: [HW4.Rmd](../homework/hw4.Rmd)***
+
+
+## Part 1: Both PHP 1511 and 2511 
+
+We will be considering the Titanic Dataset. The variables in this dataset are:
+
+--------------------------------------------------------
+variable    Description
+----------- ------------------------------------------------
+survival	  Survival	0 = No, 1 = Yes
+
+pclass	    Ticket class	1 = 1st, 2 = 2nd, 3 = 3rd
+
+sex	        Sex
+
+Age	        Age in years	
+
+sibsp	      # of siblings / spouses aboard the Titanic
+
+parch	      # of parents / children aboard the Titanic	
+
+ticket	    Ticket number	
+
+fare	      Passenger fare	
+
+cabin	      Cabin number	
+
+embarked	  Port of Embarkation	C = Cherbourg, Q = Queenstown, S = Southampton
+-------------------------------------------------------------
+
+You can read this data in with the following code:
+
+```{r}
+load("titanic.RData")
+```
+
+
+Your goal will be to consider a logistic regression to model Survival. The thought behind survival was that it was about women and children first. Your goal will be to model this relationship and to understand what else might have played a role in survival. 
+
+1. Display through tables or plots:
+    a. Survival by age
+    b. Survival by sex
+    c. Survival by embarked
+    d. Survival by pclass
+    Then comment on what you notice about these relationships. 
+```{r}
+summary(titanic[c("age","sex","embarked","pclass")])
+
+
+#draw plots
+#boxplot for age
+boxplot(age ~ survived, data = titanic, main = "boxplot for age vs. survived", ylab = "age", xlab = "survived")
+
+#tables and barplots for sex, embarked and pclass
+t1 <- table(titanic[c("survived","sex")])
+barplot(t1, xlab = "sex", ylab = "# of observations",legend = T)
+t1
+t2 <- table(titanic[c("survived","embarked")])
+barplot(t2, xlab = "embarked", ylab = "# of observations",legend = T)
+t2
+t3 <- table(titanic[c("survived","pclass")])
+barplot(t3, xlab = "pclass", ylab = "# of observations",legend = T)
+t3
+
+```
+
+2. Build a logistic regression model with main effects only. Start with a table of univariate models and display a final multiple variable model. Include:
+    - A few sentences on what you notice in simple regressions.
+    - A sentence or two about why you chose your multiple model.
+    - Does your model suggest that survival was about women and children? 
+```{r}
+#delete the observation with blank information so that we have the right reference group
+titanic <- titanic[which(titanic$sex %in% c("female","male")),]
+titanic <- titanic[which(titanic$embarked %in% c("C","Q","S")),]
+#factorize pclass
+titanic$pclass <- as.factor(titanic$pclass)
+
+#univariate models
+library(broom)
+result <- c()
+for (var in c("age","sex","pclass","sibsp","parch","fare","embarked")) {
+  f <- as.formula(paste0("survived ~", var))
+  m <- glm(f, data = titanic, family = binomial(link = "logit"))
+  r <- tidy(m, exponentiate = T, conf.int = T)[-1,-c(3,4)]
+  result <- rbind(result,r)
+}
+knitr::kable(result, row.names = F)
+```
+
+**In simple regression:** 
+
+$sibsp$ and $age$ is not significant at 0.05 level. The other variables are all significant at the 0.05 level. People with more parents and children tend to have higher odds of survival comparing to people with less parents and children. Also, people pay higher fare tend to have higher odds of survival. People embarked at Queenstown and Southampton have lower odds of survival comparing to people embarked at cherbourg. Male has lower odds to survive than female. People in 2 and 3 pclass have lower odds to survive comparing to people in 1 pclass.
+
+**Multiple regression:** We include variables that are significant at 0.05 level in the univariate regression. Although $age$ is not significant at 0.05 level in the univariate model, it is significant at 0.1 level. Thus, we include $age$ as well to see if it become more significant in the multiple regression. 
+```{r}
+#multiple model 
+titanic <- titanic[!is.na(titanic$fare),]
+m0 <- glm(survived ~ age + sex + pclass + parch + fare + embarked, data = titanic, family = binomial(link = "logit"))
+tidy(m0, exponentiate = T, conf.int = T)[-c(3,4)]
+```
+
+After the first fitting, $parch$ and $fare$ become insignificant in the multiple regression model. We delete these two variables and fit the model for the second time. And we compare the second model with the first model using likelihood ratio test. 
+```{r}
+m1 <- glm(survived ~ age + sex + pclass + embarked, data = titanic, family = binomial(link = "logit"))
+anova(m1, m0, test = "Chisq")
+```
+
+The result of the LRT shows that the first model is not better than the second model. So, our final multiple model would be the second model: 
+
+```{r}
+tidy(m1, exponentiate = T, conf.int = T)[-c(3,4)]
+```
+
+
+**survival was about women and children?** From our final model we can tell that: 
+
+On average, male have an odds of survival 0.079 times that of female. And the 95%CI also indicates this result is significant at 0.05 level. Thus, male have much less likely to survive comparing to female. Survival was about women.
+
+On average, one unit increase in age results in an odds of survival decrease by 0.03 times. And the 95%CI also indicates this result is significant at 0.05 level. The older the less likely for a people to survive. Thus, Survival was about age.
+
+To see more clearly if survival was about children. We divide people into age groups(<18:children, >=18:adult) and fit another model:
+```{r}
+#to look into if children survived more. create age groups
+titanic$age.group <- "children"
+titanic$age.group[which(titanic$age >= 18)] <- "adult"
+titanic$age.group[is.na(titanic$age)] <- NA
+
+m2 <- glm(survived ~ age.group + sex + pclass + embarked, data = titanic, family = binomial(link = "logit"))
+tidy(m2, exponentiate = T, conf.int = T)[-c(3,4)]
+```
+
+The result shows that children have an odds of survival 2.45 times that of adults. And the 95%CI also indicates this result is significant at 0.05 level. Thus, children are much more likely to survive comparing to adults. Survival was about children.
+
+
+3. Is this model well calibrate? Explain and display results or a figure to back your explanations. 
+```{r}
+titanic <- titanic[!is.na(titanic$age),]
+library(ResourceSelection)
+hoslem.test(titanic$survived, fitted(m1), g=10)
+```
+
+The test result shows that the result is not well calibrate.
+
+4. Does this model discriminate well? Explain and display results or a figure to back your explanations. 
+```{r}
+library(ggplot2)
+library(ROCR)
+prob <- predict(m1,titanic)
+pred <- prediction(prob, titanic$survived)
+perf <- performance(pred, "tpr", "fpr")
+auc <- performance(pred, measure = "auc")@y.values[[1]]
+
+roc.data <- data.frame(fpr = unlist(perf@x.values), tpr = unlist(perf@y.values), model = "GLM")
+
+ggplot(roc.data, aes(x = fpr, ymin = 0, ymax = tpr)) + 
+  geom_ribbon(alpha = 0.2) + 
+  geom_abline(intercept = 0, slope = 1, colour = "gray") +
+  geom_line(aes(y = tpr)) +
+  ggtitle(paste0("ROC Curve w/AUC=", auc))
+```
+
+From the plot above, we can tell that $AUC = 0.84$, which means that the model discriminates well.
+
+## Part 2: 2511 Only
+
+
+5. Build a Logistic regression model exploring the interaction between sex and class by including the interaction into your multiple regression model above. Include:
+    - a sentence or two on how this changes your above results.
+    - a sentence or two on what this tells you about sex and class. 
+    - interpret the survival for females and then interpret the survival for males. 
+```{r}
+m3 <- glm(survived ~ age + sex*pclass + embarked, data = titanic, family = binomial(link = "logit"))
+tidy(m3, exponentiate = T, conf.int = T)[-c(3,4)] 
+```
+From this model, we can see given the same age, port of embarkation, the odds ratio of survival comparing male and female are different by their ticket class. In the previous model, the odd ratio of survival between male and female with either ticket class 2 or class 3 is 0.07. In this model, for people with ticket class 2, the male have an odd of suvival 0.0207 $\times$ 0.8978=0.18 times that of female. For people with ticket class 3, the male have an odd of survival 0.0207 $\times$ 11.5522=0.23 times that of female. 
+
+6. How is the calibration and discrimination of this model?
+```{r}
+#calibration
+hoslem.test(titanic$survived, fitted(m3), g=10)
+```
+
+The model is well calibrated.
+
+```{r}
+#discrimination
+library(ggplot2)
+library(ROCR)
+prob <- predict(m3,titanic)
+pred <- prediction(prob, titanic$survived)
+perf <- performance(pred, "tpr", "fpr")
+auc <- performance(pred, measure = "auc")@y.values[[1]]
+
+roc.data <- data.frame(fpr = unlist(perf@x.values), tpr = unlist(perf@y.values), model = "GLM")
+
+ggplot(roc.data, aes(x = fpr, ymin = 0, ymax = tpr)) + 
+  geom_ribbon(alpha = 0.2) + 
+  geom_abline(intercept = 0, slope = 1, colour = "gray") +
+  geom_line(aes(y = tpr)) +
+  ggtitle(paste0("ROC Curve w/AUC=", auc))
+```
+
+From the plot above, we can tell that $AUC = 0.84$, which means that the model discriminates well.
