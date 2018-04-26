@@ -1,7 +1,7 @@
-
+    
 
 <table style="width:100%;">
-    <colgroup>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -331,7 +331,7 @@
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 9: EDA with Longitudinal Data</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -358,8 +358,8 @@
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 10: Linear Mixed Effects Models</td>
-<td align="left"></td>
+<td align="left">Lab 9: Linear Mixed Effects Models</td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -379,7 +379,7 @@
 <td align="left">Linear Mixed Effects Models</td>
 <td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="">Video</a></td>
 <td align="left">Read FOX: Chapter 24</td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw6.html">HW5</a></td>
 <td align="left">Final Steps</td>
 </tr>
 <tr class="odd">
@@ -413,7 +413,7 @@
 <td align="left">Final Week</td>
 <td align="left">7-May</td>
 <td align="left"><strong>FINAL EXAM IN CLASS</strong></td>
-<td align="left"></td>
+<td align="left"><a href="../homework/final_review.html">Final Review Questions</a> <a href="../homework/final_review_output.html">Final Review Output</a> <a href="../homework/final_review_sol.html">Final Review Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
