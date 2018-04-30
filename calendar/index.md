@@ -3,7 +3,6 @@ layout: page
 title: Calendar
 ---
 
-
     
 
 <table style="width:100%;">
@@ -365,7 +364,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="">Video</a></td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> [Video]</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -383,7 +382,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">25-Apr</td>
 <td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
 <td align="left">Read FOX: Chapter 24</td>
 <td align="left"><a href="../homework/hw6.html">HW5</a></td>
 <td align="left">Final Steps</td>
@@ -401,7 +400,7 @@ title: Calendar
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
 <td align="left">Bootstrapping Regression Models</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>

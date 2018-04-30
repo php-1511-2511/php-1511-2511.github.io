@@ -23,6 +23,11 @@ opts_chunk$set(cache=F)
 opts_chunk$set(  tidy=F,size="small")
 opts_chunk$set(tidy.opts=list(width.cutoff=60))
 options(digits = 3, scipen = 3)
+library(ggplot2)
+library(tidyverse)
+library(broom)
+library(modelr)
+library(tidyr)
 ```
 
 
@@ -58,4 +63,336 @@ options(digits = 3, scipen = 3)
 
 - We just discussed using a sample to make inferences about a population. 
 - In Bootstrapping, we will treat our sample data as a population. 
-- Then we will 
+- Then we will draw many sample from this new "population."
+
+## How does it work?
+
+- For each sample, we calculate our test statistic and save the information. 
+- If we do this say 500 times, we have 500 estimates of our test statistic. 
+- We then can get an idea of how variable our test statistic is. 
+
+## Example
+
+- Let's simulate a dataset so we know what the truth is.
+
+```{r}
+truth <- function(x){
+  2.34 + 2.68*x - 3.42*x^2
+}
+
+noise <- function(x){
+  rnorm(length(x), sd=0.1)
+}
+```
+
+## Example Data
+
+```{r}
+set.seed(124)
+data <- data_frame(
+  x = runif(n=100, min=0, max = 1),
+  y = truth(x) + noise(x) 
+) 
+```
+
+
+
+## Example Data
+
+```{r, echo=F}
+data %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+
+## Example Data: Graph
+
+```{r, eval=F}
+ggplot(data, aes(x = x, y = y)) +
+  stat_function(fun = truth, color = "black", alpha = 0.7, linetype = "dashed") +
+  geom_point(alpha = 0.6)
+```
+
+
+
+## Example Data: Graph
+
+```{r, echo=F}
+ggplot(data, aes(x = x, y = y)) +
+  stat_function(fun = truth, color = "black", alpha = 0.7, linetype = "dashed") +
+  geom_point(alpha = 0.6)
+```
+
+
+## Our Linear Model
+
+```{r, eval=F}
+library(broom)
+mod <- lm(y~poly(x, 2, raw = TRUE), data)
+tidy(mod, conf.int=T)[,-c(3:4)]
+```
+
+
+
+## Our Linear Model
+
+```{r, echo=F}
+library(broom)
+mod <- lm(y~poly(x, 2, raw = TRUE), data)
+tidy(mod, conf.int=T)[,-c(3:4)]
+```
+
+
+## Our Linear Model
+
+```{r, echo=F}
+ggplot(data, aes(x = x, y = y)) +
+  geom_smooth(method="lm") + 
+  stat_function(fun = truth, color = "black", alpha = 0.7, linetype = "dashed") +
+  geom_point(alpha = 0.6)
+```
+
+
+
+
+## Bootstrapping
+
+- We first create 10,000 new datasets
+
+```{r}
+data_bootstrap <- 
+  data %>%
+  modelr::bootstrap(10000)
+```
+
+
+
+## Boostrapping
+
+```{r, echo=F}
+data_bootstrap %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+## Running the `lm()` on Our Bootstrap
+
+- We first need to create a function that we wish to run
+
+```{r}
+fn_mod <- function(data){
+  lm(y~poly(x, 2, raw = TRUE), data=data)
+}
+```
+
+
+## Running the `lm()` on Our Bootstrap
+
+- Then we run the `fn_mod` over the bootstraps
+
+```{r}
+data_bootstrap_model <- 
+  data_bootstrap %>%
+  mutate(model = map(strap, fn_mod)) 
+```
+
+
+
+
+## Running the `lm()` on Our Bootstrap
+
+```{r, echo=F}
+data_bootstrap_model %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+## Getting the Parameters
+
+- we use `tidy()` from the `broom` package. 
+
+```{r}
+data_bootstrap_param <-
+  data_bootstrap_model %>%
+  mutate(param = map(model, tidy)) %>%
+  select(.id, param) %>%
+  unnest()
+```
+
+## Getting the Parameters
+
+```{r, echo=F}
+data_bootstrap_param %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+
+## Distribution Plots
+
+```{r, eval=F}
+data_bootstrap_param %>%
+  ggplot(aes(x = estimate)) + 
+  geom_histogram(binwidth = 0.05) +
+  facet_grid(term ~ ., scales = "free_x")
+```
+
+
+
+## Distribution Plots
+
+```{r, echo=F}
+data_bootstrap_param %>%
+  ggplot(aes(x = estimate)) + 
+  geom_histogram(binwidth = 0.05) +
+  facet_grid(term ~ ., scales = "free_x")
+```
+
+
+
+
+
+## Summarizing the Results
+
+```{r}
+data_bootstrap_param_mean <- 
+  data_bootstrap_param %>%
+  group_by(term) %>%
+  summarize(estimate_mean = mean(estimate)) 
+```
+
+
+
+
+
+
+
+## Summarizing the Results
+
+
+```{r, echo=F}
+data_bootstrap_param_mean %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+
+
+## Interquartile Range of Estimates
+
+```{r, eval=F}
+data_bootstrap_param %>%
+  group_by(term) %>%
+  summarize(
+    q_25 = quantile(estimate, 0.25),
+    median = median(estimate, 0.5),
+    q_75 = quantile(estimate, 0.75)
+  )
+```
+
+
+
+
+## Interquartile Range of Estimates
+
+```{r, echo=F}
+data_bootstrap_param %>%
+  group_by(term) %>%
+  summarize(
+    q_25 = quantile(estimate, 0.25),
+    median = median(estimate, 0.5),
+    q_75 = quantile(estimate, 0.75)
+  )
+```
+
+
+
+## Confidence Intervals
+
+```{r, eval=F}
+data_bootstrap_param %>%
+  group_by(term) %>%
+  summarize(
+    lower_95 = quantile(estimate, 0.025),
+    upper_95 = quantile(estimate, 0.975)
+  )
+```
+
+
+
+## Confidence Intervals
+
+```{r, echo=F}
+data_bootstrap_param %>%
+  group_by(term) %>%
+  summarize(
+    lower_95 = quantile(estimate, 0.025),
+    upper_95 = quantile(estimate, 0.975)
+  )
+```
+
+
+
+## Add Model Predictions to Plot of Original Data
+
+```{r}
+library(tidyr)
+library(modelr)
+grid <- 
+  data %>% 
+  expand(x = seq_range(x, 20))
+
+boot_pred <- 
+  data_bootstrap_model %>% 
+  transmute(
+    .id,
+    data = map2(list(grid), model, add_predictions, var = "y")
+  ) %>%
+  unnest() 
+```
+
+
+## Add Model Predictions to Plot of Original Data
+
+```{r, echo=F}
+grid %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+
+## Add Model Predictions to Plot of Original Data
+
+```{r, echo=F}
+
+
+boot_pred %>%
+  DT::datatable(rownames=F, width=500)
+```
+
+## Plot Data and Model Estimates
+
+```{r,eval=F}
+ggplot(data = data, mapping = aes(x = x, y = y)) +
+  geom_line(
+    data = boot_pred %>% filter(as.numeric(.id) < 3000), 
+    aes(group = .id), 
+    color = "blue", 
+    alpha = 0.002
+  ) +
+  stat_function(fun = truth, color = "black", linetype = "dashed", size = 1) +
+  geom_point(data = data, alpha = 0.5) 
+```
+
+
+
+
+
+## Plot Data and Model Estimates
+
+```{r,echo=F}
+ggplot(data = data, mapping = aes(x = x, y = y)) +
+  geom_line(
+    data = boot_pred %>% filter(as.numeric(.id) < 3000), 
+    aes(group = .id), 
+    color = "blue", 
+    alpha = 0.002
+  ) +
+  stat_function(fun = truth, color = "black", linetype = "dashed", size = 1) +
+  geom_point(data = data, alpha = 0.5) 
+```
