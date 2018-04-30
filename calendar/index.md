@@ -3,9 +3,10 @@ layout: page
 title: Calendar
 ---
 
+   
 
-<table>
-    <colgroup>
+<table style="width:100%;">
+ <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -14,7 +15,6 @@ title: Calendar
     <col width="25%" />
     <col width="10%" />
     </colgroup>
-
 <thead>
 <tr class="header">
 <th align="left">Week</th>
@@ -361,10 +361,46 @@ title: Calendar
 <td align="left">Peer Review 2 Due</td>
 </tr>
 <tr class="even">
-<td align="left">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Lab 9: Linear Mixed Effects Models</td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> [Video]</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Week 14</td>
+<td align="left">23-Apr</td>
+<td align="left">Linear Mixed Effects Models</td>
+<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="https://vimeo.com/266325997/2011fd2a68">Video</a></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">25-Apr</td>
+<td align="left">Linear Mixed Effects Models</td>
+<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
+<td align="left">Read FOX: Chapter 24</td>
+<td align="left"><a href="../homework/hw6.html">HW5</a></td>
+<td align="left">Final Steps</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Lab 11: Advanced Data Techniques</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Week 15</td>
+<td align="left">30-Apr</td>
+<td align="left">Bootstrapping Regression Models</td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -373,7 +409,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> [Video]</td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -409,75 +445,12 @@ title: Calendar
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
 <td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> [Video]</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">=======</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="">Video</a></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">Week 14</td>
-<td align="left">23-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="https://vimeo.com/266325997/2011fd2a68">Video</a></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">25-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="">Video</a></td>
-<td align="left">Read FOX: Chapter 24</td>
-<td align="left"><a href="../homework/hw6.html">HW5</a></td>
-<td align="left">Final Steps</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Lab 11: Advanced Data Techniques</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Week 15</td>
-<td align="left">30-Apr</td>
-<td align="left">Bootstrapping Regression Models</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">&gt;&gt;&gt;&gt;&gt;&gt;&gt; 0de7c903b07146e4a6af89111ba987593c3a9be7</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
 <td align="left"></td>
 <td align="left">2-May</td>
 <td align="left">Non Parametric Regression</td>
@@ -486,7 +459,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"><a href="../Project/paper_description">Final Draft to Peer Review</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Final Week</td>
 <td align="left">7-May</td>
 <td align="left"><strong>FINAL EXAM IN CLASS</strong></td>
@@ -495,7 +468,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"></td>
 <td align="left">12-May</td>
 <td align="left"><strong>Project Paper Due</strong></td>
