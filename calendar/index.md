@@ -5,8 +5,10 @@ title: Calendar
 
     
 
+
+
 <table style="width:100%;">
-<colgroup>
+    <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -400,7 +402,7 @@ title: Calendar
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
 <td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -434,3 +436,4 @@ title: Calendar
 </tr>
 </tbody>
 </table>
+
