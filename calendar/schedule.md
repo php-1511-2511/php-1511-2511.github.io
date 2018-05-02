@@ -1,7 +1,7 @@
-   
+  
 
 <table style="width:100%;">
- <colgroup>
+  <colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -385,7 +385,7 @@
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 11: Advanced Data Techniques</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -440,7 +440,7 @@
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
 <td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> [Video]</td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267496355/2b715e7d4c">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -449,7 +449,7 @@
 <td align="left"></td>
 <td align="left">2-May</td>
 <td align="left">Non Parametric Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/Lec-24-nonparametric/nonparametric.pdf">PDF</a> <a href="../Notes/Lec-24-nonparametric/nonparametric.html">HTML</a> <a href="">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"><a href="../Project/paper_description">Final Draft to Peer Review</a></td>

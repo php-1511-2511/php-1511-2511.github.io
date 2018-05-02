@@ -1,11 +1,11 @@
        
-
 <table>
  <colgroup>
     <col width="15%" />
     <col width="15%" />
     <col width="50%" />
     </colgroup>
+
 <thead>
 <tr class="header">
 <th align="left">Deadline</th>
@@ -125,23 +125,23 @@
 <td align="left">All of the previous files as well.</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Rough Draft of Paper</td>
+<td align="left">5/2/2018</td>
+<td align="left">Rough Draft</td>
+<td align="left">Send your Rough draft to the peer review groups.</td>
 </tr>
 <tr class="even">
-<td align="left">5/2/2018</td>
-<td align="left">Final Draft</td>
-<td align="left">Send your final draft to the peer review groups.</td>
-</tr>
-<tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"><a href="../Project/paper_description">Paper Description</a></td>
 </tr>
+<tr class="odd">
+<td align="left">5/9/2018</td>
+<td align="left">Final Peer Review Due</td>
+<td align="left"></td>
+</tr>
 <tr class="even">
 <td align="left">5/12/2018</td>
-<td align="left">Final Peer Reviews</td>
+<td align="left">Final Paper Due</td>
 <td align="left">Final Review of the Papers</td>
 </tr>
 <tr class="odd">
