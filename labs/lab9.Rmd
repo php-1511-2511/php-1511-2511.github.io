@@ -1,7 +1,7 @@
 ---
-title: "Lab 10: Repeated Measures Analysis "
+title: "Lab 9: Repeated Measures Analysis "
 author: ""
-date: "April 27-28, 2016"
+date: ""
 output: html_document
 ---
 

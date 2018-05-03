@@ -1,7 +1,7 @@
-  
+    
 
 <table style="width:100%;">
-  <colgroup>
+<colgroup>
     <col width="8%" />
     <col width="8%" />
     <col width="29%" />
@@ -181,7 +181,7 @@
 <td align="left">Logistic/Poisson Regression</td>
 <td align="left"><a href="../Notes/Lec-12-poisson/poisson.pdf">PDF</a> <a href="../Notes/Lec-12-poisson/poisson.html">HTML</a> <a href="https://vimeo.com/259903459/dda7398718">Video</a></td>
 <td align="left">Read FOX: Chapter 15</td>
-<td align="left"><a href="../homework/hw4.html">HW4</a></td>
+<td align="left"><a href="../homework/hw4.html">HW4</a> <a href="../homework/hw4_sol.html">Solutions</a></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -280,7 +280,7 @@
 <td align="left">Multinomial Regression</td>
 <td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a> <a href="https://vimeo.com/263158300/29f6c8b0be">Video</a></td>
 <td align="left"></td>
-<td align="left"><a href="../homework/hw5.html">HW5</a></td>
+<td align="left"><a href="../homework/hw5.html">HW5</a> <a href="../homework/hw5_sol.html">Solutions</a></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
@@ -359,7 +359,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> [Video]</td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -379,7 +379,7 @@
 <td align="left">Linear Mixed Effects Models</td>
 <td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
 <td align="left">Read FOX: Chapter 24</td>
-<td align="left"><a href="../homework/hw6.html">HW5</a></td>
+<td align="left"><a href="../homework/hw6.html">HW6</a></td>
 <td align="left">Final Steps</td>
 </tr>
 <tr class="odd">
@@ -395,7 +395,7 @@
 <td align="left">Week 15</td>
 <td align="left">30-Apr</td>
 <td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267798749/edee6feb95">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -404,43 +404,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="">Video</a></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">Week 14</td>
-<td align="left">23-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="https://vimeo.com/266325997/2011fd2a68">Video</a></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">25-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
-<td align="left">Read FOX: Chapter 24</td>
-<td align="left"><a href="../homework/hw6.html">HW5</a></td>
-<td align="left">Final Steps</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Lab 11: Advanced Data Techniques</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Week 15</td>
-<td align="left">30-Apr</td>
-<td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267496355/2b715e7d4c">Video</a></td>
+<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -449,7 +413,7 @@
 <td align="left"></td>
 <td align="left">2-May</td>
 <td align="left">Non Parametric Regression</td>
-<td align="left"><a href="../Notes/Lec-24-nonparametric/nonparametric.pdf">PDF</a> <a href="../Notes/Lec-24-nonparametric/nonparametric.html">HTML</a> <a href="">Video</a></td>
+<td align="left"><a href="../Notes/Lec-24-nonparametric/nonparametric.pdf">PDF</a> <a href="../Notes/Lec-24-nonparametric/nonparametric.html">HTML</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"><a href="../Project/paper_description">Final Draft to Peer Review</a></td>
