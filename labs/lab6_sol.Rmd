@@ -1,0 +1,439 @@
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=F)
+```
+
+
+#R Studio Server
+Given the data sets that we have been working with and we will continue to work with, I have gone ahead and set up user accounts for everyone in the class. This will allow you to work on homeworks from the web. 
+
+
+##Getting Started
+
+1. Open up your favorite Web Browser.
+2. Go to the [RStudio Server](r.sullivanstatistics.com)
+3. Login
+    a. Your login is your first intial then last name. For example:
+        + My username is asullivan
+    b. Your password is your username
+4. Congratulations, you are now using the RStudio Server
+
+Notice that this server looks exactly like your Rstudio. The benefit is that jobs will run on this server even if you close your computer or close your browser. This means you can start working on your homework and click kint. Shut your browser down and come back to it later. 
+
+
+## First steps
+
+1. Change your password
+
+In order to change your password follow these steps:
+
+- Click on Tools
+- Click on Shell
+
+You will see this popup:
+```
+~$
+```
+
+- Type passwd and hit enter
+- This will prompt you for the current password and then you can change it to anything you like. 
+
+2. Load in your lab markdown
+
+- In the right bottom corner is the files list. 
+    + Click on upload and select the lab 6 markdown file. 
+    + You may need to hit the refresh button on the right hand side of the screen to see the file. 
+    + Click on the lab and the markdown will open. 
+    
+## Using the RStudio Server
+
+When using this server you essentially have to wait your turn from when code is submitted. It should allow almost 10 people at a time to run a big data file but with this in mind, you need to be careful how you knit it. 
+
+***TIPS***
+
+- For the homework and lab use a cache to help quicker knitting:
+
+```{R, cache=TRUE}
+
+```
+
+ - With this command R will knit it and store the information so it does not need to run through that again. If you do not do this you will end up bogging down the server for other people and I may force your session to quit. 
+
+
+- Once you are done with your lab or homework you are going to want to turn them in. Follow these steps to export your work:
+    + Check the box next to the file(s) you wish you download. 
+    + click the wheel that says *More*
+    + Then click ***Export...***
+- Congratulations you have completed your homework and did not need to leave your laptop running for hours to do so. 
+
+
+## The Data
+
+We will begin a series of labs and homework assignments surrounding how to analyze data from the Behavioral Risk Factor Surveillance System (BRFSS). This is a national health-related telephone survey. There are more than 400,000 interviews done every year from all 50 states and the district of Columbia. To learn more about this survey please go to their website: [Behavioral Risk Factor Surveillance System](http://www.cdc.gov/brfss/). 
+
+This will give everyone a chance to explore a very large, messy and real data set. The tools you will gain from this will be the knowledge of how to take a messy dataset, clean it, and then use it to answer regressions.
+
+
+* [Codebook](http://www.cdc.gov/brfss/annual_data/2014/pdf/codebook14_llcp.pdf)
+* [Data](https://drive.google.com/file/d/0B8CsRLdwqzbzd1RrRWp2RnBGTDg/view?usp=sharing)
+* [Variable Layout](http://www.cdc.gov/brfss/annual_data/2014/llcp_varlayout_14_onecolumn.html)
+
+
+We will not list all the variables for this but instead will give you a copy of the question book that was used as well as the codebook which lists, the question, the variable name and what the data means. 
+
+
+## Access to Healthcare
+
+Our question is to look over this data and try and understand access to health care in the US. Many disparities persist and to best inform ourselves as well as policies we need to understand what affects access to healthcare. Through the next series of labs and notes we will be focusing on the cost of health care as well as whether or not a subject has insurance. 
+
+We will not list out all of the variables but you will use the codebook to help find questions along with variable names and descriptions. A small list of initial varaibles considered follows below. 
+
+
+---------------------------------------------------
+Variable      Description
+------------  -------------------------------------
+sex           Sex
+
+veteran3      Has person ever served in Military?
+
+educa         What is the highest level of education the person has obtained?
+
+children      How many children live in the household?
+
+employ1       Are you currently employed?
+
+income2       What is your household total income?
+
+imprace       Imputed Race
+
+
+age80         Imputed age
+
+hlthpln1      Health Insurance Coverage.
+
+persdoc2      Primary Care Doctor
+
+medcost       Was the cost of medical care too expensive?
+--------------------------------------------------
+
+
+
+We will work with these variables and learn how to explore survey data in R. 
+
+
+### Initial Data Steps
+
+
+
+
+```{r, eval=FALSE}
+brfss  <- read.csv("/home/php2560/BRFSS_2014.csv")
+names(brfss) <- tolower(names(brfss)) # Make sure they line up with SAS names
+names(brfss) <- gsub("x_", "", names(brfss)) # Make sure they line up with SAS names
+```
+
+
+1. Look at the codebook to find the questions relating to access to healthcare. You will notice that many of these variables contain a lot of extra categories (missing, refused to answer,...). We want to recode these for now so that we can attempt to use poisson regression. Explain what categories are being recoded with the commands below. 
+```{r}
+#Do you have any kind of health care coverage, including health insurance, prepaid plans such as HMOs, or government plans such as Medicare, or Indian Health Service?
+brfss$insurance <- NA
+brfss$insurance[brfss$hlthpln1==1] <-1  #yes
+brfss$insurance[brfss$hlthpln1==2] <-0  #no
+
+#Do you have one person you think of as your personal doctor or health care provider? 
+brfss$pcp <- NA
+brfss$pcp[brfss$persdoc2==2] <-2 #More than one
+brfss$pcp[brfss$persdoc2==1] <-1 #Yes, only one 
+brfss$pcp[brfss$persdoc2==3] <-0 #No
+
+#Was there a time in the past 12 months when you needed to see a doctor but could not because of cost?
+brfss$cost <- NA
+brfss$cost[brfss$medcost==1] <-1 #yes
+brfss$cost[brfss$medcost==2] <-0 #no
+
+```
+
+<font color="blue">
+***Variable `hlthpln1` asks the respondents whether they have any kind of insurance (1-yes, 0-No). Other replies (don't know and refused) are coded as NA. Variable `persdoc2` asks us whether the respondents think they have personal doctor (2- more than 1, 1- yes only 1, 3- no). Variable `cost` asks the respondents whether the respondent needed to see a doctor but could not because of cost (1 - yes, 2 - no). Variable `orientation` asks the sexual orientation where 1- straight, 2-lesbian/gay, 3-bisexual, 4-other***
+</font>
+
+2. Look through the codebook and determine if there are other values that should be replaced. For example for variable `sex`, are there only data points or is missing data coded as some value. Recode anything needed in the same manner as done above. 
+
+```{r}
+brfss$military = NA #1- yes, 0- no
+brfss$military[brfss$veteran3==1] = 1
+brfss$military[brfss$veteran3==2] = 0
+
+brfss$education = NA #get rid of refused answer
+brfss$education = brfss$educa
+brfss$education[brfss$education==9] = NA
+
+#most of children is missing. Maybe exclude in analysis
+brfss$children_count = NA #recode so that if you have more than 4 or more coded as 1
+brfss$children_count = brfss$children
+brfss$children_count[brfss$children_count==88 | brfss$children_count==99] = NA
+# Note we recode the missing first because they are 88 and 99 which our 
+# below code would have set to 4
+brfss$children_count[brfss$children_count>=4] = 4
+
+#1 employed, 2 not employed
+brfss$employed = NA
+brfss$employed[brfss$employ1==1] = 1
+brfss$employed[brfss$employ1==8 | brfss$employ1 ==9] = NA
+brfss$employed[brfss$employ1>=2] = 2
+
+#1- 75000 or more, 0- not
+brfss$annual_income = NA
+brfss$annual_income[brfss$income2==77 | brfss$income2==99] = NA
+brfss$annual_income[brfss$income2 == 8] = 1
+brfss$annual_income[brfss$income2 < 8] = 0
+
+brfss$age = brfss$age80 #left it as continuous
+
+brfss$imprace <- factor(brfss$imprace, levels = c(1,2,3,4,5,6), labels= c("White", "Black", "Asian", "AI/AN", "Hispanic", "Other" ))
+brfss$insurance <- factor(brfss$insurance, levels=c(0,1), label=c("No", "Yes"))
+brfss$pcp = factor(brfss$pcp, levels=c(2,1,0), label = c("more than one", "only one", "no"))
+brfss$education = factor(brfss$education, levels=c(1,2,3,4,5,6), labels = c("never attended school", "elementary", "some high school", "high school graduate", "some college", "college graduate"))
+
+
+brfss$healthy.days <- brfss$physhlth
+brfss$healthy.days[brfss$healthy.days==88]<- 0
+brfss$healthy.days[brfss$healthy.days==77 | brfss$healthy.days==99] <- NA
+
+  
+```
+
+
+### Survey Analysis in R: Setting up the Design
+
+The next step will be to learn is how R actually deals with survey data. When using surveys we must remember that the sampling of them is typically not random. In fact most of the time certain groups are oversampled in order to assure the researchers that information among particular groups is obtained. For example it is very common to oversample minority racial groups to make sure enough data is collected on each of these groups. 
+
+When this oversampling is done we cannot treat each observation as 1. Each observation is weighted based on how it was sampled and how it compares in the general population. Using R we first account for this survey design and then we can use survey functions to analyze this data. 
+
+
+Using the code below we will set the survey design:
+
+```
+library(survey)
+brfss.design <- svydesign(data=brfss, # this is the data that we want to place in the design
+                          nest=TRUE, # This allows us to relabel groups to make them nested in different strata
+                          weight= ~llcpwt,  # This is where the weights for the BRFSS data are stored
+                          id= ~psu,  # These are the values of unique ids
+                          strata= ~ststr) # This is the strata that the weights and ids are applied to
+
+```
+
+
+
+Given the size of this data it would take a very long time to create this desgin. Instead what we will do is focus on the variables that we wish to use. Also for the purpose of these data we will consider complete cases. (*In class we will discuss concerns with doing this in practice*)
+
+
+```{r}
+#This is a list of variables we care about
+vars <- c( "insurance", "imprace",  "pcp", 
+         "education", "age", "annual_income", "employed", "sex", 
+           "military", "cost", "children_count", "healthy.days", 
+         "llcpwt", "psu", "ststr")     
+
+#Select only these variables
+brfss_sub <- brfss[vars]
+
+#Use only complete cases
+brfss_sub_com <- brfss_sub[complete.cases(brfss_sub),]
+```
+
+
+Then we will create and use the design from this smaller dataset. 
+
+```{r}
+library(survey)
+brfss.design <- svydesign(data=brfss_sub_com, # this is the data that we want to place in the design
+                          nest=TRUE, # This allows us to relabel groups to make them nested in different strata
+                          weight= ~llcpwt,  # This is where the weights for the BRFSS data are stored
+                          id= ~psu,  # These are the values of unique ids
+                          strata= ~ststr) # This is the strata that the weights and ids are applied to
+
+str(brfss.design)
+
+```
+
+
+
+
+## Time saving for future Analysis
+This is something you can do in the future as well any time you analyze your data. If you wish to not have your file knit with all of these steps, you can use the following code to save teh design as an R file and then you can call that R file into the Markdown. 
+
+```{r, eval=FALSE}
+save(brfss.design , file = 'design.rda' )
+```
+
+Then next you can load this into a markdown document as:
+```{R, eval=FALSE}
+load('design.rda')
+```
+
+
+
+
+3. What is does the structure of this data consist of? 
+
+
+### Survey Analysis in R: Statistical Summaries
+
+We have focused a lot previously on using basic statistical summaries (mean, median, proportions, variance, ...). Each of those functions used before treated all parts of the data as an equal entry. Now we must use tools that allow us to weight observations. 
+
+
+#### Totals in the population
+
+Since the survey is weighted we can see that we are able to measure how many people in the general population this data refers to. These are considered weighted sample sizes:
+```{r}
+#Sometimes strata only have one person in them
+# We need to tell R how to adjust for this
+# http://faculty.washington.edu/tlumley/old-survey/exmample-lonely.html
+
+options(survey.lonely.psu = "adjust")
+svytotal(~insurance, brfss.design)
+svytotal(~imprace, brfss.design)
+
+
+#We can also have this done for more than one variable at a time:
+
+svytotal(~insurance + imprace, brfss.design)
+```
+
+
+#### Means
+
+We can use R to tell us sample means as well. 
+
+```{r}
+options(survey.lonely.psu = "adjust")
+
+#Continuous: give means
+svymean(~age,brfss.design)
+
+#Categorical: gives proportions
+svymean(~insurance, brfss.design)
+svymean(~imprace, brfss.design)
+
+
+#Also with multiple variables
+svymean(~age+insurance+imprace, brfss.design)
+```
+
+
+
+#### Quantiles
+
+When we learned about box-plots we learned the need for the 25th, 50th and 75th percentiles. We can find these in R:
+
+```{r}
+options(survey.lonely.psu = "adjust")
+svyquantile(~age, brfss.design, c(.25,.5,.75), ci=TRUE)
+```
+
+
+#### Tables in R
+
+With survey data we would like to be able to have contingency tables as well. For example lets say that we want to consider insurance and race:
+
+```{R}
+# This produces a table with the means in one column
+a <- svymean(~interaction(insurance, imprace), design = brfss.design)
+a
+
+# This produces the table in a contingency table format
+b <- ftable(a, rownames = list(insurance = c("No", "Yes"), 
+      imprace = c("White", "Black", "Asian", "Ai/AN", "Hispanic", "Other")))
+b
+
+
+# we can turn these to percents and round better
+round(100*b,2)
+```
+
+We can also create tables and perform chi-square tests on them:
+
+```{r}
+svytable(~insurance+imprace, design=brfss.design)
+svychisq(~insurance+imprace, design=brfss.design, statistic="Chisq")
+```
+
+
+####Graphics
+
+There are many types of graphs we can use similar to what we have done before. 
+
+######Boxplots
+
+```{r}
+#Single boxplot
+svyboxplot(age~1, brfss.design)
+
+#Boxplot by categorical variable
+svyboxplot(age~insurance, brfss.design)
+```
+
+
+##### Histograms
+
+```{r}
+svyhist(~age, brfss.design)
+```
+
+
+The next steps will be to explore this dataset on your own with these tools. Before we do this we can save our design in order to use in the next lab:
+
+```{r}
+save( brfss.design , file =  'brfss.rda' )
+```
+
+
+## Poisson Regression
+
+1. We will begin by exploring our new variables. Graph a histogram of `healthy.days`. 
+    a. Describe the shape of this. 
+    b. Does this look normally distributed? 
+    c. Does it look like Poisson data?
+```{r}
+svyhist(~healthy.days, brfss.design)
+```
+    
+2. How might we find out what variables to run first in simple regressions? 
+```{r}
+library(jtools)
+svycor(~age+annual_income+employed+sex+military+cost+children_count+healthy.days+llcpwt+psu+ststr, brfss.design)
+```
+3. Create a correlation Matrix with `healthy.days` and 5 variables you think would have the largest impact.
+```{r}
+#employed, cost, annual_income, age, sex
+svycor(~age+annual_income+employed+sex+cost+healthy.days, brfss.design)
+
+```
+
+4. From the 5 variables you chose run 3 poisson regressions as follows:
+
+```{R, eval=FALSE, cache=TRUE}
+library(survey)
+fit1 <- svyglm(healthy.days ~ as.factor(employed), family="poisson",design=brfss.design)
+fit2 <- svyglm(healthy.days ~ as.factor(cost), family="poisson",design=brfss.design)
+fit3 <- svyglm(healthy.days ~ as.factor(annual_income), family="poisson",design=brfss.design)
+
+```
+
+5. Print the summaries to these models. 
+```{r}
+summary(fit1)
+summary(fit2)
+summary(fit3)
+
+```
+6. Are your variables significant? Interpret each of them that are significant. 
+
+Take `employed` as an example:
+
+employed: The healthy rate for people who are employed is $e^{0.84920} = 2.34$ times that of people who are unemployed.

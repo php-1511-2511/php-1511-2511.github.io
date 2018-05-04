@@ -1,0 +1,178 @@
+---
+title: "Lab 3 - Linear Regression Final Model"
+author: "Your Name"
+output: 
+  html_document
+---
+
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+knitr::opts_chunk$set(eval=T)
+```
+
+
+## Introduction
+
+
+We will consider data from Life In America's Small Cities, By G.S. Thomas. Our goal will be to model the total crime. 
+
+```{r}
+library(readxl)
+crimes <- read_excel("crimes.xlsx")
+
+```
+
+### Variables
+
+
+------------------------------------------
+Name          Description
+------------  ------------------------------
+X1            total overall reported crime rate per 1 million residents
+
+X2            reported violent crime rate per 100,000 residents
+
+X3            annual police funding in $/resident
+
+X4            % of people 25 years+ with 4 yrs. of high school
+
+X5            % of 16 to 19 year-olds not in highschool and not highschool graduates.
+
+X6            % of 18 to 24 year-olds in college
+
+X7            % of people 25 years+ with at least 4 years of college
+---------------------------------------------------------------
+
+### Data Cleaning
+
+Let's use some better names:
+
+```{r}
+library(tidyverse)
+crimes <- crimes %>%
+  rename( tot_crime = X1,
+          rep_crime = X2,
+          pol_fund = X3, 
+          `25plus_hs` = X4,
+          not_hs_grad = X5,
+          in_college = X6,
+          college = X7  )
+```
+
+##Data Exploration
+
+We should always begin with a data exploration. 
+
+1. Augment the shiny code from lab 2 in order to explore this data. 
+
+```{r, eval=TRUE}
+library(shiny)
+library(ggplot2)
+data <- crimes
+shinyApp(
+  
+
+
+
+
+ 
+# Define UI for iris application
+shinyUI(pageWithSidebar(
+ 
+  # Application title
+  headerPanel(""),
+ 
+  # Sidebar with controls to select the variable to plot against mpg
+  # and to specify whether outliers should be included
+  sidebarPanel(
+    selectInput("variable", "First variable:",
+                list(
+"tot_crime", "rep_crime", "pol_fund", "25plus_hs", "not_hs_grad", "in_college", "college"
+                                          )),
+ 
+    selectInput("variable2", "Second variable:",
+                list(
+"tot_crime", "rep_crime", "pol_fund", "25plus_hs", "not_hs_grad", "in_college", "college"
+                                          ))
+  ),
+
+
+  mainPanel(
+     h3(textOutput("caption")),
+     plotOutput("plot")
+  )
+)),
+
+
+ 
+
+ 
+# Define server logic required to plot variables
+shinyServer(function(input, output) {
+ 
+  # Create a reactive text
+  text <- reactive({
+     paste(input$variable, 'versus', input$variable2)
+  })
+ formulaText <- reactive({
+    paste(input$variable, "~", input$variable2)
+  })
+  # Return as text the selected variables
+  output$caption <- renderText({
+    text()
+  })
+ 
+  # Generate a plot of the requested variables
+ output$plot <- renderPlot({
+     p <- ggplot(data, aes_string(x=input$variable, y=input$variable2)) + geom_point()
+     print(p)
+  })
+}),
+
+ options = list(height = 600)
+  
+)
+```
+
+2. Consider a correlation matrix:
+
+```{r}
+library(GGally)
+ggcorr(crimes, colour="gray20")
+```
+
+3. Consider a Scatterplot matrix:
+
+```{r,fig.width=8, fig.height=10}
+ggpairs(crimes)
+```
+
+
+
+4. Consider Simple Linear Regressions of Average Crime
+```{r}
+library(broom)
+library(tidyverse)
+library(knitr)
+mod1 <- lm(tot_crime~rep_crime, data=crimes)
+mod2 <- lm(tot_crime~pol_fund, data=crimes)
+mod3 <- lm(tot_crime~`25plus_hs`, data=crimes)
+mod4 <- lm(tot_crime~not_hs_grad, data=crimes)
+mod5 <- lm(tot_crime~in_college, data=crimes)
+mod6 <- lm(tot_crime~college, data=crimes)
+
+tidy1 <- tidy(mod1)[-1, -c(3:4)]
+tidy2 <- tidy(mod2)[-1, -c(3:4)]
+tidy3 <- tidy(mod3)[-1, -c(3:4)]
+tidy4 <- tidy(mod4)[-1, -c(3:4)]
+tidy5 <- tidy(mod5)[-1, -c(3:4)]
+tidy6 <- tidy(mod6)[-1, -c(3:4)]
+
+kable(bind_rows(tidy1,tidy2,tidy3,tidy4,tidy5,tidy6))
+
+```
+

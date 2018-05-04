@@ -80,7 +80,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 1: Basics of Regression in R / Graphing in R</td>
-<td align="left"><a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a></td>
+<td align="left"><a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a> <a href="../labs/lab1_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -107,7 +107,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Regression Diagnostics in R</td>
-<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a></td>
+<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a> <a href="../labs/lab2_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -134,7 +134,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 3: Final Linear Regressions</td>
-<td align="left"></td>
+<td align="left"><a href="../labs/lab3.html">HTML</a> <a href="../labs/lab3.Rmd">Rmd</a> <a href="../labs/lab3_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -161,7 +161,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 4: Logistic Regression</td>
-<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a> <a href="https://vimeo.com/258696228/4181a70e33">Video</a></td>
+<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a> <a href="https://vimeo.com/258696228/4181a70e33">Video</a> <a href="../labs/lab4_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -188,7 +188,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 5: Logistic Part 2</td>
-<td align="left"><a href="../labs/lab5.html">HTML</a> <a href="../labs/lab5.Rmd">Rmd</a></td>
+<td align="left"><a href="../labs/lab5.html">HTML</a> <a href="../labs/lab5.Rmd">Rmd</a> <a href="../labs/lab5_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -242,7 +242,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 6: Survey Data in R / Poisson Regression</td>
-<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a> <a href="https://vimeo.com/263953564/8a847023c5">Video</a></td>
+<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a> <a href="https://vimeo.com/263953564/8a847023c5">Video</a> <a href="../labs/lab6_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -296,7 +296,7 @@
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 7: Survival Analysis</td>
-<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a></td>
+<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a> <a href="../labs/lab7_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -422,7 +422,7 @@
 <td align="left">Final Week</td>
 <td align="left">7-May</td>
 <td align="left"><strong>FINAL EXAM IN CLASS</strong></td>
-<td align="left"><a href="../homework/final_review.html">Final Review Questions</a> <a href="../homework/final_review_output.html">Final Review Output</a> <a href="../homework/final_review_sol.html">Final Review Solutions</a></td>
+<td align="left"><a href="../homework/final_review.html">Final Review Questions</a> <a href="../homework/final_review_output.html">Final Review Output</a> <a href="../homework/final_review_sol.html">Final Review Solutions</a> <a href="../exams/final_exam_extra_info.html">Questions Asked By Students</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>

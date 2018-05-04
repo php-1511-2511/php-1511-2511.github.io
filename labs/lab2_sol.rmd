@@ -1,0 +1,283 @@
+---
+output: html_document
+---
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+#knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+#knitr::opts_chunk$set(eval=F)
+```
+
+
+## Introduction
+This lab will be using R and R studio. Please have these on your computer prior to coming to lab. If you would like to work with R Markdown and learn that more, please download the R markdown file that created this,  [Lab 2](https://php-1511-2511.github.io/labs/lab2.Rmd).
+
+
+
+You will notice that this is the same data set as last lab:
+
+```{r}
+
+poverty<- read.table(file="http://www.amstat.org/publications/jse/datasets/poverty.dat.txt",
+                 header=FALSE, sep="")
+
+colnames(poverty) <- c("birthrate", "deathrate", "infdeath", "le.male", "le.female",
+"gnp", "group", "country")
+
+#This will print some of the beginning rows of data
+head(poverty)
+
+#R thinks gnp is factor(group) data
+#class(poverty$gnp)
+
+#Replace the * values with NA
+poverty[poverty=="*"] <- NA
+
+# Tell R that gnp is numeric data 
+poverty$gnp <- as.numeric(as.character(poverty$gnp))
+
+#log.gnp
+poverty$log.gnp <- log(poverty$gnp)
+
+```
+
+
+##Data Exploration
+
+We should always begin with a data exploration. In order to make this proceed faster in lab, below is an embedded graph that will allow you to explore the relationships of all the variables in the lab. 
+
+
+To get the shiny below to run, replace the header at the top with this:
+
+```
+---
+title: "Lab 2 - Multiple Regression and Model Testing"
+author: "Your Name"
+output: 
+  html_document
+runtime: shiny
+---
+```
+
+then run the document and your code below will allow you to explore the data more. 
+
+```{r, eval = F}
+library(shiny)
+library(ggplot2)
+data <- poverty
+shinyApp(
+  
+
+
+
+
+ 
+# Define UI for iris application
+shinyUI(pageWithSidebar(
+ 
+  # Application title
+  headerPanel(""),
+ 
+  # Sidebar with controls to select the variable to plot against mpg
+  # and to specify whether outliers should be included
+  sidebarPanel(
+    selectInput("variable", "First variable:",
+                list(
+"birthrate", "deathrate", "infdeath",  "le.male",   "le.female", "gnp",    "log.gnp"
+                                          )),
+ 
+    selectInput("variable2", "Second variable:",
+                list(
+"birthrate", "deathrate", "infdeath",  "le.male",   "le.female", "gnp",    "log.gnp"
+                                          ))
+  ),
+
+
+  mainPanel(
+     h3(textOutput("caption")),
+     plotOutput("plot")
+  )
+)),
+
+
+ 
+
+ 
+# Define server logic required to plot variables
+shinyServer(function(input, output) {
+ 
+  # Create a reactive text
+  text <- reactive({
+     paste(input$variable, 'versus', input$variable2)
+  })
+ formulaText <- reactive({
+    paste(input$variable, "~", input$variable2)
+  })
+  # Return as text the selected variables
+  output$caption <- renderText({
+    text()
+  })
+ 
+  # Generate a plot of the requested variables
+ output$plot <- renderPlot({
+     p <- ggplot(data, aes_string(x=input$variable, y=input$variable2)) + geom_point()
+     print(p)
+  })
+}),
+
+ options = list(height = 600)
+  
+)
+```
+
+
+1. Use the graphs to explore the basic relationships in the data. Make sure to make note of them. 
+
+
+## Model Fitting
+
+Recall the following models
+```{r}
+fit1 <- lm(infdeath ~ le.female, data=poverty)
+fit2 <- lm(infdeath ~ le.male, data=poverty)
+fit3 <- lm(infdeath ~ gnp, data=poverty)
+fit4 <-  lm(infdeath ~ birthrate, data=poverty)
+fit5 <-  lm(infdeath ~ deathrate, data=poverty)
+fit6 <- lm(infdeath~log.gnp, data=poverty)
+mfit <- lm(infdeath ~ le.female + birthrate  + log.gnp, data=poverty)
+```
+
+
+Last time we finished off with `mfit`. We will need to consider the model fit on this now. It will be our goal to use various plots to check the fit of our model and then we will use automated model procedures to see if this model is what R would automatically build. 
+
+
+2. The following code will create standardized residual plots. Use these to describe what you see about the model.
+    a. Is the model a correct fit? 
+    b. Does the homogenous variance assumption hold?
+    
+```{r}
+library(olsrr)
+ols_plot_resid_fit(mfit)
+ols_test_score(mfit)
+ols_test_f(mfit)
+```
+
+**a.The model is a correct fit.**
+
+**b.From the residual plot and the score test, the homogenous variance assumption is not held.**
+
+3. Create a marginal model plot for `mfit`. Does this fit our data well?
+```{r}
+library(car)
+#blue line represents a loess(smoothing) line for the data and the dashed line represents 
+#the model which R fitted
+mmps(mfit)
+```
+
+**Yes, this model fit the data well.**
+
+4. Plot the cooks distance, DFBETAs and DFFITs. 
+```{r}
+ols_plot_cooksd_bar(mfit)
+ols_plot_dfbetas(mfit)
+ols_plot_dffits(mfit)
+```
+
+5. What do you notice?
+
+**There are some outliers in this dataset when fitting the model.**
+
+6. We can see that above highlights 6 possible values for outliers. Once doing this run a new model called `mfit.ex.outliers` which excludes outliers. The code to remove the outliers is as follows:
+```{r}
+outliers <- c(18, 41, 48, 55, 76, 79, 90)
+poverty2 <- poverty[-outliers,]
+
+mfit.ex.outliers<-lm(infdeath ~ le.female + birthrate + log.gnp, data = poverty2)
+
+library(broom)
+tidy.mfit<-tidy(mfit)
+tidy.mfit.ex.outlier<-tidy(mfit.ex.outliers)
+rbind(tidy.mfit,tidy.mfit.ex.outlier)
+
+glance(mfit)
+glance(mfit.ex.outliers)
+```
+    a. Does the summary of `mfit.ex.outliers` differ much from `mift`?
+
+**The summary of `mfit.ex.outliers` does not differ much from `mift`.**
+    
+    b. What happens when you run the cooks distance plot on this data with outliers removed?
+```{r}
+ols_plot_cooksd_bar(mfit.ex.outliers)
+```
+    
+**There are still outliers in the model.**
+
+    c. Use residual plots and `mmps()` to evaluate the model fit after deleting the outliers.
+```{r}
+ols_plot_resid_fit(mfit.ex.outliers)
+ols_test_score(mfit.ex.outliers)
+ols_test_f(mfit.ex.outliers)
+
+mmps(mfit.ex.outliers)
+```
+    
+**The model still doesn't meet the homogenous variance assumption. The fitting plots shows that the `mfit.ex.outliers` does not fit the data better than `mfit`.**    
+    
+    d. Does this new model fit the data better with the outliers removed?
+
+*Above shows us that there is more involved than just cook's distance and removing outliers. We can get stuck in an endless loop of removing things and each time we find that our model fit decreases and we have more and more outliers. We will proceed with the model `mfit` since our regression results did not change much and our fit got worse as we went.*
+
+
+7. Fit the following models:
+```{r}
+poverty3<-na.omit(poverty)
+fit.best.2 <- lm(infdeath ~ le.female + le.male, data=poverty3)
+fit.best.3 <- lm(infdeath ~ le.female + le.male + birthrate, data=poverty3)
+fit.best.4 <- lm(infdeath ~ le.female + le.male + birthrate + log.gnp, data=poverty3)
+```
+
+
+8. Compare the adjusted $R^2$ values from these models. Which one would you consider the best and why?
+```{r}
+glance(fit.best.2)
+glance(fit.best.3)
+glance(fit.best.4)
+```
+
+**`fit.best.2` is the best since it have the largest adjusted R square.**
+
+9. Use the `anova()` function in R to preform an $F$-test comparing these models. Which model would you choose based on this? Does it confirm your model chosen in question 9? 
+```{r}
+anova(fit.best.2,fit.best.3,fit.best.4)
+
+anova(fit.best.2,fit.best.3)
+
+anova(fit.best.3,fit.best.4)
+
+anova(fit.best.2,fit.best.4)
+```
+
+**The anova test shows that the `fit.best.3` and `fit.best.4` are not significantly better than `fit.best.2`. Thus, `fit.best.2` is the best model, it confirms the model chosen in question 9.**
+
+11. **On your own** With your final model run the model diagnostic plots again and see how well this fits your data. 
+
+```{r}
+ols_plot_resid_fit(fit.best.2)
+ols_test_score(fit.best.2)
+ols_test_f(fit.best.2)
+
+mmps(fit.best.2)
+
+```
+
+**The final model hold the homgenous variance assumption. And it fits the data well.**
+
+
+
+
+
+
+

@@ -1,0 +1,206 @@
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+```
+
+
+
+The goal of this study was to identify risk factors associated with giving birth to a low birth weight baby (weighing less than 2500 grams). Data were collected on 189 women, 59 of which had low birth weight babies and 130 of which had normal birth weight babies.  Four variables which were thought to be of importance were age, weight of the subject at her last menstrual period, race, and the number of physician visits during the first trimester of pregnancy.
+
+Low birth weight is an outcome that has been of concern to physicians for years. This is due to the fact that infant mortality rates and birth defect rates are very high for low birth weight babies. A woman's behavior during pregnancy (including diet, smoking habits, and receiving prenatal care) can greatly alter the chances of carrying the baby to term and, consequently, of delivering a baby of normal birth weight.
+        
+The variables identified in the code sheet given in the table have been shown to be associated with low birth weight in the obstetrical literature. The goal of the current study was to ascertain if these variables were important in the population being served by the medical center where the data were collected. This data is from [Hosmer et al. , 2013](http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470582472.html). 
+
+----------------------------------------------------------------------
+Variable Name   Description
+--------------- -------------------------------------------------------
+id              Identification Code
+
+low             0 = Birthweight $\ge$ 2500g
+
+                1=Birthweight< 2500g
+                
+age             Age of mother in years
+
+lwt             Weight in Pounds at last menstrual period
+
+race            1 = white
+      
+                2 = black
+                
+                3 = other
+
+ptl             History of Premature Labor (0=none, 1= One, ...)
+
+ht              History of hyptertension
+
+ui              Presence of Uterine Irritability
+
+                0 = No
+                
+                1 = Yes
+                
+ftv             Number of Physician visits during first trimester (0=none, 1=One, ...)
+
+btw             Birth weight in grams
+----------------------------------------------------------------------
+
+
+You can read the data in with the command below.
+
+```{R}
+low.weight <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzMzJyVkt5QkdvVnM", header=TRUE, sep=",")
+```
+
+
+## Model Building
+
+
+
+1. Your goal will be to build a model to predict low birth weight. Begin by using number summaries and graphs to start to explore relationships of variables in this data set and `low`.
+
+**For exploring the relationship between `low` and continuous variables, we can use boxplots. For exploring the relationship between low and categorical variables, we can: 1. create contingency tables which tabulate the counts of each category; 2. display the proportion of each level of the categorical variable by using barplot.** 
+```{r}
+s1 <- apply(low.weight, 2, summary)
+knitr::kable(s1)
+#or we can use
+summary(low.weight)
+#From the summry, we can see race, smoke, ht and ui are treated as continuous variables. 
+```
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+numerical_var <- c("age","lwt","ptl","ht","ftv")
+categorical_var <- c("low","race","ui","smoke")
+low.weight$low<-as.factor(low.weight$low)
+
+p1 <- ggplot(low.weight, aes(x = low, y = age)) + geom_boxplot()
+p2 <- ggplot(low.weight, aes(x = low, y = lwt)) + geom_boxplot()
+p3 <- ggplot(low.weight, aes(x = low, y = ptl)) + geom_boxplot()
+p4 <- ggplot(low.weight, aes(x = low, y = ftv)) + geom_boxplot()
+
+grid.arrange(p1,p2,p3,p4,ncol=2)
+
+# Alternative way:
+# par(mfrow=c(2,2))
+# boxplot(age~low,data=low.weight,ylab="Age",xlab="Low")
+# boxplot(lwt~low,data=low.weight,ylab="lwt",xlab="Low")
+# boxplot(ptl~low,data=low.weight,ylab="ptl",xlab="Low")
+# boxplot(ftv~low,data=low.weight,ylab="ftv",xlab="Low")
+
+# Example: low vs race
+#create barplots 
+T1<-table(low.weight$low,low.weight$race)
+
+#get proportions of normal/low weight within each race (2 represents column indicator)
+par(mfrow=c(1,1))
+prop.table(T1,2)
+barplot(prop.table(T1,2),legend.text = c("Normal","Low"),names.arg = c("white","black","other"))
+
+#get proportions of different races within each weight category(2 represents column indicator)
+T2<-table(low.weight$race,low.weight$low)
+T2
+barplot(prop.table(T2,2),legend.text = c("white","black","other"),names.arg = c("Normal","Low"))
+```
+
+
+2. The variables of `low`, `race` and `ui` are categorical variables but they are not yet factors. Code them in R to be factors in the data. Then make sure they have correct level names. 
+```{r}
+library(tidyverse)
+low.weight<-low.weight %>% 
+             mutate(low=as.factor(low))%>%
+             mutate(race=factor(race,levels=c(1,2,3),labels=c("white","black","other")))%>%
+             mutate(ui=factor(ui,levels=c(0,1),labels=c("No","Yes"))) %>%
+             mutate(smoke=as.factor(smoke))%>%
+             mutate(ht=as.factor(ht))
+
+#Alternative way:
+# low.weight$race<-factor(low.weight$race,levels=c(1,2,3),labels=c("white","black","other"))
+# low.weight$smoke<-as.factor(low.weight$smoke)
+```
+
+
+3. Start your model building by looking at simple logistic regressions for each of the 8 predictor variables. Display and Examine relevant plots. Summarize the simple logistic regression results using a table (hide the intercepts when combining your `tidy()` commands).
+
+```{r}
+library(broom)
+# Here, we fit 8 simple logistic regression models with a loop function.  
+result <- c()
+for (var in c("age","lwt","race","smoke","ptl","ht","ui","ftv","bwt")) {
+  f <- as.formula(paste0("low~", var))
+  m <- glm(f, data = low.weight, family = binomial(link = "logit"))
+  r <- tidy(m, exponentiate = T, conf.int = T)[-1,-c(3,4)]
+  result <- rbind(result,r)
+}
+result
+
+# Eample: age
+# fit.age<-glm(low~age,data=low.weight,family=binomial(link="logit"))
+# tidy(fit.age)
+# tidy(fit.age,exponentiate = T, conf.int = T)
+
+```
+
+
+4. Comment of the significance of the 8 variables. What variables do you think would best be used in a multiple logistic regression?
+
+**Based on p-values, `lwt`, `smoke`, `ptl`, `ht` and `ui` are statistically significant at 0.05 significant level, and `race` is significant at 0.1 significant level.**  
+
+
+5. Explore the possibility of interaction between smoking and race. Display a graph that would allow you to explore this and then run a regression with the interaction term. Interpret the results of this model. 
+
+```{r}
+fit1<-glm(low~smoke*race,data=low.weight,family=binomial("logit"))
+prob<-predict(fit1,type="response")
+interaction.plot(x.factor = low.weight$smoke,trace.factor=low.weight$race,response = prob,xlab="Smoking status",ylab="Probability of haveing low birthweight babies.")
+
+# An alternative way:
+# library(Hmisc)
+#  plsmo(low.weight$smoke, low.weight$low, datadensity = T, group = low.weight$race, 
+#  col=c('black', 'red','blue'), xlab = 'Smoke', ylab ='Low',
+#  ylim = c(0,1))
+  
+tidy(fit1,conf.int = T)[,-c(3:4)]
+```
+
+**From the interaction plot, we can see the probability of having low birthweight babies for people in the same race is different by their smoking status. Therefore, there is an interaction between smoking and race.** 
+
+**Based on the *original* outputs (without exponentiating the coefficients), we can interpret the interaction as:**
+
+**1. For White people, the log odds ratio between smokers and non-smokers is 1.75.**   
+
+**2. For people whose race is black, the log odds ratio between smokers and non-smokers is 1.75-0.55=1.2.**
+
+**3. For people whose race is other, the log odds ratio between smokers and non-smokers is 1.75-1.52=0.23.**
+
+**4. For smokers, the log odds ratio between black and white is 1.514-0.55=0.964, the log odds ratio between other and white is 1.74-1.52=0.22.**
+
+```{r}
+tidy(fit1,exponentiate = T,conf.int = T)[,-c(3:4)]
+```
+
+**Based on the *exponentiated* outputs, we can interpret the interaction as:**
+
+**1. For White people, the odds ratio between smokers and non-smokers is 5.75.**   
+
+**2. For people whose race is black, the odds ratio between smokers and non-smokers is $5.75\times 0.573=3.28$**
+
+**3. For people whose race is other, the odds ratio between smokers and non-smokers is $5.75\times 0.217=1.248$**
+
+**4. For smokers, the odds ratio between black and white is $4.545\times 0.573=2.60$, the odds ratio between other and white is $5.71\times 0.217=1.24$**
+
+
+
+6. Build a multiple regression model with what you have found in problems 4 and 5. Do the coefficients change from the simple regressions? Comment on both direction and magnitude changes. 
+
+**From problem 4 and 5, we would include predictors that are statistically significant at 0.1 significant level and the interaction term between smoking and race in the multiple regression model.**    
+
+```{r}
+fit2<-glm(low~lwt+ptl+ht+ui+race*smoke,data=low.weight,family=binomial)
+tidy(fit2,exponentiate = T)
+```
+
