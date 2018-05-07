@@ -51,6 +51,7 @@ Read data in:
 load(hw6.rda)
 ```
 
+***If you cannot load the data via the rda file,  you can down load `comprgrip.csv` and read the data in that way. ***
 
 2. Create two plots, one for each treatment group, showing the trajectories of each subject’s grip strength over time. Comment on the notable features in these trajectories.
 
