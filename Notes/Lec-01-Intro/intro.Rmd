@@ -35,7 +35,7 @@ css: "D:/Dropbox/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 
 
 * Main: [https://php-1511-2511.github.io](https://php-1511-2511.github.io)
 * Canvas:
-    + PHP 1511: [Coming Soon)
+    + PHP 1511: [https://canvas.brown.edu/courses/1077969](https://canvas.brown.edu/courses/1077969)
     + PHP 2511: [https://canvas.brown.edu/courses/1077129](https://canvas.brown.edu/courses/1077129)
 * Github: [https://github.com/php-1511-2511](https://github.com/php-1511-2511)
 * Slack: [https://php-1511-2511-spring-2019.slack.com/](https://php-1511-2511.slack.com/)
