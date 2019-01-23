@@ -7,7 +7,7 @@ title: Course Information
 
 This course provides a survey of regression techniques for outcomes common in public health data including continuous, binary, count and survival data.  Emphasis is on developing a conceptual understanding of the application of these techniques to solving problems, rather than to the numerical details. Extensive use of the computer will be made for analysis of datasets.
 
-This course is designed for graduate and advanced undergraduate students who will be analyzing data with scientific colleagues and who want to develop a practical hands-on toolkit and gain experience in distilling complex statistical information into formats understandable to colleagues. This course will feature R programming elements. To make the most of R students will be expected to use \href{https://www.rstudio.com/}{RStudio}. There are videos on the course's R page to explain how to get set up and started in RStudio. 
+This course is designed for graduate and advanced undergraduate students who will be analyzing data with scientific colleagues and who want to develop a practical hands-on toolkit and gain experience in distilling complex statistical information into formats understandable to colleagues. This course will feature R programming elements. To make the most of R students will be expected to use [RStudio](https://www.rstudio.com/). There are videos on the course's R page to explain how to get set up and started in RStudio. We will also be using [DataCamp](https://www.datacamp.com) for further R instruction through the semester. 
 
 
 
