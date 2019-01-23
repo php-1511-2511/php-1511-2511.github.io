@@ -31,28 +31,28 @@ title: Calendar
 <tbody>
 <tr class="odd">
 <td align="left">Week 1</td>
-<td align="left">24-Jan</td>
-<td align="left">Course Introduction / What is Regression?</td>
+<td align="left">23-Jan</td>
+<td align="left">Course Introduction / Course Resources / Using R</td>
 <td align="left"><a href="../Notes/Lec-01-Intro/intro.pdf">PDF</a> <a href="../Notes/Lec-01-Intro/intro.html">HTML</a></td>
-<td align="left">Read FOX: Chapters 1 - 3</td>
+<td align="left"></td>
 <td align="left">Install <a href="https://www.rstudio.com/products/rstudio/download3/">Rstudio</a> and <a href="https://php-1511-2511.github.io/Introduction-to-R/">Go through Introduction to R</a></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">Week 2</td>
-<td align="left">29-Jan</td>
-<td align="left">Simple and Multiple Linear Regression</td>
-<td align="left"><a href="../Notes/Lec-02-Linear/linear.pdf">PDF</a> <a href="../Notes/Lec-02-Linear/linear.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 5</td>
-<td align="left"><a href="../homework/hw1.html">HW1</a> <a href="../homework/hw1_sol.html">SOL</a></td>
+<td align="left">28-Jan</td>
+<td align="left">Using R to Work with Data: tidyverse</td>
+<td align="left"></td>
+<td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/about-this-course/">Introduction to R: Getting Started</a> <a href="http://statseducation.com/Introduction-to-R/modules/getting%20data/data-wrangling/">Introduction to R: Getting Data</a>, [Introduction to R: Tidy Data]((<a href="http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/">http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/</a>)</td>
+<td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">31-Jan</td>
-<td align="left">Inference for Linear Regression</td>
-<td align="left"><a href="../Notes/Lec-03-Lin-Inf/mult-linear.pdf">PDF</a> <a href="../Notes/Lec-03-Lin-Inf/mult-linear.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 6</td>
+<td align="left">30-Jan</td>
+<td align="left">Graphing Data in R: ggplot</td>
+<td align="left"></td>
+<td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/graphics/ggplot2/">Intoduction to R: Graphics</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -67,20 +67,20 @@ title: Calendar
 </tr>
 <tr class="odd">
 <td align="left">Week 3</td>
-<td align="left">5-Feb</td>
-<td align="left">Factors and Interactions</td>
-<td align="left"><a href="../Notes/Lec-04-fact-inter/factors-interactions.pdf">PDF</a> <a href="../Notes/Lec-04-fact-inter/factors-interactions.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 7</td>
+<td align="left">4-Feb</td>
+<td align="left">What is Regression?</td>
+<td align="left"></td>
+<td align="left">Fox Chap 1-3, Vittinghoff Chap 2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">7-Feb</td>
-<td align="left">Diagnostics for Linear Regression</td>
-<td align="left"><a href="../Notes/Lec-05-assumptions/assumptions.pdf">PDF</a> <a href="../Notes/Lec-05-assumptions/assumptions.html">HTML</a> <a href="https://vimeo.com/254726535">Video</a></td>
-<td align="left">Read FOX: Chapter 11</td>
-<td align="left"><a href="../homework/guidelines.html">Guidelines</a> <a href="../homework/hw2.html">HW2</a> <a href="../homework/hw2_sol.html">SOL</a></td>
+<td align="left">6-Feb</td>
+<td align="left">Simple and Multiple Linear Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 5, Vittinghoff Chaps 3.3, 4.1-4.4</td>
+<td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
@@ -94,19 +94,73 @@ title: Calendar
 </tr>
 <tr class="even">
 <td align="left">Week 4</td>
-<td align="left">12-Feb</td>
-<td align="left">Unusual and Influential Data</td>
-<td align="left"><a href="../Notes/Lec-06-outliers/outliers.pdf">PDF</a> <a href="../Notes/Lec-06-outliers/outliers.html">HTML</a> <a href="https://vimeo.com/255465189/6495d70d8e">Video</a></td>
-<td align="left">Read FOX: Chapter 12</td>
+<td align="left">11-Feb</td>
+<td align="left">Inference for Linear Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 6</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">14-Feb</td>
+<td align="left">13-Feb</td>
+<td align="left">Factors and Interactions</td>
+<td align="left"></td>
+<td align="left">Fox Chap 7, Vittinghoff Chap 4.6</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">Lab 2: Factors, Interactions and Interpretations.</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Week 5</td>
+<td align="left">18-Feb</td>
+<td align="left"><strong><em>No Class Long Weekend</em></strong></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">20-Feb</td>
+<td align="left">Diagnostics for Linear Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 11, Vittinghoff Chap 4.7</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Week 6</td>
+<td align="left">25-Feb</td>
+<td align="left">Unusual and Influential Data</td>
+<td align="left"></td>
+<td align="left">Fox Chap 12</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">27-Feb</td>
 <td align="left">Collinearity</td>
-<td align="left"><a href="../Notes/Lec-07-collinearity/collinearity.pdf">PDF</a> <a href="../Notes/Lec-07-collinearity/collinearity.html">HTML</a> <a href="https://vimeo.com/255908753/891f8f4551">Video</a></td>
-<td align="left">Read FOX: Chapter 13</td>
+<td align="left"></td>
+<td align="left">Fox Chap 13, Vittinghoff Chap 4.8</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -114,107 +168,53 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Regression Diagnostics in R</td>
-<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a> <a href="../labs/lab2_sol.html">Solutions</a></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Week 5</td>
-<td align="left">19-Feb</td>
-<td align="left"><strong><em>NO CLASS LONG WEEKEND</em></strong></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left">21-Feb</td>
-<td align="left">Generalized Linear Regression Basics</td>
-<td align="left"><a href="../Notes/Lec-08-basic-glm/glm.pdf">PDF</a> <a href="../Notes/Lec-08-basic-glm/glm.html">HTML</a> <a href="https://vimeo.com/256993187/1efd672855">Video</a></td>
-<td align="left">Read FOX: Chapter 14</td>
-<td align="left"><a href="../homework/hw3.html">HW3</a> <a href="../homework/hw3_sol.html">SOL</a></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Lab 3: Final Linear Regressions</td>
-<td align="left"><a href="../labs/lab3.html">HTML</a> <a href="../labs/lab3.Rmd">Rmd</a> <a href="../labs/lab3_sol.html">Solutions</a></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">Week 6</td>
-<td align="left">26-Feb</td>
-<td align="left">Logistic Regression Part 1</td>
-<td align="left"><a href="../Notes/Lec-09-logistic/logistic.pdf">PDF</a> <a href="../Notes/Lec-09-logistic/logistic.html">HTML</a> <a href="https://vimeo.com/257947309/b9f7480ac9">Video</a></td>
-<td align="left">Read FOX: Chapter 14</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left">28-Feb</td>
-<td align="left">Logistic Regression Part 2</td>
-<td align="left"><a href="../Notes/Lec-10-logistic-2/logistic-2.pdf">PDF</a> <a href="../Notes/Lec-10-logistic-2/logistic-2.html">HTML</a> <a href="https://vimeo.com/257947361/8dc814d730">Video</a></td>
-<td align="left">Read FOX: Chapter 15</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">Lab 4: Logistic Regression</td>
-<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a> <a href="https://vimeo.com/258696228/4181a70e33">Video</a> <a href="../labs/lab4_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Week 7</td>
-<td align="left">5-Mar</td>
-<td align="left">Logistic Regression Part 3</td>
-<td align="left"><a href="../Notes/Lec-11-logistic-3/logistic-3.pdf">PDF</a> <a href="../Notes/Lec-11-logistic-3/logistic-3.html">HTML</a> <a href="https://vimeo.com/258723905/53d7afef1d">Video</a></td>
-<td align="left">Read FOX: Chapter 15</td>
+<td align="left">4-Mar</td>
+<td align="left">Generalized Linear Regression Basics</td>
+<td align="left"></td>
+<td align="left">Fox Chap 14</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">7-Mar</td>
-<td align="left">Logistic/Poisson Regression</td>
-<td align="left"><a href="../Notes/Lec-12-poisson/poisson.pdf">PDF</a> <a href="../Notes/Lec-12-poisson/poisson.html">HTML</a> <a href="https://vimeo.com/259903459/dda7398718">Video</a></td>
-<td align="left">Read FOX: Chapter 15</td>
-<td align="left"><a href="../homework/hw4.html">HW4</a> <a href="../homework/hw4_sol.html">Solutions</a></td>
+<td align="left">6-Mar</td>
+<td align="left">Introduction to Logistic Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 15, Vittinghoff Chap 5.1</td>
+<td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 5: Logistic Part 2</td>
-<td align="left"><a href="../labs/lab5.html">HTML</a> <a href="../labs/lab5.Rmd">Rmd</a> <a href="../labs/lab5_sol.html">Solutions</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">Week 8</td>
-<td align="left">12-Mar</td>
-<td align="left">Poisson Regression</td>
-<td align="left"><a href="../Notes/Lec-12-poisson/poisson.pdf">PDF</a> <a href="../Notes/Lec-12-poisson/poisson.html">HTML</a> <a href="https://vimeo.com/259903459/dda7398718">Video</a></td>
-<td align="left">Read FOX: Chapter 16</td>
+<td align="left">11-Mar</td>
+<td align="left">Logistic Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 15, Vittinghoff Chap 5.2-5.3</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">14-Mar</td>
-<td align="left">Midterm</td>
-<td align="left"><a href="../Notes/Midterm-review/midterm_practice.pdf">Practice</a> <a href="../Notes/Midterm-review/midterm_practice_output.pdf">Output</a> <a href="../Notes/Midterm-review/midterm_practice_solutions.pdf">Solutions</a></td>
-<td align="left"><a href="../exams/php_1511_midterm_2018.pdf">1511 Exam</a> <a href="../exams/php2511_midterm_2018.pdf">2511 Exam</a> <a href="../exams/php2511_midterm_2018_solutions.pdf">Solutions</a></td>
+<td align="left">13-Mar</td>
+<td align="left"><strong><em>Midterm</em></strong></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -229,35 +229,35 @@ title: Calendar
 </tr>
 <tr class="odd">
 <td align="left">Week 9</td>
-<td align="left">19-Mar</td>
-<td align="left">Basics of Survival Data</td>
-<td align="left"><a href="../Notes/Lec-13-survival/survival.pdf">PDF</a> <a href="../Notes/Lec-13-survival/survival.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 17</td>
+<td align="left">18-Mar</td>
+<td align="left">Diagnostics for Logistic Regression</td>
+<td align="left"></td>
+<td align="left">Fox Chap 15, Vittinghoff Chap 5.4</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">21-Mar</td>
-<td align="left">Cox-Proportional Hazards Regression</td>
-<td align="left"><a href="../Notes/Lec-14-survival-2/survival-2.pdf">PDF</a> <a href="../Notes/Lec-14-survival-2/survival-2.html">HTML</a> <a href="https://vimeo.com/263158326/73a96355a2">Video</a></td>
-<td align="left">Read FOX: Chapter 18</td>
+<td align="left">20-Mar</td>
+<td align="left">Further Logistic Regression</td>
 <td align="left"></td>
-<td align="left">First Steps Due</td>
+<td align="left">Fox Chap 15, Vittinghoff Chap 5.5-5.7</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 6: Survey Data in R / Poisson Regression</td>
-<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a> <a href="https://vimeo.com/263953564/8a847023c5">Video</a> <a href="../labs/lab6_sol.html">Solutions</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left">Week 10</td>
-<td align="left">26-Mar</td>
-<td align="left"><strong><em>NO CLASS SPRING BREAK</em></strong></td>
+<td align="left">25-Mar</td>
+<td align="left"><strong><em>Spring Break</em></strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -265,8 +265,8 @@ title: Calendar
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">28-Mar</td>
-<td align="left"><strong><em>NO CLASS SPRING BREAK</em></strong></td>
+<td align="left">27-Mar</td>
+<td align="left"><strong><em>Spring Break</em></strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -283,27 +283,27 @@ title: Calendar
 </tr>
 <tr class="odd">
 <td align="left">Week 11</td>
-<td align="left">2-Apr</td>
-<td align="left">Multinomial Regression</td>
-<td align="left"><a href="../Notes/Lec-15-multinomial/multinomial.pdf">PDF</a> <a href="../Notes/Lec-15-multinomial/multinomial.html">HTML</a> <a href="https://vimeo.com/263158300/29f6c8b0be">Video</a></td>
+<td align="left">1-Apr</td>
+<td align="left">Introduction to Log-Linear Regression</td>
 <td align="left"></td>
-<td align="left"><a href="../homework/hw5.html">HW5</a> <a href="../homework/hw5_sol.html">Solutions</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">4-Apr</td>
-<td align="left">Model Selection and Validation</td>
-<td align="left"><a href="../Notes/Lec-16-model-selection/model-selection.pdf">PDF</a> <a href="../Notes/Lec-16-model-selection/model-selection.html">HTML</a> <a href="https://vimeo.com/263953930/f0fabcdc0e">Video</a></td>
+<td align="left">3-Apr</td>
+<td align="left">Further Log-Linear Regression</td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Peer Review 1 Due</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 7: Survival Analysis</td>
-<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a> <a href="../labs/lab7_sol.html">Solutions</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -311,29 +311,29 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 8: Survey Model build</td>
-<td align="left"><a href="../labs/lab8.html">HTML</a> <a href="../labs/lab8.Rmd">Rmd</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Week 12</td>
-<td align="left">9-Apr</td>
-<td align="left">Survey Analysis</td>
-<td align="left"><a href="../Notes/Lec-17-surveys/survey.pdf">PDF</a> <a href="../Notes/Lec-17-surveys/survey.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 21</td>
+<td align="left">8-Apr</td>
+<td align="left">Basics of Survival Data</td>
+<td align="left"></td>
+<td align="left">Vittinghoff Chap 6.1</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">11-Apr</td>
-<td align="left">Nature of Longitudinal Data</td>
-<td align="left"><a href="../Notes/Lec-18-longitudinal-1/longitudinal-1.pdf">PDF</a> <a href="../Notes/Lec-18-longitudinal-1/longitudinal-1.html">HTML</a></td>
-<td align="left">Read FOX: Chapter 22</td>
+<td align="left">10-Apr</td>
+<td align="left">Cox PH Model</td>
 <td align="left"></td>
-<td align="left">2nd Steps Due</td>
+<td align="left">Vittinghoff Chap 6.2</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -346,48 +346,48 @@ title: Calendar
 </tr>
 <tr class="even">
 <td align="left">Week 13</td>
-<td align="left">16-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.pdf">PDF</a> <a href="../Notes/Lec-19-longitudinal-2/longitudinal-2.html">HTML</a> <a href="https://vimeo.com/265267573/5e1c3d3898">Video</a></td>
-<td align="left">Read FOX: Chapter 23</td>
+<td align="left">15-Apr</td>
+<td align="left">Cox PH Model</td>
+<td align="left"></td>
+<td align="left">Vittinghoff Chap 6.3-6.4</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
-<td align="left">18-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.pdf">PDF</a> <a href="../Notes/Lec-20-longitudinal-3/longitudinal-3.html">HTML</a> <a href="https://vimeo.com/265442527/fa4ef689e5">Video</a></td>
+<td align="left">17-Apr</td>
+<td align="left">Cox PH Model</td>
+<td align="left"></td>
+<td align="left">Vittinghoff Chap 6.5-6.7</td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Peer Review 2 Due</td>
 </tr>
 <tr class="even">
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Week 14</td>
-<td align="left">23-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.pdf">PDF</a> <a href="../Notes/Lec-21-longitudinal-4/longitudinal-4.html">HTML</a> <a href="https://vimeo.com/266325997/2011fd2a68">Video</a></td>
+<td align="left">22-Apr</td>
+<td align="left">Survey Data Methods</td>
 <td align="left"></td>
+<td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">25-Apr</td>
-<td align="left">Linear Mixed Effects Models</td>
-<td align="left"><a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.pdf">PDF</a> <a href="../Notes/Lec-22-longitudinal-5/longitudinal-5.html">HTML</a> <a href="https://vimeo.com/267162806/db11248fa9">Video</a></td>
-<td align="left">Read FOX: Chapter 24</td>
-<td align="left"><a href="../homework/hw6.html">HW6</a></td>
-<td align="left">Final Steps</td>
+<td align="left">24-Apr</td>
+<td align="left">Survey Data Methods</td>
+<td align="left"></td>
+<td align="left">Vittinghoff Chap 12</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
@@ -400,48 +400,48 @@ title: Calendar
 </tr>
 <tr class="even">
 <td align="left">Week 15</td>
-<td align="left">30-Apr</td>
-<td align="left">Bootstrapping Regression Models</td>
-<td align="left"><a href="../Notes/Lec-23-bootstrapping/bootstrapping.pdf">PDF</a> <a href="../Notes/Lec-23-bootstrapping/bootstrapping.html">HTML</a> <a href="https://vimeo.com/267798749/edee6feb95">Video</a></td>
+<td align="left">29-Apr</td>
+<td align="left">Time Series and Non-linear Data</td>
 <td align="left"></td>
+<td align="left">Fox Chap 16-17</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
+<td align="left">1-May</td>
+<td align="left">Missing Data</td>
 <td align="left"></td>
-<td align="left">Lab 9: Linear Mixed Effects Models</td>
-<td align="left"><a href="../labs/lab9.html">HTML</a> <a href="../labs/lab9.Rmd">Rmd</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
-<td align="left"></td>
+<td align="left">Fox Chap 20, Vittinghoff Chap 11</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">2-May</td>
-<td align="left">Non Parametric Regression</td>
-<td align="left"><a href="../Notes/Lec-24-nonparametric/nonparametric.pdf">PDF</a> <a href="../Notes/Lec-24-nonparametric/nonparametric.html">HTML</a> <a href="https://vimeo.com/267797937/a4b02632b2">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"><a href="../Project/paper_description">Final Draft to Peer Review</a></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
 <td align="left">Final Week</td>
-<td align="left">7-May</td>
-<td align="left"><strong>FINAL EXAM IN CLASS</strong></td>
-<td align="left"><a href="../homework/final_review.html">Final Review Questions</a> <a href="../homework/final_review_output.html">Final Review Output</a> <a href="../homework/final_review_sol.html">Final Review Solutions</a> <a href="../exams/final_exam_extra_info.html">Questions Asked By Students</a></td>
+<td align="left">6-May</td>
+<td align="left">Overflow</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
 <td align="left"></td>
-<td align="left">12-May</td>
-<td align="left"><strong>Project Paper Due</strong></td>
+<td align="left">11-May</td>
+<td align="left">Overflow</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Final Paper Due</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
