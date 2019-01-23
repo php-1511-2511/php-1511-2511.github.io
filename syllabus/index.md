@@ -9,8 +9,6 @@ title: Syllabus
 ## Course goals & objectives:
 
 
-
-
 This course provides a survey of regression techniques for outcomes common in public health data including continuous, binary, count and survival data.  Emphasis is on developing a conceptual understanding of the application of these techniques to solving problems, rather than to the numerical details. Extensive use of the computer will be made for analysis of datasets.
 
 This course is designed for graduate and advanced undergraduate students who will be analyzing data with scientific colleagues and who want to develop a practical hands-on toolkit and gain experience in distilling complex statistical information into formats understandable to colleagues. This course will feature R programming elements. To make the most of R students will be expected to use \href{https://www.rstudio.com/}{RStudio}. There are videos on the course's R page to explain how to get set up and started in RStudio. 
@@ -68,6 +66,16 @@ Course topics will be drawn (but subject to change) from
 
 * * *
 
+{:.right}
+![Regression Methods in Biostatistics](../images/vittinghoff.jpg)
+
+ **Regression Methods in Biostatistics** by
+   Eric Vittinghoff, David V. Glidden, Stephen C. Shiboski, Charles E. McCulloch 
+  [Amazon](https://www.amazon.com/Regression-Methods-Biostatistics-Logistic-Statistics/dp/1461413524).
+  We follow this book for content and pacing. 
+
+* * *
+
 ### Suggested
 
 {:.right}
@@ -97,6 +105,7 @@ Other resources for reference books, statistical computing using R,
 * * *
 
 
+
 ## Grading:
 
 
@@ -107,8 +116,8 @@ Students will be evaluated based on:
 | --------------- | ----------------- | ------------- |
 | Participation       |                    10%   |
 | Homework             |                   20%  | 
-| Exam 1 (03/14/2018)   |                  20% | 
-| Exam 2 (05/07/2018)  |                 20%  |
+| Exam 1 (03/13/2019)   |                  20% | 
+| Exam 2 (05/8/2019)  |                 20%  |
 | Reproducible Research Project  |           30% |
 
 * * * 
@@ -139,11 +148,11 @@ Weekly assignments will be given out to students. Assignments will require data 
 Students will also be graded on the conciseness and quality of work. Turning in many pages of just computer code and output will affect the grade in a negative fashion.
 
 
-### Exam 1 (March 14, 2018)
+### Exam 1 (March 13, 2019 in Class)
 
 An in class exam will be given. Students will be expected to interpret and analyze regression models. Students will also be expected to understand conceptual ideas. 
 
-### Exam  2 (May 7, 2018 in Class)
+### Exam  2 (May 8, 2019 in Class)
 
 An in class exam will be given. Students will be expected to interpret and analyze regression models. Students will also be expected to understand conceptual ideas. 
 
@@ -182,8 +191,7 @@ Given the nature of this course with multiple levels of students from Undergradu
 
 
 
-
-* * *
+ 
 
 ### Graduate Students
 
@@ -218,7 +226,7 @@ Given the nature of this course with multiple levels of students from Undergradu
 ### Email and Discussion Forums
 
 * We will be using
-[Slack](https://join.slack.com/t/php-1511-2511/shared_invite/enQtMzAzMjA2MzU5NDYwLTY3MWIyZmE5NjFiZDUyNTAyZjBhMTk3MjY2OWYwMWU4ZGNiYzc4OTUwMWYzYjU5MmZjYTc0NDA0ZmJjMzM5NGE45r) for class
+[Slack](https://join.slack.com/t/php15112511sp-uym3228/shared_invite/enQtNTI5OTM4MzczMTY5LWRkMzdjODdjODc0MjRhNzVhMWU5OGUyZTE3NTE2YWUyYjk0ZjVmZGJjMDAzODA1MDBmMWZiODM5ZTA5YjcxOWU) for class
 discussion. 
 * The system is highly catered to getting you help fast and efficiently from classmates, the TAs, and myself. 
 * Rather than emailing questions to the teaching staff, I encourage you to post your questions on Slack (peer answers earn participation points!). 
@@ -232,7 +240,7 @@ Before posting a new question please make sure to check if your question has alr
 Note that it is more efficient to answer most statistical questions
 ``in person" so make use of Office Hours.
 
-* * *
+
 
 
 

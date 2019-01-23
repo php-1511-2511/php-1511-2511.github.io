@@ -57,6 +57,7 @@ Course topics will be drawn (but subject to change) from
 
 ### Required
 
+{:.right}
 ![Applied Regression Analysis and Generalized Linear Models](../images/fox.jpg)
 
  **Applied Regression Analysis and Generalized Linear Models** by
@@ -66,9 +67,19 @@ Course topics will be drawn (but subject to change) from
 
 * * *
 
+{:.right}
+![Regression Methods in Biostatistics](../images/vittinghoff.jpg)
+
+ **Regression Methods in Biostatistics** by
+   Eric Vittinghoff, David V. Glidden, Stephen C. Shiboski, Charles E. McCulloch 
+  [Amazon](https://www.amazon.com/Regression-Methods-Biostatistics-Logistic-Statistics/dp/1461413524).
+  We follow this book for content and pacing. 
+
+* * *
+
 ### Suggested
 
-
+{:.right}
 ![An Introduction to Statistical Learning](../images/ISL.jpg)
 
  **An Introduction to Statistical Learning: with Applications in R** by 
@@ -106,8 +117,8 @@ Students will be evaluated based on:
 | --------------- | ----------------- | ------------- |
 | Participation       |                    10%   |
 | Homework             |                   20%  | 
-| Exam 1 (03/14/2018)   |                  20% | 
-| Exam 2 (05/7/2018)  |                 20%  |
+| Exam 1 (03/13/2019)   |                  20% | 
+| Exam 2 (05/8/2019)  |                 20%  |
 | Reproducible Research Project  |           30% |
 
 * * * 
@@ -138,11 +149,11 @@ Weekly assignments will be given out to students. Assignments will require data 
 Students will also be graded on the conciseness and quality of work. Turning in many pages of just computer code and output will affect the grade in a negative fashion.
 
 
-### Exam 1 (March 14, 2018)
+### Exam 1 (March 13, 2019 in Class)
 
 An in class exam will be given. Students will be expected to interpret and analyze regression models. Students will also be expected to understand conceptual ideas. 
 
-### Exam  2 (May 7, 2018 in Class)
+### Exam  2 (May 8, 2019 in Class)
 
 An in class exam will be given. Students will be expected to interpret and analyze regression models. Students will also be expected to understand conceptual ideas. 
 
@@ -216,7 +227,7 @@ Given the nature of this course with multiple levels of students from Undergradu
 ### Email and Discussion Forums
 
 * We will be using
-[Slack](https://join.slack.com/t/php-1511-2511/shared_invite/enQtMzAzMjA2MzU5NDYwLTY3MWIyZmE5NjFiZDUyNTAyZjBhMTk3MjY2OWYwMWU4ZGNiYzc4OTUwMWYzYjU5MmZjYTc0NDA0ZmJjMzM5NGE45r) for class
+[Slack](https://join.slack.com/t/php15112511sp-uym3228/shared_invite/enQtNTI5OTM4MzczMTY5LWRkMzdjODdjODc0MjRhNzVhMWU5OGUyZTE3NTE2YWUyYjk0ZjVmZGJjMDAzODA1MDBmMWZiODM5ZTA5YjcxOWU) for class
 discussion. 
 * The system is highly catered to getting you help fast and efficiently from classmates, the TAs, and myself. 
 * Rather than emailing questions to the teaching staff, I encourage you to post your questions on Slack (peer answers earn participation points!). 

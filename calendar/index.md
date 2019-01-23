@@ -43,7 +43,7 @@ title: Calendar
 <td align="left">28-Jan</td>
 <td align="left">Using R to Work with Data: tidyverse</td>
 <td align="left"></td>
-<td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/about-this-course/">Introduction to R: Getting Started</a> <a href="http://statseducation.com/Introduction-to-R/modules/getting%20data/data-wrangling/">Introduction to R: Getting Data</a>, [Introduction to R: Tidy Data]((<a href="http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/">http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/</a>)</td>
+<td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/about-this-course/">Introduction to R: Getting Started</a> <a href="http://statseducation.com/Introduction-to-R/modules/getting%20data/data-wrangling/">Introduction to R: Getting Data</a>, <a href="http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/">Introduction to R: Tidy Data</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -212,7 +212,7 @@ title: Calendar
 <tr class="odd">
 <td align="left"></td>
 <td align="left">13-Mar</td>
-<td align="left"><strong><em>Midterm</em></strong></td>
+<td align="left"><strong><em>Exam 1</em></strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -437,7 +437,7 @@ title: Calendar
 <tr class="even">
 <td align="left"></td>
 <td align="left">11-May</td>
-<td align="left">Overflow</td>
+<td align="left"><strong><em>Exam 2</em></strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
