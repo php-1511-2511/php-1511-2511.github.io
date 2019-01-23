@@ -1,7 +1,7 @@
 ---
 title: "Applied Regression Analysis"
 author: "Adam J Sullivan, PhD"
-date: "1/24/2018"
+date: "1/23/2019"
 output:
   ioslides_presentation: 
     widescreen: true
@@ -24,8 +24,9 @@ css: "D:/Dropbox/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 
 
 * Instructor: Adam J Sullivan, PhD
 * TAs:
-    + Yi Cao
-    + Ludan Zhang
+    + Taylor Fortnam
+    + Blain Morin
+    + Fuyu Zou
 * Masters Tutoring Office Hour Help:
     + Julia Mullokandova
     
@@ -34,10 +35,10 @@ css: "D:/Dropbox/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 
 
 * Main: [https://php-1511-2511.github.io](https://php-1511-2511.github.io)
 * Canvas:
-    + PHP 1511: [https://canvas.brown.edu/courses/1075279](https://canvas.brown.edu/courses/1075279)
-    + PHP 2511: [https://canvas.brown.edu/courses/1075280](https://canvas.brown.edu/courses/1075280)
+    + PHP 1511: [Coming Soon)
+    + PHP 2511: [https://canvas.brown.edu/courses/1077129](https://canvas.brown.edu/courses/1077129)
 * Github: [https://github.com/php-1511-2511](https://github.com/php-1511-2511)
-* Slack: [https://php-1511-2511.slack.com/](https://php-1511-2511.slack.com/)
+* Slack: [https://php-1511-2511-spring-2019.slack.com/](https://php-1511-2511.slack.com/)
 
 ## Course Goals
 
@@ -64,7 +65,7 @@ Course topics will be drawn (but subject to change) from
 * Generalized Linear Models
 * Nonlinear Regression
 * Robust Regression
-* Mixed Effects Models
+* Survey Analysis
 
 
 ## Main Textbook
@@ -75,7 +76,19 @@ Course topics will be drawn (but subject to change) from
 *  **Applied Regression Analysis and Generalized Linear Models** by
   John Fox Jr.
 * [Amazon](https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-ebook/dp/B00YFSZPTE).
-  We follow this book for content and pacing. 
+  We follow this book for content and pacing.
+  
+  
+  
+## Main Textbook
+
+
+![Regression Methods in Biostatistics](images/vittinghoff.jpg)
+
+ **Regression Methods in Biostatistics** by
+   Eric Vittinghoff, David V. Glidden, Stephen C. Shiboski, Charles E. McCulloch 
+  [Amazon](https://www.amazon.com/Regression-Methods-Biostatistics-Logistic-Statistics/dp/1461413524).
+  We follow this book for content and pacing.
 
 
 ## Extra Textbook
@@ -115,8 +128,8 @@ Students will be evaluated based on:
 | --------------- | ----------------- | ------------- |
 | Participation       |                    10%   |
 | Homework             |                   20%  | 
-| Exam 1 (03/12/2017)   |                  20% | 
-| Exam 2 (05/9-18/2017)  |                 20%  |
+| Exam 1 (03/13/2019)   |                  20% | 
+| Exam 2 (05/8/2019)  |                 20%  |
 | Reproducible Research Project  |           30% |
 
 
@@ -135,13 +148,13 @@ Students will be evaluated based on:
 * Turning in many pages of just computer code and output will affect the grade in a negative fashion.
 
 
-## Exam 1 (March 14, 2018)
+## Exam 1 (March 13, 2019)
 
 * An in class exam will be given. 
 * Students will be expected to interpret and analyze regression models. 
 * Students will also be expected to understand conceptual ideas. 
 
-## Exam  2 (May 15, 2018 at 2:00pm)
+## Exam  2 (May 8, 2019)
 
 * An in class exam will be given. 
 * Students will be expected to interpret and analyze regression models. 
@@ -204,7 +217,7 @@ Students will spend the semester working on a Reproducible Research Project. Thi
 
 ## Email and Discussion Forums
 
-* We will be using [Slack](https://join.slack.com/t/php-1511-2511/shared_invite/enQtMzAzMjA2MzU5NDYwLTY3MWIyZmE5NjFiZDUyNTAyZjBhMTk3MjY2OWYwMWU4ZGNiYzc4OTUwMWYzYjU5MmZjYTc0NDA0ZmJjMzM5NGE45r) for class discussion. 
+* We will be using [Slack](https://join.slack.com/t/php15112511sp-uym3228/shared_invite/enQtNTI5OTM4MzczMTY5LWRkMzdjODdjODc0MjRhNzVhMWU5OGUyZTE3NTE2YWUyYjk0ZjVmZGJjMDAzODA1MDBmMWZiODM5ZTA5YjcxOWU) for class discussion. 
 * The system is highly catered to getting you help fast and efficiently from classmates, the TAs, and myself. 
 * Rather than emailing questions to the teaching staff, I encourage you to post your questions on Slack (peer answers earn participation points!). 
 * Any non-personal questions related to the material covered in class, problem sets, labs, projects, etc. should be posted on slack.
