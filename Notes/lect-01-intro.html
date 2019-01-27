@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Visualization with `ggplot2`</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Visualization with `ggplot2`">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Visualization with `ggplot2`</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>PHP 1511/2511: Applied Regression Analysis</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-2" style="background:grey;">
+  <hgroup>
+    <h1>Basics</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Course Staff</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Instructor: Adam J Sullivan, PhD</li>
+<li>TAs:
+
+<ul>
+<li>Taylor Fortnam</li>
+<li>Blain Morin</li>
+<li>Fuyu Zou</li>
+</ul></li>
+<li>Masters Tutoring Office Hour Help:
+
+<ul>
+<li>Julia Mullokandova</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Course Website</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Main: <a href="https://php-1511-2511.github.io">https://php-1511-2511.github.io</a></li>
+<li>Canvas:
+
+<ul>
+<li>PHP 1511: <a href="https://canvas.brown.edu/courses/1077969">https://canvas.brown.edu/courses/1077969</a></li>
+<li>PHP 2511: <a href="https://canvas.brown.edu/courses/1077129">https://canvas.brown.edu/courses/1077129</a></li>
+</ul></li>
+<li>Github: <a href="https://github.com/php-1511-2511">https://github.com/php-1511-2511</a></li>
+<li>Slack: <a href="https://php-1511-2511.slack.com/">https://php-1511-2511-spring-2019.slack.com/</a></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Course Goals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Recognize when data should be analyzed by regression</li>
+<li>Plan an appropriate analysis</li>
+<li>Bring in, Clean and Analyze data with R.</li>
+<li>Coherently summarize results.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Course Expectations</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Attend all lectures and actively participate in discussion.</li>
+<li>Read all assigned material prior to coming to class and actively participate in class discussions. <em>**Students in the past have found that reading the notes works, but make sure you know what you need to learn best, as we will move fast. *</em>*</li>
+<li>Complete and turn in all assignments on time. Solutions to homework must be clearly written with appropriate tables and figures included.</li>
+<li>Demonstrate an understanding on material on examinations.</li>
+<li>Respect each other, each others questions and each others discussion.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overall Course Topics</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Course topics will be drawn (but subject to change) from</p></li>
+<li><p>Linear Regression</p></li>
+<li><p>Linear Regression Diagnostics</p></li>
+<li><p>Generalized Linear Models</p></li>
+<li><p>Nonlinear Regression</p></li>
+<li><p>Robust Regression</p></li>
+<li><p>Survey Analysis</p></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Main Textbook</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/img/fox.jpg" alt="Applied Regression Analysis and Generalized Linear Models"></p>
+
+<ul>
+<li> <strong>Applied Regression Analysis and Generalized Linear Models</strong> by
+John Fox Jr.</li>
+<li><a href="https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-ebook/dp/B00YFSZPTE">Amazon</a>.
+We follow this book for content and pacing.</li>
+</ul>
+
+<p>--- .class #id</p>
+
+<h2>Main Textbook</h2>
+
+<p><img src="assets/img/vittinghoff.jpg" alt="Regression Methods in Biostatistics"></p>
+
+<p><strong>Regression Methods in Biostatistics</strong> by
+   Eric Vittinghoff, David V. Glidden, Stephen C. Shiboski, Charles E. McCulloch 
+  <a href="https://www.amazon.com/Regression-Methods-Biostatistics-Logistic-Statistics/dp/1461413524">Amazon</a>.
+  We follow this book for content and pacing.</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Extra Textbook</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/img/ISL.jpg" alt="An Introduction to Statistical Learning"></p>
+
+<ul>
+<li> <strong>An Introduction to Statistical Learning: with Applications in R</strong> by 
+Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani.</li>
+<li>We will use this as a reference to some methods as well as a resource for data and R code. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Extra Textbook</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/img/ISL.jpg" alt="An Introduction to Statistical Learning"></p>
+
+<ul>
+<li>This is  available freely available as an eBook  <a href="http://www-bcf.usc.edu/%7Egareth/ISL/">Get it</a>
+
+<ul>
+<li>If you prefer a paperback version you may buy it at cost from
+Springer (see links from library site) or purchase a hardback version at the through Amazon.</li>
+</ul></li>
+<li>For additional information check out <a href="https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/">Videos for the ISL book</a><br></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Additional Resources</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Other resources for reference books, statistical computing using R,
+etc are provided on the <a href="%7B%7Bsite.baseurl%7D%7D/resources">Resource</a> tab</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grading:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>-Students will be evaluated based on:</p>
+
+<table><thead>
+<tr>
+<th>Grade</th>
+<th>Category</th>
+<th>Percentage</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Participation</td>
+<td>10%</td>
+<td></td>
+</tr>
+<tr>
+<td>Homework</td>
+<td>20%</td>
+<td></td>
+</tr>
+<tr>
+<td>Exam 1 (03/13/2019)</td>
+<td>20%</td>
+<td></td>
+</tr>
+<tr>
+<td>Exam 2 (05/8/2019)</td>
+<td>20%</td>
+<td></td>
+</tr>
+<tr>
+<td>Reproducible Research Project</td>
+<td>30%</td>
+<td></td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Participation</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This course will move very fast and it is crucial to success in the course that students attend and participate. </li>
+<li>Unexcused absences will result in a loss of percentage points. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Homework</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Assignments will be given out to students. Assignments will require data handling, data cleaning and interpretation of the results.<br></li>
+<li>It is expected that all assignments are completed on time. No late assignments will be accepted. </li>
+<li>Students will also be graded on the conciseness and quality of work. </li>
+<li>Turning in many pages of just computer code and output will affect the grade in a negative fashion.</li>
+<li>All work must be done in R. No other Stat software is accepted. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Exam 1 (March 13, 2019)</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>An in class exam will be given. </li>
+<li>Students will be expected to interpret and analyze regression models. </li>
+<li>Students will also be expected to understand conceptual ideas. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Exam  2 (May 8, 2019)</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>An in class exam will be given. </li>
+<li>Students will be expected to interpret and analyze regression models. </li>
+<li>Students will also be expected to understand conceptual ideas. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Reproducible Research Project</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Students will spend the semester working on a Reproducible Research Project. This project will require:</p>
+
+<ol>
+<li>Asking a relevant public Health question for those in 2511 and a relevant scientific question for those in 1511. </li>
+<li>Identify available data to answer this question. </li>
+<li>Model the question with appropriate statistical models. </li>
+<li>Write up a report with appropriate tables, graphs and results. </li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Reproducible Research Project</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The project will consist of individual as well as group content. </li>
+<li>For the individual content you will complete the 4 requirements. </li>
+<li>For the group component. You will work in small groups to evaluate each others work. </li>
+<li>This will require:
+
+<ol>
+<li>Constructive Criticism of Group members Projects based on Course Content. </li>
+<li>In depth review of group members work. </li>
+</ol></li>
+<li>You will be graded on both individual and group aspects. </li>
+<li>It is important to learn not only how to ask a public health question and answer that question with a study or data but equally important to review others work and arguments. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PHP 1511: Specifics</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Grade Category</th>
+<th>Comments</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Participation</td>
+<td>Graded the same as all students, Must be in class and prepared to work in groups.</td>
+</tr>
+<tr>
+<td>Homework</td>
+<td>Students will be expected to complete a portion of the material with the exception of some more difficult problems which may be attempted but do not have to be complete.</td>
+</tr>
+<tr>
+<td>Exam 1 &amp; 2</td>
+<td>Students will be expected to complete a portion of the exam.</td>
+</tr>
+<tr>
+<td>Reproducible Research Project</td>
+<td>Students will be expected to complete a reproducible research project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work.</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PHP 2511: Specifics</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Grade Category</th>
+<th>Comments</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Participation</td>
+<td>Graded the same as all students, Must be in class and prepared to work in groups.</td>
+</tr>
+<tr>
+<td>Homework</td>
+<td>Students will be expected to complete the entire assignment.</td>
+</tr>
+<tr>
+<td>Exam 1 &amp; 2</td>
+<td>Students will be expected to complete the entire exam.</td>
+</tr>
+<tr>
+<td>Reproducible Research Project</td>
+<td>Students will be expected to complete a reproducible resaerch project. Data as well as questions explored will be at a level appropriate of the background and other statistical courses taken. This will be a semester long project so it will require a great deal of work.</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Statistical Analysis</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will use R as a programming language for data analysis and use   existing packages written in R to support the course. </li>
+<li>You should have access to a laptop   or desktop capable of running <a href="%7B%7Bsite.baseurl%7D%7D/resources">R or RStudio</a>.<br></li>
+<li>We will also provide access   to a dedicated server running RStudio Pro for all students that will have a unified environment.<br></li>
+<li>See the <a href="%7B%7Bsite.baseurl%7D%7D/resources">Resources</a> page for books and other resources for learning R.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Email and Discussion Forums</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will be using <a href="https://join.slack.com/t/php15112511sp-uym3228/shared_invite/enQtNTI5OTM4MzczMTY5LWRkMzdjODdjODc0MjRhNzVhMWU5OGUyZTE3NTE2YWUyYjk0ZjVmZGJjMDAzODA1MDBmMWZiODM5ZTA5YjcxOWU">Slack</a> for class discussion. </li>
+<li>The system is highly catered to getting you help fast and efficiently from classmates, the TAs, and myself. </li>
+<li>Rather than emailing questions to the teaching staff, I encourage you to post your questions on Slack (peer answers earn participation points!). </li>
+<li>Any non-personal questions related to the material covered in class, problem sets, labs, projects, etc. should be posted on slack.</li>
+<li>Before posting a new question please make sure to check if your question has already been answered. </li>
+<li>The TAs and myself will be answering questions on the forum daily and all students are expected to answer questions as well. Please use informative titles for your posts.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Slack does not mean:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This does not mean that the professor or staff will be available 24/7.</li>
+<li>Do not expect a fast answer from the staff after 5pm on a week night. </li>
+<li>Do not expect a fast answer from the staff on the weekends. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Students with Special Needs</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Brown University is committed to full inclusion of all students. </li>
+<li>Students who, by nature of a documented disability, require academic accommodations should contact the professor during office hours.</li>
+<li>Students may also speak with Student and Employee Accessibility Services at 401-863-9588 to discuss the process for requesting accommodations.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Diversity Statement</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This course is designed to support an inclusive learning environment where diverse perspectives are recognized, respected and seen as a source of strength. </li>
+<li>It is our intent to provide materials and activities that are respectful of various levels of diversity: mathematical background, previous computing skills, gender, sexuality, disability, age, socioeconomic status, ethnicity, race, and culture.<br></li>
+<li>It is the nature of data analysis that we will touch on sensitive subjects. </li>
+<li>My goal will be to approach these with as much respect and kindness as I can. </li>
+<li>Please come see me if you ever feel hurt or upset about class discussions. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>English Language Learners</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li> Brown University welcomes students from around the world, and the unique perspectives international students bring enrich the campus community.  *  To empower students whose first language is not English, an array of ELL support is available on campus including language and culture workshops and individual appointments. </li>
+<li>For more information about English Language Learning at Brown, contact the ELL Specialists at <a href="mailto:ellwriting@brown.edu">ellwriting@brown.edu</a>.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='PHP 1511/2511: Applied Regression Analysis'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Basics'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Course Staff'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Course Website'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Course Goals'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Course Expectations'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Overall Course Topics'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Main Textbook'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Extra Textbook'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Extra Textbook'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Additional Resources'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Grading:'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Participation'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Homework'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Exam 1 (March 13, 2019)'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Exam  2 (May 8, 2019)'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Reproducible Research Project'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Reproducible Research Project'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='PHP 1511: Specifics'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='PHP 2511: Specifics'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Statistical Analysis'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Email and Discussion Forums'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='What Slack does not mean:'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Students with Special Needs'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Diversity Statement'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='English Language Learners'>
+         26
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

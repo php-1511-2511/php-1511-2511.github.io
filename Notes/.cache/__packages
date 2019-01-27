@@ -1,0 +1,17 @@
+base
+slidify
+devtools
+usethis
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+fivethirtyeight
+bindrcpp
+DT
+gapminder

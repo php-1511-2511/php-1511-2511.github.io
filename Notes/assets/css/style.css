@@ -1,0 +1,145 @@
+p {
+  font-family: georgia;
+	font-size: 25px !important;
+	color: #222 !important;
+}
+
+ul {
+  font-family:georgia;
+	font-size: 35px !important;
+	color: #222 !important;
+}
+
+
+
+h2 {
+  font-family:georgia;
+  color: #ED1C24 !important;
+}
+
+
+blockquote {
+  font-family:georgia;
+	background-color: #f2f2f2 !important;
+}
+
+
+
+table {
+  font-family:georgia;
+	font-size: 35px !important;
+}
+
+table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    
+table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+      
+table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      text-align: left;
+      margin: 0;
+      padding: 6px 13px; }
+      
+table tr td {
+      border: 1px solid #cccccc;
+      text-align: left;
+      margin: 0;
+      padding: 6px 13px; }
+      
+table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+      
+table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+
+blue {
+	color: #ED1C24;
+	font-weight: bold;
+}
+
+.rmdtable {
+	color: #222 !important;
+}
+
+.big {
+	font-size: 40px !important;
+}
+
+.small {
+	font-size: 20px !important;
+}
+
+aside.gdbar img {
+  
+  height: 75px; 
+  position: absolute;
+  right: 0;
+  margin: 8px 15px;
+}
+
+.title-slide {
+  background-color: white;
+}
+
+.title-slide hgroup > h1, 
+.title-slide hgroup > h2 {
+  color: #222 ;  /* ; #EF5150*/
+}
+
+body {
+  background: #303030;
+}
+
+.segue h1 {
+  font-weight: 600;
+  font-size: 45px !important;
+  font-family: georgia;
+  line-height: 45px !important;
+  letter-spacing: -2px !important;
+  color: #fff !important;
+}
+
+.title-slide hgroup h1 {
+  font-size: 65px;
+  font-family: georgia;
+  line-height: 1.4;
+  letter-spacing: -3px;
+  color: #98A4AE !important;
+}
+
+
+
+
+div.footnotes {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+  width: 80%;
+  font-size: 0.6em;
+}
+
+
+
+hr {
+    border: none;
+    border-top: 4px solid #ED1C24;
+    border-bottom: 2px solid #4e3629;
+    color: #ED1C24;
+    overflow: visible;
+    text-align: center;
+    height: 3px;
+}
+
+
+.Neapolitan {
+  height: 200px;
+  width: 200px;
+  background: linear-gradient(to bottom, red 0%, red 33%, green 33%, green 66%, blue 66%, blue 100%);
+}

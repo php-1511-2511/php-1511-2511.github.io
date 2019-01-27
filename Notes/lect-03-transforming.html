@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Transforming Data with `dplyr`</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Transforming Data with `dplyr`">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Transforming Data with `dplyr`</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>The <code>dplyr</code> Package</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The <code>dplyr</code> Package</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Now that we have started to tidy up our data we can see that we have a need to transform this data. </li>
+<li>We may wish to add additional variables. </li>
+<li>The <code>dplyr</code> package allows us to further work with our data. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>dplyr</code> Functionality</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With <code>dplyr</code> we have five basic verbs that we will learn to work with:
+
+<ul>
+<li><code>filter()</code></li>
+<li><code>select()</code></li>
+<li><code>arrange()</code></li>
+<li><code>mutate()</code></li>
+<li><code>summarize()</code></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-4" style="background:grey;">
+  <hgroup>
+    <h1>Filtering</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Filtering</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>At this point we will consider how we pick the rows of the data that we wish to work with. </li>
+<li>If you consider many modern data sets, we have so much information that we may not want to bring it all in at once. </li>
+<li>R brings data into the RAM of your computer. This means you can be limited for what size data you can bring in at once. </li>
+<li>Very rarely do you need the entire data set. </li>
+<li>We will focus on how to pick the rows or observations we want now.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter the <code>filter()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The <code>filter()</code> function chooses rows that meet a specific criteria. </li>
+<li>We can do this with Base R functions or with   <code>dplyr</code>. </li>
+</ul>
+
+<pre><code class="r">library(dplyr)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Filtering Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s say that we want to look at the data just for the country of Kenya in 2000</li>
+<li>We could do this without learning a new command and use indexing which we learned yesterday. </li>
+</ul>
+
+<pre><code class="r">gapminder[gapminder$country==&quot;Kenya&quot; &amp; gapminder$year==2002, ]
+</code></pre>
+
+<pre><code>## # A tibble: 1 x 6
+##   country continent  year lifeExp      pop gdpPercap
+##   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1 Kenya   Africa     2002    51.0 31386842     1288.
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Filtering Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Now this is not very difficult to do, what we have is that we are working with <code>gapminder</code> and we only want to keep the rows of data there <code>country==&quot;Kenya</code> and <code>year==2002</code>. </li>
+<li>However we could use the <code>filter()</code> function to do this in a much easier to read format:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>filter()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>filter(.data, ...)
+</code></pre>
+
+<p>where</p>
+
+<ul>
+<li><code>.data</code> is a tibble.</li>
+<li><code>...</code> is a set of arguments the data you want returned needs to meet. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Filtering Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This means in our example we could perform the following:</li>
+</ul>
+
+<pre><code>gapminder %&gt;%
+    filter(country==&quot;Kenya&quot;, year==2002)
+</code></pre>
+
+<p>Finally we could also only do one filtering at a time and chain it:</p>
+
+<pre><code>gapminder %&gt;%
+    filter(country==&quot;Kenya&quot;) %&gt;%
+    filter(year==2002)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Filtering</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><code>filter()</code> supports the use of multiple conditions where we can use Boolean. </li>
+<li>For example if we wanted to consider only observations that have a life expectancy between 49 and 60, we could do the following:</li>
+</ul>
+
+<pre><code class="r">gapminder %&gt;% filter(lifeExp&gt;=49 &amp; lifeExp&lt;60)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Filtering</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 373 x 6
+##    country    continent  year lifeExp      pop gdpPercap
+##    &lt;fct&gt;      &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+##  1 Albania    Europe     1952    55.2  1282697     1601.
+##  2 Albania    Europe     1957    59.3  1476505     1942.
+##  3 Algeria    Africa     1967    51.4 12760499     3247.
+##  4 Algeria    Africa     1972    54.5 14760787     4183.
+##  5 Algeria    Africa     1977    58.0 17152804     4910.
+##  6 Bahrain    Asia       1952    50.9   120447     9867.
+##  7 Bahrain    Asia       1957    53.8   138655    11636.
+##  8 Bahrain    Asia       1962    56.9   171863    12753.
+##  9 Bahrain    Asia       1967    59.9   202182    14805.
+## 10 Bangladesh Asia       1982    50.0 93074406      677.
+## # ... with 363 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Filtering</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can also use the <code>filter()</code> function to remove missing data for us. </li>
+<li>Previously we learned about a class of functions called <code>is.</code><em>foo</em><code>()</code> where <em>foo</em> represents a data type. </li>
+<li>We could choose to only use observations that have life expectancy. </li>
+<li>That means we wish to not have missing data for life expectancy. </li>
+</ul>
+
+<pre><code class="r">gapminder %&gt;% filter(!is.na(lifeExp))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Using the <code>filter()</code> function and chaining: </p>
+
+<ul>
+<li>Choose only rows associated with
+
+<ul>
+<li>Uganda</li>
+<li>Rwanda</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Your end result should be:</p>
+
+<pre><code>## # A tibble: 24 x 6
+##    country continent  year lifeExp     pop gdpPercap
+##    &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+##  1 Rwanda  Africa     1952    40   2534927      493.
+##  2 Rwanda  Africa     1957    41.5 2822082      540.
+##  3 Rwanda  Africa     1962    43   3051242      597.
+##  4 Rwanda  Africa     1967    44.1 3451079      511.
+##  5 Rwanda  Africa     1972    44.6 3992121      591.
+##  6 Rwanda  Africa     1977    45   4657072      670.
+##  7 Rwanda  Africa     1982    46.2 5507565      882.
+##  8 Rwanda  Africa     1987    44.0 6349365      848.
+##  9 Rwanda  Africa     1992    23.6 7290203      737.
+## 10 Rwanda  Africa     1997    36.1 7212583      590.
+## # ... with 14 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-16" style="background:grey;">
+  <hgroup>
+    <h1>Selecting</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Selecting</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The next logical step would be to select the columns we want as well. </li>
+<li>Many times we have so many columns that we are no interested in for a particular analysis. </li>
+<li>Instead of slowing down your analysis by continuing to run through extra data, we could just select the columns we care about. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter the <code>select()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The <code>select()</code> function chooses columns that we specify. </li>
+<li>Again we can do this with base functions or with <code>dplyr</code>. </li>
+<li>We feel that as you continue on with your R usage that you will most likely want to go the route of <code>dplyr</code> functions instead.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Select Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s say that we want to look at the gapminder data but we are really only interested in the country, life expectancy and year. </li>
+<li>This seems reasonable if we are a customer and wanted to only know these pieces of information. We could do this with indexing : </li>
+</ul>
+
+<pre><code class="r">gapminder[, c(&quot;country&quot;, &quot;lifeExp&quot;, &quot;year&quot;)]
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>select()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>select(.data, ...)
+</code></pre>
+
+<p>where </p>
+
+<ul>
+<li><code>.data</code> is a tibble.</li>
+<li><code>...</code> are the columns that you wish to have in bare (no quotations)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Selecting Example Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We could then do the following</p>
+
+<pre><code class="r">gapminder %&gt;%
+  select(country, lifeExp, year)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Selecting Example Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code># A tibble: 1,704 x 3
+       country lifeExp  year
+        &lt;fctr&gt;   &lt;dbl&gt; &lt;int&gt;
+ 1 Afghanistan  28.801  1952
+ 2 Afghanistan  30.332  1957
+ 3 Afghanistan  31.997  1962
+ 4 Afghanistan  34.020  1967
+ 5 Afghanistan  36.088  1972
+ 6 Afghanistan  38.438  1977
+ 7 Afghanistan  39.854  1982
+ 8 Afghanistan  40.822  1987
+ 9 Afghanistan  41.674  1992
+10 Afghanistan  41.763  1997
+# ... with 1,694 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Removing Columns</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We may wish to pick certain columns that we wish to have but we also may want to remove certain columns. </li>
+<li>It is quite common to de-identify a dataset before actually distributing it to a research team. </li>
+<li>The <code>select()</code> function will also remove columns. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Removing Columns</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Lets say that we wished to remove the <code>gdpPercap</code> and <code>pop</code> of the countries:</li>
+</ul>
+
+<pre><code class="r">gapminder %&gt;%
+  select(-gdpPercap,-pop)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Removing Columns</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We also could use a vector for this:</p>
+
+<pre><code class="r">cols &lt;- c(&quot;gdpPercap&quot;, &quot;pop&quot;)
+gapminder %&gt;%
+  select(-one_of(cols))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Removing Columns</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can also remove columns that contain a certain phrase in the name. </li>
+<li>If we were interested in removing any columns that had to do with time we could search for the phrase &quot;co&quot; in the data and remove them:</li>
+</ul>
+
+<pre><code class="r">gapminder %&gt;%
+  select(-matches(&quot;co&quot;))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Removing Columns</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 1,704 x 4
+##     year lifeExp      pop gdpPercap
+##    &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+##  1  1952    28.8  8425333      779.
+##  2  1957    30.3  9240934      821.
+##  3  1962    32.0 10267083      853.
+##  4  1967    34.0 11537966      836.
+##  5  1972    36.1 13079460      740.
+##  6  1977    38.4 14880372      786.
+##  7  1982    39.9 12881816      978.
+##  8  1987    40.8 13867957      852.
+##  9  1992    41.7 16317921      649.
+## 10  1997    41.8 22227415      635.
+## # ... with 1,694 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Unique Observations</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Many times we have a lot of repeats in our data. </li>
+<li>If we just would like to have an account of all things included then we can use the <code>unique()</code> command. </li>
+<li>Lets assume that we wish to know which countries are in the data. </li>
+<li>We do not want to have every country listed over and over again so we ask for unique values:</li>
+</ul>
+
+<pre><code class="r">gapminder %&gt;% 
+  select(country) %&gt;% 
+  unique()
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the gapminder data: <code>gapminder</code>. 
+
+<ol>
+<li>Select all but the <code>pop</code> column.</li>
+<li>Remove the year and lifeExp from them.</li>
+<li>Select values which contain &quot;p&quot; in them. </li>
+<li>Chain these together so that you run a command and it does all of these things. </li>
+</ol></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Your answer should look like:</p>
+
+<pre><code>## # A tibble: 1,704 x 1
+##    gdpPercap
+##        &lt;dbl&gt;
+##  1      779.
+##  2      821.
+##  3      853.
+##  4      836.
+##  5      740.
+##  6      786.
+##  7      978.
+##  8      852.
+##  9      649.
+## 10      635.
+## # ... with 1,694 more rows
+</code></pre>
+
+<h1>Arranging the Data</h1>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arranging the Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We also have need to make sure the data is ordered in a certain manner. This can be easily done in R with the <code>arrange()</code> function. </li>
+<li>Again we can do this in base R but this is not always a clear path. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arranging the Data Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s say that we wish to look at only carriers and departure delay and we wish to order departure delays from what smallest to largest. </li>
+<li>In base R we would have to run the following command:</li>
+</ul>
+
+<pre><code class="r">flights[order(flights$dep_delay), c(&quot;carrier&quot;, &quot;dep_delay&quot;)]
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter the <code>arrange()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We could do this in an easy manner using the  <code>arrange()</code> function:</p>
+
+<pre><code>arrange(.data, ...)
+</code></pre>
+
+<p>Where</p>
+
+<ul>
+<li><code>.data</code> is a data frame of interest.</li>
+<li><code>...</code> are the variables you wish to sort by. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arranging the Data Example Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">flights %&gt;%
+    select(carrier, dep_delay) %&gt;%
+    arrange(dep_delay)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arranging the Data Example Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arranging the Data Example Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With <code>arrange()</code> we first use <code>select()</code> to pick the only columns that we want and then we arrange by the <code>dep_delay</code>. </li>
+<li>If we had wished to order them in a descending manner we could have simply used the <code>desc()</code> function:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;%
+    select(carrier, dep_delay) %&gt;%
+    arrange(desc(dep_delay))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>More Complex Arrange</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Lets consider that we wish to look at the top 3 departure delays for each day.</li>
+<li>Then we wish to order them from largest to smallest departure delay. </li>
+<li>We then need to do the following:
+
+<ol>
+<li>Group by month and Day</li>
+<li>Pick the top 3 departure delays</li>
+<li>order them largest to smallest</li>
+</ol></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>More Complex Arrange Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">flights %&gt;% 
+  group_by(month, day) %&gt;%  
+  top_n(3, dep_delay) %&gt;% 
+  arrange(desc(dep_delay))
+</code></pre>
+
+<p>Where</p>
+
+<ul>
+<li><code>group_by()</code> is a way to group data. This way we perform operations on a group. So top 3 delays are by a group of day and month. </li>
+<li><code>top_n()</code>takes a tibble and returns a specific number of rows based on a chosen value. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>More Complex Arrange Continued</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Perform the following operations:
+
+<ul>
+<li>Group by month and day. </li>
+<li>use <code>sample_n()</code> to pick 1 observation per day. </li>
+<li>Arrange by longest to smallest departure delay. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Your answer <strong><em>may</em></strong> look like:</p>
+
+<pre><code class="r">flights %&gt;%
+  group_by(month,day) %&gt;%
+  sample_m(1) %&gt;%
+  arrange(desc(dep_delay))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-42" style="background:grey;">
+  <hgroup>
+    <h1>Summarizing Data</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summarizing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>As you have seen in your own work, being able to summarize information is crucial. </li>
+<li>We need to be able to take out data and summarize it as well. </li>
+<li>We will consider doing this using the <code>summarise()</code> function. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summarizing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Like in the rest of these lessons, let&#39;s consider what happens when we try to to do this in base R. We will:
+
+<ol>
+<li>Create a table grouped by <code>dest</code>.</li>
+<li>Summarize each group by taking mean of <code>arr_delay</code>.</li>
+</ol></li>
+</ul>
+
+<pre><code class="r">head(with(flights, tapply(arr_delay, dest, mean, na.rm=TRUE)))
+</code></pre>
+
+<pre><code>## Error in with(flights, tapply(arr_delay, dest, mean, na.rm = TRUE)): object &#39;flights&#39; not found
+</code></pre>
+
+<pre><code class="r">head(aggregate(arr_delay ~ dest, flights, mean))
+</code></pre>
+
+<pre><code>## Error in eval(m$data, parent.frame()): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter <code>summarise()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The <code>summarise()</code> function is:</li>
+</ul>
+
+<pre><code>summarise(.data, ...)
+</code></pre>
+
+<ul>
+<li>where
+
+<ul>
+<li><code>.data</code> is the tibble of interest.</li>
+<li><code>...</code> is a list of name paired summary functions</li>
+<li>Such as:
+
+<ul>
+<li><code>mean()</code></li>
+<li><code>median</code></li>
+<li><code>var()</code></li>
+<li><code>sd()</code></li>
+<li><code>min()</code></li>
+<li>`max()</li>
+<li class='..</li>'></ul></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summarizing Data Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>flights %&gt;%
+    group_by(dest) %&gt;%
+    summarise(avg_delay = mean(arr_delay, na.rm=TRUE))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summarizing Data Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the logic here:
+
+<ol>
+<li>Group flights by destination</li>
+<li>Find the average delay of the groups and call it <code>avg_delay</code>.</li>
+</ol></li>
+<li>This is much easier to understand than the  Base R code. </li>
+</ul>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Another Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Lets say that we would like to have more than just the averages but we wish to have the minimum and the maximum departure delays by carrier:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;%
+    group_by(carrier) %&gt;%
+    summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), matches(&quot;delay&quot;))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Another Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The following is a new function:
+
+<ul>
+<li>Helper function <code>n()</code> counts the number of rows in a group</li>
+</ul></li>
+<li>Then for each day:
+
+<ul>
+<li>count total flights</li>
+<li>Sort in descending order. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Your answer should look like:</p>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+<p>We could also have used what is called the  <code>tally()</code> function:</p>
+
+<pre><code class="r">flights %&gt;%
+    group_by(month, day) %&gt;%
+    tally(sort = TRUE)
+</code></pre>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-52" style="background:grey;">
+  <hgroup>
+    <h1>Adding New Variables</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Adding New Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>There is usually no way around needing a new variable in your data. </li>
+<li>For example, most medical studies have height and weight in them, however many times what a researcher is interested in using is Body Mass Index (BMI). </li>
+<li>We would need to add BMI in. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Adding New Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Using the <code>tidyverse</code> we can add new variables in multiple ways
+
+<ul>
+<li><code>mutate()</code></li>
+<li><code>transmute()</code></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Adding New Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>With <code>mutate()</code> we have</p>
+
+<pre><code>mutate(.data, ...)
+</code></pre>
+
+<p>where</p>
+
+<ul>
+<li><code>.data</code> is your tibble of interest.</li>
+<li><code>...</code> is the name paired with an expression</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Adding New Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Then with <code>transmute()</code> we have:</p>
+
+<pre><code>transmute(.data, ...)
+</code></pre>
+
+<p>where</p>
+
+<ul>
+<li><code>.data</code> is your tibble of interest.</li>
+<li><code>...</code> is the name paired with an expression</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Differences Between <code>mutate()</code> and <code>transmute()</code></h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>There is only one major difference between <code>mutate()</code> and <code>transmutate</code> and that is what it keeps in your data. 
+
+<ul>
+<li><code>mutate()</code></li>
+<li>creates a new variable</li>
+<li>It keeps all existing variables</li>
+<li><code>transmute()</code></li>
+<li>creates a new variable.</li>
+<li>It only keeps the new variables</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s say we wish to have a variable called speed. We want to basically do:</li>
+</ul>
+
+<p>\[\text{speed} = \dfrac{\text{distance}}{\text{time}}*60\]</p>
+
+<p>We can first do this with <code>mutate()</code>:</p>
+
+<pre><code class="r">flights %&gt;% 
+  select(flight, distance, air_time) %&gt;%
+  mutate(speed = distance/air_time*60)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">flights %&gt;%
+  select(flight, distance, air_time) %&gt;%
+  transmute(speed = distance/air_time*60)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">flights %&gt;%
+  select(flight, distance, air_time) %&gt;%
+  transmute(speed = distance/air_time*60)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-62" style="background:grey;">
+  <article data-timings="">
+    <p>#Further Summaries</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Summaries</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have so far discussed how one could find the basic number summaries:
+
+<ul>
+<li>mean</li>
+<li>median</li>
+<li>standard deviation</li>
+<li>variance</li>
+<li>minimum </li>
+<li>maximum</li>
+</ul></li>
+<li>However there are many more operations that you may wish to do for summarizing data. </li>
+<li>In fact many of the following examples are excellent choices for working with categorical data which does not always make sense to do the above summaries for. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Summaries</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider:
+
+<ol>
+<li>Grouping and Counting</li>
+<li>Grouping, Counting and Sorting</li>
+<li>Other Groupings</li>
+<li>Counting Groups</li>
+</ol></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping and Counting</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have seen the functions <code>tally()</code> and <code>count()</code>. </li>
+<li>Both of these can be used for grouping and counting. </li>
+<li>They also are very concise in how they are called. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping and Counting</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For example if we wished to know how many flights there were by month, we would use <code>tally()</code> in this manner: </li>
+</ul>
+
+<pre><code class="r">flights %&gt;%
+  group_by(month) %&gt;% 
+  tally()
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping and Counting</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Where as we could do the same thing with <code>count()</code></li>
+</ul>
+
+<pre><code class="r">flights %&gt;% 
+  count(month)
+</code></pre>
+
+<p>*Notice: <code>count()</code> allowed for month to be called inside of it, removing the need for the <code>group_by()</code> function. </p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping, counting and sorting.</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Both <code>tally()</code> and <code>count()</code> have an argument called <code>sort()</code>. </li>
+<li>This allows you to go one step further and group by, count and sort at the same time. </li>
+<li>For <code>tally()</code> this would be:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% group_by(month) %&gt;% tally(sort=TRUE)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <ul>
+<li>Then for <code>count()</code> we would have:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% count_(month, sort=TRUE)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <ul>
+<li>Then for <code>count()</code> we would have:</li>
+</ul>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping with other functions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can also sum over other values rather than just counting the rows like the above examples. </li>
+<li>For example let us say we were interested in knowing the total distance for planes in a given month. </li>
+<li>We could do this with the <code>summarise()</code> function, <code>tally()</code> function or the <code>count()</code> function:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% 
+  group_by(month) %&gt;% 
+  summarise(dist = sum(distance))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping with other functions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We take flights then group by month and then create a new variable called distance, where we sum the distance. </li>
+<li>For  <code>tally()</code> we could do:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% 
+  group_by(month) %&gt;% 
+  tally(wt = distance)
+</code></pre>
+
+<p><em>Note: in <code>tally()</code> the <code>wt</code> stands for weight and allows you to weight the sum based on the distance</em>. </p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Grouping with other functions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With the <code>count()</code> function we also use <code>wt</code>:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% count(month, wt = distance)
+</code></pre>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p>##Counting Groups</p>
+
+<ul>
+<li>We may want to know how large our groups are. To do this we can use the following functions:
+
+<ul>
+<li><code>group_size()</code> is a function that returns counts of group. </li>
+<li><code>n_groups()</code> returns the number of groups</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p>##Counting Groups</p>
+
+<ul>
+<li>So if wanted to count the number of flights by month, we could group by month and find the groups size using <code>group_size()</code>:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% 
+  group_by(month) %&gt;% 
+  group_size()
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p>##Counting Groups</p>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p>##Counting Groups</p>
+
+<ul>
+<li>If we just wished to know how many months were represented in our data we could use the <code>n_groups()</code> function:</li>
+</ul>
+
+<pre><code class="r">flights %&gt;% 
+  group_by(month) %&gt;% 
+  n_groups()
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p>##Counting Groups</p>
+
+<pre><code>## Error in eval(lhs, parent, parent): object &#39;flights&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='The <code>dplyr</code> Package'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The <code>dplyr</code> Package'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='<code>dplyr</code> Functionality'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Filtering'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Filtering'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Enter the <code>filter()</code> Function'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Filtering Example'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Filtering Example'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='<code>filter()</code> Function'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Filtering Example'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Further Filtering'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Further Filtering'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Further Filtering'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='On Your Own: RStudio Practice'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='On Your Own: RStudio Practice'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Selecting'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Selecting'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Enter the <code>select()</code> Function'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Select Example'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='<code>select()</code> Function'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Selecting Example Continued'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Selecting Example Continued'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Removing Columns'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Removing Columns'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Removing Columns'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Removing Columns'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Removing Columns'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Unique Observations'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='On Your Own: RStudio Practice'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='On Your Own: RStudio Practice'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Arranging the Data'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Arranging the Data Example'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Enter the <code>arrange()</code> Function'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Arranging the Data Example Continued'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Arranging the Data Example Continued'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Arranging the Data Example Continued'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='More Complex Arrange'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='More Complex Arrange Continued'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='More Complex Arrange Continued'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='On Your Own: RStudio Practice'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='On Your Own: RStudio Practice'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Summarizing Data'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Summarizing Data'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Summarizing Data'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Enter <code>summarise()</code> Function'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Summarizing Data Example'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Summarizing Data Example'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Another Example'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Another Example'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='On Your Own: RStudio Practice'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='On Your Own: RStudio Practice'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Adding New Variables'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='Adding New Variables'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Adding New Variables'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='Adding New Variables'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='Adding New Variables'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='Example'>
+         58
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=59 title='Example'>
+         59
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=60 title='Example'>
+         60
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=61 title='Example'>
+         61
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=62 title='NA'>
+         62
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=63 title='Further Summaries'>
+         63
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=64 title='Further Summaries'>
+         64
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=65 title='Grouping and Counting'>
+         65
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=66 title='Grouping and Counting'>
+         66
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=67 title='Grouping and Counting'>
+         67
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=68 title='Grouping, counting and sorting.'>
+         68
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=69 title='NA'>
+         69
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=70 title='NA'>
+         70
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=71 title='NA'>
+         71
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=72 title='Grouping with other functions'>
+         72
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=73 title='Grouping with other functions'>
+         73
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=74 title='Grouping with other functions'>
+         74
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=75 title='NA'>
+         75
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=76 title='NA'>
+         76
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=77 title='NA'>
+         77
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=78 title='NA'>
+         78
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=79 title='NA'>
+         79
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

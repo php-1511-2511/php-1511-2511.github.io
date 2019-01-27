@@ -17,8 +17,8 @@ title: Calendar
     <col width="25%" />
     <col width="10%" />
     </colgroup>
-<thead>
-<tr class="header">
+<table><thead>
+<tr>
 <th align="left">Week</th>
 <th align="left">Date</th>
 <th align="left">Topic</th>
@@ -27,45 +27,44 @@ title: Calendar
 <th align="left">HW</th>
 <th align="left">Project</th>
 </tr>
-</thead>
-<tbody>
-<tr class="odd">
+</thead><tbody>
+<tr>
 <td align="left">Week 1</td>
 <td align="left">23-Jan</td>
 <td align="left">Course Introduction / Course Resources / Using R</td>
-<td align="left"><a href="../Notes/Lec-01-Intro/intro.pdf">PDF</a> <a href="../Notes/Lec-01-Intro/intro.html">HTML</a></td>
+<td align="left"><a href="../Notes/lect-01-intro.html">Lect-01-Intro</a></td>
 <td align="left"></td>
 <td align="left">Install <a href="https://www.rstudio.com/products/rstudio/download3/">Rstudio</a> and <a href="https://php-1511-2511.github.io/Introduction-to-R/">Go through Introduction to R</a></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 2</td>
 <td align="left">28-Jan</td>
-<td align="left">Using R to Work with Data: tidyverse</td>
-<td align="left"></td>
+<td align="left">Graphing Data in R: ggplot</td>
+<td align="left"><a href="../Notes/lect-02b-ggplot.html">Lect-02a-ggplot</a> <a href="../Notes/lect-02b-tidying.html">Lect-02b-tidying</a></td>
 <td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/about-this-course/">Introduction to R: Getting Started</a> <a href="http://statseducation.com/Introduction-to-R/modules/getting%20data/data-wrangling/">Introduction to R: Getting Data</a>, <a href="http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/">Introduction to R: Tidy Data</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">30-Jan</td>
-<td align="left">Graphing Data in R: ggplot</td>
-<td align="left"></td>
+<td align="left">Using R to Work with Data: tidyverse</td>
+<td align="left"><a href="../Notes/lect-03-transforming.html">Lect-03-transforming</a></td>
 <td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/graphics/ggplot2/">Intoduction to R: Graphics</a></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab0: Rmarkdown/Dplyr/Manipulating Data in R</td>
-<td align="left"><a href="https://www.youtube.com/watch?v=MIlzQpXlJNk">Rmarkdown Tutorial</a> <a href="https://www.youtube.com/watch?v=jWjqLW-u3hc&amp;t=2s">dplyr Basics</a></td>
+<td align="left"><a href="https://www.youtube.com/watch?v=MIlzQpXlJNk">Rmarkdown Tutorial</a> <a href="https://www.youtube.com/watch?v=jWjqLW-u3hc&amp;t=2s">dplyr Basics </a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 3</td>
 <td align="left">4-Feb</td>
 <td align="left">What is Regression?</td>
@@ -74,7 +73,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">6-Feb</td>
 <td align="left">Simple and Multiple Linear Regression</td>
@@ -83,7 +82,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 1: Basics of Regression in R / Graphing in R</td>
@@ -92,7 +91,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 4</td>
 <td align="left">11-Feb</td>
 <td align="left">Inference for Linear Regression</td>
@@ -101,7 +100,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">13-Feb</td>
 <td align="left">Factors and Interactions</td>
@@ -110,7 +109,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Factors, Interactions and Interpretations.</td>
@@ -119,7 +118,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 5</td>
 <td align="left">18-Feb</td>
 <td align="left"><strong><em>No Class Long Weekend</em></strong></td>
@@ -128,7 +127,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">20-Feb</td>
 <td align="left">Diagnostics for Linear Regression</td>
@@ -137,7 +136,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -146,7 +145,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 6</td>
 <td align="left">25-Feb</td>
 <td align="left">Unusual and Influential Data</td>
@@ -155,7 +154,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">27-Feb</td>
 <td align="left">Collinearity</td>
@@ -164,7 +163,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 2: Regression Diagnostics in R</td>
@@ -173,7 +172,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 7</td>
 <td align="left">4-Mar</td>
 <td align="left">Generalized Linear Regression Basics</td>
@@ -182,7 +181,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">6-Mar</td>
 <td align="left">Introduction to Logistic Regression</td>
@@ -191,7 +190,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -200,7 +199,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 8</td>
 <td align="left">11-Mar</td>
 <td align="left">Logistic Regression</td>
@@ -209,7 +208,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">13-Mar</td>
 <td align="left"><strong><em>Exam 1</em></strong></td>
@@ -218,7 +217,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -227,7 +226,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 9</td>
 <td align="left">18-Mar</td>
 <td align="left">Diagnostics for Logistic Regression</td>
@@ -236,7 +235,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">20-Mar</td>
 <td align="left">Further Logistic Regression</td>
@@ -245,7 +244,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -254,7 +253,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 10</td>
 <td align="left">25-Mar</td>
 <td align="left"><strong><em>Spring Break</em></strong></td>
@@ -263,7 +262,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">27-Mar</td>
 <td align="left"><strong><em>Spring Break</em></strong></td>
@@ -272,7 +271,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -281,7 +280,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 11</td>
 <td align="left">1-Apr</td>
 <td align="left">Introduction to Log-Linear Regression</td>
@@ -290,7 +289,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">3-Apr</td>
 <td align="left">Further Log-Linear Regression</td>
@@ -299,7 +298,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -308,7 +307,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -317,7 +316,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 12</td>
 <td align="left">8-Apr</td>
 <td align="left">Basics of Survival Data</td>
@@ -326,7 +325,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">10-Apr</td>
 <td align="left">Cox PH Model</td>
@@ -335,7 +334,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -344,7 +343,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 13</td>
 <td align="left">15-Apr</td>
 <td align="left">Cox PH Model</td>
@@ -353,7 +352,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">17-Apr</td>
 <td align="left">Cox PH Model</td>
@@ -362,7 +361,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -371,7 +370,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Week 14</td>
 <td align="left">22-Apr</td>
 <td align="left">Survey Data Methods</td>
@@ -380,7 +379,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">24-Apr</td>
 <td align="left">Survey Data Methods</td>
@@ -389,7 +388,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -398,7 +397,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left">Week 15</td>
 <td align="left">29-Apr</td>
 <td align="left">Time Series and Non-linear Data</td>
@@ -407,7 +406,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left"></td>
 <td align="left">1-May</td>
 <td align="left">Missing Data</td>
@@ -416,7 +415,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -425,7 +424,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td align="left">Final Week</td>
 <td align="left">6-May</td>
 <td align="left">Overflow</td>
@@ -434,7 +433,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-<tr class="even">
+<tr>
 <td align="left"></td>
 <td align="left">11-May</td>
 <td align="left"><strong><em>Exam 2</em></strong></td>
@@ -443,5 +442,4 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 </tr>
-</tbody>
-</table>
+</tbody></table>

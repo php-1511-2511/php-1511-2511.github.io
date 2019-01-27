@@ -1,0 +1,26 @@
+<slide class="{{ slide.class }}" id="{{ slide.id }}" style="background:{{{ slide.bg }}};">
+  {{# slide.header }}
+  <hgroup>
+    {{{ slide.header}}}
+    <hr>
+  </hgroup>
+  {{/ slide.header }}
+  <article data-timings="{{ slide.dt }}">
+    {{{ slide.content }}}
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+  {{# slide.pnotes }}
+  <aside class="note" id="{{ id }}">
+    <section>
+      {{{ html }}}
+    </section>
+  </aside>
+  {{/ slide.pnotes }}
+</slide>
+
