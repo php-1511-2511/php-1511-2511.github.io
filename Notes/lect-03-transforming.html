@@ -57,6 +57,753 @@
     <!-- SLIDES -->
     <slide class="segue" id="slide-1" style="background:grey;">
   <hgroup>
+    <h1><code>tidyr</code></h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue quote" id="slide-2" style="background:#C0C8CE;">
+  <article data-timings="">
+    <p><q>  The principles of tidy data provide a standard way to organize data values within a dataset.</q> </p>
+
+<p><q>--Hadley Wickham (2014)</q></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-3" style="background:grey;">
+  <hgroup>
+    <h1>The <code>spread()</code> Function</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The <code>spread()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The first <code>tidyr</code> function we will look into is the <code>spread()</code> function. </li>
+<li>With <code>spread()</code> it does similar to what you would expect.<br></li>
+<li>We have a data frame where some of the rows contain information that is really a variable name. </li>
+<li>This means the columns are a combination of variable names as well as some data. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does it do?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>The picture below displays this:</p>
+
+<p><center>
+<img src="./assets/img/tidy-spread.png" style="height:100%;width:80%">
+</center></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider this Data:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 12 x 4
+##    country      year key             value
+##    &lt;fct&gt;       &lt;int&gt; &lt;fct&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>key</code> column</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Notice that in the column of <code>key</code>, instead of there being values we see the following variable names:
+
+<ul>
+<li>cases</li>
+<li>population</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Should we see?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In order to use this data we need to have it so the data frame looks like this instead:</li>
+</ul>
+
+<pre><code>## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;fct&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Using the <code>spread()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Now we can see that we have all the columns representing the variables we are interested in and each of the rows is now a complete observation. </li>
+<li>In order to do this we need to learn about the <code>spread()</code> function:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The <code>spread()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>spread(data, key, value)
+</code></pre>
+
+<ul>
+<li>Where
+
+<ul>
+<li><code>data</code> is your dataframe of interest. </li>
+<li><code>key</code> is the column whose values will become variable names. </li>
+<li><code>value</code> is the column where values will fill in under the new variables created from <code>key</code>. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Piping</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we consider <strong>piping</strong>, we can write this as:</li>
+</ul>
+
+<pre><code>data %&gt;%
+  spread(key, value)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>spread()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Now if we consider table2 , we can see that we have:</li>
+</ul>
+
+<pre><code>## # A tibble: 12 x 4
+##    country      year key             value
+##    &lt;fct&gt;       &lt;int&gt; &lt;fct&gt;           &lt;int&gt;
+##  1 Afghanistan  1999 cases             745
+##  2 Afghanistan  1999 population   19987071
+##  3 Afghanistan  2000 cases            2666
+##  4 Afghanistan  2000 population   20595360
+##  5 Brazil       1999 cases           37737
+##  6 Brazil       1999 population  172006362
+##  7 Brazil       2000 cases           80488
+##  8 Brazil       2000 population  174504898
+##  9 China        1999 cases          212258
+## 10 China        1999 population 1272915272
+## 11 China        2000 cases          213766
+## 12 China        2000 population 1280428583
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>spread()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Now this table was made for this example so key is the <code>key</code> in our <code>spread()</code> function and value is the <code>value</code> in our <code>spread()</code> function.</li>
+<li>We can fix this with the following code:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>spread()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">table2 %&gt;%
+    spread(key,value)
+</code></pre>
+
+<pre><code>## # A tibble: 6 x 4
+##   country      year  cases population
+##   &lt;fct&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1999    745   19987071
+## 2 Afghanistan  2000   2666   20595360
+## 3 Brazil       1999  37737  172006362
+## 4 Brazil       2000  80488  174504898
+## 5 China        1999 212258 1272915272
+## 6 China        2000 213766 1280428583
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>spread()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can now see that we have a variable named <code>cases</code> and a variable named <code>population</code>. </li>
+<li>This is much more tidy. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In this example we will use the dataset <code>population</code> that is part of tidyverse. </li>
+<li>Print this data:</li>
+</ul>
+
+<pre><code>## # A tibble: 1 x 3
+##   country      year population
+##   &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1995   17586073
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>You should see the table that we have above, now We have a variable named <code>year</code>, assume that we wish to actually have each year as its own variable. </li>
+<li>Using the <code>spread()</code> function, redo this data so that each year is a variable. </li>
+<li>Your data will look like this at the end:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 219 x 20
+##    country `1995` `1996` `1997` `1998` `1999` `2000` `2001` `2002` `2003`
+##    &lt;chr&gt;    &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;
+##  1 Afghan~ 1.76e7 1.84e7 1.90e7 1.95e7 2.00e7 2.06e7 2.13e7 2.22e7 2.31e7
+##  2 Albania 3.36e6 3.34e6 3.33e6 3.33e6 3.32e6 3.30e6 3.29e6 3.26e6 3.24e6
+##  3 Algeria 2.93e7 2.98e7 3.03e7 3.08e7 3.13e7 3.17e7 3.22e7 3.26e7 3.30e7
+##  4 Americ~ 5.29e4 5.39e4 5.49e4 5.59e4 5.68e4 5.75e4 5.82e4 5.87e4 5.91e4
+##  5 Andorra 6.39e4 6.43e4 6.41e4 6.38e4 6.41e4 6.54e4 6.80e4 7.16e4 7.56e4
+##  6 Angola  1.21e7 1.25e7 1.28e7 1.31e7 1.35e7 1.39e7 1.44e7 1.49e7 1.54e7
+##  7 Anguil~ 9.81e3 1.01e4 1.03e4 1.05e4 1.08e4 1.11e4 1.14e4 1.17e4 1.20e4
+##  8 Antigu~ 6.83e4 7.02e4 7.22e4 7.42e4 7.60e4 7.76e4 7.90e4 8.00e4 8.09e4
+##  9 Argent~ 3.48e7 3.53e7 3.57e7 3.61e7 3.65e7 3.69e7 3.73e7 3.76e7 3.80e7
+## 10 Armenia 3.22e6 3.17e6 3.14e6 3.11e6 3.09e6 3.08e6 3.06e6 3.05e6 3.04e6
+## # ... with 209 more rows, and 10 more variables: `2004` &lt;int&gt;,
+## #   `2005` &lt;int&gt;, `2006` &lt;int&gt;, `2007` &lt;int&gt;, `2008` &lt;int&gt;, `2009` &lt;int&gt;,
+## #   `2010` &lt;int&gt;, `2011` &lt;int&gt;, `2012` &lt;int&gt;, `2013` &lt;int&gt;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-19" style="background:grey;">
+  <hgroup>
+    <h1>The <code>gather()</code> Function</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The <code>gather()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The second <code>tidyr</code> function we will look into is the <code>gather()</code> function. </li>
+<li>With <code>gather()</code> it may not be clear what exactly is going on, but in this case we actually have a lot of column names the represent what we would like to have as data values. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <p><center>
+<img src="./assets/img/tidy-gather.png" style="height:100%;width:80%">
+</center></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The <code>gather()</code> Function Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For example, in the last <code>spread()</code> practice you created a data frame where variable names were individual years. </li>
+<li>This may not be what you want to have so you can use the gather function. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider <code>table4</code>:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 3 x 3
+##   country     `1999` `2000`
+##   &lt;fct&gt;        &lt;int&gt;  &lt;int&gt;
+## 1 Afghanistan    745   2666
+## 2 Brazil       37737  80488
+## 3 China       212258 213766
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Table 4</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This looks similar to the table you created in the <code>spread()</code> practice.</li>
+<li>We now wish to change this data frame so that <code>year</code> is a variable and 1999 and 2000 become values instead of variables. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>In Comes the <code>gather()</code> Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will accomplish this with the gather function:</li>
+</ul>
+
+<pre><code>gather(data, key, value, ...)
+</code></pre>
+
+<ul>
+<li>where
+
+<ul>
+<li><code>data</code> is the data frame you are working with. </li>
+<li><code>key</code> is the name of the <code>key</code> column to create.</li>
+<li><code>value</code> is the name of the <code>value</code> column to create.</li>
+<li><code>...</code> is a way to specify what columns to gather from. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>gather()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In our example here we would do the following:</li>
+</ul>
+
+<pre><code class="r">table4 %&gt;%
+    gather(&quot;year&quot;, &quot;cases&quot;, 2:3)
+</code></pre>
+
+<pre><code>## # A tibble: 6 x 3
+##   country     year   cases
+##   &lt;fct&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan 1999     745
+## 2 Brazil      1999   37737
+## 3 China       1999  212258
+## 4 Afghanistan 2000    2666
+## 5 Brazil      2000   80488
+## 6 China       2000  213766
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>gather()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>You can see that we have created 2 new columns called <code>year</code> and <code>cases</code>. </li>
+<li>We filled these with the previous 2nd and 3rd columns. </li>
+<li>Note that we could have done this in many different ways too. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2><code>gather()</code> Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For example if we knew the years but not which columns we could do this:</li>
+</ul>
+
+<pre><code>table4 %&gt;%
+    gather(&quot;year&quot;, &quot;cases&quot;, &quot;1999&quot;:&quot;2000&quot;)
+</code></pre>
+
+<ul>
+<li>We could also see that we want to gather all columns except the first so we could have used:</li>
+</ul>
+
+<pre><code>table4 %&gt;%
+    gather(&quot;year&quot;, &quot;cases&quot;, -1)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Create <code>population2</code> from last example:</li>
+</ul>
+
+<pre><code class="r">population 2 &lt;- population %&gt;% 
+                    spread(year, population)
+</code></pre>
+
+<ul>
+<li>Now gather the columns that are labeled by year and create columns <code>year</code> and <code>population</code>. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>On Your Own: RStudio Practice</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>In the end your data frame should look like:</p>
+
+<pre><code>## # A tibble: 2 x 3
+##   country      year population
+##   &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan  1995   17586073
+## 2 Afghanistan  1996   18415307
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-31" style="background:grey;">
+  <hgroup>
     <h1>The <code>dplyr</code> Package</h1>
     <hr>
   </hgroup>
@@ -122,7 +869,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-4" style="background:grey;">
+<slide class="segue" id="slide-34" style="background:grey;">
   <hgroup>
     <h1>Filtering</h1>
     <hr>
@@ -438,7 +1185,7 @@
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-16" style="background:grey;">
+<slide class="segue" id="slide-46" style="background:grey;">
   <hgroup>
     <h1>Selecting</h1>
     <hr>
@@ -1088,7 +1835,7 @@ gapminder %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-42" style="background:grey;">
+<slide class="segue" id="slide-72" style="background:grey;">
   <hgroup>
     <h1>Summarizing Data</h1>
     <hr>
@@ -1361,7 +2108,7 @@ gapminder %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-52" style="background:grey;">
+<slide class="segue" id="slide-82" style="background:grey;">
   <hgroup>
     <h1>Adding New Variables</h1>
     <hr>
@@ -1600,7 +2347,7 @@ gapminder %&gt;%
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-62" style="background:grey;">
+<slide class="segue" id="slide-92" style="background:grey;">
   <article data-timings="">
     <p>#Further Summaries</p>
 
@@ -2013,169 +2760,169 @@ gapminder %&gt;%
     <ul>
       <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=1 title='The <code>dplyr</code> Package'>
+        data-slide=1 title='<code>tidyr</code>'>
          1
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='The <code>dplyr</code> Package'>
+        data-slide=2 title='NA'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='<code>dplyr</code> Functionality'>
+        data-slide=3 title='The <code>spread()</code> Function'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Filtering'>
+        data-slide=4 title='The <code>spread()</code> Function'>
          4
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Filtering'>
+        data-slide=5 title='What does it do?'>
          5
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Enter the <code>filter()</code> Function'>
+        data-slide=6 title='Consider this Data:'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Filtering Example'>
+        data-slide=7 title='<code>key</code> column'>
          7
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='Filtering Example'>
+        data-slide=8 title='What Should we see?'>
          8
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='<code>filter()</code> Function'>
+        data-slide=9 title='Using the <code>spread()</code> Function'>
          9
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=10 title='Filtering Example'>
+        data-slide=10 title='The <code>spread()</code> Function'>
          10
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=11 title='Further Filtering'>
+        data-slide=11 title='Piping'>
          11
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=12 title='Further Filtering'>
+        data-slide=12 title='<code>spread()</code> Example'>
          12
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=13 title='Further Filtering'>
+        data-slide=13 title='<code>spread()</code> Example'>
          13
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='On Your Own: RStudio Practice'>
+        data-slide=14 title='<code>spread()</code> Example'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='On Your Own: RStudio Practice'>
+        data-slide=15 title='<code>spread()</code> Example'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Selecting'>
+        data-slide=16 title='On Your Own: RStudio Practice'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='Selecting'>
+        data-slide=17 title='On Your Own: RStudio Practice'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Enter the <code>select()</code> Function'>
+        data-slide=18 title='On Your Own: RStudio Practice'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Select Example'>
+        data-slide=19 title='The <code>gather()</code> Function'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='<code>select()</code> Function'>
+        data-slide=20 title='The <code>gather()</code> Function'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='Selecting Example Continued'>
+        data-slide=21 title='NA'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Selecting Example Continued'>
+        data-slide=22 title='The <code>gather()</code> Function Example'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='Removing Columns'>
+        data-slide=23 title='Consider <code>table4</code>:'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='Removing Columns'>
+        data-slide=24 title='Table 4'>
          24
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Removing Columns'>
+        data-slide=25 title='In Comes the <code>gather()</code> Function'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Removing Columns'>
+        data-slide=26 title='<code>gather()</code> Example'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='Removing Columns'>
+        data-slide=27 title='<code>gather()</code> Example'>
          27
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=28 title='Unique Observations'>
+        data-slide=28 title='<code>gather()</code> Example'>
          28
       </a>
     </li>
@@ -2193,296 +2940,476 @@ gapminder %&gt;%
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=31 title='Arranging the Data'>
+        data-slide=31 title='The <code>dplyr</code> Package'>
          31
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=32 title='Arranging the Data Example'>
+        data-slide=32 title='The <code>dplyr</code> Package'>
          32
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=33 title='Enter the <code>arrange()</code> Function'>
+        data-slide=33 title='<code>dplyr</code> Functionality'>
          33
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=34 title='Arranging the Data Example Continued'>
+        data-slide=34 title='Filtering'>
          34
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=35 title='Arranging the Data Example Continued'>
+        data-slide=35 title='Filtering'>
          35
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=36 title='Arranging the Data Example Continued'>
+        data-slide=36 title='Enter the <code>filter()</code> Function'>
          36
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=37 title='More Complex Arrange'>
+        data-slide=37 title='Filtering Example'>
          37
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=38 title='More Complex Arrange Continued'>
+        data-slide=38 title='Filtering Example'>
          38
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=39 title='More Complex Arrange Continued'>
+        data-slide=39 title='<code>filter()</code> Function'>
          39
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=40 title='On Your Own: RStudio Practice'>
+        data-slide=40 title='Filtering Example'>
          40
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=41 title='On Your Own: RStudio Practice'>
+        data-slide=41 title='Further Filtering'>
          41
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=42 title='Summarizing Data'>
+        data-slide=42 title='Further Filtering'>
          42
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=43 title='Summarizing Data'>
+        data-slide=43 title='Further Filtering'>
          43
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=44 title='Summarizing Data'>
+        data-slide=44 title='On Your Own: RStudio Practice'>
          44
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=45 title='Enter <code>summarise()</code> Function'>
+        data-slide=45 title='On Your Own: RStudio Practice'>
          45
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=46 title='Summarizing Data Example'>
+        data-slide=46 title='Selecting'>
          46
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=47 title='Summarizing Data Example'>
+        data-slide=47 title='Selecting'>
          47
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=48 title='Another Example'>
+        data-slide=48 title='Enter the <code>select()</code> Function'>
          48
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=49 title='Another Example'>
+        data-slide=49 title='Select Example'>
          49
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=50 title='On Your Own: RStudio Practice'>
+        data-slide=50 title='<code>select()</code> Function'>
          50
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=51 title='On Your Own: RStudio Practice'>
+        data-slide=51 title='Selecting Example Continued'>
          51
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=52 title='Adding New Variables'>
+        data-slide=52 title='Selecting Example Continued'>
          52
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=53 title='Adding New Variables'>
+        data-slide=53 title='Removing Columns'>
          53
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=54 title='Adding New Variables'>
+        data-slide=54 title='Removing Columns'>
          54
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=55 title='Adding New Variables'>
+        data-slide=55 title='Removing Columns'>
          55
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=56 title='Adding New Variables'>
+        data-slide=56 title='Removing Columns'>
          56
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=57 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
+        data-slide=57 title='Removing Columns'>
          57
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=58 title='Example'>
+        data-slide=58 title='Unique Observations'>
          58
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=59 title='Example'>
+        data-slide=59 title='On Your Own: RStudio Practice'>
          59
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=60 title='Example'>
+        data-slide=60 title='On Your Own: RStudio Practice'>
          60
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=61 title='Example'>
+        data-slide=61 title='Arranging the Data'>
          61
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=62 title='NA'>
+        data-slide=62 title='Arranging the Data Example'>
          62
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=63 title='Further Summaries'>
+        data-slide=63 title='Enter the <code>arrange()</code> Function'>
          63
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=64 title='Further Summaries'>
+        data-slide=64 title='Arranging the Data Example Continued'>
          64
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=65 title='Grouping and Counting'>
+        data-slide=65 title='Arranging the Data Example Continued'>
          65
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=66 title='Grouping and Counting'>
+        data-slide=66 title='Arranging the Data Example Continued'>
          66
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=67 title='Grouping and Counting'>
+        data-slide=67 title='More Complex Arrange'>
          67
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=68 title='Grouping, counting and sorting.'>
+        data-slide=68 title='More Complex Arrange Continued'>
          68
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=69 title='NA'>
+        data-slide=69 title='More Complex Arrange Continued'>
          69
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=70 title='NA'>
+        data-slide=70 title='On Your Own: RStudio Practice'>
          70
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=71 title='NA'>
+        data-slide=71 title='On Your Own: RStudio Practice'>
          71
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=72 title='Grouping with other functions'>
+        data-slide=72 title='Summarizing Data'>
          72
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=73 title='Grouping with other functions'>
+        data-slide=73 title='Summarizing Data'>
          73
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=74 title='Grouping with other functions'>
+        data-slide=74 title='Summarizing Data'>
          74
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=75 title='NA'>
+        data-slide=75 title='Enter <code>summarise()</code> Function'>
          75
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=76 title='NA'>
+        data-slide=76 title='Summarizing Data Example'>
          76
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=77 title='NA'>
+        data-slide=77 title='Summarizing Data Example'>
          77
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=78 title='NA'>
+        data-slide=78 title='Another Example'>
          78
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=79 title='NA'>
+        data-slide=79 title='Another Example'>
          79
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=80 title='On Your Own: RStudio Practice'>
+         80
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=81 title='On Your Own: RStudio Practice'>
+         81
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=82 title='Adding New Variables'>
+         82
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=83 title='Adding New Variables'>
+         83
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=84 title='Adding New Variables'>
+         84
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=85 title='Adding New Variables'>
+         85
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=86 title='Adding New Variables'>
+         86
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=87 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
+         87
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=88 title='Example'>
+         88
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=89 title='Example'>
+         89
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=90 title='Example'>
+         90
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=91 title='Example'>
+         91
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=92 title='NA'>
+         92
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=93 title='Further Summaries'>
+         93
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=94 title='Further Summaries'>
+         94
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=95 title='Grouping and Counting'>
+         95
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=96 title='Grouping and Counting'>
+         96
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=97 title='Grouping and Counting'>
+         97
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=98 title='Grouping, counting and sorting.'>
+         98
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=99 title='NA'>
+         99
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=100 title='NA'>
+         100
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=101 title='NA'>
+         101
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=102 title='Grouping with other functions'>
+         102
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=103 title='Grouping with other functions'>
+         103
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=104 title='Grouping with other functions'>
+         104
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=105 title='NA'>
+         105
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=106 title='NA'>
+         106
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=107 title='NA'>
+         107
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=108 title='NA'>
+         108
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=109 title='NA'>
+         109
       </a>
     </li>
   </ul>

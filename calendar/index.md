@@ -17,16 +17,6 @@ title: Calendar
     <col width="25%" />
     <col width="10%" />
     </colgroup>
-<table><thead>
-<tr>
-<th align="left">Week</th>
-<th align="left">Date</th>
-<th align="left">Topic</th>
-<th align="left">Handouts</th>
-<th align="left">Readings</th>
-<th align="left">HW</th>
-<th align="left">Project</th>
-</tr>
 </thead><tbody>
 <tr>
 <td align="left">Week 1</td>
@@ -41,7 +31,7 @@ title: Calendar
 <td align="left">Week 2</td>
 <td align="left">28-Jan</td>
 <td align="left">Graphing Data in R: ggplot</td>
-<td align="left"><a href="../Notes/lect-02b-ggplot.html">Lect-02a-ggplot</a> <a href="../Notes/lect-02b-tidying.html">Lect-02b-tidying</a></td>
+<td align="left"><a href="../Notes/lect-02-ggplot.html">Lect-02-ggplot</a>  <a href="https://vimeo.com/314023798/c3b6d8849e">Video</a></td>
 <td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/getting%20started/about-this-course/">Introduction to R: Getting Started</a> <a href="http://statseducation.com/Introduction-to-R/modules/getting%20data/data-wrangling/">Introduction to R: Getting Data</a>, <a href="http://statseducation.com/Introduction-to-R/modules/tidy%20data/tidy-data/">Introduction to R: Tidy Data</a></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -67,8 +57,8 @@ title: Calendar
 <tr>
 <td align="left">Week 3</td>
 <td align="left">4-Feb</td>
-<td align="left">What is Regression?</td>
-<td align="left"></td>
+<td align="left">Further Data Summaries</td>
+<td align="left"><a href="../Notes/lect-04-further-sums.html">Lect-04-further-sums</a></td>
 <td align="left">Fox Chap 1-3, Vittinghoff Chap 2</td>
 <td align="left"></td>
 <td align="left"></td>

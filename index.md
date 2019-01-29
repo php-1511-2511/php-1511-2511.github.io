@@ -40,9 +40,9 @@ This course is designed for graduate and advanced undergraduate students who wil
 |:-----------|:--------|:-----------|
 | Lecture |  SPH - Room 375 |  Monday and Wednesday  10:30 - 11:50 |
 |:-----------|:--------|:-----------|
-| Discussion/Lab  |  SPH 241 |  Tuesdays 10:00-11:30am|
+| Discussion/Lab  |  TBD | TBD|
 |:-----------|:--------|:-----------|
-|  |  SPH 331 |  Tuesdays 5:00-6:30pm |
+|  | TBD | TBD |
 |-----------+--------+-----------|
 
 
