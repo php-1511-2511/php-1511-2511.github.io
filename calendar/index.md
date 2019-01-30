@@ -17,6 +17,17 @@ title: Calendar
     <col width="25%" />
     <col width="10%" />
     </colgroup>
+<table><thead>
+<tr>
+<th align="left">Week</th>
+<th align="left">Date</th>
+<th align="left">Topic</th>
+<th align="left">Handouts</th>
+<th align="left">Readings</th>
+<th align="left">HW</th>
+<th align="left">Project</th>
+</tr>
+
 </thead><tbody>
 <tr>
 <td align="left">Week 1</td>
