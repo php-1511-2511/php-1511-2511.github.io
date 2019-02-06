@@ -40,24 +40,26 @@ This course is designed for graduate and advanced undergraduate students who wil
 |:-----------|:--------|:-----------|
 | Lecture |  SPH - Room 375 |  Monday and Wednesday  10:30 - 11:50 |
 |:-----------|:--------|:-----------|
-| Discussion/Lab  |  TBD | TBD|
+| Discussion/Lab  |  SPH - Room 241 | Monday and Wednesdays 3- 4pm|
 |:-----------|:--------|:-----------|
-|  | TBD | TBD |
-|-----------+--------+-----------|
 
 
 * * *
 
 ### Office Hours:
 
-- Please click the button below to sign up for office hours. 
-- Each slot is for 15 minutes, however you can sign up for more than 1. 
-- The room location for each office hour is listed on the sign up time. 
-- ***Note: If no hours are signed up for by the morning of the office hours, they are subject to be cancelled.***
+|-----------+--------+-----------|
+| What    |  Where | When      
+|:-----------|:--------|:-----------|
+| Office Hours |  SPH - Room 375 |   Tuesdays 2:20 - 3:20 pm|
+|:-----------|:--------|:-----------|
+|  |  SPH - Room 259| Wednesday 2:30 - 3:00 pm|
+|  |  SPH - Room 259| Wednesday 4:00 - 5:00 pm|
+|:-----------|:--------|:-----------|
 
-<a href="http://signup.com/go/PUNVkjm" target="_blank"><img src="https://signup.com/imgs/icons/signup-choose-a-spot-btn.png" alt="Click to View Volunteer Opportunities on SignUp.com"></a>
 
-* * *
+
+* * * 
 
 ### Additional Course Information via Main Menu
 

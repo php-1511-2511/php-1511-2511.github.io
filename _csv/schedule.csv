@@ -4,7 +4,7 @@ Week 2,28-Jan,Graphing Data in R: ggplot,[Lect-02-ggplot](../Notes/lect-02-ggplo
 ,30-Jan,Using R to Work with Data: tidyverse,[Lect-03-transforming](../Notes/lect-03-transforming.html) [Video](https://vimeo.com/314336000/6280e1e876),[Intoduction to R: Graphics](http://statseducation.com/Introduction-to-R/modules/graphics/ggplot2/),,
 ,,Lab0: Rmarkdown/Dplyr/Manipulating Data in R,[Rmarkdown Tutorial](https://www.youtube.com/watch?v=MIlzQpXlJNk) [dplyr Basics ](https://www.youtube.com/watch?v=jWjqLW-u3hc&t=2s),,,
 Week 3,4-Feb,Further Data Summaries,[Lect-04-further-sums](../Notes/lect-04-further-sums.html) [Video](https://vimeo.com/315580004/4398153a3d),"Fox Chap 1-3, Vittinghoff Chap 2",,
-,6-Feb,Simple and Multiple Linear Regression,[Lect-05-lin-reg](../Notes/lect-05-lin-reg.html) [Zoom Conference](https://brown.zoom.us/j/4125611331),"Fox Chap 5, Vittinghoff Chaps 3.3, 4.1-4.4",[HW1](../homework/hw1.html),
+,6-Feb,Simple and Multiple Linear Regression,[Lect-05-lin-reg](../Notes/lect-05-lin-reg.html) [Video](https://vimeo.com/315711065/af1604e008),"Fox Chap 5, Vittinghoff Chaps 3.3, 4.1-4.4",[HW1 - html](../homework/hw1.html) [HW1 -Rmd](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw1.Rmd) [HW1-pdf](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw1.pdf),
 ,,,[HTML](../labs/lab1.html) [Rmd](../labs/lab1.Rmd) [Video](https://vimeo.com/254748467/7723da70df) [Solutions](../labs/lab1_sol.html),,,
 Week 4,11-Feb,Multiple Linear Regression,[Lect-06-lin-reg-2](../Notes/lect-06-lin-reg-2.html),Fox Chap 6,,
 ,13-Feb,Inference for Linear Regression,,"Fox Chap 7, Vittinghoff Chap 4.6",,

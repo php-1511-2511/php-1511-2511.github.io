@@ -1,10 +1,11 @@
 ---
 title: "Homework 1"
 author: "Your Name"
-date: "February 7, 2018 at 11:59pm"
+date: "February 14, 2019 at 11:59pm"
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
@@ -23,9 +24,9 @@ output:
 
 *All answers must be in complete sentences and all graphs must be properly labeled.*
 
-***For the PDF Version of this assignment: [PDF](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/php2511_hw1.pdf)***
+***For the PDF Version of this assignment: [PDF](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw1.pdf)***
 
-***For the R Markdown Version of this assignment: [RMarkdown](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/php2511_hw1.Rmd)***
+***For the R Markdown Version of this assignment: [RMarkdown](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw1.Rmd)***
 
 ### Turning the Homework in:
 
@@ -85,4 +86,3 @@ It is obvious that this is not directly a public health dataset but in society a
 
 10. (PHP 2511 only) Does your interpretation make sense for what you think is going on? Why might the one particular group be lower than the others? 
 
-4. Do you think we could perform ANOVA across all of the groups 

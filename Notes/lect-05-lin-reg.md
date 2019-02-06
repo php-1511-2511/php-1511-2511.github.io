@@ -16,7 +16,19 @@ assets      : {assets: ../../assets}
 ---  .segue bg:grey
 
 
+# Questions for Today
 
+--- .class #id
+
+
+## Questions
+
+- Go to www.slido.com
+- Enter #L011
+- You can ask questions in real time and upvote questions as well. 
+
+
+---.segue bg:grey
 
 # Now We Start Statistics
 
