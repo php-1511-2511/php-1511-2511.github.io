@@ -159,20 +159,30 @@ head(aggregate(lifeExp ~ country, gapminder, mean))
 <li>This is much easier to understand than the  Base R code. </li>
 </ul>
 
-<pre><code>## # A tibble: 142 x 2
-##    country     avg_lifeExp
-##    &lt;fct&gt;             &lt;dbl&gt;
-##  1 Afghanistan        37.5
-##  2 Albania            68.4
-##  3 Algeria            59.0
-##  4 Angola             37.9
-##  5 Argentina          69.1
-##  6 Australia          74.7
-##  7 Austria            73.1
-##  8 Bahrain            65.6
-##  9 Bangladesh         49.8
-## 10 Belgium            73.6
-## # ... with 132 more rows
+<pre><code class="r">gapminder %&gt;%
+    group_by(country) %&gt;%
+    summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Summarizing Data Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">gapminder %&gt;%
+    group_by(country) %&gt;%
+    summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
 </code></pre>
 
     
@@ -331,7 +341,7 @@ head(aggregate(lifeExp ~ country, gapminder, mean))
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-9" style="background:grey;">
+<slide class="segue" id="slide-10" style="background:grey;">
   <hgroup>
     <h1>Adding New Variables</h1>
     <hr>
@@ -578,9 +588,20 @@ transmute(.data, ...)
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code class="r">gapminder %&gt;% 
-  select(country, gdpPercap, pop) %&gt;%
-  transmute(gdp = gdpPercap*pop)
+    <pre><code>## # A tibble: 1,704 x 1
+##             gdp
+##           &lt;dbl&gt;
+##  1  6567086330.
+##  2  7585448670.
+##  3  8758855797.
+##  4  9648014150.
+##  5  9678553274.
+##  6 11697659231.
+##  7 12598563401.
+##  8 11820990309.
+##  9 10595901589.
+## 10 14121995875.
+## # ... with 1,694 more rows
 </code></pre>
 
     
@@ -593,7 +614,7 @@ transmute(.data, ...)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-19" style="background:grey;">
+<slide class="segue" id="slide-20" style="background:grey;">
   <hgroup>
     <h1>Further Summaries</h1>
     <hr>
@@ -1115,7 +1136,7 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Another Example'>
+        data-slide=5 title='Summarizing Data Example'>
          5
       </a>
     </li>
@@ -1127,7 +1148,7 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='On Your Own: RStudio Practice'>
+        data-slide=7 title='Another Example'>
          7
       </a>
     </li>
@@ -1139,7 +1160,7 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='Adding New Variables'>
+        data-slide=9 title='On Your Own: RStudio Practice'>
          9
       </a>
     </li>
@@ -1169,37 +1190,37 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
+        data-slide=14 title='Adding New Variables'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='Example'>
+        data-slide=15 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Example: Mutate'>
+        data-slide=16 title='Example'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='Example: Transmute'>
+        data-slide=17 title='Example: Mutate'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Example: transmute'>
+        data-slide=18 title='Example: Transmute'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Further Summaries'>
+        data-slide=19 title='Example: transmute'>
          19
       </a>
     </li>
@@ -1217,7 +1238,7 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Grouping and Counting'>
+        data-slide=22 title='Further Summaries'>
          22
       </a>
     </li>
@@ -1235,19 +1256,19 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Grouping, counting and sorting.'>
+        data-slide=25 title='Grouping and Counting'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Grouping, counting and sorting: <code>tally()</code>'>
+        data-slide=26 title='Grouping, counting and sorting.'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='Grouping with other functions'>
+        data-slide=27 title='Grouping, counting and sorting: <code>tally()</code>'>
          27
       </a>
     </li>
@@ -1259,25 +1280,25 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='What happened?'>
+        data-slide=29 title='Grouping with other functions'>
          29
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=30 title='Saving our work'>
+        data-slide=30 title='What happened?'>
          30
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=31 title='Try again:'>
+        data-slide=31 title='Saving our work'>
          31
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=32 title='Grouping with other functions'>
+        data-slide=32 title='Try again:'>
          32
       </a>
     </li>
@@ -1289,7 +1310,7 @@ transmute(.data, ...)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=34 title='Counting Groups'>
+        data-slide=34 title='Grouping with other functions'>
          34
       </a>
     </li>
@@ -1315,6 +1336,12 @@ transmute(.data, ...)
       <a href="#" target="_self" rel='tooltip' 
         data-slide=38 title='Counting Groups'>
          38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Counting Groups'>
+         39
       </a>
     </li>
   </ul>

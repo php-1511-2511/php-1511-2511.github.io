@@ -71,21 +71,24 @@ summarise(.data, ...)
 - This is much easier to understand than the  Base R code. 
 
 
+```r
+gapminder %>%
+    group_by(country) %>%
+    summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
 ```
-## # A tibble: 142 x 2
-##    country     avg_lifeExp
-##    <fct>             <dbl>
-##  1 Afghanistan        37.5
-##  2 Albania            68.4
-##  3 Algeria            59.0
-##  4 Angola             37.9
-##  5 Argentina          69.1
-##  6 Australia          74.7
-##  7 Austria            73.1
-##  8 Bahrain            65.6
-##  9 Bangladesh         49.8
-## 10 Belgium            73.6
-## # ... with 132 more rows
+
+
+
+--- .class #id
+
+## Summarizing Data Example 
+
+
+
+```r
+gapminder %>%
+    group_by(country) %>%
+    summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
 ```
 
 --- .class #id
@@ -314,10 +317,21 @@ gapminder %>%
 
 
 
-```r
-gapminder %>% 
-  select(country, gdpPercap, pop) %>%
-  transmute(gdp = gdpPercap*pop)
+```
+## # A tibble: 1,704 x 1
+##             gdp
+##           <dbl>
+##  1  6567086330.
+##  2  7585448670.
+##  3  8758855797.
+##  4  9648014150.
+##  5  9678553274.
+##  6 11697659231.
+##  7 12598563401.
+##  8 11820990309.
+##  9 10595901589.
+## 10 14121995875.
+## # ... with 1,694 more rows
 ```
 
 ---  .segue bg:grey

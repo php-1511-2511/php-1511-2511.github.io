@@ -77,7 +77,20 @@ summarise(.data, ...)
   2. Find the average life Expectancy of the groups and call it `avg_lifeExp`.
 - This is much easier to understand than the  Base R code. 
 
-```{r, echo=FALSE}
+```{r, eval=FALSE}
+gapminder %>%
+    group_by(country) %>%
+    summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
+```
+
+
+
+--- .class #id
+
+## Summarizing Data Example 
+
+
+```{r, eval=FALSE}
 gapminder %>%
     group_by(country) %>%
     summarise(avg_lifeExp = mean(lifeExp, na.rm=TRUE))
@@ -252,7 +265,7 @@ gapminder %>%
 ## Example: transmute
 
 
-```{r, eval=FALSE}
+```{r, echo=FALSE}
 gapminder %>% 
   select(country, gdpPercap, pop) %>%
   transmute(gdp = gdpPercap*pop)

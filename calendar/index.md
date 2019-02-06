@@ -50,7 +50,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">30-Jan</td>
 <td align="left">Using R to Work with Data: tidyverse</td>
-<td align="left"><a href="../Notes/lect-03-transforming.html">Lect-03-transforming</a></td>
+<td align="left"><a href="../Notes/lect-03-transforming.html">Lect-03-transforming</a> <a href="https://vimeo.com/314336000/6280e1e876">Video</a></td>
 <td align="left"><a href="http://statseducation.com/Introduction-to-R/modules/graphics/ggplot2/">Intoduction to R: Graphics</a></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -68,7 +68,7 @@ title: Calendar
 <td align="left">Week 3</td>
 <td align="left">4-Feb</td>
 <td align="left">Further Data Summaries</td>
-<td align="left"><a href="../Notes/lect-04-further-sums.html">Lect-04-further-sums</a></td>
+<td align="left"><a href="../Notes/lect-04-further-sums.html">Lect-04-further-sums</a> <a href="https://vimeo.com/315580004/4398153a3d">Video</a></td>
 <td align="left">Fox Chap 1-3, Vittinghoff Chap 2</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -77,7 +77,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">6-Feb</td>
 <td align="left">Simple and Multiple Linear Regression</td>
-<td align="left"><a href="../Notes/lect-05-lin-reg.html">Lect-05-lin-reg</a></td>
+<td align="left"><a href="../Notes/lect-05-lin-reg.html">Lect-05-lin-reg</a> <a href="https://brown.zoom.us/j/4125611331">Zoom Conference</a></td>
 <td align="left">Fox Chap 5, Vittinghoff Chaps 3.3, 4.1-4.4</td>
 <td align="left"><a href="../homework/hw1.html">HW1</a></td>
 <td align="left"></td>
