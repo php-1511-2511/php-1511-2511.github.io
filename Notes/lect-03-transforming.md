@@ -848,6 +848,9 @@ Your answer should look like:
 ```
 
 
+
+--- .segue bg:grey
+
 # Arranging the Data
 
 --- .class #id
@@ -861,32 +864,29 @@ Your answer should look like:
 
 ## Arranging the Data Example
 
-- Let's say that we wish to look at only carriers and departure delay and we wish to order departure delays from what smallest to largest. 
+- Let's say that we wish to look countries, year and life expectancy. 
+- Thensay further we want to sort it by Life Expactancy. 
 - In base R we would have to run the following command:
 
 
 ```r
-flights[order(flights$dep_delay), c("carrier", "dep_delay")]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'flights' not found
+library(gapminder)
+library(tidyverse)
+gapminder[order(gapminder$lifeExp), c("country", "year", "lifeExp")]
 ```
 
 --- .class #id
 
 ## Enter the `arrange()` Function
 
-We could do this in an easy manner using the  `arrange()` function:
+- We could do this in an easy manner using the  `arrange()` function:
 
-```
-arrange(.data, ...)
-```
-
-Where
-
-- `.data` is a data frame of interest.
-- `...` are the variables you wish to sort by. 
+    ```
+    arrange(.data, ...)
+    ```
+- Where
+    - `.data` is a data frame of interest.
+    - `...` are the variables you wish to sort by. 
 
 --- .class #id
 
@@ -894,9 +894,9 @@ Where
 
 
 ```r
-flights %>%
-    select(carrier, dep_delay) %>%
-    arrange(dep_delay)
+gapminder %>%
+    select(country,year,  lifeExp) %>%
+    arrange(lifeExp)
 ```
 
 --- .class #id
@@ -905,21 +905,34 @@ flights %>%
 
 
 ```
-## Error in eval(lhs, parent, parent): object 'flights' not found
+## # A tibble: 1,704 x 3
+##    country       year lifeExp
+##    <fct>        <int>   <dbl>
+##  1 Rwanda        1992    23.6
+##  2 Afghanistan   1952    28.8
+##  3 Gambia        1952    30  
+##  4 Angola        1952    30.0
+##  5 Sierra Leone  1952    30.3
+##  6 Afghanistan   1957    30.3
+##  7 Cambodia      1977    31.2
+##  8 Mozambique    1952    31.3
+##  9 Sierra Leone  1957    31.6
+## 10 Burkina Faso  1952    32.0
+## # ... with 1,694 more rows
 ```
 
 --- .class #id
 
 ## Arranging the Data Example Continued
 
-- With `arrange()` we first use `select()` to pick the only columns that we want and then we arrange by the `dep_delay`. 
+- With `arrange()` we first use `select()` to pick the only columns that we want and then we arrange by the `lifeExp`. 
 - If we had wished to order them in a descending manner we could have simply used the `desc()` function:
 
 
 ```r
-flights %>%
-    select(carrier, dep_delay) %>%
-    arrange(desc(dep_delay))
+gapminder %>%
+    select(country,year,  lifeExp) %>%
+    arrange(desc(lifeExp))
 ```
 
 --- .class #id
@@ -927,11 +940,11 @@ flights %>%
 
 ## More Complex Arrange
 
-- Lets consider that we wish to look at the top 3 departure delays for each day.
-- Then we wish to order them from largest to smallest departure delay. 
+- Lets consider that we wish to look at the top 3 Life Expectancies for each year.
+- Then we wish to order them from largest to smallest Life Expectancy. 
 - We then need to do the following:
-    1. Group by month and Day
-    2. Pick the top 3 departure delays
+    1. Group by year.
+    2. Pick the top 3 life expectancy
     3. order them largest to smallest
     
 
@@ -944,16 +957,15 @@ flights %>%
 
 
 ```r
-flights %>% 
-  group_by(month, day) %>%  
-  top_n(3, dep_delay) %>% 
-  arrange(desc(dep_delay))
+gapminder %>% 
+  group_by(year) %>%  
+  top_n(3, lifeExp) %>% 
+  arrange(desc(lifeExp))
 ```
 
-Where
-
-- `group_by()` is a way to group data. This way we perform operations on a group. So top 3 delays are by a group of day and month. 
-- `top_n()`takes a tibble and returns a specific number of rows based on a chosen value. 
+- Where
+    - `group_by()` is a way to group data. This way we perform operations on a group. So top 3 life expectancy are grouped by year. 
+    - `top_n()`takes a tibble and returns a specific number of rows based on a chosen value. 
 
 
 --- .class #id
@@ -963,7 +975,21 @@ Where
 
 
 ```
-## Error in eval(lhs, parent, parent): object 'flights' not found
+## # A tibble: 36 x 6
+## # Groups:   year [12]
+##    country          continent  year lifeExp       pop gdpPercap
+##    <fct>            <fct>     <int>   <dbl>     <int>     <dbl>
+##  1 Japan            Asia       2007    82.6 127467972    31656.
+##  2 Hong Kong, China Asia       2007    82.2   6980412    39725.
+##  3 Japan            Asia       2002    82   127065841    28605.
+##  4 Iceland          Europe     2007    81.8    301931    36181.
+##  5 Hong Kong, China Asia       2002    81.5   6762476    30209.
+##  6 Japan            Asia       1997    80.7 125956499    28817.
+##  7 Switzerland      Europe     2002    80.6   7361757    34481.
+##  8 Hong Kong, China Asia       1997    80     6495918    28378.
+##  9 Sweden           Europe     1997    79.4   8897619    25267.
+## 10 Japan            Asia       1992    79.4 124329269    26825.
+## # ... with 26 more rows
 ```
 
 
@@ -973,9 +999,9 @@ Where
 ## On Your Own: RStudio Practice
 
 - Perform the following operations:
-  - Group by month and day. 
-  - use `sample_n()` to pick 1 observation per day. 
-  - Arrange by longest to smallest departure delay. 
+  - Group by year. 
+  - use `sample_n()` to pick 1 observation per year 
+  - Arrange by longest to smallest life expectancy. 
 
 
 
@@ -992,10 +1018,10 @@ Your answer ***may*** look like:
 
 
 ```r
-flights %>%
-  group_by(month,day) %>%
-  sample_m(1) %>%
-  arrange(desc(dep_delay))
+gapminder %>%
+  group_by(year) %>%
+  sample_n(1) %>%
+  arrange(desc(lifeExp))
 ```
 
 ---  .segue bg:grey
@@ -1011,488 +1037,3 @@ flights %>%
 - As you have seen in your own work, being able to summarize information is crucial. 
 - We need to be able to take out data and summarize it as well. 
 - We will consider doing this using the `summarise()` function. 
-
---- .class #id
-
-## Summarizing Data
-
-- Like in the rest of these lessons, let's consider what happens when we try to to do this in base R. We will:
-  1. Create a table grouped by `dest`.
-  2. Summarize each group by taking mean of `arr_delay`.
-
-
-```r
-head(with(flights, tapply(arr_delay, dest, mean, na.rm=TRUE)))
-```
-
-```
-## Error in with(flights, tapply(arr_delay, dest, mean, na.rm = TRUE)): object 'flights' not found
-```
-
-```r
-head(aggregate(arr_delay ~ dest, flights, mean))
-```
-
-```
-## Error in eval(m$data, parent.frame()): object 'flights' not found
-```
-
---- .class #id
-
-
-## Enter `summarise()` Function
-
-- The `summarise()` function is:
-
-```
-summarise(.data, ...)
-```
-
-- where
-  - `.data` is the tibble of interest.
-  - `...` is a list of name paired summary functions
-    - Such as:
-      - `mean()`
-      - `median`
-      - `var()`
-      - `sd()`
-      - `min()`
-      - `max()
-      - ...
-
---- .class #id
-
-## Summarizing Data Example
-
-
-```
-flights %>%
-    group_by(dest) %>%
-    summarise(avg_delay = mean(arr_delay, na.rm=TRUE))
-```
-
---- .class #id
-
-## Summarizing Data Example 
-
-- Consider the logic here:
-  1. Group flights by destination
-  2. Find the average delay of the groups and call it `avg_delay`.
-- This is much easier to understand than the  Base R code. 
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
---- .class #id
-
-
-## Another Example
-
-- Lets say that we would like to have more than just the averages but we wish to have the minimum and the maximum departure delays by carrier:
-
-
-```r
-flights %>%
-    group_by(carrier) %>%
-    summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=TRUE)), matches("delay"))
-```
-
-
---- .class #id
-
-
-## Another Example
-
-
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
---- .class #id
-
-## On Your Own: RStudio Practice 
-
-- The following is a new function:
-  - Helper function `n()` counts the number of rows in a group
-- Then for each day:
-  - count total flights
-  - Sort in descending order. 
-
---- .class #id
-
-## On Your Own: RStudio Practice 
-
-Your answer should look like:
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
-
-We could also have used what is called the  `tally()` function:
-
-
-```r
-flights %>%
-    group_by(month, day) %>%
-    tally(sort = TRUE)
-```
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
----  .segue bg:grey
-
-
-# Adding New Variables
-
-
---- .class #id
-
-## Adding New Variables
-
-- There is usually no way around needing a new variable in your data. 
-- For example, most medical studies have height and weight in them, however many times what a researcher is interested in using is Body Mass Index (BMI). 
-- We would need to add BMI in. 
-
-
---- .class #id
-
-## Adding New Variables
-
-- Using the `tidyverse` we can add new variables in multiple ways
-  - `mutate()`
-  - `transmute()`
-
---- .class #id
-
-## Adding New Variables
-
-
-With `mutate()` we have
-
-```
-mutate(.data, ...)
-```
-
-where
-
-- `.data` is your tibble of interest.
-- `...` is the name paired with an expression
-
-
---- .class #id
-
-## Adding New Variables
-
-Then with `transmute()` we have:
-
-```
-transmute(.data, ...)
-```
-
-where
-
-- `.data` is your tibble of interest.
-- `...` is the name paired with an expression
-
-
---- .class #id
-
-
-## Differences Between `mutate()` and `transmute()`
-
-- There is only one major difference between `mutate()` and `transmutate` and that is what it keeps in your data. 
-  - `mutate()`
-    - creates a new variable
-    - It keeps all existing variables
-  - `transmute()`
-   - creates a new variable.
-   - It only keeps the new variables
-
-
---- .class #id
-
-## Example
-
-- Let's say we wish to have a variable called speed. We want to basically do:
-
-\[\text{speed} = \dfrac{\text{distance}}{\text{time}}*60\]
-
-
-We can first do this with `mutate()`:
-
-
-```r
-flights %>% 
-  select(flight, distance, air_time) %>%
-  mutate(speed = distance/air_time*60)
-```
-
---- .class #id
-
-## Example
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
---- .class #id
-
-## Example
-
-
-
-```r
-flights %>%
-  select(flight, distance, air_time) %>%
-  transmute(speed = distance/air_time*60)
-```
-
-
---- .class #id
-
-## Example
-
-
-
-```r
-flights %>%
-  select(flight, distance, air_time) %>%
-  transmute(speed = distance/air_time*60)
-```
-
----  .segue bg:grey
-
-
-
-#Further Summaries
-
---- .class #id
-
-## Further Summaries
-
-- We have so far discussed how one could find the basic number summaries:
-  - mean
-  - median
-  - standard deviation
-  - variance
-  - minimum 
-  - maximum
-- However there are many more operations that you may wish to do for summarizing data. 
-- In fact many of the following examples are excellent choices for working with categorical data which does not always make sense to do the above summaries for. 
-
-
---- .class #id
-
-## Further Summaries
-
-- We will consider:
-  1. Grouping and Counting
-  2. Grouping, Counting and Sorting
-  3. Other Groupings
-  4. Counting Groups
-
-
---- .class #id
-
-
-
-## Grouping and Counting
-
-
-- We have seen the functions `tally()` and `count()`. 
-- Both of these can be used for grouping and counting. 
-- They also are very concise in how they are called. 
-
-
---- .class #id
-
-
-
-## Grouping and Counting
-
-
-- For example if we wished to know how many flights there were by month, we would use `tally()` in this manner: 
-
-
-```r
-flights %>%
-  group_by(month) %>% 
-  tally()
-```
-
---- .class #id
-
-
-
-## Grouping and Counting
-
-- Where as we could do the same thing with `count()`
-
-
-```r
-flights %>% 
-  count(month)
-```
-
-*Notice: `count()` allowed for month to be called inside of it, removing the need for the `group_by()` function. 
-
-
---- .class #id
-
-
-
-## Grouping, counting and sorting. 
-
-- Both `tally()` and `count()` have an argument called `sort()`. 
-- This allows you to go one step further and group by, count and sort at the same time. 
-- For `tally()` this would be:
-
-
-```r
-flights %>% group_by(month) %>% tally(sort=TRUE)
-```
-
---- .class #id
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
-
---- .class #id
-
-- Then for `count()` we would have:
-
-
-```r
-flights %>% count_(month, sort=TRUE)
-```
-
-
---- .class #id
-
-- Then for `count()` we would have:
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
---- .class #id
-
-## Grouping with other functions
-
-- We can also sum over other values rather than just counting the rows like the above examples. 
-- For example let us say we were interested in knowing the total distance for planes in a given month. 
-- We could do this with the `summarise()` function, `tally()` function or the `count()` function:
-
-
-```r
-flights %>% 
-  group_by(month) %>% 
-  summarise(dist = sum(distance))
-```
-
---- .class #id
-
-## Grouping with other functions
-
-- We take flights then group by month and then create a new variable called distance, where we sum the distance. 
-- For  `tally()` we could do:
-
-
-```r
-flights %>% 
-  group_by(month) %>% 
-  tally(wt = distance)
-```
-
-*Note: in `tally()` the `wt` stands for weight and allows you to weight the sum based on the distance*. 
-
---- .class #id
-
-## Grouping with other functions
-
-- With the `count()` function we also use `wt`:
-
-
-
-```r
-flights %>% count(month, wt = distance)
-```
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
---- .class #id
-
-##Counting Groups
-
-
-- We may want to know how large our groups are. To do this we can use the following functions:
-  - `group_size()` is a function that returns counts of group. 
-  - `n_groups()` returns the number of groups
-
---- .class #id
-
-##Counting Groups
-
-- So if wanted to count the number of flights by month, we could group by month and find the groups size using `group_size()`:
-
-
-```r
-flights %>% 
-  group_by(month) %>% 
-  group_size()
-```
-
-
---- .class #id
-
-##Counting Groups
-
-
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-
-
---- .class #id
-
-##Counting Groups
-
-
-- If we just wished to know how many months were represented in our data we could use the `n_groups()` function:
-
-
-
-```r
-flights %>% 
-  group_by(month) %>% 
-  n_groups()
-```
-
-
-
---- .class #id
-
-##Counting Groups
-
-
-```
-## Error in eval(lhs, parent, parent): object 'flights' not found
-```
-

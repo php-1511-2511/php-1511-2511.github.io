@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Regression Basics</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Regression Basics">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Regression Basics</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Now We Start Statistics</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-2" style="background:grey;">
+  <hgroup>
+    <h1>Regression Basics</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Outcomes</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Regression simply put is relating a variable with other variables. </li>
+<li>The way in which we do this depends on the outcome (dependent variable)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What the class will model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In regression we start out by thinking of the outcome first. </li>
+<li>Once we understand what this will look like, we move to simple regressions relating each variable with that outcome. Finally we move into building a more complex and realistic model that is our best way to describe reality. </li>
+<li>In this class we will follow this process. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Types of Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have 2 types of data that we will consider</li>
+<li><strong><em>Discrete</em></strong> This is data which we place things into bins. 
+
+<ul>
+<li><strong><em>Ordinal Data</em></strong>: Sometimes these bins can be arranged in a logical order from least to greatest</li>
+<li><strong><em>Nominal Data</em></strong>: Other times there is no natural ordering and the data are just named categories. </li>
+</ul></li>
+<li><strong><em>Continuous</em></strong> This is data that cannot be placed into a finite number of bins. It can take on any value. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Probability Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With every type of variable, we try to find a mathematical way to explain what we see in the world. </li>
+<li>We call these probability models. In statistics we specifically refer to these as probability distributions. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-7" style="background:grey;">
+  <hgroup>
+    <h1>Discrete Distributions</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Discrete Distributions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will take the time to consider some of the key discrete distributions. We will not do regression with all of these in this class but it is important to know how they work and how they are connected. </li>
+<li>We will cover (In bold are the ones we will use for regression)
+
+<ul>
+<li><strong>Bernoulli</strong></li>
+<li><strong>Binomial</strong></li>
+<li>Geometric</li>
+<li>Negative Binomial</li>
+<li>Hypergeometric</li>
+<li><strong>Poisson</strong></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Bernoulli Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The Bernoulli is the simplest probability distribution it represents only 2 values, many times we just use 0 or 1. </li>
+<li>We say that 1 is  a success that happens with probability \(p\). </li>
+<li>The mean of this is \(p\)</li>
+<li>The variance is \(p(1-p)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Bernoulli Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically the distribution is 
+\[p_X(x) = p^x(1-p)^{1-x}\;\;\;\;\; x=0,1 \]</li>
+<li>We would say that \(X\) is distributed as Bernoulli\((p)\) and write this as \(X\sim \text{Bern}(p)\). The number \(p\) is called the \textbf{parameter} of the distribution. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Bernoulli Disribution Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With a Bernoulli Trial the outcomes are typically called a <code>Success&#39;&#39; or</code>Failure.&#39;&#39; These successes may not be a positive thing as the word success implies but any outcome that a researcher is interested in. </li>
+<li>For example in public health this may be whether someone contracted HIV.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Indicator Variable</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Many times in statistics we use what is called an <strong>indicator variable</strong> sometimes called a <strong>dummy variable</strong>.</li>
+<li>If we have an event \(A\) then the indicator random variable is equal to 1 if \(A\) occurs and 0 if \(A\) does not occur. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binomial Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Suppose you have \(n\) independent trials where the results of each trial are <code>success</code> or <code>failure</code>.</li>
+<li>Suppose further that the probability of a <code>success</code> is \(p\) and the probability of a <code>failure</code> is \(1-p\). </li>
+<li>Then the total number of successes is a binomial random variable with parameters \(n\) and \(p\). </li>
+<li>The mean is \(np\).</li>
+<li>The variance is \(np(1-p)\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binomial Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically we write this as
+\[ p_X(k) = \binom{n}{k}p^k(1-p)^{n-k} \; \; \; \; \text{for $k=0,\ldots,n$ otherwise $p_X(k)=0$} \]</li>
+<li>This pmf considers \(k\) which is the number of successes.</li>
+<li>Using the Bernoulli distribution and the multiplication principle we see that any sequence of \(k\) successes has a probability of \(p^k(1-p)^{n-k}\). </li>
+<li>The total number of sequences with \(k\) successes is \(\binom{n}{k}\) which gives us the above pmf. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binomial Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Suppose we have a sample of five phlebotomists (similar with respect to many personal characteristics) who were exposed to Hepatitis B via a needlestick accident.</li>
+<li>Suppose that it is reasonable to assume a health worker exposed to Hep-B via needlestick has a 30% chance of developing the disease. </li>
+<li>Let \(X\) represent how many of the five phlebotomists develop Hepatitis B.<br></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binomial Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We know that \(X\sim \text{ Bin}(n,p)\) where \(n=5\). Then we have the following pmf:
+\[p(k)= \binom{5}{k}p^x(1-p)^{n-k}\;\;\;\;\;\;\;\; k=0,1,2,3,4,5\]
+These probabilities give us the following table:</p>
+
+<table><thead>
+<tr>
+<th>\(k\)</th>
+<th>\(\Pr(k)\)</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0</td>
+<td>0.16807</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.36015</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.30870</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.13230</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.02835</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.00243</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Geometric Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s assume that a scientist has heard of a rare genetic mutation that may make a person less susceptible to heart disease. </li>
+<li>This scientist is not sure that this warrants a large clinical study yet but wants to obtain a sample of blood from an individual with this mutation. </li>
+<li>If the probability of a person having this mutation is \(p\) and the scientist gets permission to sample blood from a blood bank until they find one with the mutation the probability of getting that one success would follow a geometric distribution.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Geometric Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically we write this as
+\[ p_X(k) = (1-p)^{k-1}p\qquad \text{ for } k=1,2,\ldots\]</li>
+<li>We would way that this is a <strong>Geometric distribution</strong> with parameter \(p\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Negative Binomial Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we have the same scientist but this time he wants to sample the blood until he has \(r\) successes in all then this would be a negative binomial distribution. - Mathematically we write this as 
+\[ p_X(k) = \binom{k-1}{r-1}p^r(1-p)^{k-r}\qquad \text{ for } k=1,2,\ldots\]</li>
+<li>We would way that this is a <strong>Negative Binomial distribution</strong> with parameters \(r\) and \(p\). </li>
+<li>In mathematical terms, \(X\sim \text{ NB}(r,p)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Hypergeometric Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we have a population with \(h\) healthy people and \(u\) unhealthy people, then choosing \(n\) people from this population <em>with replacement</em> gives us a Bin\((n,u/(u+h))\) distribution for the number of unhealthy people chosen in the \(n\) trials, since each trial are independent Bernoulli with probability of success, \(\dfrac{u}{u+h}\). </li>
+<li>If we sample from this population <em>without replacement</em> then the number of unhealthy people follows a <strong>Hypergeometric Distribution.</strong></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Hypergeometric Distribution:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically we write this as 
+\[ p_X(k) = \dfrac{\binom{u}{k}\binom{h}{n-k}}{\binom{u+h}{n}}\]</li>
+<li>for integers \(k\) such that \(0\le k\le u\) and \(0\le n-k \le h\).</li>
+<li>We would say that this is a <strong>Hypergeometric distribution</strong> with parameters \(u,h\) and \(n\). </li>
+<li>In mathematical terms, \(X\sim \text{ HGeom}(u,h,n)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Hypergeometric Distribution Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Using our counting methods we can see that there are \(\binom{u}{k}\) ways to draw \(k\) unhealthy people from \(u\) and \(\binom{h}{n-k}\) ways to draw the remaining healthy people from \(h\). </li>
+<li>Then the multiplication principle gives us that \(\binom{u}{k}\binom{h}{n-k}\) ways to draw \(k\) healthy and \(n-k\) healthy people from the population and there are \(\binom{u+h}{n}\) ways to draw \(n\) people. </li>
+<li>Then by the naive definition of probability:
+\[ \Pr(X=k) = \dfrac{\binom{u}{k}\binom{h}{n-k}}{\binom{u+h}{n}}\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Difference Between Binomial and Hypergeometric Distributions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>It can be easy to confuse between the Binomial and Hypergeometric distributions at times. </li>
+<li>We are looking for \(k\) successes in both of these instances. What needs to be remembered is that the Binomial Distribution consists of <em>independent</em> Bernoulli trials. </li>
+<li>The Hypergeometric however has <em>dependent</em> Bernoulli trials due to the fact that when you remove one success you change the probability of getting another success. </li>
+<li>Be mindful of this when considering what distribution represents your particular problem at hand. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Poisson Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Suppose that a hospital has observed 10 cases of a rare cancer of the past 20 years (0.5 cases per year). </li>
+<li>Suddenly the hospital observes 3 cases in 1 year. How unusual is this given that the hospital treats about 25,000 patients a year. </li>
+<li>This story best fits a <strong>Poisson Distribution.</strong></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Poisson Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically we write
+\[ p_X(k) = \dfrac{e^{-\lambda}\lambda^k}{k!} \qquad \text{for } k = 0, 1,2, \ldots\]</li>
+<li>We would way that this is a \textbf{Poisson distribution} with parameter \(\lambda\). </li>
+<li>In mathematical terms, \(X\sim \text{ Pois}(\lambda)\).</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-26" style="background:grey;">
+  <hgroup>
+    <h1>Continuous Random Variables</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Continuous Random Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We are often interested in random variables that can take on a a range of values that is continuous or uncountably infinite .</li>
+<li>We will consider some named distributions of this type. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Uniform Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>A Uniform random variable on the interval \((a,b)\) is a completely random number between \(a\) and \(b\). </li>
+<li>In order for this to be completely random we specify that the PDF be a constant over that entire interval. </li>
+<li>Mathematically we write this as 
+\[
+f(x) = \left\{
+ \begin{array}{lr}
+   \dfrac{1}{b-a} & \text{if} a<x<b,\\
+   0 & otherwise
+ \end{array}
+\right.
+\]</li>
+<li>We denote this by \(U\sim \text{Unif}(a,b)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Standard Uniform Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We most use the Unif(0,1) distribution or the standard Uniform distribution. </li>
+<li>This is very easy to use as the PDF is \(f(x)=1\) and the CDF is \(F(x)=x\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Exponential Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The Exponential distribution is similar to the Geometric distribution. </li>
+<li>The Geometric distribution was the number of trials before the first success. With the Exponential distribution we are concerned with the waiting time before a success.</li>
+<li>We have that successes arrive at a rate of \(\lambda\) successes per the time interval \(t\). The average success rate for \(t\) is \(\lambda t\).</li>
+<li>So while the Geometric distribution counts the number of failures before a success, the Exponential distribution is the waiting time before the first success. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Exponential Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Mathematically we write this as 
+\[ f(x)=\lambda e^{\lambda x}, \;\;\;\;\;\;\;\; x\ge0\]</li>
+<li>We represent this as \(X\sim \text{ Exp}(\lambda)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Gamma Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The Gamma distribution is similar to the exponential distribution with the exception that rather than it being waiting time of the first success it represents the waiting time for multiple successes. </li>
+<li>Mathematically we write 
+\[ f(x) = \dfrac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1}e^{-\lambda x}dx, \;\;\;\;\;\; x\ge0\]</li>
+<li>We represent this as \(X\sim \text{ Gamma}(\alpha, \lambda)\).\</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Normal Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The normal distribution is a very common and well used distribution. </li>
+<li>It plays a central role in much of the theory of probability and statistics. We will see why this distribution is so useful in later parts of this course, in the meantime whether or not you have taken a course in statistics or not you have most likely heard of or seen a bell curve which is the shape of this PDF. </li>
+<li>Mathematically we write</li>
+</ul>
+
+<p>\[f(x) = \dfrac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/2\sigma^2}, \;\;\;\;\;\;\;\; -\infty<x<\infty\]</p>
+
+<ul>
+<li>We represent this as \(X\sim N(\mu,\sigma^2)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Standard Normal Distribution:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We call \(\mu\) the mean of the normal distribution and \(\sigma\) it&#39;s standard deviation. </li>
+<li>One Normal distribution that we will use a great deal in the future has a mean of 0 and a standard deviation of 1.</li>
+<li>We typically call this \(Z\) and \(Z\sim N(0,1)\). </li>
+<li>We can take any normal distribution \(X\sim N(\mu,\sigma^2)\) and then \(Z=\dfrac{X-\mu}{\sigma}\). \</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do we Do with This Knowledge</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The stories of these random variables directly informs what regressions we consider. </li>
+<li>We will study a few of these outcomes in further detail so that we may understand how to model and work with data. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-36" style="background:grey;">
+  <hgroup>
+    <h1>Linear Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Outline</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>One Categorical Covariate</li>
+<li>One Continuous Covariate</li>
+<li>Multiple Covariates</li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Data for Class</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider the data behind the story: <a href="http://fivethirtyeight.com/features/women-in-comic-books/">&quot;Comic Books are Still Made By Men, For Men and About Men&quot;</a>.</li>
+<li>This data is part of the <code>fivethirtyeight</code> package:</li>
+<li>To explore the variable names run the following code:</li>
+</ul>
+
+<pre><code class="r">library(fivethirtyeight)
+?comic_characters
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider appearances on the comic books. </li>
+<li>We will see what predicts the number of appearances. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-40" style="background:grey;">
+  <hgroup>
+    <h1>One Categorical Covariate - Binary</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binary Covariate</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With this type of covariate, we are comparing some outcome against 2 different groups. </li>
+<li>In order to make these comparisons it depends on the outcome we are working with. </li>
+<li>We will perform these tests based on the outcome and then use confidence intervals to assess. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Differences in appearances by publisher</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s consider the difference in appearances by publisher</li>
+</ul>
+
+<pre><code class="r">library(fivethirtyeight)
+library(tidyverse)
+
+cnt &lt;-  comic_characters%&gt;% 
+  group_by(publisher) %&gt;%
+  tally()
+mn&lt;- comic_characters%&gt;% 
+  group_by(publisher) %&gt;%
+  summarise(mean_app=mean(appearances, na.rm=T))
+full_join(cnt,mn)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Differences in appearances by publisher</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Let&#39;s consider the difference in appearances by publisher</li>
+</ul>
+
+<pre><code>## # A tibble: 2 x 3
+##   publisher     n mean_app
+##   &lt;chr&gt;     &lt;int&gt;    &lt;dbl&gt;
+## 1 DC         6896     23.6
+## 2 Marvel    16376     17.0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Differences in Appearances by Publisher</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have learned how to do this previously. </li>
+<li>We first did this comparison with a t-test</li>
+<li>Then we did this with an F-test in ANOVA</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Appearance by Publisher: t-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider this with a t-test</li>
+</ul>
+
+<pre><code class="r">t.test(appearances~publisher, comic_characters)
+</code></pre>
+
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  appearances by publisher
+## t = 4.9476, df = 13552, p-value = 7.605e-07
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  3.980214 9.203299
+## sample estimates:
+##     mean in group DC mean in group Marvel 
+##             23.62513             17.03338
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Appearances by publisher: ANOVA</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider with ANOVA</li>
+</ul>
+
+<pre><code class="r">library(broom)
+tidy(aov(appearances~publisher, comic_characters))
+</code></pre>
+
+<pre><code>## # A tibble: 2 x 6
+##   term         df      sumsq  meansq statistic     p.value
+##   &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+## 1 publisher     1    199019. 199019.      22.6  0.00000197
+## 2 Residuals 21819 191840416.   8792.      NA   NA
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ANOVA vs t-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>t-test and ANOVA should give us the same results.</li>
+<li>We can see that in our output this is not true. </li>
+<li>What were the assumptions of ANOVA?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Appearances by publisher: t-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider this with a t-test</li>
+</ul>
+
+<pre><code class="r">t.test(appearances~publisher, comic_characters, var.equal=TRUE)
+</code></pre>
+
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  appearances by publisher
+## t = 4.7577, df = 21819, p-value = 1.971e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  3.876078 9.307436
+## sample estimates:
+##     mean in group DC mean in group Marvel 
+##             23.62513             17.03338
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Linear Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">model &lt;- lm(appearances~publisher, comic_characters)
+tidy(model)
+glance(model)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Linear Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 2 x 5
+##   term            estimate std.error statistic  p.value
+##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)        23.6       1.16     20.4  1.89e-91
+## 2 publisherMarvel    -6.59      1.39     -4.76 1.97e- 6
+## # A tibble: 1 x 11
+##   r.squared adj.r.squared sigma statistic p.value    df  logLik    AIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1   0.00104      0.000991  93.8      22.6 1.97e-6     2 -1.30e5 2.60e5
+## # ... with 3 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Categorical</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Intercept is the average for the reference group. </li>
+<li>Each coefficient is the average change between the reference group and the one of interest. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Categorical</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Intercept interpretation: Every DC character has on average 23.6 appearances. </li>
+<li>Marvel Coefficient: Every marvel character has on average 6.59 less appearances than DC. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>One Binary Categorical Variable - Continuous Outcome</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can perform
+
+<ul>
+<li>t-test with equal variances</li>
+<li>ANOVA</li>
+<li>Linear Regression</li>
+</ul></li>
+<li>All yield the same exact results</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assumptions of Linear Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong><em>Linearity:</em></strong> Function \(f\) is linear. </li>
+<li>Mean of error term is 0. 
+\[E(\varepsilon)=0\]</li>
+<li><strong><em>Independence:</em></strong> Error term is independent of covariate. 
+\[Corr(X,\varepsilon)=0\]</li>
+<li><strong><em>Homoscedacity:</em></strong> Variance of error term is same regardless of value of \(X\). 
+\[Var(\varepsilon)=\sigma^2\]</li>
+<li><strong><em>Normality:</em></strong> Errors are normally Distributed</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about more categories?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can also use linear regression with multiple categories. </li>
+</ul>
+
+<pre><code class="r">mod &lt;- lm(appearances~sex, comic_characters)
+tidy(mod)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about more categories?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can also use linear regression with multiple categories. </li>
+</ul>
+
+<pre><code>## # A tibble: 6 x 5
+##   term                      estimate std.error statistic  p.value
+##   &lt;chr&gt;                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)                 19.7        14.8    1.33   0.182   
+## 2 sexFemale Characters         1.37       14.8    0.0927 0.926   
+## 3 sexGenderfluid Characters  263.         69.2    3.80   0.000146
+## 4 sexGenderless Characters    -6.82       26.4   -0.258  0.796   
+## 5 sexMale Characters          -0.640      14.8   -0.0433 0.965   
+## 6 sexTransgender Characters  -15.7        96.7   -0.162  0.871
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How do we interpret?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We need to know the baseline. </li>
+</ul>
+
+<pre><code>## # A tibble: 7 x 3
+##   sex                        n mean_sex
+##   &lt;chr&gt;                  &lt;int&gt;    &lt;dbl&gt;
+## 1 Agender Characters        45    19.7 
+## 2 Female Characters       5804    21.0 
+## 3 Genderfluid Characters     2   282.  
+## 4 Genderless Characters     20    12.8 
+## 5 Male Characters        16421    19.0 
+## 6 Transgender Characters     1     4   
+## 7 &lt;NA&gt;                     979     5.13
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Working with Factors</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Since we are interested in knowing whether or not male characters appear more often, we need to change how we view the factor.</li>
+<li>We will work on the following:
+
+<ul>
+<li>Renaming factors</li>
+<li>Reordering factor levels. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Working with Factors: Renaming</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">comic_characters &lt;- comic_characters %&gt;%
+      mutate(sex = fct_recode(sex, 
+      &quot;Agender&quot; = &quot;Agender Characters&quot;,
+      &quot;Female&quot; = &quot;Female Characters&quot;, 
+      &quot;Genderfluid&quot; = &quot;Genderfluid Characters&quot;,
+      &quot;Genderless&quot; = &quot;Genderless Characters&quot;,
+      &quot;Male&quot; = &quot;Male Characters&quot;,
+      &quot;Transgender&quot; = &quot;Transgender Characters&quot;
+      ))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Working with Factors: Relevel</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">comic_characters &lt;- comic_characters %&gt;%
+      mutate(sex = fct_relevel(sex, 
+                  &quot;Female&quot;,
+                 &quot;Male&quot;, 
+                 &quot;Transgender&quot;, 
+                 &quot;Agender&quot;,
+                  &quot;Genderfluid&quot; ,
+                  &quot;Genderless&quot; 
+
+      ))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression again</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod &lt;- lm(appearances~sex, comic_characters)
+tidy(mod)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression again</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 6 x 5
+##   term           estimate std.error statistic  p.value
+##   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)       21.0       1.29   16.3    2.65e-59
+## 2 sexMale           -2.01      1.50   -1.34   1.81e- 1
+## 3 sexTransgender   -17.0      95.6    -0.178  8.59e- 1
+## 4 sexAgender        -1.37     14.8    -0.0927 9.26e- 1
+## 5 sexGenderfluid   261.       67.6     3.87   1.10e- 4
+## 6 sexGenderless     -8.20     22.0    -0.373  7.09e- 1
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Categorical</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Intercept interpretation: Every Male Character has on average 19 appearances. </li>
+<li>Agender coefficient: Every Agender character has on average 0.64 more appearances than male characters</li>
+<li class='..</li>'></ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Whats happening?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ggplot(comic_characters, aes(x = sex, y = appearances)) +
+  geom_point()  + 
+  geom_point(stat = &quot;summary&quot;, fun.y = &quot;mean&quot;, color = &quot;red&quot;, size = 3) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Whats happening?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-17-1.png" alt="plot of chunk unnamed-chunk-17"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Now We Start Statistics'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Regression Basics'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Regression Outcomes'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='What the class will model'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Types of Variables'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Probability Distribution'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Discrete Distributions'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Discrete Distributions'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Bernoulli Distribution'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Bernoulli Distribution'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Bernoulli Disribution Example'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Indicator Variable'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Binomial Distribution'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Binomial Distribution'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Binomial Example'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Binomial Example'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Geometric Distribution'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Geometric Distribution'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Negative Binomial Distribution'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Hypergeometric Distribution'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Hypergeometric Distribution:'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Hypergeometric Distribution Example'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Difference Between Binomial and Hypergeometric Distributions'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Poisson Distribution'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Poisson Distribution'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Continuous Random Variables'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Continuous Random Variables'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Uniform Distribution'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Standard Uniform Distribution'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Exponential Distribution'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Exponential Distribution'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Gamma Distribution'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Normal Distribution'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Standard Normal Distribution:'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='What Do we Do with This Knowledge'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Linear Regression'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Outline'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='The Data for Class'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Appearances'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='One Categorical Covariate - Binary'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Binary Covariate'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Differences in appearances by publisher'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Differences in appearances by publisher'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Differences in Appearances by Publisher'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Appearance by Publisher: t-test'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Appearances by publisher: ANOVA'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='ANOVA vs t-test'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Appearances by publisher: t-test'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Linear Regression'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='Linear Regression'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Interpreting the Coefficients: Categorical'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Interpreting the Coefficients: Categorical'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='One Binary Categorical Variable - Continuous Outcome'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Assumptions of Linear Regression'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='What about more categories?'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='What about more categories?'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='How do we interpret?'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='Working with Factors'>
+         58
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=59 title='Working with Factors: Renaming'>
+         59
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=60 title='Working with Factors: Relevel'>
+         60
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=61 title='Regression again'>
+         61
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=62 title='Regression again'>
+         62
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=63 title='Interpreting the Coefficients: Categorical'>
+         63
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=64 title='Whats happening?'>
+         64
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=65 title='Whats happening?'>
+         65
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

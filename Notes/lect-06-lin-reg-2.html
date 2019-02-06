@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Regression Basics Part 2</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Regression Basics Part 2">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Regression Basics Part 2</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>One Continuous</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>One Continuous Covariate</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider one continuous covariate. </li>
+<li>We will consider year. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the effect of year on appearances. </li>
+<li>With categorical data we plotted this with box-whisker plots. </li>
+<li>We can now use a scatter plot</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Scatter Plot: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ggplot(comic_characters, aes(year, appearances)) + 
+  geom_point() + 
+  geom_smooth(method=&quot;lm&quot;) + 
+  xlab(&quot;Year&quot;) + 
+  ylab(&quot;Appearances&quot;)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Scatter Plot: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Modeling What We See</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>There might not be a connection or there might be a very small one, let&#39;s explore further.</li>
+<li>How can we do this? </li>
+<li>How does linear regression work?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How do we Quantify this?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>One way we could quantify this is
+\[\mu_{y|x} = \beta_0 + \beta_1X\]</li>
+<li>where
+
+<ul>
+<li>\(\mu_{y|x}\) is the mean time for those whose year is \(x\). </li>
+<li>\(\beta_0\) is the \(y\)-intercept (mean value of \(y\) when \(x=0\), \(\mu_y|0\))</li>
+<li>\(\beta_1\) is the slope (change in mean value of \(Y\) corresponding to 1 unit increase in \(x\)).</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Population Regression Line</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With the population regression line we have that the distribution of appearances for those at a particular year, \(x\), is approximately normal with mean, \(\mu_{y|x}\), and standard deviation, \(\sigma_{y|x}\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Population Regression Line</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="../Notes/images/Pic1.png" alt="Distribution of Y and different levels of X."></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Population Regression Line</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This shows the scatter about the mean due to natural variation. To accommodate this scatter we fit a regression model with 2 parts:
+
+<ul>
+<li>Systematic Part</li>
+<li>Random Part</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This leads to the model
+\[Y = \beta_0 + \beta_1X + \varepsilon\]</li>
+<li>Where \(\beta_0+\beta_1X\) is the systematic part of the model and implies that \[E(Y|X=x) = \mu_{y|x} = \beta_0 + \beta_1x\]</li>
+<li>the variation part where we have \(\varepsilon\sim N(0,\sigma^2)\) which is independent of \(X\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do We Have?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the scenario where we have \(n\) subjects and for each subject we have the data points \((x,y)\). </li>
+<li>This leads to us having data in the form \((X_i,Y_i)\) for \(i=1,\ldots,n\).</li>
+<li>Then we have the model:
+\[Y_i = \beta_0 + \beta_1X_i + \varepsilon_i\]</li>
+<li>\(Y_i|X_i \sim N\left(\beta_0 + \beta_1X_i , \sigma^2\right)\)</li>
+<li>\(E(Y_i|X_i) = \mu_{y|x} = \beta_0 + \beta_1X_i\)</li>
+<li>\(Var(Y|X_i ) = \sigma^2\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Picture of this</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Does This Tell Us?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can refer back to our scatter plot now and discuss what is the &quot;best&quot; line. </li>
+<li>Given the previous image we can see that a good estimator would somehow have smaller residual errors. </li>
+<li>So the &quot;best&quot; line would minimize the errors. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residual Errors</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>In Comes Least Squares</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The least squares estimator of regression coefficients in the estimator that minimizes the sum of squared errors.</li>
+<li>We denote these estimators as \(\hat{\beta}_0\) and \(\hat{\beta}_1\). </li>
+<li>In other words we attempt to minimize 
+\[\sum_{i=1}^n \left(\varepsilon_i\right)^2 = \sum_{i=1}^n \left(Y_i - \hat{\beta}_0 - \hat{\beta}_1X_i\right)^2\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Inferences on OLS</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Once we have our intercept and slope estimators the next step is to determine if they are significant or not. </li>
+<li>Typically with hypothesis testing we have needed the following:
+
+<ul>
+<li>Population/Assumed Value of interest</li>
+<li>Estimated value</li>
+<li>Standard error of Estimate</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Confidence Interval Creation</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>with 95% confidence intervals of
+\[\hat{\beta}_1 \pm t_{n-2, 0.975} \cdot se\left(\hat{\beta}_1\right)\]
+\[\hat{\beta}_0 \pm t_{n-2, 0.975} \cdot se\left(\hat{\beta}_0\right)\]</li>
+<li>In general we can find a  \(100(1-\alpha)\%\) confidence interval as
+\[\hat{\beta}_1 \pm t_{n-2, 1-\dfrac{\alpha}{2}} \cdot se\left(\hat{\beta}_1\right)\]
+\[\hat{\beta}_0 \pm t_{n-2, 1-\dfrac{\alpha}{2}} \cdot se\left(\hat{\beta}_0\right)\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">model &lt;- lm(appearances~year, data=comic_characters)
+tidy(model, conf.int=TRUE)[,-c(3:4)]
+glance(model)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 1 x 11
+##   r.squared adj.r.squared sigma statistic  p.value    df  logLik    AIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    0.0146        0.0145  93.8      313. 1.74e-69     2 -1.26e5 2.52e5
+## # ... with 3 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Year and Appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 1 x 11
+##   r.squared adj.r.squared sigma statistic  p.value    df  logLik    AIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1    0.0146        0.0145  93.8      313. 1.74e-69     2 -1.26e5 2.52e5
+## # ... with 3 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Continuous</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Before we can discuss the regression coefficients we need to understand how to interpret what these coefficients mean. </li>
+<li> \(\beta_0\) is mean value for \(Y\) when \(X=0\).</li>
+<li>What about \(\beta_1\)?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Continuous</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Then we consider \(\beta_1\) to see the meaning of this we do the following
+\[
+\begin{aligned}
+E(Y|X=x+1) - E(Y|X=x) &= \beta_0 + \beta_1(x+1) - \beta_0 - \beta_1x\\
+&= \beta_1
+\end{aligned}
+\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Continuous</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We consider \(\beta_0\) first. </li>
+<li>Does this value have meaning with our current data? 
+
+<ul>
+<li>The estimated value of time level is only applicable to year within the range of our data. </li>
+<li>Many times the intercept is scientifically meaningless. </li>
+<li>Even if meaningless on its own, \(\beta_0\) is necessary to specify the equation of our regression line. </li>
+<li><strong>Note:</strong> People do sometimes use mean centered data and the intercept is then interpretable.</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting the Coefficients: Continuous</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This gives us the interpretation that \(\beta_1\) represents the mean change in outcome \(Y\) given a one unit increase in predictor \(X\). </li>
+<li>This is not an actual prescription though, this is considering different subjects or groups of subjects who differ by one unit. </li>
+<li>Below are correct interpretations of \(\beta_1\) in our example. 
+
+<ul>
+<li><em>These results display that the mean difference in appearances for a 1 year difference is -0.596</em></li>
+<li><em>These results display that the mean difference in time for a 10 year difference is -5.96</em></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have been discussing simple models so far. </li>
+<li>This works well when you have:
+
+<ul>
+<li>Randomized Data to test between specific groups (Treatment vs Control)</li>
+</ul></li>
+<li>In most situations we need look at more than just one relationship. </li>
+<li>Think of this as needing more information to tell the entire story. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Linear Regression with appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>First start with univariate models</li>
+<li>Then perform the multiple model</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multivariate Models</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod3 &lt;- lm(appearances~publisher + year, data=comic_characters)
+tidy3 &lt;- tidy(mod3, conf.int=T)[,-c(3:4)]
+tidy3
+</code></pre>
+
+<pre><code>## # A tibble: 3 x 5
+##   term             estimate  p.value  conf.low conf.high
+##   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)      1265.    9.81e-78  1133.     1398.   
+## 2 publisherMarvel    -9.54  1.24e-11   -12.3      -6.78 
+## 3 year               -0.624 5.93e-75    -0.690    -0.557
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting Multiple Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The intercept is when all coefficients are zero. </li>
+<li>Each other coefficient is interpreted in context to another. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting Multiple Coefficients: Our Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Intercept: DC average appearances at year 0. <strong><em>Not Meaningful</em></strong></li>
+<li>Publisher Coefficient: If we consider 2 characters in the same year, the character from Marvel will have on average 9.54 less appearances than the character from DC. </li>
+<li>Year Coefficient: If we consider 2 characters from the same publisher, an increase in 1 year will lead to on average 0.62 less appearances. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-31" style="background:grey;">
+  <hgroup>
+    <h1>Multiple Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have been discussing simple models so far. </li>
+<li>This works well when you have:
+
+<ul>
+<li>Randomized Data to test between specific groups (Treatment vs Control)</li>
+</ul></li>
+<li>In most situations we need look at more than just one relationship. </li>
+<li>Think of this as needing more information to tell the entire story. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Motivating Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Health disparities are very real and exist across individuals and populations. </li>
+<li>Before developing methods of remedying these disparities we need to be able to identify where there are disparities.In this homework we will consider a study by <a href="http://www.ncbi.nlm.nih.gov/pubmed/17513818">(Asch &amp; Armstrong, 2007)</a>.<br></li>
+<li>This paper considers 222 patients with localized prostate cancer. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Motivating Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The table below partitions patients by race, hospital and whether or not the patient received a prostatectomy. </li>
+</ul>
+
+<table><thead>
+<tr>
+<th></th>
+<th>Race</th>
+<th>Prostatectomy</th>
+<th>No Prostatectomy</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>University Hospital</td>
+<td>White</td>
+<td>54</td>
+<td>37</td>
+</tr>
+<tr>
+<td></td>
+<td>Black</td>
+<td>7</td>
+<td>5</td>
+</tr>
+<tr>
+<td>VA Hospital</td>
+<td>White</td>
+<td>11</td>
+<td>29</td>
+</tr>
+<tr>
+<td></td>
+<td>Black</td>
+<td>22</td>
+<td>57</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Loading the Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>You can load this data into R with the code below:</p>
+
+<pre><code class="r">phil_disp &lt;- read.table(&quot;https://drive.google.com/uc?export=download&amp;id=0B8CsRLdwqzbzOXlIRl9VcjNJRFU&quot;, header=TRUE, sep=&quot;,&quot;)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>This dataset contains the following variables: </p>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>hospital</td>
+<td>0 - University Hospital</td>
+</tr>
+<tr>
+<td></td>
+<td>1 - VA Hospital</td>
+</tr>
+<tr>
+<td>race</td>
+<td>0 - White</td>
+</tr>
+<tr>
+<td></td>
+<td>1 - Black</td>
+</tr>
+<tr>
+<td>surgery</td>
+<td>0 - No prostatectomy</td>
+</tr>
+<tr>
+<td></td>
+<td>1 - Had Prostatectomy</td>
+</tr>
+<tr>
+<td>number</td>
+<td>Count of people in Category</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider Prostatectomy by Race</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+prost_race &lt;- glm(surgery ~ race, weight=number, data= phil_disp,
+                  family=&quot;binomial&quot;)
+tidy(prost_race, exponentiate=T, conf.int=T)[,-c(3:4)]
+</code></pre>
+
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    0.985 0.930      0.699     1.39 
+## 2 race           0.475 0.00895    0.269     0.825
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider Prostatectomy by Race</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>What can we conclude? </li>
+<li>What kind of policy might we want to invoke based on this discovery?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider Prostatectomy by Hospital</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">prost_hosp &lt;- glm(surgery ~ hospital, weight=number, data= phil_disp,
+                  family=&quot;binomial&quot;)
+tidy(prost_hosp, exponentiate =T, conf.int=T)[,-c(3:4)]
+</code></pre>
+
+<pre><code>## # A tibble: 2 x 5
+##   term        estimate    p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    1.45  0.0627        0.984     2.16 
+## 2 hospital       0.264 0.00000341    0.149     0.460
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider Prostatectomy by Hospital</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>What can we conclude? </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Regression of Prostatectomy</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">prost &lt;- glm(surgery ~ hospital + race, weight=number, data= phil_disp,
+             family=&quot;binomial&quot;)
+tidy(prost, exponentiate=T, conf.int=T)[,-c(3:4)]
+</code></pre>
+
+<pre><code>## # A tibble: 3 x 5
+##   term        estimate  p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    1.45  0.0682      0.976     2.18 
+## 2 hospital       0.264 0.000124    0.131     0.515
+## 3 race           0.998 0.996       0.501     2.04
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Regression of Prostatectomy</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>What can We conclude?</li>
+<li>What happened here?</li>
+<li>Does this change our policy suggestion from before?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Benefits of Multiple Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Multiple Regression helps us tell a more complete story. </li>
+<li>Multiple regression controls for confounding. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Confounding</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Associated with both the Exposure and the Outcome</li>
+<li>Even if the Exposure and Outcome are not related, unmeasured confounding can show that they are. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do We Do with Confounding?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We must add all confounders into our model. </li>
+<li>Without adjusting for confounders are results may be highly biased. </li>
+<li>Without adjusting for confounding we may make incorrect policies that do not fix the problem. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Linear Regression with appearances</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>First start with univariate models</li>
+<li>Then perform the multiple model</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multivariate Models</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+library(fivethirtyeight)
+mod3 &lt;- lm(appearances~publisher + year, data=comic_characters)
+tidy3 &lt;- tidy(mod3, conf.int=T)[,-c(3:4)]
+tidy3
+</code></pre>
+
+<pre><code>## # A tibble: 3 x 5
+##   term             estimate  p.value  conf.low conf.high
+##   &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)      1265.    9.81e-78  1133.     1398.   
+## 2 publisherMarvel    -9.54  1.24e-11   -12.3      -6.78 
+## 3 year               -0.624 5.93e-75    -0.690    -0.557
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting Multiple Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The intercept is when all coefficients are zero. </li>
+<li>Each other coefficient is interpreted in context to another. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting Multiple Coefficients: Our Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Intercept: DC average appearances at year 0. <strong><em>Not Meaningful</em></strong></li>
+<li>Publisher Coefficient: If we consider 2 characters in the same year, the character from Marvel will have on average 9.54 less appearances than the character from DC. </li>
+<li>Year Coefficient: If we consider 2 characters from the same publisher, an increase in 1 year will lead to on average 0.62 less appearances. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Example: Bike Sharing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have hourly data spanning 2 years</li>
+<li>This dataset has the first 19 days of each month. </li>
+<li>Goal is to find the total count of bike rented. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Example: Bike Sharing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Data</th>
+<th align="left">Fields</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">datetime</td>
+<td align="left">hourly date + timestamp</td>
+</tr>
+<tr>
+<td align="center">season</td>
+<td align="left">1 = spring, 2 = summer, 3 = fall, 4 = winter</td>
+</tr>
+<tr>
+<td align="center">holiday</td>
+<td align="left">whether the day is considered a holiday</td>
+</tr>
+<tr>
+<td align="center">workingday</td>
+<td align="left">whether the day is neither a weekend nor holiday</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Example: Bike Sharing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Data</th>
+<th align="left">Fields</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">weather</td>
+<td align="left">1: Clear, Few clouds, Partly cloudy, Partly cloudy</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">4: Heavy Rain + Ice Pallets + Thunderstorm + Mist, Snow + Fog</td>
+</tr>
+<tr>
+<td align="center">temp</td>
+<td align="left">temperature in Celsius</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Further Example: Bike Sharing Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Data</th>
+<th align="left">Fields</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">atemp</td>
+<td align="left">&quot;feels like&quot; temperature in Celsius</td>
+</tr>
+<tr>
+<td align="center">humidity</td>
+<td align="left">relative humidity</td>
+</tr>
+<tr>
+<td align="center">windspeed</td>
+<td align="left">wind speed</td>
+</tr>
+<tr>
+<td align="center">casual</td>
+<td align="left">number of non-registered user rentals initiated</td>
+</tr>
+<tr>
+<td align="center">registered</td>
+<td align="left">number of registered user rentals initiated</td>
+</tr>
+<tr>
+<td align="center">count</td>
+<td align="left">number of total rentals</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Univariate Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(readr)
+library(tidyverse)
+bikes &lt;- read_csv(&quot;../Notes/Data/bike_sharing.csv&quot;) %&gt;%
+        mutate(season = as.factor(season)) %&gt;%
+        mutate(weather=as.factor(weather)) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Univariate Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod1 &lt;- lm(count~season, data=bikes)
+mod2 &lt;- lm(count~holiday, data=bikes)
+mod3 &lt;- lm(count~workingday, data=bikes)
+mod4 &lt;- lm(count~weather, data=bikes)
+mod5 &lt;- lm(count~temp, data=bikes)
+mod6 &lt;- lm(count~atemp, data=bikes)
+mod7 &lt;- lm(count~humidity, data=bikes)
+mod8 &lt;- lm(count~windspeed, data=bikes)
+mod9 &lt;- lm(count~casual, data=bikes)
+mod10 &lt;- lm(count~registered, data=bikes)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Univariate Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+tidy1 &lt;- tidy( mod1, conf.int=T )[-1, -c(3:4) ]
+tidy2 &lt;- tidy(mod2, conf.int=T )[-1, -c(3:4) ]
+tidy3 &lt;- tidy(mod3 , conf.int=T)[-1, -c(3:4) ]
+tidy4 &lt;- tidy(mod4 , conf.int=T)[-1, -c(3:4) ]
+tidy5 &lt;- tidy(mod5, conf.int=T)[-1, -c(3:4) ]
+tidy6 &lt;- tidy(mod6 , conf.int=T)[-1, -c(3:4) ]
+tidy7 &lt;- tidy(mod7 , conf.int=T)[-1, -c(3:4) ]
+tidy8 &lt;- tidy(mod8 , conf.int=T)[-1, -c(3:4) ]
+tidy9 &lt;- tidy(mod9, conf.int=T)[-1, -c(3:4) ]
+tidy10 &lt;- tidy(mod10, conf.int=T)[-1, -c(3:4) ]
+bind_rows(tidy1, tidy2, tidy3, tidy4, tidy5, tidy6, tidy7, tidy8, tidy9, tidy10) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Univariate Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 14 x 5
+##    term       estimate   p.value conf.low conf.high
+##    &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+##  1 season2       98.9  9.76e- 94    89.6     108.  
+##  2 season3      118.   1.06e-131   109.      127.  
+##  3 season4       82.6  2.13e- 66    73.3      92.0 
+##  4 holiday       -5.86 5.74e-  1   -26.3      14.6 
+##  5 workingday     4.51 2.26e-  1    -2.80     11.8 
+##  6 weather2     -26.3  4.32e- 11   -34.1     -18.5 
+##  7 weather3     -86.4  3.29e- 40   -99.1     -73.7 
+##  8 weather4     -41.2  8.18e-  1  -393.      311.  
+##  9 temp           9.17 0.            8.77      9.57
+## 10 atemp          8.33 0.            7.96      8.70
+## 11 humidity      -2.99 2.92e-253    -3.15     -2.82
+## 12 windspeed      2.25 2.90e- 26     1.83      2.66
+## 13 casual         2.50 0.            2.45      2.55
+## 14 registered     1.16 0.            1.16      1.17
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multivariate</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod.final &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+tidy(mod.final)[-1,-c(3:4)]
+glance(mod.final)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multivariate</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 8 x 3
+##   term      estimate   p.value
+##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+## 1 season2    116.    1.40e-145
+## 2 season3    148.    7.52e-227
+## 3 season4    118.    1.74e-147
+## 4 weather2    20.0   1.38e-  7
+## 5 weather3     0.124 9.84e-  1
+## 6 weather4   162.    3.19e-  1
+## 7 humidity    -3.49  3.86e-273
+## 8 windspeed    0.633 2.05e-  3
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multivariate</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 1 x 11
+##   r.squared adj.r.squared sigma statistic p.value    df  logLik    AIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     0.195         0.194  163.      329.       0     9 -70865. 1.42e5
+## # ... with 3 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='One Continuous'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='One Continuous Covariate'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Example: Year and Appearances'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Scatter Plot: Year and Appearances'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Scatter Plot: Year and Appearances'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Modeling What We See'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='How do we Quantify this?'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Population Regression Line'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Population Regression Line'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Population Regression Line'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='The Model'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='What do We Have?'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Picture of this'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='What Does This Tell Us?'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Residual Errors'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='In Comes Least Squares'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Inferences on OLS'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Confidence Interval Creation'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Example: Year and Appearances'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Example: Year and Appearances'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Example: Year and Appearances'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Interpreting the Coefficients: Continuous'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Interpreting the Coefficients: Continuous'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Interpreting the Coefficients: Continuous'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Interpreting the Coefficients: Continuous'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Multiple Regression'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Multiple Linear Regression with appearances'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Multivariate Models'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Interpreting Multiple Coefficients'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Interpreting Multiple Coefficients: Our Example'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Multiple Regression'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Multiple Regression'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Motivating Example'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Motivating Example'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Loading the Data'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='The Data'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Consider Prostatectomy by Race'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Consider Prostatectomy by Race'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Consider Prostatectomy by Hospital'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Consider Prostatectomy by Hospital'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Multiple Regression of Prostatectomy'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Multiple Regression of Prostatectomy'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Benefits of Multiple Regression'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Confounding'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='What Do We Do with Confounding?'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Multiple Linear Regression with appearances'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Multivariate Models'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Interpreting Multiple Coefficients'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Interpreting Multiple Coefficients: Our Example'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='Further Example: Bike Sharing Data'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Further Example: Bike Sharing Data'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Further Example: Bike Sharing Data'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='Further Example: Bike Sharing Data'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Univariate Regressions'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='Univariate Regressions'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='Univariate Regressions'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='Univariate Regressions'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='Multivariate'>
+         58
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=59 title='Multivariate'>
+         59
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=60 title='Multivariate'>
+         60
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

@@ -27,7 +27,6 @@ title: Calendar
 <th align="left">HW</th>
 <th align="left">Project</th>
 </tr>
-
 </thead><tbody>
 <tr>
 <td align="left">Week 1</td>
@@ -78,15 +77,15 @@ title: Calendar
 <td align="left"></td>
 <td align="left">6-Feb</td>
 <td align="left">Simple and Multiple Linear Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-05-lin-reg.html">Lect-05-lin-reg</a></td>
 <td align="left">Fox Chap 5, Vittinghoff Chaps 3.3, 4.1-4.4</td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw1.html">HW1</a></td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 1: Basics of Regression in R / Graphing in R</td>
+<td align="left"></td>
 <td align="left"><a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a> <a href="../labs/lab1_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -95,8 +94,8 @@ title: Calendar
 <tr>
 <td align="left">Week 4</td>
 <td align="left">11-Feb</td>
-<td align="left">Inference for Linear Regression</td>
-<td align="left"></td>
+<td align="left">Multiple Linear Regression</td>
+<td align="left"><a href="../Notes/lect-06-lin-reg-2.html">Lect-06-lin-reg-2</a></td>
 <td align="left">Fox Chap 6</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -104,7 +103,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">13-Feb</td>
-<td align="left">Factors and Interactions</td>
+<td align="left">Inference for Linear Regression</td>
 <td align="left"></td>
 <td align="left">Fox Chap 7, Vittinghoff Chap 4.6</td>
 <td align="left"></td>
@@ -113,7 +112,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 2: Factors, Interactions and Interpretations.</td>
+<td align="left">Lab 1: Regression</td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -131,7 +130,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">20-Feb</td>
-<td align="left">Diagnostics for Linear Regression</td>
+<td align="left">Factors and Interactions</td>
 <td align="left"></td>
 <td align="left">Fox Chap 11, Vittinghoff Chap 4.7</td>
 <td align="left"></td>
@@ -149,7 +148,7 @@ title: Calendar
 <tr>
 <td align="left">Week 6</td>
 <td align="left">25-Feb</td>
-<td align="left">Unusual and Influential Data</td>
+<td align="left">Diagnostics for Linear Regression</td>
 <td align="left"></td>
 <td align="left">Fox Chap 12</td>
 <td align="left"></td>
@@ -158,7 +157,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">27-Feb</td>
-<td align="left">Collinearity</td>
+<td align="left">Unusual and Influential Data</td>
 <td align="left"></td>
 <td align="left">Fox Chap 13, Vittinghoff Chap 4.8</td>
 <td align="left"></td>
@@ -176,7 +175,7 @@ title: Calendar
 <tr>
 <td align="left">Week 7</td>
 <td align="left">4-Mar</td>
-<td align="left">Generalized Linear Regression Basics</td>
+<td align="left">Collinearity</td>
 <td align="left"></td>
 <td align="left">Fox Chap 14</td>
 <td align="left"></td>
@@ -185,7 +184,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">6-Mar</td>
-<td align="left">Introduction to Logistic Regression</td>
+<td align="left">Generalized Linear Regression Basics</td>
 <td align="left"></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.1</td>
 <td align="left"></td>
@@ -203,7 +202,7 @@ title: Calendar
 <tr>
 <td align="left">Week 8</td>
 <td align="left">11-Mar</td>
-<td align="left">Logistic Regression</td>
+<td align="left">Introduction to Logistic Regression</td>
 <td align="left"></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.2-5.3</td>
 <td align="left"></td>

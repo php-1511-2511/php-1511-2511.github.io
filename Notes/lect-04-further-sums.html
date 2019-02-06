@@ -57,348 +57,11 @@
     <!-- SLIDES -->
     <slide class="segue" id="slide-1" style="background:grey;">
   <hgroup>
-    <h1>Arranging the Data</h1>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Arranging the Data</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>We also have need to make sure the data is ordered in a certain manner. This can be easily done in R with the <code>arrange()</code> function. </li>
-<li>Again we can do this in base R but this is not always a clear path. </li>
-</ul>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Arranging the Data Example</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>Let&#39;s say that we wish to look countries, year and life expectancy. </li>
-<li>Thensay further we want to sort it by Life Expactancy. </li>
-<li>In base R we would have to run the following command:</li>
-</ul>
-
-<pre><code class="r">library(gapminder)
-library(tidyverse)
-gapminder[order(gapminder$lifeExp), c(&quot;country&quot;, &quot;year&quot;, &quot;lifeExp&quot;)]
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Enter the <code>arrange()</code> Function</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li><p>We could do this in an easy manner using the  <code>arrange()</code> function:</p>
-
-<pre><code>arrange(.data, ...)
-</code></pre></li>
-<li><p>Where</p>
-
-<ul>
-<li><code>.data</code> is a data frame of interest.</li>
-<li><code>...</code> are the variables you wish to sort by. </li>
-</ul></li>
-</ul>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Arranging the Data Example Continued</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">gapminder %&gt;%
-    select(country,year,  lifeExp) %&gt;%
-    arrange(lifeExp)
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Arranging the Data Example Continued</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code>## # A tibble: 1,704 x 3
-##    country       year lifeExp
-##    &lt;fct&gt;        &lt;int&gt;   &lt;dbl&gt;
-##  1 Rwanda        1992    23.6
-##  2 Afghanistan   1952    28.8
-##  3 Gambia        1952    30  
-##  4 Angola        1952    30.0
-##  5 Sierra Leone  1952    30.3
-##  6 Afghanistan   1957    30.3
-##  7 Cambodia      1977    31.2
-##  8 Mozambique    1952    31.3
-##  9 Sierra Leone  1957    31.6
-## 10 Burkina Faso  1952    32.0
-## # ... with 1,694 more rows
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Arranging the Data Example Continued</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>With <code>arrange()</code> we first use <code>select()</code> to pick the only columns that we want and then we arrange by the <code>lifeExp</code>. </li>
-<li>If we had wished to order them in a descending manner we could have simply used the <code>desc()</code> function:</li>
-</ul>
-
-<pre><code class="r">gapminder %&gt;%
-    select(country,year,  lifeExp) %&gt;%
-    arrange(desc(lifeExp))
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>More Complex Arrange</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>Lets consider that we wish to look at the top 3 Life Expectancies for each year.</li>
-<li>Then we wish to order them from largest to smallest Life Expectancy. </li>
-<li>We then need to do the following:
-
-<ol>
-<li>Group by year.</li>
-<li>Pick the top 3 life expectancy</li>
-<li>order them largest to smallest</li>
-</ol></li>
-</ul>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>More Complex Arrange Continued</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">gapminder %&gt;% 
-  group_by(year) %&gt;%  
-  top_n(3, lifeExp) %&gt;% 
-  arrange(desc(lifeExp))
-</code></pre>
-
-<ul>
-<li>Where
-
-<ul>
-<li><code>group_by()</code> is a way to group data. This way we perform operations on a group. So top 3 life expectancy are grouped by year. </li>
-<li><code>top_n()</code>takes a tibble and returns a specific number of rows based on a chosen value. </li>
-</ul></li>
-</ul>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>More Complex Arrange Continued</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code>## # A tibble: 36 x 6
-## # Groups:   year [12]
-##    country          continent  year lifeExp       pop gdpPercap
-##    &lt;fct&gt;            &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
-##  1 Japan            Asia       2007    82.6 127467972    31656.
-##  2 Hong Kong, China Asia       2007    82.2   6980412    39725.
-##  3 Japan            Asia       2002    82   127065841    28605.
-##  4 Iceland          Europe     2007    81.8    301931    36181.
-##  5 Hong Kong, China Asia       2002    81.5   6762476    30209.
-##  6 Japan            Asia       1997    80.7 125956499    28817.
-##  7 Switzerland      Europe     2002    80.6   7361757    34481.
-##  8 Hong Kong, China Asia       1997    80     6495918    28378.
-##  9 Sweden           Europe     1997    79.4   8897619    25267.
-## 10 Japan            Asia       1992    79.4 124329269    26825.
-## # ... with 26 more rows
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>On Your Own: RStudio Practice</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>Perform the following operations:
-
-<ul>
-<li>Group by year. </li>
-<li>use <code>sample_n()</code> to pick 1 observation per year </li>
-<li>Arrange by longest to smallest life expectancy. </li>
-</ul></li>
-</ul>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>On Your Own: RStudio Practice</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <p>Your answer <strong><em>may</em></strong> look like:</p>
-
-<pre><code class="r">gapminder %&gt;%
-  group_by(year) %&gt;%
-  sample_n(1) %&gt;%
-  arrange(desc(lifeExp))
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="segue" id="slide-13" style="background:grey;">
-  <hgroup>
     <h1>Summarizing Data</h1>
     <hr>
   </hgroup>
   <article data-timings="">
     
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Summarizing Data</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <ul>
-<li>As you have seen in your own work, being able to summarize information is crucial. </li>
-<li>We need to be able to take out data and summarize it as well. </li>
-<li>We will consider doing this using the <code>summarise()</code> function. </li>
-</ul>
-
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -668,7 +331,7 @@ head(aggregate(lifeExp ~ country, gapminder, mean))
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-22" style="background:grey;">
+<slide class="segue" id="slide-9" style="background:grey;">
   <hgroup>
     <h1>Adding New Variables</h1>
     <hr>
@@ -930,7 +593,7 @@ transmute(.data, ...)
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue" id="slide-32" style="background:grey;">
+<slide class="segue" id="slide-19" style="background:grey;">
   <hgroup>
     <h1>Further Summaries</h1>
     <hr>
@@ -1428,308 +1091,230 @@ transmute(.data, ...)
     <ul>
       <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=1 title='Arranging the Data'>
+        data-slide=1 title='Summarizing Data'>
          1
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Arranging the Data'>
+        data-slide=2 title='Summarizing Data'>
          2
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='Arranging the Data Example'>
+        data-slide=3 title='Enter <code>summarise()</code> Function'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Enter the <code>arrange()</code> Function'>
+        data-slide=4 title='Summarizing Data Example'>
          4
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Arranging the Data Example Continued'>
+        data-slide=5 title='Another Example'>
          5
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Arranging the Data Example Continued'>
+        data-slide=6 title='Another Example'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Arranging the Data Example Continued'>
+        data-slide=7 title='On Your Own: RStudio Practice'>
          7
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='More Complex Arrange'>
+        data-slide=8 title='On Your Own: RStudio Practice'>
          8
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=9 title='More Complex Arrange Continued'>
+        data-slide=9 title='Adding New Variables'>
          9
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=10 title='More Complex Arrange Continued'>
+        data-slide=10 title='Adding New Variables'>
          10
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=11 title='On Your Own: RStudio Practice'>
+        data-slide=11 title='Adding New Variables'>
          11
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=12 title='On Your Own: RStudio Practice'>
+        data-slide=12 title='Adding New Variables'>
          12
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=13 title='Summarizing Data'>
+        data-slide=13 title='Adding New Variables'>
          13
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='Summarizing Data'>
+        data-slide=14 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='Summarizing Data'>
+        data-slide=15 title='Example'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='Enter <code>summarise()</code> Function'>
+        data-slide=16 title='Example: Mutate'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='Summarizing Data Example'>
+        data-slide=17 title='Example: Transmute'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='Another Example'>
+        data-slide=18 title='Example: transmute'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='Another Example'>
+        data-slide=19 title='Further Summaries'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='On Your Own: RStudio Practice'>
+        data-slide=20 title='Further Summaries'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='On Your Own: RStudio Practice'>
+        data-slide=21 title='Further Summaries'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='Adding New Variables'>
+        data-slide=22 title='Grouping and Counting'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='Adding New Variables'>
+        data-slide=23 title='Grouping and Counting'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='Adding New Variables'>
+        data-slide=24 title='Grouping and Counting'>
          24
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=25 title='Adding New Variables'>
+        data-slide=25 title='Grouping, counting and sorting.'>
          25
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=26 title='Adding New Variables'>
+        data-slide=26 title='Grouping, counting and sorting: <code>tally()</code>'>
          26
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='Differences Between <code>mutate()</code> and <code>transmute()</code>'>
+        data-slide=27 title='Grouping with other functions'>
          27
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=28 title='Example'>
+        data-slide=28 title='Grouping with other functions'>
          28
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='Example: Mutate'>
+        data-slide=29 title='What happened?'>
          29
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=30 title='Example: Transmute'>
+        data-slide=30 title='Saving our work'>
          30
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=31 title='Example: transmute'>
+        data-slide=31 title='Try again:'>
          31
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=32 title='Further Summaries'>
+        data-slide=32 title='Grouping with other functions'>
          32
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=33 title='Further Summaries'>
+        data-slide=33 title='Grouping with other functions'>
          33
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=34 title='Further Summaries'>
+        data-slide=34 title='Counting Groups'>
          34
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=35 title='Grouping and Counting'>
+        data-slide=35 title='Counting Groups'>
          35
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=36 title='Grouping and Counting'>
+        data-slide=36 title='Counting Groups'>
          36
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=37 title='Grouping and Counting'>
+        data-slide=37 title='Counting Groups'>
          37
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=38 title='Grouping, counting and sorting.'>
+        data-slide=38 title='Counting Groups'>
          38
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=39 title='Grouping, counting and sorting: <code>tally()</code>'>
-         39
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=40 title='Grouping with other functions'>
-         40
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=41 title='Grouping with other functions'>
-         41
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=42 title='What happened?'>
-         42
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=43 title='Saving our work'>
-         43
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=44 title='Try again:'>
-         44
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=45 title='Grouping with other functions'>
-         45
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=46 title='Grouping with other functions'>
-         46
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=47 title='Counting Groups'>
-         47
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=48 title='Counting Groups'>
-         48
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=49 title='Counting Groups'>
-         49
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=50 title='Counting Groups'>
-         50
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=51 title='Counting Groups'>
-         51
       </a>
     </li>
   </ul>

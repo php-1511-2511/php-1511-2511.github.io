@@ -21,6 +21,9 @@ assets      : {assets: ../../assets}
 
 
 
+
+
+
 # `ggplot2`
 
 
@@ -109,22 +112,7 @@ comic_characters
 
 
 ```
-## # A tibble: 23,272 x 16
-##    publisher page_id name  urlslug id    align eye   hair  sex   gsm  
-##    <chr>       <int> <chr> <chr>   <chr> <ord> <chr> <chr> <chr> <chr>
-##  1 Marvel       1678 Spid~ "\\/Sp~ Secr~ Good~ Haze~ Brow~ Male~ <NA> 
-##  2 Marvel       7139 Capt~ "\\/Ca~ Publ~ Good~ Blue~ Whit~ Male~ <NA> 
-##  3 Marvel      64786 "Wol~ "\\/Wo~ Publ~ <NA>  Blue~ Blac~ Male~ <NA> 
-##  4 Marvel       1868 "Iro~ "\\/Ir~ Publ~ Good~ Blue~ Blac~ Male~ <NA> 
-##  5 Marvel       2460 Thor~ "\\/Th~ No D~ Good~ Blue~ Blon~ Male~ <NA> 
-##  6 Marvel       2458 Benj~ "\\/Be~ Publ~ Good~ Blue~ No H~ Male~ <NA> 
-##  7 Marvel       2166 Reed~ "\\/Re~ Publ~ Good~ Brow~ Brow~ Male~ <NA> 
-##  8 Marvel       1833 Hulk~ "\\/Hu~ Publ~ Good~ Brow~ Brow~ Male~ <NA> 
-##  9 Marvel      29481 Scot~ "\\/Sc~ Publ~ <NA>  Brow~ Brow~ Male~ <NA> 
-## 10 Marvel       1837 Jona~ "\\/Jo~ Publ~ Good~ Blue~ Blon~ Male~ <NA> 
-## # ... with 23,262 more rows, and 6 more variables: alive <chr>,
-## #   appearances <int>, first_appearance <chr>, month <chr>, year <int>,
-## #   date <date>
+## Error in eval(expr, envir, enclos): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
 ```
 
 
@@ -140,12 +128,7 @@ names(comic_characters)
 ```
 
 ```
-##  [1] "publisher"        "page_id"          "name"            
-##  [4] "urlslug"          "id"               "align"           
-##  [7] "eye"              "hair"             "sex"             
-## [10] "gsm"              "alive"            "appearances"     
-## [13] "first_appearance" "month"            "year"            
-## [16] "date"
+## Error in eval(expr, envir, enclos): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
 ```
 
 
@@ -167,7 +150,10 @@ ggplot(data=comic_characters, aes(x=align, y=appearances))
 
 ## `ggplot()` Basics
 
-![plot of chunk unnamed-chunk-7](assets/fig/unnamed-chunk-7-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = appearances)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 --- .class #id
 
@@ -200,7 +186,10 @@ ggplot(data=comic_characters, aes(x=align, y=appearances)) +
 
 
 
-![plot of chunk unnamed-chunk-9](assets/fig/unnamed-chunk-9-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = appearances)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -226,7 +215,10 @@ ggplot(data=comic_characters, aes(x=align, y=appearances)) +
 
   
 
-![plot of chunk unnamed-chunk-11](assets/fig/unnamed-chunk-11-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = appearances)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 --- .class #id 
 
@@ -244,6 +236,10 @@ comic_characters <- comic_characters %>%
   mutate(log_app = log(appearances))
 ```
 
+```
+## Error in eval(lhs, parent, parent): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
+
 
 
 
@@ -255,7 +251,10 @@ comic_characters <- comic_characters %>%
 
 
 
-![plot of chunk unnamed-chunk-13](assets/fig/unnamed-chunk-13-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -278,7 +277,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 
 
   
-![plot of chunk unnamed-chunk-15](assets/fig/unnamed-chunk-15-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 
@@ -327,7 +329,10 @@ ggplot(data=comic_characters, aes(x=align, y=log_app)) +
 
 
 
-![plot of chunk unnamed-chunk-17](assets/fig/unnamed-chunk-17-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 --- .class #id
 
@@ -350,7 +355,10 @@ ggplot(data=comic_characters, aes(x=align, y=log_app)) +
 
 
 
-![plot of chunk unnamed-chunk-18](assets/fig/unnamed-chunk-18-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 --- .class #id
 
@@ -371,7 +379,10 @@ ggplot(data=comic_characters, aes(x=align, y=log_app)) +
 
 
 
-![plot of chunk unnamed-chunk-20](assets/fig/unnamed-chunk-20-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 --- .class #id 
 
@@ -401,7 +412,10 @@ ggplot(data=comic_characters, aes(x=align, y=log_app)) +
 
 
 
-![plot of chunk unnamed-chunk-22](assets/fig/unnamed-chunk-22-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align, y = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -431,7 +445,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 
 - This doesnt have the same effect as `color`
 
-![plot of chunk unnamed-chunk-24](assets/fig/unnamed-chunk-24-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -453,7 +470,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 
 
 
-![plot of chunk unnamed-chunk-26](assets/fig/unnamed-chunk-26-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = align)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 ---  .segue bg:grey
@@ -472,7 +492,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 ## Other Plots: Density
 
 
-![plot of chunk unnamed-chunk-27](assets/fig/unnamed-chunk-27-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -480,7 +503,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 ## Other Plots: Density
 
 
-![plot of chunk unnamed-chunk-28](assets/fig/unnamed-chunk-28-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 --- .class #id
@@ -488,7 +514,10 @@ ggplot(data=comic_characters, aes(x=align)) +
 ## Other Plots: Histogram
 
 
-![plot of chunk unnamed-chunk-29](assets/fig/unnamed-chunk-29-1.png)
+
+```
+## Error in ggplot(data = comic_characters, aes(x = log_app)): lazy-load database 'C:/Users/sullivanstats/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes/.cache/unnamed-chunk-13_8ecaf0c2e00d6f774be6cefd4f037233.rdb' is corrupt
+```
 
 
 
@@ -517,15 +546,15 @@ head(gapminder)
 ```
 
 ```
-## # A tibble: 6 x 6
-##   country     continent  year lifeExp      pop gdpPercap
-##   <fct>       <fct>     <int>   <dbl>    <int>     <dbl>
-## 1 Afghanistan Asia       1952    28.8  8425333      779.
-## 2 Afghanistan Asia       1957    30.3  9240934      821.
-## 3 Afghanistan Asia       1962    32.0 10267083      853.
-## 4 Afghanistan Asia       1967    34.0 11537966      836.
-## 5 Afghanistan Asia       1972    36.1 13079460      740.
-## 6 Afghanistan Asia       1977    38.4 14880372      786.
+## # A tibble: 6 x 7
+##   country     continent  year lifeExp      pop gdpPercap          gdp
+##   <fct>       <fct>     <int>   <dbl>    <int>     <dbl>        <dbl>
+## 1 Afghanistan Asia       1952    28.8  8425333      779.  6567086330.
+## 2 Afghanistan Asia       1957    30.3  9240934      821.  7585448670.
+## 3 Afghanistan Asia       1962    32.0 10267083      853.  8758855797.
+## 4 Afghanistan Asia       1967    34.0 11537966      836.  9648014150.
+## 5 Afghanistan Asia       1972    36.1 13079460      740.  9678553274.
+## 6 Afghanistan Asia       1977    38.4 14880372      786. 11697659231.
 ```
 
 --- .class #id
