@@ -59,7 +59,8 @@ This course is designed for graduate and advanced undergraduate students who wil
 |:-----------|:--------|:-----------|
 
 
-
+Additional Hours held by Julia Mullokandova:
+<a href="http://signup.com/go/hVadReE" target="_blank"><img src="https://signup.com/imgs/icons/signup-choose-a-spot-btn.png" alt="Click to View Julia's Hours"></a>
 * * * 
 
 ### Additional Course Information via Main Menu
