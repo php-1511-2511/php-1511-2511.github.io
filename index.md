@@ -40,7 +40,8 @@ This course is designed for graduate and advanced undergraduate students who wil
 |:-----------|:--------|:-----------|
 | Lecture |  SPH - Room 375 |  Monday and Wednesday  10:30 - 11:50 |
 |:-----------|:--------|:-----------|
-| Discussion/Lab  |  SPH - Room 241 | Monday and Wednesdays 3- 4pm|
+| Discussion/Lab  |  SPH - Room 259 | Monday  3- 4pm|
+| Discussion/Lab  |  SPH - Room 243 | Wednesday 3- 4pm|
 |:-----------|:--------|:-----------|
 
 
@@ -51,10 +52,10 @@ This course is designed for graduate and advanced undergraduate students who wil
 |-----------+--------+-----------|
 | What    |  Where | When      
 |:-----------|:--------|:-----------|
-| Office Hours |  SPH - Room 375 |   Tuesdays 2:20 - 3:20 pm|
+| Office Hours |  SPH - Room 243 |   Tuesdays 2:20 - 3:20 pm|
 |:-----------|:--------|:-----------|
-|  |  SPH - Room 259| Wednesday 2:30 - 3:00 pm|
-|  |  SPH - Room 259| Wednesday 4:00 - 5:00 pm|
+|  |  SPH - Room 243| Wednesday 2:30 - 3:00 pm|
+|  |  SPH - Room 243| Wednesday 4:00 - 5:00 pm|
 |:-----------|:--------|:-----------|
 
 
