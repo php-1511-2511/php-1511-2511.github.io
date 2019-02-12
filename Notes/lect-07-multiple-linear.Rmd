@@ -1,0 +1,635 @@
+---
+title       : Multiple Linear Regression and Factors
+author      : Adam J Sullivan 
+job         : Assistant Professor of Biostatistics
+work        : Brown University
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js # {highlight.js, prettify, highlight}
+hitheme     :  github     # 
+widgets     : [mathjax, quiz, bootstrap, interactive] # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3, libraries/leaflet, libraries/dygraphs]}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+logo        : publichealthlogo.png
+biglogo     : publichealthlogo.png
+assets      : {assets: ../../assets}
+---  .segue bg:grey
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=FALSE)
+library(ggplot2)
+library(fivethirtyeight)
+require(tidyverse)
+library(broom)
+```
+
+# Multiple Variables
+
+--- .class #id
+
+## Multiple Variables
+
+
+```{r}
+library(readr)
+library(tidyverse)
+bikes <- read_csv("../Notes/Data/bike_sharing.csv") %>%
+        mutate(season = as.factor(season)) %>%
+        mutate(weather=as.factor(weather)) 
+       
+```
+
+
+--- .class #id
+
+## Multiple Variables
+
+```{r, eval=F}
+mod.final <- lm(count~season+weather+humidity+windspeed, data=bikes)
+tidy(mod.final)[-1,-c(3:4)]
+glance(mod.final)
+```
+
+--- .class #id
+
+
+## Multiple Variables
+
+```{r, echo=F}
+mod.final <- lm(count~season+weather+humidity+windspeed, data=bikes)
+kable(tidy(mod.final)[-1,-c(3:4)])
+```
+
+--- .class #id
+
+
+## Multiple Variables
+
+```{r, echo=F}
+kable(glance(mod.final))
+```
+
+--- .segue bg:grey
+          
+# Inference on Linear Regressions
+
+--- .class #id
+
+## Inference on Linear Regressions
+
+1. Overall F Test of Model
+2. Individual Coefficient Tests
+3. Testing Groups of Variables
+
+
+--- .class #id
+
+
+## Overall Model F test
+
+- We can perform an overall F Test for a model.
+- When we do this we test the following Hypothesis
+$$H_0:\beta_1=\beta_2=\cdots=\beta_p=0$$
+$$H_1=\text{ at least one }\beta_i\ne0$$
+
+
+--- .class #id
+
+
+## Overall Model F test: Bike Sharing
+
+```{r, eval=F}
+kable(glance(mod.final))
+
+```
+
+--- .class #id
+
+## Overall Model F test: Bike Sharing
+
+```{r, echo=F}
+kable(glance(mod.final))
+
+```
+
+--- .class #id
+
+## Overall Model F test: Bike Sharing
+
+- We have an F Statistic of 3329.3
+- This yields a p-value of $<0.0001$
+- We can reject the null in favor of the alternative hypothesis. 
+- This suggests that at least one $\beta_I$ is not 0. 
+
+
+--- .class #id
+
+## Individual Coefficients $t$-test
+
+- We can test each individual coefficients. 
+- The hypothesis we test is that:
+$$H_0:\beta_i=0$$
+$$H_1=\beta_i\ne0$$
+- We do this with a t-test. 
+
+
+--- .class #id
+
+
+## Individual Coefficients $t$-test
+
+- With the t-test we have that:
+$$ t_i=\dfrac{\beta_i}{se(\beta_i)}$$
+- Then we can test this with the $t$-distribution. 
+
+
+--- .class #id
+
+## Individual Coefficients $t$-test
+
+- Consider out Bike model:
+
+$$ 
+\begin{align}
+E[count] &= \beta_0 +  \beta_1 season(Summer) + \beta_2 season(Fall) + \\
+& \beta_3 season(Winter)  +    \beta_4 weather(2) +  \beta_5 weather(3) + \\
+&  \beta_6 weather(4) + \beta_7 humidity + \beta_8 windspeed\\
+\end{align}
+$$
+
+```{r, eval=F}
+tidy(mod.final)
+```
+
+
+--- .class #id
+
+
+## Individual Coefficients $t$-Test
+
+```{r, echo=F}
+kable(tidy(mod.final))
+```
+
+
+--- .class #id
+
+## F-test for Groups of Coefficients
+
+- Many times we want to be able to test the significance of groups of coefficients. 
+- We can do this with an F-test as well. 
+- For example we may want to test that:
+$$H_0:\beta_1=\beta_2=0$$
+$$H_1:\text{ at least 1 }\beta_i\ne0$$
+
+
+--- .class #id
+
+
+## Groups of Coefficients Example
+
+- Consider `Season` in our bike example. 
+- Only the first coefficient is significant. 
+- We may want to know if we the whole variable is worth having in the model. 
+- We will use the `anova()` function in R.
+
+
+--- .class #id
+
+## Groups of Coefficients Example
+
+```{r,eval=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+
+--- .class #id
+
+## Groups of Coefficients Example
+
+```{r,echo=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+--- .class #id
+
+
+## Groups of Coefficients Example 2
+
+- Consider `weather` in our bike example. 
+- Only the first coefficient is significant. 
+- We may want to know if we the whole variable is worth having in the model. 
+- We will use the `anova()` function in R.
+
+--- .class #id
+
+
+## Groups of Coefficients Example 2
+
+```{r,eval=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+
+--- .class #id
+
+## Groups of Coefficients Example 2
+
+```{r,echo=F}
+mod1 <- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 <- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+```
+
+
+--- .segue #id
+
+
+# Factors
+
+--- .class #id
+
+## What are Factors? 
+
+- Factors are categorical data. 
+- Factors contain
+    - Levels
+    - Can be numerical or character data
+
+
+--- .class #id
+
+## Why do we use them? 
+
+- Factors allow us to group things by category. 
+- Factors create dummy variables or indicator variables in our regressions. 
+
+
+--- .class #id
+
+## What is an indicator variable?
+
+- Consider the scenario where we have 3 treatments: A, B, & C
+- We could have two indicator variables:
+    - I(Treat_A) is
+        - 1 if patient is on treatment A
+        - 0 if patient is not on treatment A
+    - I(Treat_B) is
+        - 1 if patient is on treatment B
+        - 0 if patient is not on treatment B
+    - Treatment C would be both:
+        - I(Treat_A) = 0
+        - I(Treat_B) = 0
+  
+
+--- .class #id
+
+
+## What does this mean in regressions? 
+
+- Indicator variables change the regression:
+$$Outcome = \beta_0 + \beta_1 Age + \beta_2 I(Treat_A) + \beta_3 I(Treat_B)$$
+- For a person on Treatment A:
+$$Outcome = (\beta_0  + \beta_2 ) + \beta_1 Age$$
+- For a person on Treatment B:
+$$Outcome = (\beta_0  + \beta_3 ) + \beta_1 Age$$
+- For a person on Treatment C:
+$$Outcome = \beta_0  + \beta_1 Age$$
+
+
+--- .class #id
+
+## What does this mean in Regression?
+
+- We can see that a factor leads to multiple different regression lines. 
+- Each line then has a different intercept than the others. 
+- In this regression age has the same effect, just the baseline is different. 
+
+
+--- .class #id
+
+## Are there different types of factors?
+
+- We can have different types of factors
+    - Nominal
+    - Ordinal
+
+
+--- .class #id
+
+## Nominal Factors
+
+- Nominal factors are factors that represent named categories. 
+- These are categories that do not have an intrinsic ordering. 
+- Examples:
+    - Gender
+    - Sex
+    - Race/ethnicity
+- We must treat these as indicator variables in models. 
+
+
+--- .class #id
+
+## Ordinal Factors
+
+- Ordinal factors are factors that represent some ordered categories. 
+- These factors have an intrinsic ordering. 
+- Examples:
+    - Likert Scales (Poor, Neutral, Good)
+    - BMI (Underweight, Normal, Overweight, Obese)
+    - Age Groups (under 18, 18-25, 25-35, 35+)
+- In regression models can be indicator variables or a trend. 
+
+
+--- .class #id
+
+## Indicator Variables vs Trends
+
+- We saw with indicator variables that we have multiple variables to represent the factor. 
+- Each category leads to a different regression. 
+- Consider this: 
+$$ Outcome = \beta_0 + \beta_1 age + \beta_2 I(BMI = underweight) + \beta_3 I(BMI=Overweight+)$$
+- We then have 3 different regressions:
+    - 1 for normal BMI
+    - 1 for underweight BMI
+    - 1 for overweight+ BMI
+
+
+--- .class #id    
+
+
+## Our 3 regressions
+
+- Normal BMI
+$$Outcome =\beta_0 + \beta_1 age$$
+- Underweight BMI
+$$Outcome =(\beta_0 + \beta_2) + \beta_1 age$$
+- Overweight+ BMI
+$$Outcome =(\beta_0+ \beta_3) + \beta_1 age$$
+
+
+
+--- .class #id
+
+## Indicator Variables vs Trends
+
+- With a trend we allow the factor to have one slope. 
+- Instead of 1 category leading to a new regression, each category leads to a further increase. 
+- Our model
+$$Outcome =\beta_0 + \beta_1 age + \beta_2 BMI$$
+
+
+--- .class #id
+
+
+## Our Regressions
+
+- Normal BMI
+$$Outcome =\beta_0 + \beta_1 age$$
+- Underweight BMI
+$$Outcome =(\beta_0 + \beta_2) + \beta_1 age$$
+- Overweight+ BMI
+$$Outcome =(\beta_0+ 2\beta_2) + \beta_1 age$$
+
+
+
+--- .class #id
+
+
+
+
+
+
+## What is the difference? 
+
+- You can see that it appears that we still have 3 regressions. 
+- indicator variable regression, each group can have a unique change from the baseline. 
+    - $\beta_{group=2}\ne\beta_{group=3}$
+- trend regression, each group has the same difference between them 
+
+
+--- .class #id
+
+
+## An example: PBC Data
+
+- This data is from the Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver conducted between 1974 and 1984. 
+- A total of 424 PBC patients, referred to Mayo Clinic during that ten-year interval, met eligibility criteria for the randomized placebo controlled trial of the drug D-penicillamine. 
+- The first 312 cases in the data set participated in the randomized trial and contain largely complete data. 
+- The additional 112 cases did not participate in the clinical trial, but consented to have basic measurements recorded and to be followed for survival. 
+
+
+--- .class #id
+
+
+## PBC Data 
+
+
+| Variable | Description | 
+| :--------: | :----------- | 
+| age | 	in years | 
+| albumin | 	serum albumin (g/dl) | 
+| alk.phos | 	alkaline phosphotase (U/liter)| 
+| ascites | 	presence of ascites | 
+| ast | 	aspartate aminotransferase, once called SGOT (U/ml) | 
+| bili | 	serum bilirunbin (mg/dl) | 
+
+
+--- .class #id
+
+
+## PBC Data 
+
+
+| Variable | Description | 
+| :--------: | :----------- | 
+| chol | 	serum cholesterol (mg/dl) | 
+| copper | 	urine copper (ug/day) | 
+| edema | 	0 no edema, 0.5 untreated or successfully treated | 
+|  | 1 edema despite diuretic therapy | 
+| hepato | 	presence of hepatomegaly or enlarged liver | 
+| id | 	case number | 
+
+
+--- .class #id
+
+## PBC Data 
+
+
+| Variable | Description | 
+| :--------: | :----------- | 
+| platelet | 	platelet count | 
+| protime | 	standardised blood clotting time | 
+| sex | 	m/f | 
+| spiders | 	blood vessel malformations in the skin   | 
+| stage | 	histologic stage of disease (needs biopsy) | 
+| status | 	status at endpoint, 0/1/2 for censored, transplant, dead | 
+
+
+
+--- .class #id
+
+## PBC Data 
+
+
+| Variable | Description | 
+| :--------: | :----------- | 
+| time | 	number of days between registration and the earlier of death, transplantion, or study analysis in July, 1986   | 
+| trt | 	1/2/NA for D-penicillmain, placebo, not randomised |
+| trig | 	triglycerides (mg/dl) |
+
+
+
+--- .class #id
+
+
+## Data
+
+```{r}
+library(survival)
+pbc
+```
+
+
+## Consider Trends vs Indicators
+
+```{r}
+library(tidyverse)
+pbc <- pbc %>%
+      filter(!is.na(stage)) %>%
+      mutate(stage_dummy = as.factor(stage)) %>%
+      mutate(mean_cent_age= age-mean(age))
+```
+
+
+--- .class #id
+
+
+
+
+## Regression plot with trend:
+
+```{R, eval=F}
+library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage)) + geom_smooth(method="lm", se=FALSE)
+```
+
+--- .class #id
+
+
+
+
+## Regression plot with trend:
+
+```{R, echo=F}
+library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage)) + geom_smooth(method="lm")
+```
+
+--- .class #id
+
+
+## Regression plot with Indicators:
+
+```{R, eval=F}
+library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage_dummy)) + geom_smooth(method="lm")
+```
+
+--- .class #id
+
+
+
+## Regression plot with Indicators:
+
+```{R, echo=F}
+library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage_dummy)) + geom_smooth(method="lm", se=FALSE)
+```
+
+--- .class #id
+
+
+## Regressions: Trend
+
+```{r}
+library(broom)
+mod1 <- lm(data=pbc, platelet~mean_cent_age + stage)
+tidy(mod1)
+```
+
+--- .class #id
+
+
+## Interpretations
+
+- age: For 2 people with the same disease stage, a person 1 year older has an average platelet count of 1 less than the younger person. 
+- stage: For 2 people of the same age, a person 1 disease stage higher has an average platelet count 25 less than the person with the lower disease stage. 
+
+
+--- .class #id
+
+
+## Regressions: Trend
+
+```{r}
+library(broom)
+mod2 <- lm(data=pbc, platelet~age + stage_dummy)
+tidy(mod2)
+```
+
+
+--- .class #id
+
+
+
+## Interpretations
+
+
+- age: For 2 people with the same disease stage, a person 1 year older has an average platelet count of 1 less than the younger person. 
+- stage_dummy 2: For 2 people of the same age, a person in diease stage 2 higher has an average platelet count 2 less than the person with disease stage 1. 
+- stage_dummy 3: For 2 people of the same age, a person in diease stage 3 higher has an average platelet count 27 less than the person with disease stage 1.
+- stage_dummy 4: For 2 people of the same age, a person in diease stage 4 higher has an average platelet count 60 less than the person with disease stage 1. 
+
+
+--- .class #id
+
+
+## Is there a difference?
+
+- Yes!!
+- If we look between diease stage 1 and 2 the difference is on average 2 in the model with dummy variables. 
+- In the trend model the difference between any 2 stages is on average 25. 
+
+
+--- .class #id
+
+## Is this difference Significant?
+
+- We can test for significane with the F-test
+```{R}
+anova(mod1,mod2)
+```
+- Based on our test, the trend gives us just as much information. 
+
+
+--- .class #id
+
+## How about $R^2$
+
+```{r}
+library(broom)
+glance1 <- glance(mod1)[,c(1:2)]
+glance2 <- glance(mod2)[,c(1:2)]
+bind_rows(glance1, glance2)
+```
+

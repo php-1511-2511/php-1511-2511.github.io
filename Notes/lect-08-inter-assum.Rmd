@@ -1,0 +1,818 @@
+---
+title       : Interactions and Regression Assumptions
+author      : Adam J Sullivan 
+job         : Assistant Professor of Biostatistics
+work        : Brown University
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js # {highlight.js, prettify, highlight}
+hitheme     :  github     # 
+widgets     : [mathjax, quiz, bootstrap, interactive] # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3, libraries/leaflet, libraries/dygraphs]}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+logo        : publichealthlogo.png
+biglogo     : publichealthlogo.png
+assets      : {assets: ../../assets}
+---  .segue bg:grey
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=FALSE)
+library(ggplot2)
+library(fivethirtyeight)
+require(tidyverse)
+library(broom)
+```
+
+
+# Interaction
+
+--- .class #id
+
+
+## Interaction
+
+- The definition of interaction is the direct effect that one kind of particle has on another.
+- This is similar to how we view it in statistics. 
+- When there is an interaction, the effect of one variable is different in one group than in another. 
+- For example, if we feel there is a interaction between sex and treatment, then the effect of ones treatment is directly related to what their sex is. 
+
+
+--- .class #id
+
+
+
+## Example with Categorical Interaction
+
+- This data is from 18 women and 14 men to investigate a certain theory on why women exhibit a lower tolerance for alcohol and develop alcohol–related liver disease more readily than men.
+- This data is from [The Statistical Sleuth: A Course in Methods of Data Analysis](http://www.statisticalsleuth.com/)
+
+
+--- .class #id
+
+## Example with Categorical Interaction
+
+| Variable Name | Description | 
+| :-------------: | :-------------------- |
+| Subject | subject number in the study | 
+| Metabol | first–pass metabolism of alcohol in the stomach (in mmol/liter-hour) |
+| Gastric  | gastric alcohol dehydrogenase activity in the stomach (in mumol/min/g of tissue) | 
+| Sex | sex of the subject | 
+| Alcohol | whether the subject is alcoholic or not | 
+
+
+--- .class #id
+
+## Data Exploration: Metabolism by Gastric Activity
+
+```{r, echo=F}
+library(readr)
+library(ggplot2)
+metabol <- read_csv("metab.csv")
+ggplot(metabol, aes(Gastric, Metabol)) + geom_point() + geom_smooth(method="lm", se=FALSE) + 
+  xlab("GAD Activity mumol/min/g") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+--- .class #id
+
+
+
+## Data Exploration: Metabolism by Sex
+
+```{r, echo=F}
+ggplot(metabol, aes(Sex, Metabol)) + geom_boxplot()  + 
+  xlab("Sex") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+
+--- .class #id
+
+
+
+
+## Data Exploration: Metabolism by Alcoholism
+
+```{r, echo=F}
+ggplot(metabol, aes(Alcohol, Metabol)) + geom_boxplot()  + 
+  xlab("Alcoholism") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+
+--- .class #id
+
+
+## Data Exploration: Metabolism by Gastric and Sex
+
+```{r, echo=F}
+ggplot(metabol, aes(Gastric, Metabol, color=Sex)) + geom_point() + geom_smooth(method="lm", se=FALSE) + 
+  xlab("GAD Activity mumol/min/g") + ylab("Metabolism (mmol/liter-hour)")
+```
+
+--- .class #id
+
+
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+--- .class #id
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric +Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+--- .class #id
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric*Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+--- .class #id
+
+
+
+
+
+## Regression Model
+
+```{r, echo=F}
+library(broom)
+mod <-  lm(data=metabol, Metabol~Gastric +Gastric:Sex)
+tidy(mod, conf.int = TRUE)[,-c(3:4)]
+```
+
+--- .class #id
+
+
+## Interpretation
+
+- We have to consider the model that we have:
+
+$$Metabolism = \beta_0 + \beta_1 Gastric + \beta_2 Gastric*Male$$
+- Females: 
+$$ Metabolism = \beta_0 + \beta_1 Gastric$$
+- Males:
+$$ Metabolism = \beta_0 + (\beta_1+\beta_2) Gastric$$
+
+
+--- .class #id
+
+
+## Continuous Interaction
+
+- This is a little harder to figure out when it is happening. 
+- We have simulated data of GPA based on work ethic and GPA
+
+```{r, echo=F}
+set.seed(150)
+# 250 subjects    
+n <- 250    
+# Work ethic average 2.75 
+x <- rnorm(n, 2.75, .75)    
+#We want a normal distribution of IQ (Z)
+z <- rnorm(n, 100, 15)   
+#We then create Y using a regression equation (adding a bit of random noise)    
+y <- .7*x + 1*z + 7*x*z + rnorm(n, sd = 5)
+#Fix GPA so it is max of 4
+y = (y - min(y)) / (max(y) - min(y))*4
+#Finally, we put our data together with the data.frame() function 
+gpa_data <- data.frame(gpa=y, work_ethic=x, iq=z)
+
+```
+
+--- .class #id
+
+
+## Data Exploration
+
+```{r, echo=F}
+ggplot(gpa_data, aes(work_ethic, gpa)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+--- .class #id
+
+
+
+## Data Exploration
+
+```{r, echo=F}
+ggplot(gpa_data, aes(iq, gpa)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+--- .class #id
+
+
+
+
+## Check for Interaction: Try Quantiles
+
+```{r}
+gpa_data %>%
+  summarise(`0%`=quantile(iq, probs=0),
+            `33%`=quantile(iq, probs=0.33),
+            `66%`=quantile(iq, probs=0.66),
+            `100%`=quantile(iq,probs=1))
+```
+
+--- .class #id
+
+
+## Create a Factor
+
+```{r}
+gpa_data <-gpa_data %>%
+    mutate(iq_fact = cut(iq, 3, labels =c('low', 'medium', 'high')))
+
+```
+
+
+
+
+--- .class #id
+
+
+
+## Graph Interaction
+
+```{r, echo=F}
+ggplot(gpa_data, aes(work_ethic, gpa, color=iq_fact)) + geom_point() + geom_smooth(method="lm", se=FALSE)
+```
+
+--- .class #id
+
+
+
+
+## Linear Model
+
+```{r}
+mod <- lm(data=gpa_data, gpa~work_ethic*iq)
+tidy(mod, conf.int = T)[,-c(3:4)]
+```
+
+
+--- .segue bg:grey
+
+
+# Linear Regression Assumptions
+
+
+--- .class #id
+
+## Assumptions of Linear Regression
+
+- ***Linearity:*** Function $f$ is linear. 
+- Mean of error term is 0. 
+    \[E(\varepsilon)=0\]
+- ***Independence:*** Error term is independent of covariate. 
+    \[Corr(X,\varepsilon)=0\]
+- ***Homoscedacity:*** Variance of error term is same regardless of value of $X$. 
+    \[Var(\varepsilon)=\sigma^2\]
+- ***Normality:*** Errors are normally Distributed
+
+
+--- .class #id
+
+## Diagnostics for  Linear Regression
+
+
+
+
+
+- A remarkable paper came out in 1973 called *Graphs in Statistical Analysis* by Francis J. Anscombe.
+- We will explore this data as we discuss diagnostics and transformations for simple linear regression.
+- These examples show how much your regression output may mislead you if you are not careful about the assumptions. 
+
+
+--- .class #id
+
+## The Data
+
+
+```{r}
+anscombe
+```
+
+
+--- .class #id
+
+
+## The Model Set ups
+
+- Notice in this data that for $X_1$ - $X_3$ we have the same data points but all of the $Y$ values differ. 
+- Let us first consider their regression outputs from R:
+
+
+```{r}
+mod1 <- lm(y1 ~ x1, data=anscombe)
+mod2 <- lm(y2 ~ x2, data=anscombe)
+mod3 <- lm(y3 ~ x3, data=anscombe)
+mod4 <- lm(y4 ~ x4, data=anscombe)
+```
+
+
+--- .class #id
+
+## Coefficients 
+
+
+```{r,eval=F}
+library(broom)
+library(dplyr)
+tidy1 <- tidy(mod1, conf.int = T)
+tidy2 <- tidy(mod2, conf.int = T)
+tidy3 <- tidy(mod3, conf.int = T)
+tidy4 <- tidy(mod4, conf.int = T)
+
+knitr::kable(bind_rows(tidy1,tidy2, tidy3, tidy4)[,-c(3,4)])
+```
+
+
+--- .class #id
+
+
+
+
+
+## Coefficients
+
+
+```{r,echo=F}
+library(broom)
+library(dplyr)
+tidy1 <- tidy(mod1, conf.int = T)
+tidy2 <- tidy(mod2, conf.int = T)
+tidy3 <- tidy(mod3, conf.int = T)
+tidy4 <- tidy(mod4, conf.int = T)
+
+knitr::kable(bind_rows(tidy1,tidy2, tidy3, tidy4)[,-c(3,4)])
+```
+
+
+
+
+
+--- .class #id
+
+## Model Stats
+
+
+```{r,eval=F}
+glance1 <- glance(mod1)
+glance2 <- glance(mod2)
+glance3 <- glance(mod3)
+glance4 <- glance(mod4)
+
+knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
+```
+
+
+--- .class #id
+
+## Model Stats
+
+
+```{r,echo=F}
+glance1 <- glance(mod1)
+glance2 <- glance(mod2)
+glance3 <- glance(mod3)
+glance4 <- glance(mod4)
+
+knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
+```
+
+
+
+--- .class #id
+
+## What do we notice? 
+
+- All of the regression coefficients are the same. 
+- All of the regression diagnostics are the same. 
+- They appear to be the same models. 
+
+--- .class #id
+
+## What About the Assumptions
+
+- Lets check our model plots.
+
+```{r, eval=F}
+library(ggplot2)
+library(gridExtra)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+grid.arrange(p1,p2,p3, p4, ncol=2)
+```
+
+--- .class #id
+
+## What About the Assumptions
+
+
+
+```{r, echo=F}
+library(ggplot2)
+library(gridExtra)
+p1 <- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p2 <- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p3 <- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+p4 <- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method="lm", se=FALSE)+theme_bw()
+grid.arrange(p1,p2,p3, p4, ncol=2)
+```
+
+--- .class #id
+
+
+## What Do we Notice? 
+
+
+- We can see that the line looks appropriate for model 1 but not for the other 3. 
+- For Model 2 it appears the data is curved. 
+- For model 3 it appears that an outlier is really driving the model. 
+- Finally for Model 4 it appears that we have only one differing $X$ value and that is driving the slope.  
+- What are the values of these regression lines?
+
+
+
+--- .class #id
+
+
+## What Does this Mean? 
+
+- If we look at these closely we can see that these are almost the exact same regressions.
+- This is a major issue for us if we just blindly ran our regressions. 
+- We need to discuss tools to help us not make these mistakes. 
+
+
+--- .segue bg:grey
+
+
+# Residuals to the Rescue
+
+--- .class #id
+
+
+## Residuals to the Rescue!!
+
+
+- One method to help us evaluate a linear fit and to check assumptions is to consider the residuals. 
+- The benefit of examining the residuals is that unlike the plots previously is that we can evaluate them regardless of how many predictors are in the model. 
+
+
+--- .class #id
+
+## Enter Residual Plots
+
+```{R, eval=F}
+library(olsrr)
+ols_rvsp_plot(mod1)
+ols_rvsp_plot(mod2)
+ols_rvsp_plot(mod3)
+ols_rvsp_plot(mod4)
+```
+
+
+--- .class #id
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod1)
+```
+
+
+--- .class #id
+
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod2)
+```
+
+--- .class #id
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod3)
+```
+
+--- .class #id
+
+## Enter Residual Plots
+
+```{R, echo=F}
+library(olsrr)
+ols_rvsp_plot(mod4)
+```
+
+
+--- .class #id
+
+
+## What do we see?
+
+
+- Looking at the plots we can see that our residuals take on different patterns. 
+- This is due to how we defined residual error as 
+\[\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i.\]
+- We first look at Model 1 there is no pattern to these residuals and they seem to be randomly spread around 0. 
+- This is indicator of a good linear fit. Recall that we assume that $E(\varepsilon_i)=0$, so we would expect to see the residuals spread around 0 and without pattern. 
+
+
+
+--- .class #id
+
+
+## Patterns in Residuals
+
+- Patterns in residuals show us that our model is not an adequate summary of the data. 
+- Consider what happens when our line is truly linear in nature then
+\[Y_i = E(Y_i|X_i=x_i) + \varepsilon_i = \beta_0 + \beta_1x_i + \varepsilon_i\]
+- We then fit our regression line $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$. This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx \varepsilon_i\]
+- So the residuals are randomly distributed and centered about 0.
+
+
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+ - In the second figure, we can see that we have a quadratic pattern in this. 
+- This happens when the true model is quadratic
+\[y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2 + \varepsilon_i\]
+then we again fit our linear model $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$.
+- This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+  \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx\beta_2x_i^2+ \varepsilon_i\]
+- So we have a quadratic relationship given our $x$. 
+
+
+--- .class #id
+
+## Quadratic Patterns in Residuals
+
+
+- This means we may have been better off by choosing a model that would include a quadratic term for $x$. 
+- In model 2 of Anscombe's data had we run a model with a quadratic term we would then have
+
+```{r, eval=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+tidy(mod2a, conf.int=T)[,-c(3,4)]
+glance(mod2a)
+
+
+ols_rvsp_plot(mod2a)
+```
+
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+knitr::kable(tidy(mod2a, conf.int=T)[,-c(3,4)])
+```
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+knitr::kable(glance(mod2a))
+```
+
+
+--- .class #id
+
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+ols_rvsp_plot(mod2a)
+```
+
+
+## Tools for Checking Validity of a Model
+
+When fitting a regression model we will take these steps to verify the validity of the model:
+
+1. Regression Model is Linear in parameters.
+2. Residuals are normally distributed.
+3. Mean of Residuals is 0. 
+4. Homoscedasticity of variances.
+5. Variables and residuals are not correlated. 
+6. No Influential Points or Outliers
+
+
+--- .class #id
+
+
+## Linear in Parameters
+
+- We say it is linear in parameters if the $\beta$ values are linear in nature. 
+- Consider the 2nd Anscombe model: 
+
+\[E[Y|x] = \beta_0 + \beta_1 x + \beta_2 x^2\]
+- Even though `x2` has been transformed to a square term, the $beta$ values are still linear. 
+
+
+
+--- .class #id
+
+
+## Residuals Plots
+
+```{r, eval=F}
+ols_rvsp_plot(mod2)
+```
+
+
+--- .class #id
+
+## Residuals Plots
+
+```{r, echo=F}
+ols_rvsp_plot(mod2)
+```
+
+--- .class #id
+
+## Residuals Plots
+
+- The residuals shows us that the residuals did not change by much and we can still see the pattern is the exact same as before but the range of the residuals is what has changed. 
+
+
+--- .class #id
+
+## Assessing Normality of Residuals: QQ-Plot
+
+- Recall our model 2a. 
+```{r, eval=F,message=F, warning=F, error=F}
+
+ols_rsd_qqplot(mod2a)
+```
+
+--- .class #id
+
+## Assessing Normality of Residuals: QQ-Plot
+
+
+```{r, echo=F,message=F, warning=F, error=F}
+
+ols_rsd_qqplot(mod2a)
+```
+
+--- .class #id
+
+## Assessing Normality of Residuals: Histogram
+
+```{r,eval=F}
+ols_rsd_hist(mod2a)
+```
+
+--- .class #id
+
+
+## Assessing Normality of Residuals: Histogram
+
+```{r,echo=F}
+ols_rsd_hist(mod2a)
+```
+
+--- .class #id
+
+
+## Assessing Normality of Residuals: Hypothesis Tests
+
+```{r}
+ols_norm_test(mod2a)
+```
+
+--- .class #id
+
+
+
+## Mean of Residuals
+
+- We can test if the mean of residuals is zero with a simple mean function. 
+
+```{R}
+mean(mod2a$residuals)
+```
+
+--- .class #id
+
+
+
+## Homoscedasticity of residuals
+
+```{r, echo=F, message=F, warning=F}
+ols_rvsp_plot(mod2a)
+```
+
+--- .class #id
+
+
+
+
+## Homoscedasticity of residuals
+
+- We can see that there is no pattern to the residuals. 
+- They appear to be flat and not have a difference in width of the range of values. 
+- If we saw a pattern like a cone shape then we would not have homoscedasticity. 
+
+
+--- .class #id
+
+## Residuals Plot
+
+```{r, echo=F}
+ols_rvsp_plot(mod2a)
+```
+
+--- .class #id
+
+
+## Homoscedasticity of residuals: Score Test
+
+```{R}
+ols_score_test(mod2a)
+```
+
+--- .class #id
+
+## Homoscedasticity of residuals: F-Test
+
+```{R}
+ols_f_test(mod2a, rhs=TRUE)
+```
+
+--- .class #id
+
+
+## Correlation of Residuals and Expected Values of Residuals:
+
+```{r, eval=F}
+ols_corr_test(mod2)
+ols_corr_test(mod2a)
+```
+
+--- .class #id
+
+
+
+## Correlation of Residuals and Expected Values of Residuals:
+
+```{r, echo=F}
+
+ols_corr_test(mod2)
+
+```
+
+--- .class #id
+
+
+
+## Correlation of Residuals and Expected Values of Residuals:
+
+```{r, echo=F}
+
+ols_corr_test(mod2a)
+
+```

@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multiple Linear Regression and Factors</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Multiple Linear Regression and Factors">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Multiple Linear Regression and Factors</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Multiple Variables</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(readr)
+library(tidyverse)
+bikes &lt;- read_csv(&quot;../Notes/Data/bike_sharing.csv&quot;) %&gt;%
+        mutate(season = as.factor(season)) %&gt;%
+        mutate(weather=as.factor(weather)) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod.final &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+tidy(mod.final)[-1,-c(3:4)]
+glance(mod.final)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">season2</td>
+<td align="right">115.8007186</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">season3</td>
+<td align="right">148.3532069</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">season4</td>
+<td align="right">118.4943844</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">weather2</td>
+<td align="right">19.9875113</td>
+<td align="right">0.0000001</td>
+</tr>
+<tr>
+<td align="left">weather3</td>
+<td align="right">0.1237865</td>
+<td align="right">0.9844830</td>
+</tr>
+<tr>
+<td align="left">weather4</td>
+<td align="right">162.2596870</td>
+<td align="right">0.3185115</td>
+</tr>
+<tr>
+<td align="left">humidity</td>
+<td align="right">-3.4929513</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">windspeed</td>
+<td align="right">0.6328680</td>
+<td align="right">0.0020498</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Multiple Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.1949699</td>
+<td align="right">0.1943778</td>
+<td align="right">162.5889</td>
+<td align="right">329.2869</td>
+<td align="right">0</td>
+<td align="right">9</td>
+<td align="right">-70865.13</td>
+<td align="right">141750.3</td>
+<td align="right">141823.2</td>
+<td align="right">287534958</td>
+<td align="right">10877</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-6" style="background:grey;">
+  <hgroup>
+    <h1>Inference on Linear Regressions</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Inference on Linear Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Overall F Test of Model</li>
+<li>Individual Coefficient Tests</li>
+<li>Testing Groups of Variables</li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overall Model F test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can perform an overall F Test for a model.</li>
+<li>When we do this we test the following Hypothesis
+\[H_0:\beta_1=\beta_2=\cdots=\beta_p=0\]
+\[H_1=\text{ at least one }\beta_i\ne0\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overall Model F test: Bike Sharing</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">kable(glance(mod.final))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overall Model F test: Bike Sharing</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.1949699</td>
+<td align="right">0.1943778</td>
+<td align="right">162.5889</td>
+<td align="right">329.2869</td>
+<td align="right">0</td>
+<td align="right">9</td>
+<td align="right">-70865.13</td>
+<td align="right">141750.3</td>
+<td align="right">141823.2</td>
+<td align="right">287534958</td>
+<td align="right">10877</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overall Model F test: Bike Sharing</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have an F Statistic of 3329.3</li>
+<li>This yields a p-value of \(<0.0001\)</li>
+<li>We can reject the null in favor of the alternative hypothesis. </li>
+<li>This suggests that at least one \(\beta_I\) is not 0. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Individual Coefficients \(t\)-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can test each individual coefficients. </li>
+<li>The hypothesis we test is that:
+\[H_0:\beta_i=0\]
+\[H_1=\beta_i\ne0\]</li>
+<li>We do this with a t-test. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Individual Coefficients \(t\)-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With the t-test we have that:
+\[ t_i=\dfrac{\beta_i}{se(\beta_i)}\]</li>
+<li>Then we can test this with the \(t\)-distribution. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Individual Coefficients \(t\)-test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider out Bike model:</li>
+</ul>
+
+<p>\[ 
+\begin{align}
+E[count] &= \beta_0 +  \beta_1 season(Summer) + \beta_2 season(Fall) + \\
+& \beta_3 season(Winter)  +    \beta_4 weather(2) +  \beta_5 weather(3) + \\
+&  \beta_6 weather(4) + \beta_7 humidity + \beta_8 windspeed\\
+\end{align}
+\]</p>
+
+<pre><code class="r">tidy(mod.final)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Individual Coefficients \(t\)-Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">298.3348913</td>
+<td align="right">7.3616043</td>
+<td align="right">40.5257985</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">season2</td>
+<td align="right">115.8007186</td>
+<td align="right">4.4387984</td>
+<td align="right">26.0883030</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">season3</td>
+<td align="right">148.3532069</td>
+<td align="right">4.5043842</td>
+<td align="right">32.9352918</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">season4</td>
+<td align="right">118.4943844</td>
+<td align="right">4.5112582</td>
+<td align="right">26.2663719</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">weather2</td>
+<td align="right">19.9875113</td>
+<td align="right">3.7920390</td>
+<td align="right">5.2709140</td>
+<td align="right">0.0000001</td>
+</tr>
+<tr>
+<td align="left">weather3</td>
+<td align="right">0.1237865</td>
+<td align="right">6.3645757</td>
+<td align="right">0.0194493</td>
+<td align="right">0.9844830</td>
+</tr>
+<tr>
+<td align="left">weather4</td>
+<td align="right">162.2596870</td>
+<td align="right">162.6554195</td>
+<td align="right">0.9975670</td>
+<td align="right">0.3185115</td>
+</tr>
+<tr>
+<td align="left">humidity</td>
+<td align="right">-3.4929513</td>
+<td align="right">0.0960939</td>
+<td align="right">-36.3493686</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="left">windspeed</td>
+<td align="right">0.6328680</td>
+<td align="right">0.2052323</td>
+<td align="right">3.0836662</td>
+<td align="right">0.0020498</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>F-test for Groups of Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Many times we want to be able to test the significance of groups of coefficients. </li>
+<li>We can do this with an F-test as well. </li>
+<li>For example we may want to test that:
+\[H_0:\beta_1=\beta_2=0\]
+\[H_1:\text{ at least 1 }\beta_i\ne0\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider <code>Season</code> in our bike example. </li>
+<li>Only the first coefficient is significant. </li>
+<li>We may want to know if we the whole variable is worth having in the model. </li>
+<li>We will use the <code>anova()</code> function in R.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod1 &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 &lt;- lm(count~weather+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Analysis of Variance Table
+## 
+## Model 1: count ~ season + weather + humidity + windspeed
+## Model 2: count ~ weather + humidity + windspeed
+##   Res.Df       RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1  10877 287534958                                  
+## 2  10880 320760441 -3 -33225483 418.96 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example 2</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider <code>weather</code> in our bike example. </li>
+<li>Only the first coefficient is significant. </li>
+<li>We may want to know if we the whole variable is worth having in the model. </li>
+<li>We will use the <code>anova()</code> function in R.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example 2</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod1 &lt;- lm(count~season+weather+humidity+windspeed, data=bikes)
+mod2 &lt;- lm(count~season+humidity+windspeed, data=bikes)
+anova(mod1, mod2)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Groups of Coefficients Example 2</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Analysis of Variance Table
+## 
+## Model 1: count ~ season + weather + humidity + windspeed
+## Model 2: count ~ season + humidity + windspeed
+##   Res.Df       RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1  10877 287534958                                  
+## 2  10880 288348337 -3   -813379 10.256 9.704e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="id" style="background:;">
+  <hgroup>
+    <h1>Factors</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What are Factors?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Factors are categorical data. </li>
+<li>Factors contain
+
+<ul>
+<li>Levels</li>
+<li>Can be numerical or character data</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why do we use them?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Factors allow us to group things by category. </li>
+<li>Factors create dummy variables or indicator variables in our regressions. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is an indicator variable?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the scenario where we have 3 treatments: A, B, &amp; C</li>
+<li>We could have two indicator variables:
+
+<ul>
+<li>I(Treat_A) is
+
+<ul>
+<li>1 if patient is on treatment A</li>
+<li>0 if patient is not on treatment A</li>
+</ul></li>
+<li>I(Treat_B) is
+
+<ul>
+<li>1 if patient is on treatment B</li>
+<li>0 if patient is not on treatment B</li>
+</ul></li>
+<li>Treatment C would be both:
+
+<ul>
+<li>I(Treat_A) = 0</li>
+<li>I(Treat_B) = 0</li>
+</ul></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does this mean in regressions?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Indicator variables change the regression:
+\[Outcome = \beta_0 + \beta_1 Age + \beta_2 I(Treat_A) + \beta_3 I(Treat_B)\]</li>
+<li>For a person on Treatment A:
+\[Outcome = (\beta_0  + \beta_2 ) + \beta_1 Age\]</li>
+<li>For a person on Treatment B:
+\[Outcome = (\beta_0  + \beta_3 ) + \beta_1 Age\]</li>
+<li>For a person on Treatment C:
+\[Outcome = \beta_0  + \beta_1 Age\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does this mean in Regression?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see that a factor leads to multiple different regression lines. </li>
+<li>Each line then has a different intercept than the others. </li>
+<li>In this regression age has the same effect, just the baseline is different. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Are there different types of factors?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can have different types of factors
+
+<ul>
+<li>Nominal</li>
+<li>Ordinal</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Nominal Factors</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Nominal factors are factors that represent named categories. </li>
+<li>These are categories that do not have an intrinsic ordering. </li>
+<li>Examples:
+
+<ul>
+<li>Gender</li>
+<li>Sex</li>
+<li>Race/ethnicity</li>
+</ul></li>
+<li>We must treat these as indicator variables in models. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Ordinal Factors</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Ordinal factors are factors that represent some ordered categories. </li>
+<li>These factors have an intrinsic ordering. </li>
+<li>Examples:
+
+<ul>
+<li>Likert Scales (Poor, Neutral, Good)</li>
+<li>BMI (Underweight, Normal, Overweight, Obese)</li>
+<li>Age Groups (under 18, 18-25, 25-35, 35+)</li>
+</ul></li>
+<li>In regression models can be indicator variables or a trend. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Indicator Variables vs Trends</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We saw with indicator variables that we have multiple variables to represent the factor. </li>
+<li>Each category leads to a different regression. </li>
+<li>Consider this: 
+\[ Outcome = \beta_0 + \beta_1 age + \beta_2 I(BMI = underweight) + \beta_3 I(BMI=Overweight+)\]</li>
+<li>We then have 3 different regressions:
+
+<ul>
+<li>1 for normal BMI</li>
+<li>1 for underweight BMI</li>
+<li>1 for overweight+ BMI</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our 3 regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Normal BMI
+\[Outcome =\beta_0 + \beta_1 age\]</li>
+<li>Underweight BMI
+\[Outcome =(\beta_0 + \beta_2) + \beta_1 age\]</li>
+<li>Overweight+ BMI
+\[Outcome =(\beta_0+ \beta_3) + \beta_1 age\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Indicator Variables vs Trends</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With a trend we allow the factor to have one slope. </li>
+<li>Instead of 1 category leading to a new regression, each category leads to a further increase. </li>
+<li>Our model
+\[Outcome =\beta_0 + \beta_1 age + \beta_2 BMI\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Normal BMI
+\[Outcome =\beta_0 + \beta_1 age\]</li>
+<li>Underweight BMI
+\[Outcome =(\beta_0 + \beta_2) + \beta_1 age\]</li>
+<li>Overweight+ BMI
+\[Outcome =(\beta_0+ 2\beta_2) + \beta_1 age\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is the difference?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>You can see that it appears that we still have 3 regressions. </li>
+<li>indicator variable regression, each group can have a unique change from the baseline. 
+
+<ul>
+<li>\(\beta_{group=2}\ne\beta_{group=3}\)</li>
+</ul></li>
+<li>trend regression, each group has the same difference between them </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>An example: PBC Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This data is from the Mayo Clinic trial in primary biliary cirrhosis (PBC) of the liver conducted between 1974 and 1984. </li>
+<li>A total of 424 PBC patients, referred to Mayo Clinic during that ten-year interval, met eligibility criteria for the randomized placebo controlled trial of the drug D-penicillamine. </li>
+<li>The first 312 cases in the data set participated in the randomized trial and contain largely complete data. </li>
+<li>The additional 112 cases did not participate in the clinical trial, but consented to have basic measurements recorded and to be followed for survival. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PBC Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">age</td>
+<td align="left">in years</td>
+</tr>
+<tr>
+<td align="center">albumin</td>
+<td align="left">serum albumin (g/dl)</td>
+</tr>
+<tr>
+<td align="center">alk.phos</td>
+<td align="left">alkaline phosphotase (U/liter)</td>
+</tr>
+<tr>
+<td align="center">ascites</td>
+<td align="left">presence of ascites</td>
+</tr>
+<tr>
+<td align="center">ast</td>
+<td align="left">aspartate aminotransferase, once called SGOT (U/ml)</td>
+</tr>
+<tr>
+<td align="center">bili</td>
+<td align="left">serum bilirunbin (mg/dl)</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PBC Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">chol</td>
+<td align="left">serum cholesterol (mg/dl)</td>
+</tr>
+<tr>
+<td align="center">copper</td>
+<td align="left">urine copper (ug/day)</td>
+</tr>
+<tr>
+<td align="center">edema</td>
+<td align="left">0 no edema, 0.5 untreated or successfully treated</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="left">1 edema despite diuretic therapy</td>
+</tr>
+<tr>
+<td align="center">hepato</td>
+<td align="left">presence of hepatomegaly or enlarged liver</td>
+</tr>
+<tr>
+<td align="center">id</td>
+<td align="left">case number</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PBC Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">platelet</td>
+<td align="left">platelet count</td>
+</tr>
+<tr>
+<td align="center">protime</td>
+<td align="left">standardised blood clotting time</td>
+</tr>
+<tr>
+<td align="center">sex</td>
+<td align="left">m/f</td>
+</tr>
+<tr>
+<td align="center">spiders</td>
+<td align="left">blood vessel malformations in the skin</td>
+</tr>
+<tr>
+<td align="center">stage</td>
+<td align="left">histologic stage of disease (needs biopsy)</td>
+</tr>
+<tr>
+<td align="center">status</td>
+<td align="left">status at endpoint, 0/1/2 for censored, transplant, dead</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>PBC Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">time</td>
+<td align="left">number of days between registration and the earlier of death, transplantion, or study analysis in July, 1986</td>
+</tr>
+<tr>
+<td align="center">trt</td>
+<td align="left">1/2/NA for D-penicillmain, placebo, not randomised</td>
+</tr>
+<tr>
+<td align="center">trig</td>
+<td align="left">triglycerides (mg/dl)</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(survival)
+pbc
+</code></pre>
+
+<pre><code>##      id time status trt      age sex ascites hepato spiders edema bili
+## 1     1  400      2   1 58.76523   f       1      1       1   1.0 14.5
+## 2     2 4500      0   1 56.44627   f       0      1       1   0.0  1.1
+## 3     3 1012      2   1 70.07255   m       0      0       0   0.5  1.4
+## 4     4 1925      2   1 54.74059   f       0      1       1   0.5  1.8
+## 5     5 1504      1   2 38.10541   f       0      1       1   0.0  3.4
+## 6     6 2503      2   2 66.25873   f       0      1       0   0.0  0.8
+## 7     7 1832      0   2 55.53457   f       0      1       0   0.0  1.0
+## 8     8 2466      2   2 53.05681   f       0      0       0   0.0  0.3
+## 9     9 2400      2   1 42.50787   f       0      0       1   0.0  3.2
+## 10   10   51      2   2 70.55989   f       1      0       1   1.0 12.6
+## 11   11 3762      2   2 53.71389   f       0      1       1   0.0  1.4
+## 12   12  304      2   2 59.13758   f       0      0       1   0.0  3.6
+## 13   13 3577      0   2 45.68925   f       0      0       0   0.0  0.7
+## 14   14 1217      2   2 56.22177   m       1      1       0   1.0  0.8
+## 15   15 3584      2   1 64.64613   f       0      0       0   0.0  0.8
+## 16   16 3672      0   2 40.44353   f       0      0       0   0.0  0.7
+## 17   17  769      2   2 52.18344   f       0      1       0   0.0  2.7
+## 18   18  131      2   1 53.93018   f       0      1       1   1.0 11.4
+## 19   19 4232      0   1 49.56057   f       0      1       0   0.5  0.7
+## 20   20 1356      2   2 59.95346   f       0      1       0   0.0  5.1
+## 21   21 3445      0   2 64.18891   m       0      1       1   0.0  0.6
+## 22   22  673      2   1 56.27652   f       0      0       1   0.0  3.4
+## 23   23  264      2   2 55.96715   f       1      1       1   1.0 17.4
+## 24   24 4079      2   1 44.52019   m       0      1       0   0.0  2.1
+## 25   25 4127      0   2 45.07324   f       0      0       0   0.0  0.7
+## 26   26 1444      2   2 52.02464   f       0      1       1   0.0  5.2
+## 27   27   77      2   2 54.43943   f       1      1       1   0.5 21.6
+## 28   28  549      2   2 44.94730   f       1      1       1   1.0 17.2
+## 29   29 4509      0   2 63.87680   f       0      0       0   0.0  0.7
+## 30   30  321      2   2 41.38535   f       0      1       1   0.0  3.6
+## 31   31 3839      2   2 41.55236   f       0      1       0   0.0  4.7
+## 32   32 4523      0   2 53.99589   f       0      1       0   0.0  1.8
+## 33   33 3170      2   2 51.28268   f       0      0       0   0.0  0.8
+## 34   34 3933      0   1 52.06023   f       0      0       0   0.0  0.8
+## 35   35 2847      2   2 48.61875   f       0      0       0   0.0  1.2
+## 36   36 3611      0   2 56.41068   f       0      0       0   0.0  0.3
+## 37   37  223      2   1 61.72758   f       1      1       0   1.0  7.1
+## 38   38 3244      2   2 36.62697   f       0      1       1   0.0  3.3
+## 39   39 2297      2   1 55.39220   f       0      1       0   0.0  0.7
+## 40   40 4467      0   1 46.66940   f       0      0       0   0.0  1.3
+## 41   41 1350      2   1 33.63450   f       0      1       0   0.0  6.8
+## 42   42 4453      0   2 33.69473   f       0      1       1   0.0  2.1
+## 43   43 4556      0   1 48.87064   f       0      0       0   0.0  1.1
+## 44   44 3428      2   2 37.58248   f       0      1       1   1.0  3.3
+## 45   45 4025      0   2 41.79329   f       0      0       0   0.0  0.6
+## 46   46 2256      2   1 45.79877   f       0      1       0   0.0  5.7
+## 47   47 2576      0   2 47.42779   f       0      0       0   0.0  0.5
+## 48   48 4427      0   2 49.13621   m       0      0       0   0.0  1.9
+## 49   49  708      2   2 61.15264   f       0      1       0   0.0  0.8
+## 50   50 2598      2   1 53.50856   f       0      1       0   0.0  1.1
+## 51   51 3853      2   2 52.08761   f       0      0       0   0.0  0.8
+## 52   52 2386      2   1 50.54073   m       0      0       0   0.0  6.0
+## 53   53 1000      2   1 67.40862   f       0      1       0   0.0  2.6
+## 54   54 1434      2   1 39.19781   f       1      1       1   1.0  1.3
+## 55   55 1360      2   1 65.76318   m       0      0       0   0.0  1.8
+## 56   56 1847      2   2 33.61807   f       0      1       1   0.0  1.1
+## 57   57 3282      2   1 53.57153   f       0      1       0   0.5  2.3
+## 58   58 4459      0   1 44.56947   m       0      0       0   0.0  0.7
+## 59   59 2224      2   1 40.39425   f       0      1       1   0.0  0.8
+## 60   60 4365      0   1 58.38193   f       0      0       0   0.0  0.9
+## 61   61 4256      0   2 43.89870   m       0      0       0   0.0  0.6
+## 62   62 3090      2   2 60.70637   f       1      0       0   0.0  1.3
+## 63   63  859      2   2 46.62834   f       0      0       1   1.0 22.5
+## 64   64 1487      2   2 62.90760   f       0      1       0   0.0  2.1
+## 65   65 3992      0   1 40.20260   f       0      0       0   0.0  1.2
+## 66   66 4191      2   1 46.45311   m       0      1       0   0.0  1.4
+## 67   67 2769      2   2 51.28816   f       0      0       0   0.0  1.1
+## 68   68 4039      0   1 32.61328   f       0      0       0   0.0  0.7
+## 69   69 1170      2   1 49.33881   f       0      1       1   0.5 20.0
+## 70   70 3458      0   1 56.39973   f       0      0       0   0.0  0.6
+## 71   71 4196      0   2 48.84600   f       0      1       0   0.0  1.2
+## 72   72 4184      0   2 32.49281   f       0      0       0   0.0  0.5
+## 73   73 4190      0   2 38.49418   f       0      0       0   0.0  0.7
+## 74   74 1827      2   1 51.92060   f       0      1       1   0.0  8.4
+## 75   75 1191      2   1 43.51814   f       1      1       1   0.5 17.1
+## 76   76   71      2   1 51.94251   f       0      1       1   0.5 12.2
+## 77   77  326      2   2 49.82615   f       0      1       1   0.5  6.6
+## 78   78 1690      2   1 47.94524   f       0      1       0   0.0  6.3
+## 79   79 3707      0   1 46.51608   f       0      1       0   0.0  0.8
+## 80   80  890      2   2 67.41136   m       0      1       0   0.0  7.2
+## 81   81 2540      2   1 63.26352   f       0      1       1   0.0 14.4
+## 82   82 3574      2   1 67.31006   f       0      0       0   0.0  4.5
+## 83   83 4050      0   1 56.01369   f       0      1       0   0.5  1.3
+## 84   84 4032      0   2 55.83025   f       0      0       0   0.0  0.4
+## 85   85 3358      2   2 47.21697   f       0      1       0   0.0  2.1
+## 86   86 1657      2   1 52.75838   f       0      1       1   0.0  5.0
+## 87   87  198      2   1 37.27858   f       0      0       0   0.0  1.1
+## 88   88 2452      0   2 41.39357   f       0      0       0   0.5  0.6
+## 89   89 1741      2   1 52.44353   f       0      1       0   0.0  2.0
+## 90   90 2689      2   1 33.47570   m       0      0       0   0.0  1.6
+## 91   91  460      2   2 45.60712   f       0      1       1   0.5  5.0
+## 92   92  388      2   1 76.70910   f       1      0       0   1.0  1.4
+## 93   93 3913      0   1 36.53388   f       0      0       0   0.0  1.3
+## 94   94  750      2   1 53.91650   f       0      1       1   0.0  3.2
+## 95   95  130      2   2 46.39014   f       1      1       1   1.0 17.4
+## 96   96 3850      0   1 48.84600   f       0      0       0   0.0  1.0
+## 97   97  611      2   2 71.89322   m       0      1       0   0.5  2.0
+## 98   98 3823      0   1 28.88433   f       0      0       0   0.0  1.0
+## 99   99 3820      0   2 48.46817   m       0      0       0   0.0  1.8
+## 100 100  552      2   2 51.46886   m       0      1       0   0.0  2.3
+## 101 101 3581      0   2 44.95003   f       0      0       0   0.0  0.9
+## 102 102 3099      0   1 56.56947   f       0      0       0   0.0  0.9
+## 103 103  110      2   2 48.96372   f       1      1       1   1.0  2.5
+## 104 104 3086      2   1 43.01711   f       0      0       0   0.0  1.1
+## 105 105 3092      1   2 34.03970   f       0      1       0   0.0  1.1
+## 106 106 3222      2   1 68.50924   f       1      1       0   0.0  2.1
+## 107 107 3388      0   2 62.52156   f       0      0       0   0.0  0.6
+## 108 108 2583      2   1 50.35729   f       0      0       0   0.0  0.4
+## 109 109 2504      0   2 44.06297   f       0      0       0   0.0  0.5
+## 110 110 2105      2   1 38.91034   f       0      1       1   0.0  1.9
+## 111 111 2350      1   1 41.15264   f       0      0       0   0.0  5.5
+## 112 112 3445      2   2 55.45791   f       0      1       1   0.0  2.0
+## 113 113  980      2   1 51.23340   f       0      1       1   0.0  6.7
+## 114 114 3395      2   2 52.82683   m       0      0       0   0.0  3.2
+## 115 115 3422      0   2 42.63929   f       0      0       1   0.0  0.7
+## 116 116 3336      0   1 61.07050   f       0      0       1   0.5  3.0
+## 117 117 1083      2   1 49.65640   f       0      1       1   0.0  6.5
+## 118 118 2288      2   1 48.85421   f       0      1       0   0.0  3.5
+## 119 119  515      2   1 54.25599   f       0      0       1   0.0  0.6
+## 120 120 2033      1   1 35.15127   m       0      0       0   0.0  3.5
+## 121 121  191      2   2 67.90691   m       1      1       0   1.0  1.3
+## 122 122 3297      0   1 55.43600   f       0      0       0   0.0  0.6
+## 123 123  971      2   1 45.82067   f       0      1       1   1.0  5.1
+## 124 124 3069      0   1 52.88980   m       0      1       0   0.0  0.6
+## 125 125 2468      1   2 47.18138   f       0      1       0   0.0  1.3
+## 126 126  824      2   1 53.59890   f       1      1       1   0.0  1.2
+## 127 127 3255      0   2 44.10404   f       0      0       0   0.0  0.5
+## 128 128 1037      2   1 41.94935   f       0      1       1   0.0 16.2
+## 129 129 3239      0   1 63.61396   f       0      1       0   0.0  0.9
+## 130 130 1413      2   2 44.22724   f       0      1       1   0.0 17.4
+## 131 131  850      2   2 62.00137   f       0      1       1   0.0  2.8
+## 132 132 2944      0   1 40.55305   f       0      0       0   0.0  1.9
+## 133 133 2796      2   2 62.64476   m       0      0       0   0.0  1.5
+## 134 134 3149      0   2 42.33539   f       0      0       0   0.0  0.7
+## 135 135 3150      0   1 42.96783   f       0      0       0   0.0  0.4
+## 136 136 3098      0   1 55.96167   f       0      0       0   0.0  0.8
+## 137 137 2990      0   1 62.86105   f       0      0       0   0.0  1.1
+## 138 138 1297      2   1 51.24983   m       0      1       0   0.0  7.3
+## 139 139 2106      0   2 46.76249   f       0      1       0   0.0  1.1
+## 140 140 3059      0   1 54.07529   f       0      1       0   0.0  1.1
+## 141 141 3050      0   1 47.03628   f       0      0       0   0.0  0.9
+## 142 142 2419      2   2 55.72621   f       0      1       0   0.0  1.0
+## 143 143  786      2   2 46.10267   f       0      1       0   0.0  2.9
+## 144 144  943      2   2 52.28747   f       0      1       0   0.5 28.0
+## 145 145 2976      0   2 51.20055   f       0      0       1   0.0  0.7
+## 146 146 2615      0   2 33.86448   f       0      0       0   0.5  1.2
+## 147 147 2995      0   1 75.01164   f       0      0       0   0.5  1.2
+## 148 148 1427      2   2 30.86379   f       0      1       0   0.0  7.2
+## 149 149  762      2   1 61.80424   m       0      1       1   0.5  3.0
+## 150 150 2891      0   2 34.98700   f       0      0       1   0.0  1.0
+## 151 151 2870      0   1 55.04175   f       0      0       0   0.0  0.9
+## 152 152 1152      2   1 69.94114   m       0      1       0   0.0  2.3
+## 153 153 2863      0   1 49.60438   f       0      0       0   0.0  0.5
+## 154 154  140      2   1 69.37714   m       0      0       1   1.0  2.4
+## 155 155 2666      0   2 43.55647   f       0      1       1   0.5  0.6
+## 156 156  853      2   2 59.40862   f       0      1       0   0.0 25.5
+## 157 157 2835      0   2 48.75838   f       0      0       0   0.0  0.6
+## 158 158 2475      1   1 36.49281   f       0      0       0   0.0  3.4
+## 159 159 1536      2   2 45.76044   m       0      0       0   0.0  2.5
+## 160 160 2772      0   2 57.37166   f       0      0       0   0.0  0.6
+## 161 161 2797      0   2 42.74333   f       0      0       0   0.0  2.3
+## 162 162  186      2   2 58.81725   f       0      1       1   0.0  3.2
+## 163 163 2055      2   1 53.49760   f       0      0       0   0.0  0.3
+## 164 164  264      2   2 43.41410   f       0      1       1   0.5  8.5
+## 165 165 1077      2   1 53.30595   m       0      1       0   0.0  4.0
+## 166 166 2721      0   2 41.35524   f       0      1       0   0.0  5.7
+## 167 167 1682      2   1 60.95825   m       0      1       0   0.0  0.9
+## 168 168 2713      0   2 47.75359   f       0      1       0   0.0  0.4
+## 169 169 1212      2   2 35.49076   f       0      0       0   0.0  1.3
+## 170 170 2692      0   1 48.66256   f       0      0       0   0.0  1.2
+## 171 171 2574      0   1 52.66804   f       0      0       0   0.0  0.5
+## 172 172 2301      0   2 49.86995   f       0      0       1   0.0  1.3
+## 173 173 2657      0   1 30.27515   f       0      1       1   0.0  3.0
+## 174 174 2644      0   1 55.56742   f       0      0       0   0.0  0.5
+## 175 175 2624      0   2 52.15332   f       0      0       0   0.0  0.8
+## 176 176 1492      2   1 41.60986   f       0      1       1   0.0  3.2
+## 177 177 2609      0   2 55.45243   f       0      0       0   0.0  0.9
+## 178 178 2580      0   1 70.00411   f       0      0       0   0.0  0.6
+## 179 179 2573      0   2 43.94251   f       0      1       0   0.0  1.8
+## 180 180 2563      0   2 42.56810   f       0      0       0   0.0  4.7
+## 181 181 2556      0   1 44.56947   f       0      1       1   0.0  1.4
+## 182 182 2555      0   1 56.94456   f       0      1       0   0.0  0.6
+## 183 183 2241      1   2 40.26010   f       0      0       0   0.0  0.5
+## 184 184  974      2   2 37.60712   f       0      1       0   0.0 11.0
+## 185 185 2527      0   1 48.36140   f       0      0       0   0.0  0.8
+## 186 186 1576      2   1 70.83641   f       0      0       1   0.5  2.0
+## 187 187  733      2   2 35.79192   f       0      1       0   0.0 14.0
+## 188 188 2332      0   1 62.62286   f       0      1       0   0.0  0.7
+## 189 189 2456      0   2 50.64750   f       0      1       0   0.0  1.3
+## 190 190 2504      0   1 54.52704   f       0      0       1   0.0  2.3
+## 191 191  216      2   2 52.69268   f       1      1       1   0.0 24.5
+## 192 192 2443      0   1 52.72005   f       0      1       0   0.0  0.9
+## 193 193  797      2   2 56.77207   f       0      0       0   0.0 10.8
+## 194 194 2449      0   1 44.39699   f       0      0       0   0.0  1.5
+## 195 195 2330      0   1 29.55510   f       0      1       0   0.0  3.7
+## 196 196 2363      0   1 57.04038   f       0      1       1   0.0  1.4
+## 197 197 2365      0   1 44.62697   f       0      0       0   0.0  0.6
+## 198 198 2357      0   2 35.79740   f       0      0       1   0.0  0.7
+## 199 199 1592      0   1 40.71732   f       0      0       0   0.0  2.1
+## 200 200 2318      0   2 32.23272   f       0      0       1   0.0  4.7
+## 201 201 2294      0   2 41.09240   f       0      1       0   0.0  0.6
+## 202 202 2272      0   1 61.63997   f       0      0       0   0.0  0.5
+## 203 203 2221      0   2 37.05681   f       0      1       0   0.0  0.5
+## 204 204 2090      2   2 62.57906   f       0      0       0   0.0  0.7
+## 205 205 2081      2   1 48.97741   f       1      0       0   0.0  2.5
+## 206 206 2255      0   1 61.99042   f       0      0       0   0.0  0.6
+## 207 207 2171      0   1 72.77207   f       0      0       0   0.5  0.6
+## 208 208  904      2   1 61.29500   f       0      1       0   0.0  3.9
+## 209 209 2216      0   2 52.62423   f       0      1       1   0.0  0.7
+## 210 210 2224      0   2 49.76318   m       0      1       0   0.0  0.9
+## 211 211 2195      0   2 52.91444   f       0      0       0   0.0  1.3
+## 212 212 2176      0   2 47.26352   f       0      0       0   0.0  1.2
+## 213 213 2178      0   1 50.20397   f       0      0       1   0.0  0.5
+## 214 214 1786      2   2 69.34702   f       0      1       0   0.0  0.9
+## 215 215 1080      2   2 41.16906   f       0      0       0   0.0  5.9
+## 216 216 2168      0   1 59.16496   f       0      0       0   0.0  0.5
+## 217 217  790      2   2 36.07940   f       0      1       0   0.0 11.4
+## 218 218 2170      0   1 34.59548   f       0      0       0   0.0  0.5
+## 219 219 2157      0   2 42.71321   f       0      0       0   0.0  1.6
+## 220 220 1235      2   1 63.63039   f       0      0       1   0.0  3.8
+## 221 221 2050      0   2 56.62971   f       0      1       0   0.0  0.9
+## 222 222  597      2   2 46.26420   f       0      1       0   0.0  4.5
+## 223 223  334      2   1 61.24298   f       1      1       0   1.0 14.1
+## 224 224 1945      0   1 38.62012   f       0      0       0   0.0  1.0
+## 225 225 2022      0   1 38.77070   f       0      0       0   0.0  0.7
+## 226 226 1978      0   2 56.69541   f       0      1       0   0.0  0.5
+## 227 227  999      2   1 58.95140   m       0      0       0   0.0  2.3
+## 228 228 1967      0   2 36.92266   f       0      0       0   0.0  0.7
+## 229 229  348      2   1 62.41478   f       1      1       0   0.5  4.5
+## 230 230 1979      0   2 34.60917   f       0      1       1   0.0  3.3
+## 231 231 1165      2   2 58.33539   f       0      1       1   0.0  3.4
+## 232 232 1951      0   1 50.18207   f       0      1       0   0.0  0.4
+## 233 233 1932      0   1 42.68583   f       0      1       1   0.0  0.9
+## 234 234 1776      0   2 34.37919   f       0      0       0   0.0  0.9
+## 235 235 1882      0   2 33.18275   f       0      1       0   0.0 13.0
+## 236 236 1908      0   1 38.38193   f       0      1       1   0.0  1.5
+## 237 237 1882      0   1 59.76181   f       0      1       0   0.0  1.6
+## 238 238 1874      0   2 66.41205   f       0      0       0   0.5  0.6
+## 239 239  694      2   1 46.78987   f       0      1       1   0.0  0.8
+## 240 240 1831      0   1 56.07940   f       0      0       0   0.0  0.4
+## 241 241  837      1   2 41.37440   f       0      1       1   0.0  4.4
+## 242 242 1810      0   1 64.57221   f       0      1       0   0.0  1.9
+## 243 243  930      2   2 67.48802   f       0      1       0   0.0  8.0
+## 244 244 1690      2   1 44.82957   f       0      0       1   0.0  3.9
+## 245 245 1790      0   2 45.77139   f       0      1       0   0.0  0.6
+## 246 246 1435      1   1 32.95003   f       0      1       0   0.0  2.1
+## 247 247  732      1   1 41.22108   f       0      1       0   0.0  6.1
+## 248 248 1785      0   2 55.41684   f       0      1       0   0.0  0.8
+## 249 249 1783      0   1 47.98084   f       0      0       1   0.0  1.3
+## 250 250 1769      0   2 40.79124   f       0      1       0   0.0  0.6
+## 251 251 1457      0   1 56.97467   f       0      0       0   0.0  0.5
+## 252 252 1770      0   1 68.46270   f       0      1       1   0.0  1.1
+## 253 253 1765      0   1 78.43943   m       1      1       1   0.0  7.1
+## 254 254  737      1   1 39.85763   f       0      1       1   0.0  3.1
+## 255 255 1735      0   2 35.31006   f       0      1       1   0.0  0.7
+## 256 256 1701      0   1 31.44422   f       0      0       0   0.0  1.1
+## 257 257 1614      0   1 58.26420   f       0      0       0   0.0  0.5
+## 258 258 1702      0   1 51.48802   f       0      0       0   0.0  1.1
+## 259 259 1615      0   2 59.96988   f       0      1       0   0.0  3.1
+## 260 260 1656      0   2 74.52430   m       0      1       0   0.0  5.6
+## 261 261 1677      0   2 52.36413   f       0      1       1   0.0  3.2
+## 262 262 1666      0   2 42.78713   f       0      1       0   0.0  2.8
+## 263 263 1301      1   2 34.87474   f       0      1       1   0.5  1.1
+## 264 264 1542      1   2 44.13963   f       0      1       1   0.0  3.4
+## 265 265 1084      1   2 46.38193   f       0      1       0   0.0  3.5
+## 266 266 1614      0   1 56.30938   f       0      0       0   0.0  0.5
+## 267 267  179      2   1 70.90760   f       1      1       1   1.0  6.6
+## 268 268 1191      2   1 55.39493   f       1      1       0   0.5  6.4
+## 269 269 1363      0   2 45.08419   f       0      0       0   0.0  3.6
+## 270 270 1568      0   1 26.27789   f       0      1       1   0.0  1.0
+## 271 271 1569      0   2 50.47228   f       0      1       0   0.0  1.0
+## 272 272 1525      0   1 38.39836   f       0      0       0   0.0  0.5
+## 273 273 1558      0   2 47.41958   f       0      0       1   0.0  2.2
+## 274 274 1447      1   1 47.98084   f       0      0       0   0.0  1.6
+## 275 275 1349      0   1 38.31622   f       0      0       0   0.0  2.2
+## 276 276 1481      0   1 50.10815   f       0      0       0   0.0  1.0
+## 277 277 1434      0   2 35.08830   f       0      0       0   0.5  1.0
+## 278 278 1420      0   2 32.50376   f       0      0       0   0.0  5.6
+## 279 279 1433      0   2 56.15332   f       0      0       0   0.0  0.5
+## 280 280 1412      0   1 46.15469   f       0      0       0   0.0  1.6
+## 281 281   41      2   1 65.88364   f       1      0       0   1.0 17.9
+## 282 282 1455      0   2 33.94387   f       0      1       0   0.0  1.3
+## 283 283 1030      0   2 62.86105   f       0      0       0   0.0  1.1
+## 284 284 1418      0   2 48.56400   f       0      0       0   0.0  1.3
+## 285 285 1401      0   1 46.34908   f       0      0       0   0.0  0.8
+## 286 286 1408      0   1 38.85284   f       0      1       1   0.0  2.0
+## 287 287 1234      0   1 58.64750   f       0      0       1   0.0  6.4
+## 288 288 1067      1   2 48.93634   f       0      1       0   0.5  8.7
+## 289 289  799      2   1 67.57290   m       0      1       0   0.5  4.0
+## 290 290 1363      0   1 65.98494   f       0      0       0   0.0  1.4
+## 291 291  901      1   1 40.90075   f       0      0       0   0.0  3.2
+## 292 292 1329      0   2 50.24504   m       0      1       0   0.0  8.6
+## 293 293 1320      0   2 57.19644   f       0      1       1   1.0  8.5
+## 294 294 1302      0   1 60.53662   m       0      1       0   0.0  6.6
+## 295 295  877      1   1 35.35113   m       0      0       0   0.0  2.4
+## 296 296 1321      0   2 31.38125   f       0      0       0   0.0  0.8
+## 297 297  533      1   1 55.98631   m       0      1       0   0.0  1.2
+## 298 298 1300      0   2 52.72553   f       0      1       0   0.0  1.1
+## 299 299 1293      0   1 38.09172   f       0      0       0   0.0  2.4
+## 300 300  207      2   2 58.17112   f       0      1       0   0.0  5.2
+## 301 301 1295      0   2 45.21013   f       0      0       0   0.0  1.0
+## 302 302 1271      0   1 37.79877   f       0      0       0   0.0  0.7
+## 303 303 1250      0   2 60.65982   f       0      1       1   0.0  1.0
+## 304 304 1230      0   1 35.53457   f       0      0       0   0.0  0.5
+## 305 305 1216      0   2 43.06639   f       0      1       1   0.0  2.9
+## 306 306 1216      0   2 56.39151   f       0      1       0   0.0  0.6
+## 307 307 1149      0   2 30.57358   f       0      0       0   0.0  0.8
+## 308 308 1153      0   1 61.18275   f       0      1       0   0.0  0.4
+## 309 309  994      0   2 58.29979   f       0      0       0   0.0  0.4
+## 310 310  939      0   1 62.33265   f       0      0       0   0.0  1.7
+## 311 311  839      0   1 37.99863   f       0      0       0   0.0  2.0
+## 312 312  788      0   2 33.15264   f       0      0       1   0.0  6.4
+## 313 313 4062      0  NA 60.00000   f      NA     NA      NA   0.0  0.7
+## 314 314 3561      2  NA 64.99932   f      NA     NA      NA   0.5  1.4
+## 315 315 2844      0  NA 54.00137   f      NA     NA      NA   0.0  0.7
+## 316 316 2071      2  NA 75.00068   f      NA     NA      NA   0.5  0.7
+## 317 317 3030      0  NA 62.00137   f      NA     NA      NA   0.0  0.8
+## 318 318 1680      0  NA 43.00068   f      NA     NA      NA   0.0  0.7
+## 319 319   41      2  NA 46.00137   f      NA     NA      NA   0.0  5.0
+## 320 320 2403      0  NA 44.00000   f      NA     NA      NA   0.5  0.4
+## 321 321 1170      0  NA 60.99932   m      NA     NA      NA   0.5  1.3
+## 322 322 2011      2  NA 64.00000   f      NA     NA      NA   0.0  1.1
+## 323 323 3523      0  NA 40.00000   f      NA     NA      NA   0.0  0.6
+## 324 324 3468      0  NA 63.00068   f      NA     NA      NA   0.0  0.6
+## 325 325 4795      0  NA 34.00137   f      NA     NA      NA   0.0  1.8
+## 326 326 1236      0  NA 52.00000   f      NA     NA      NA   0.0  1.5
+## 327 327 4214      0  NA 48.99932   f      NA     NA      NA   0.0  1.2
+## 328 328 2111      2  NA 54.00137   f      NA     NA      NA   0.0  1.0
+## 329 329 1462      2  NA 63.00068   f      NA     NA      NA   0.0  0.7
+## 330 330 1746      2  NA 54.00137   m      NA     NA      NA   0.0  3.5
+## 331 331   94      2  NA 46.00137   f      NA     NA      NA   0.5  3.1
+## 332 332  785      2  NA 52.99932   f      NA     NA      NA   0.0 12.6
+## 333 333 1518      2  NA 56.00000   f      NA     NA      NA   0.0  2.8
+## 334 334  466      2  NA 56.00000   f      NA     NA      NA   0.0  7.1
+## 335 335 3527      0  NA 55.00068   f      NA     NA      NA   0.0  0.6
+## 336 336 2635      0  NA 64.99932   f      NA     NA      NA   0.0  2.1
+## 337 337 2286      2  NA 56.00000   f      NA     NA      NA   0.0  1.8
+## 338 338  791      2  NA 47.00068   f      NA     NA      NA   0.0 16.0
+## 339 339 3492      0  NA 60.00000   f      NA     NA      NA   0.0  0.6
+## 340 340 3495      0  NA 52.99932   f      NA     NA      NA   0.0  5.4
+## 341 341  111      2  NA 54.00137   f      NA     NA      NA   0.0  9.0
+## 342 342 3231      0  NA 50.00137   f      NA     NA      NA   0.0  0.9
+## 343 343  625      2  NA 48.00000   f      NA     NA      NA   0.0 11.1
+## 344 344 3157      0  NA 36.00000   f      NA     NA      NA   0.0  8.9
+## 345 345 3021      1  NA 48.00000   f      NA     NA      NA   0.0  0.5
+## 346 346  559      2  NA 70.00137   f      NA     NA      NA   0.5  0.6
+## 347 347 2812      2  NA 51.00068   f      NA     NA      NA   0.0  3.4
+## 348 348 2834      0  NA 52.00000   m      NA     NA      NA   0.0  0.9
+## 349 349 2855      0  NA 54.00137   f      NA     NA      NA   0.0  1.4
+## 350 350  662      2  NA 48.00000   f      NA     NA      NA   0.0  2.1
+## 351 351  727      2  NA 66.00137   f      NA     NA      NA   0.0 15.0
+## 352 352 2716      0  NA 52.99932   f      NA     NA      NA   0.0  0.6
+## 353 353 2698      0  NA 62.00137   f      NA     NA      NA   0.0  1.3
+## 354 354  990      2  NA 59.00068   f      NA     NA      NA   0.0  1.3
+## 355 355 2338      0  NA 39.00068   f      NA     NA      NA   0.0  1.6
+## 356 356 1616      2  NA 67.00068   f      NA     NA      NA   0.5  2.2
+## 357 357 2563      0  NA 58.00137   f      NA     NA      NA   0.0  3.0
+## 358 358 2537      0  NA 64.00000   f      NA     NA      NA   0.0  0.8
+## 359 359 2534      0  NA 46.00137   f      NA     NA      NA   0.0  0.8
+## 360 360  778      2  NA 64.00000   f      NA     NA      NA   0.0  1.8
+## 361 361  617      1  NA 40.99932   f      NA     NA      NA   0.0  5.5
+## 362 362 2267      1  NA 48.99932   f      NA     NA      NA   0.0 18.0
+## 363 363 2249      0  NA 44.00000   f      NA     NA      NA   0.0  0.6
+## 364 364  359      2  NA 59.00068   f      NA     NA      NA   0.0  2.7
+## 365 365 1925      0  NA 63.00068   f      NA     NA      NA   0.0  0.9
+## 366 366  249      2  NA 60.99932   f      NA     NA      NA   0.0  1.3
+## 367 367 2202      0  NA 64.00000   f      NA     NA      NA   0.0  1.1
+## 368 368   43      2  NA 48.99932   f      NA     NA      NA   0.0 13.8
+## 369 369 1197      2  NA 42.00137   f      NA     NA      NA   0.0  4.4
+## 370 370 1095      2  NA 50.00137   f      NA     NA      NA   0.0 16.0
+## 371 371  489      2  NA 51.00068   f      NA     NA      NA   0.5  7.3
+## 372 372 2149      0  NA 36.99932   f      NA     NA      NA   0.0  0.6
+## 373 373 2103      0  NA 62.00137   f      NA     NA      NA   0.0  0.7
+## 374 374 1980      0  NA 51.00068   f      NA     NA      NA   0.0  0.7
+## 375 375 1347      1  NA 52.00000   f      NA     NA      NA   0.0  1.7
+## 376 376 1478      2  NA 44.00000   m      NA     NA      NA   0.0  9.5
+## 377 377 1987      0  NA 32.99932   f      NA     NA      NA   0.0  2.2
+## 378 378 1168      2  NA 60.00000   f      NA     NA      NA   0.5  1.8
+## 379 379  597      2  NA 63.00068   f      NA     NA      NA   0.5  3.3
+## 380 380 1725      1  NA 32.99932   f      NA     NA      NA   0.0  2.9
+## 381 381 1899      0  NA 40.99932   m      NA     NA      NA   0.0  1.7
+## 382 382  221      2  NA 51.00068   f      NA     NA      NA   0.0 14.0
+## 383 383 1022      1  NA 36.99932   f      NA     NA      NA   0.5  0.8
+## 384 384 1639      0  NA 59.00068   f      NA     NA      NA   0.0  1.3
+## 385 385 1635      0  NA 55.00068   f      NA     NA      NA   0.0  0.7
+## 386 386 1654      0  NA 54.00137   m      NA     NA      NA   0.0  1.7
+## 387 387 1653      0  NA 48.99932   f      NA     NA      NA   0.5 13.6
+## 388 388 1560      0  NA 40.00000   f      NA     NA      NA   0.0  0.9
+## 389 389 1581      0  NA 67.00068   f      NA     NA      NA   0.0  0.7
+## 390 390 1419      0  NA 68.00000   m      NA     NA      NA   0.0  3.0
+## 391 391 1443      0  NA 40.99932   f      NA     NA      NA   0.0  1.2
+## 392 392 1368      0  NA 68.99932   f      NA     NA      NA   0.0  0.4
+## 393 393  193      2  NA 52.00000   f      NA     NA      NA   0.5  0.7
+## 394 394 1367      0  NA 56.99932   f      NA     NA      NA   0.5  2.0
+## 395 395 1329      0  NA 36.00000   f      NA     NA      NA   0.0  1.4
+## 396 396 1343      0  NA 50.00137   f      NA     NA      NA   0.0  1.6
+## 397 397 1328      0  NA 64.00000   f      NA     NA      NA   0.0  0.5
+## 398 398 1375      0  NA 62.00137   f      NA     NA      NA   0.0  7.3
+## 399 399 1260      0  NA 42.00137   f      NA     NA      NA   0.0  8.1
+## 400 400 1223      0  NA 44.00000   f      NA     NA      NA   0.0  0.5
+## 401 401  935      2  NA 68.99932   f      NA     NA      NA   0.0  4.2
+## 402 402  943      0  NA 52.00000   f      NA     NA      NA   0.0  0.8
+## 403 403 1141      0  NA 66.00137   f      NA     NA      NA   0.0  2.5
+## 404 404 1092      0  NA 40.00000   f      NA     NA      NA   0.0  4.6
+## 405 405 1150      0  NA 52.00000   f      NA     NA      NA   0.0  1.0
+## 406 406  703      2  NA 46.00137   f      NA     NA      NA   0.0  4.5
+## 407 407 1129      0  NA 54.00137   m      NA     NA      NA   0.0  1.1
+## 408 408 1086      0  NA 51.00068   f      NA     NA      NA   0.5  1.9
+## 409 409 1067      0  NA 43.00068   f      NA     NA      NA   0.0  0.7
+## 410 410 1072      0  NA 39.00068   f      NA     NA      NA   0.0  1.5
+## 411 411 1119      0  NA 51.00068   f      NA     NA      NA   0.0  0.6
+## 412 412 1097      0  NA 67.00068   f      NA     NA      NA   0.0  1.0
+## 413 413  989      0  NA 35.00068   f      NA     NA      NA   0.0  0.7
+## 414 414  681      2  NA 67.00068   f      NA     NA      NA   0.0  1.2
+## 415 415 1103      0  NA 39.00068   f      NA     NA      NA   0.0  0.9
+## 416 416 1055      0  NA 56.99932   f      NA     NA      NA   0.0  1.6
+## 417 417  691      0  NA 58.00137   f      NA     NA      NA   0.0  0.8
+## 418 418  976      0  NA 52.99932   f      NA     NA      NA   0.0  0.7
+##     chol albumin copper alk.phos    ast trig platelet protime stage
+## 1    261    2.60    156   1718.0 137.95  172      190    12.2     4
+## 2    302    4.14     54   7394.8 113.52   88      221    10.6     3
+## 3    176    3.48    210    516.0  96.10   55      151    12.0     4
+## 4    244    2.54     64   6121.8  60.63   92      183    10.3     4
+## 5    279    3.53    143    671.0 113.15   72      136    10.9     3
+## 6    248    3.98     50    944.0  93.00   63       NA    11.0     3
+## 7    322    4.09     52    824.0  60.45  213      204     9.7     3
+## 8    280    4.00     52   4651.2  28.38  189      373    11.0     3
+## 9    562    3.08     79   2276.0 144.15   88      251    11.0     2
+## 10   200    2.74    140    918.0 147.25  143      302    11.5     4
+## 11   259    4.16     46   1104.0  79.05   79      258    12.0     4
+## 12   236    3.52     94    591.0  82.15   95       71    13.6     4
+## 13   281    3.85     40   1181.0  88.35  130      244    10.6     3
+## 14    NA    2.27     43    728.0  71.00   NA      156    11.0     4
+## 15   231    3.87    173   9009.8 127.71   96      295    11.0     3
+## 16   204    3.66     28    685.0  72.85   58      198    10.8     3
+## 17   274    3.15    159   1533.0 117.80  128      224    10.5     4
+## 18   178    2.80    588    961.0 280.55  200      283    12.4     4
+## 19   235    3.56     39   1881.0  93.00  123      209    11.0     3
+## 20   374    3.51    140   1919.0 122.45  135      322    13.0     4
+## 21   252    3.83     41    843.0  65.10   83      336    11.4     4
+## 22   271    3.63    464   1376.0 120.90   55      173    11.6     4
+## 23   395    2.94    558   6064.8 227.04  191      214    11.7     4
+## 24   456    4.00    124   5719.0 221.88  230       70     9.9     2
+## 25   298    4.10     40    661.0 106.95   66      324    11.3     2
+## 26  1128    3.68     53   3228.0 165.85  166      421     9.9     3
+## 27   175    3.31    221   3697.4 101.91  168       80    12.0     4
+## 28   222    3.23    209   1975.0 189.10  195      144    13.0     4
+## 29   370    3.78     24   5833.0  73.53   86      390    10.6     2
+## 30   260    2.54    172   7277.0 121.26  158      124    11.0     4
+## 31   296    3.44    114   9933.2 206.40  101      195    10.3     2
+## 32   262    3.34    101   7277.0  82.56  158      286    10.6     4
+## 33   210    3.19     82   1592.0 218.55  113      180    12.0     3
+## 34   364    3.70     37   1840.0 170.50   64      273    10.5     2
+## 35   314    3.20    201  12258.8  72.24  151      431    10.6     3
+## 36   172    3.39     18    558.0  71.30   96      311    10.6     2
+## 37   334    3.01    150   6931.2 180.60  118      102    12.0     4
+## 38   383    3.53    102   1234.0 137.95   87      234    11.0     4
+## 39   282    3.00     52   9066.8  72.24  111      563    10.6     4
+## 40    NA    3.34    105  11046.6 104.49   NA      358    11.0     4
+## 41    NA    3.26     96   1215.0 151.90   NA      226    11.7     4
+## 42    NA    3.54    122   8778.0  56.76   NA      344    11.0     4
+## 43   361    3.64     36   5430.2  67.08   89      203    10.6     2
+## 44   299    3.55    131   1029.0 119.35   50      199    11.7     3
+## 45    NA    3.93     19   1826.0  71.30   NA      474    10.9     2
+## 46   482    2.84    161  11552.0 136.74  165      518    12.7     3
+## 47   316    3.65     68   1716.0 187.55   71      356     9.8     3
+## 48   259    3.70    281  10396.8 188.34  178      214    11.0     3
+## 49    NA    3.82     58    678.0  97.65   NA      233    11.0     4
+## 50   257    3.36     43   1080.0 106.95   73      128    10.6     4
+## 51   276    3.60     54   4332.0  99.33  143      273    10.6     2
+## 52   614    3.70    158   5084.4 206.40   93      362    10.6     1
+## 53    NA    3.10     94   6456.2  56.76   NA      214    11.0     4
+## 54   288    3.40    262   5487.2  73.53  125      254    11.0     4
+## 55   416    3.94    121  10165.0  79.98  219      213    11.0     3
+## 56   498    3.80     88  13862.4  95.46  319      365    10.6     2
+## 57   260    3.18    231  11320.2 105.78   94      216    12.4     3
+## 58   242    4.08     73   5890.0  56.76  118       NA    10.6     1
+## 59   329    3.50     49   7622.8 126.42  124      321    10.6     3
+## 60   604    3.40     82    876.0  71.30   58      228    10.3     3
+## 61   216    3.94     28    601.0  60.45  188      211    13.0     1
+## 62   302    2.75     58   1523.0  43.40  112      329    13.2     4
+## 63   932    3.12     95   5396.0 244.90  133      165    11.6     3
+## 64   373    3.50     52   1009.0 150.35  188      178    11.0     3
+## 65   256    3.60     74    724.0 141.05  108      430    10.0     1
+## 66   427    3.70    105   1909.0 182.90  171      123    11.0     3
+## 67   466    3.91     84   1787.0 328.60  185      261    10.0     3
+## 68   174    4.09     58    642.0  71.30   46      203    10.6     3
+## 69   652    3.46    159   3292.0 215.45  184      227    12.4     3
+## 70    NA    4.64     20    666.0  54.25   NA      265    10.6     2
+## 71   258    3.57     79   2201.0 120.90   76      410    11.5     4
+## 72   320    3.54     51   1243.0 122.45   80      225    10.0     3
+## 73   132    3.60     17    423.0  49.60   56      265    11.0     1
+## 74   558    3.99    280    967.0  89.90  309      278    11.0     4
+## 75   674    2.53    207   2078.0 182.90  598      268    11.5     4
+## 76   394    3.08    111   2132.0 155.00  243      165    11.6     4
+## 77   244    3.41    199   1819.0 170.50   91      132    12.1     3
+## 78   436    3.02     75   2176.0 170.50  104      236    10.6     4
+## 79   315    4.24     13   1637.0 170.50   70      426    10.9     3
+## 80   247    3.72    269   1303.0 176.70   91      360    11.2     4
+## 81   448    3.65     34   1218.0  60.45  318      385    11.7     4
+## 82   472    4.09    154   1580.0 117.80  272      412    11.1     3
+## 83   250    3.50     48   1138.0  71.30  100       81    12.9     4
+## 84   263    3.76     29   1345.0 137.95   74      181    11.2     3
+## 85   262    3.48     58   2045.0  89.90   84      225    11.5     4
+## 86  1600    3.21     75   2656.0  82.15  174      181    10.9     3
+## 87   345    4.40     75   1860.0 218.55   72      447    10.7     3
+## 88   296    4.06     37   1032.0  80.60   83      442    12.0     3
+## 89   408    3.65     50   1083.0 110.05   98      200    11.4     2
+## 90   660    4.22     94   1857.0 151.90  155      337    11.0     2
+## 91   325    3.47    110   2460.0 246.45   56      430    11.9     4
+## 92   206    3.13     36   1626.0  86.80   70      145    12.2     4
+## 93   353    3.67     73   2039.0 232.50   68      380    11.1     2
+## 94   201    3.11    178   1212.0 159.65   69      188    11.8     4
+## 95    NA    2.64    182    559.0 119.35   NA      401    11.7     2
+## 96    NA    3.70     33   1258.0  99.20   NA      338    10.4     3
+## 97   420    3.26     62   3196.0  77.50   91      344    11.4     3
+## 98   239    3.77     77   1877.0  97.65  101      312    10.2     1
+## 99   460    3.35    148   1472.0 108.50  118      172    10.2     2
+## 100  178    3.00    145    746.0 178.25  122      119    12.0     4
+## 101  400    3.60     31   1689.0 164.30  166      327    10.4     3
+## 102  248    3.97    172    646.0  62.00   84      128    10.1     1
+## 103  188    3.67     57   1273.0 119.35  102      110    11.1     4
+## 104  303    3.64     20   2108.0 128.65   53      349    11.1     2
+## 105  464    4.20     38   1644.0 151.90  102      348    10.3     3
+## 106   NA    3.90     50   1087.0 103.85   NA      137    10.6     2
+## 107  212    4.03     10    648.0  71.30   77      316    17.1     1
+## 108  127    3.50     14   1062.0  49.60   84      334    10.3     2
+## 109  120    3.61     53    804.0 110.05   52      271    10.6     3
+## 110  486    3.54     74   1052.0 108.50  109      141    10.9     3
+## 111  528    4.18     77   2404.0 172.05   78      467    10.7     3
+## 112  267    3.67     89    754.0 196.85   90      136    11.8     4
+## 113  374    3.74    103    979.0 128.65  100      266    11.1     4
+## 114  259    4.30    208   1040.0 110.05   78      268    11.7     3
+## 115  303    4.19     81   1584.0 111.60  156      307    10.3     3
+## 116  458    3.63     74   1588.0 106.95  382      438     9.9     3
+## 117  950    3.11    111   2374.0 170.50  149      354    11.0     4
+## 118  390    3.30     67    878.0 137.95   93      207    10.2     3
+## 119  636    3.83    129    944.0  97.65  114      306     9.5     3
+## 120  325    3.98    444    766.0 130.20  210      344    10.6     3
+## 121  151    3.08     73   1112.0  46.50   49      213    13.2     4
+## 122  298    4.13     29    758.0  65.10   85      256    10.7     3
+## 123   NA    3.23     18    790.0 179.80   NA      104    13.0     4
+## 124  251    3.90     25    681.0  57.35  107      182    10.8     4
+## 125  316    3.51     75   1162.0 147.25  137      238    10.0     4
+## 126  269    3.12     NA   1441.0 165.85   68      166    11.1     4
+## 127  268    4.08      9   1174.0  86.80   95      453    10.0     2
+## 128   NA    2.89     42   1828.0 299.15   NA      123    12.6     4
+## 129  420    3.87     30   1009.0  57.35  232       NA     9.7     3
+## 130 1775    3.43    205   2065.0 165.85   97      418    11.5     3
+## 131  242    3.80     74    614.0 136.40  104      121    13.2     4
+## 132  448    3.83     60   1052.0 127.10  175      181     9.8     3
+## 133  331    3.95     13    577.0 128.65   99      165    10.1     4
+## 134  578    3.67     35   1353.0 127.10  105      427    10.7     2
+## 135  263    3.57    123    836.0  74.40  121      445    11.0     2
+## 136  263    3.35     27   1636.0 116.25   69      206     9.8     2
+## 137  399    3.60     79   3472.0 155.00  152      344    10.1     2
+## 138  426    3.93    262   2424.0 145.70  218      252    10.5     3
+## 139  328    3.31    159   1260.0  94.55  134      142    11.6     4
+## 140  290    4.09     38   2120.0 186.00  146      318    10.0     3
+## 141  346    3.77     59    794.0 125.55   56      336    10.6     2
+## 142  364    3.48     20    720.0 134.85   88      283     9.9     2
+## 143  332    3.60     86   1492.0 134.85  103      277    11.0     4
+## 144  556    3.26    152   3896.0 198.40  171      335    10.0     3
+## 145  309    3.84     96    858.0  41.85  106      253    11.4     3
+## 146   NA    3.89     58   1284.0 173.60   NA      239     9.4     3
+## 147  288    3.37     32    791.0  57.35  114      213    10.7     2
+## 148 1015    3.26    247   3836.0 198.40  280      330     9.8     3
+## 149  257    3.79    290   1664.0 102.30  112      140     9.9     4
+## 150   NA    3.63     57   1536.0 134.85   NA      233    10.0     1
+## 151  460    3.03     57    721.0  85.25  174      301     9.4     2
+## 152  586    3.01    243   2276.0 114.70  126      339    10.9     3
+## 153  217    3.85     68    453.0  54.25   68      270    11.1     1
+## 154  168    2.56    225   1056.0 120.90   75      108    14.1     3
+## 155  220    3.35     57   1620.0 153.45   80      311    11.2     4
+## 156  358    3.52    219   2468.0 201.50  205      151    11.5     2
+## 157  286    3.42     34   1868.0  77.50  206      487    10.0     2
+## 158  450    3.37     32   1408.0 116.25  118      313    11.2     2
+## 159  317    3.46    217    714.0 130.20  140      207    10.1     3
+## 160  217    3.62     13    414.0  75.95  119      224    10.5     3
+## 161  502    3.56      4    964.0 120.90  180      269     9.6     2
+## 162  260    3.19     91    815.0 127.10  101      160    12.0     4
+## 163  233    4.08     20    622.0  66.65   68      358     9.9     3
+## 164   NA    3.34    161   1428.0 181.35   NA       88    13.3     4
+## 165  196    3.45     80   2496.0 133.30  142      212    11.3     4
+## 166 1480    3.26     84   1960.0 457.25  108      213     9.5     2
+## 167  376    3.86    200   1015.0  83.70  154      238    10.3     4
+## 168  257    3.80     44    842.0  97.65  110       NA     9.2     2
+## 169  408    4.22     67   1387.0 142.60  137      295    10.1     3
+## 170  390    3.61     32   1509.0  88.35   52      263     9.0     3
+## 171   NA    4.52     31    784.0  74.40   NA      361    10.1     3
+## 172  205    3.34     65   1031.0  91.45  126      217     9.8     3
+## 173  236    3.42     76   1403.0  89.90   86      493     9.8     2
+## 174   NA    3.85     63    663.0  79.05   NA      311     9.7     1
+## 175  283    3.80    152    718.0 108.50  168      340    10.1     3
+## 176   NA    3.56     77   1790.0 139.50   NA      149    10.1     4
+## 177  258    4.01     49    559.0  43.40  133      277    10.4     2
+## 178   NA    4.08     51    665.0  74.40   NA      325    10.2     4
+## 179  396    3.83     39   2148.0 102.30  133      278     9.9     4
+## 180  478    4.38     44   1629.0 237.15   76      175    10.4     3
+## 181  248    3.58     63    554.0  75.95  106       79    10.3     4
+## 182   NA    3.69    161    674.0  26.35   NA      539     9.9     2
+## 183  201    3.73     44   1345.0  54.25  145      445    10.1     2
+## 184  674    3.55    358   2412.0 167.40  140      471     9.8     3
+## 185  256    3.54     42   1132.0  74.40   94      192    10.5     3
+## 186  225    3.53     51    933.0  69.75   62      200    12.7     3
+## 187  808    3.43    251   2870.0 153.45  137      268    11.5     3
+## 188  187    3.48     41    654.0 120.90   98      164    11.0     4
+## 189  360    3.63     52   1812.0  97.65  164      256     9.9     3
+## 190   NA    3.93     24   1828.0 133.30   NA      327    10.2     2
+## 191 1092    3.35    233   3740.0 147.25  432      399    15.2     4
+## 192  308    3.69     67    696.0  51.15  101      344     9.8     4
+## 193  932    3.19    267   2184.0 161.20  157      382    10.4     4
+## 194  293    4.30     50    975.0 125.55   56      336     9.1     2
+## 195  347    3.90     76   2544.0 221.65   90      129    11.5     4
+## 196  226    3.36     13    810.0  72.85   62      117    11.6     4
+## 197  266    3.97     25   1164.0 102.30  102      201    10.1     2
+## 198  286    2.90     38   1692.0 141.05   90      381     9.6     2
+## 199  392    3.43     52   1395.0 184.45  194      328    10.2     3
+## 200  236    3.55    112   1391.0 137.95  114      332     9.9     3
+## 201  235    3.20     26   1758.0 106.95   67      228    10.8     4
+## 202  223    3.80     15   1044.0  80.60   89      514    10.0     2
+## 203  149    4.04    227    598.0  52.70   57      166     9.9     2
+## 204  255    3.74     23   1024.0  77.50   58      281    10.2     3
+## 205  382    3.55    108   1516.0 238.70   NA      126    10.3     3
+## 206  213    4.07     12   5300.0  57.35   68      240    11.0     1
+## 207   NA    3.33     14    733.0  85.25   NA      259    10.1     4
+## 208  396    3.20     58   1440.0 153.45  131      156    10.0     4
+## 209  252    4.01     11   1210.0  72.85   58      309     9.5     2
+## 210  346    3.37     81   1098.0 122.45   90      298    10.0     2
+## 211   NA    3.76     27   1282.0 100.75   NA      114    10.3     3
+## 212  232    3.98     11   1074.0 100.75   99      223     9.9     3
+## 213  400    3.40      9   1134.0  96.10   55      356    10.2     3
+## 214  404    3.43     34   1866.0  79.05  224      236     9.9     3
+## 215 1276    3.85    141   1204.0 203.05  157      216    10.7     3
+## 216   NA    3.68     20    856.0  55.80   NA      146    10.4     3
+## 217  608    3.31     65   1790.0 151.90  210      298    10.8     4
+## 218   NA    3.89     29    897.0  66.65   NA      423    10.1     1
+## 219  215    4.17     67    936.0 134.85   85      176     9.6     3
+## 220  426    3.22     96   2716.0 210.80  113      228    10.6     2
+## 221  360    3.65     72   3186.0  94.55  154      269     9.7     4
+## 222  372    3.38    227   2310.0 167.40  135      240    12.4     3
+## 223  448    2.43    123   1833.0 134.00  155      210    11.0     4
+## 224  309    3.66     67   1214.0 158.10  101      309     9.7     3
+## 225  274    3.66    108   1065.0  88.35  135      251    10.1     2
+## 226  223    3.70     39    884.0  75.95  104      231     9.6     3
+## 227  316    3.35    172   1601.0 179.80   63      394     9.7     2
+## 228  215    3.35     41    645.0  93.00   74      165     9.6     3
+## 229  191    3.05    200   1020.0 175.15  118      139    11.4     4
+## 230  302    3.41     51    310.0  83.70   44       95    11.5     4
+## 231  518    1.96    115   2250.0 203.05   90      190    10.7     4
+## 232  267    3.02     47   1001.0 133.30   87      265    10.6     3
+## 233  514    3.06    412   2622.0 105.40   87      284     9.8     4
+## 234  578    3.35     78    976.0 116.25  177      322    11.2     2
+## 235 1336    4.16     71   3510.0 209.25  111      338    11.9     3
+## 236  253    3.79     67   1006.0 139.50  106      341     9.7     3
+## 237  442    2.95    105    820.0  85.25  108      181    10.1     3
+## 238  280    3.35     NA   1093.0 128.65   81      295     9.8     2
+## 239  300    2.94    231   1794.0 130.20   99      319    11.2     4
+## 240  232    3.72     24    369.0  51.15  139      326    10.1     3
+## 241  316    3.62    308   1119.0 114.70  322      282     9.8     4
+## 242  354    2.97     86   1553.0 196.85  152      277     9.9     3
+## 243  468    2.81    139   2009.0 198.40  139      233    10.0     4
+## 244  350    3.22    121   1268.0 272.80  231      270     9.6     3
+## 245  273    3.65     48    794.0  52.70  214      305     9.6     3
+## 246  387    3.77     63   1613.0 150.35   33      185    10.1     4
+## 247 1712    2.83     89   3681.0 158.10  139      297    10.0     3
+## 248  324    3.51     39   1237.0  66.65  146      371    10.0     3
+## 249  242    3.20     35   1556.0 175.15   71      195    10.6     4
+## 250  299    3.36     23   2769.0 220.10   85      303    10.9     4
+## 251  227    3.61     40    676.0  83.00  120      249     9.9     2
+## 252  246    3.35    116    924.0 113.15   90      317    10.0     4
+## 253  243    3.03    380    983.0 158.10  154       97    11.2     4
+## 254  227    3.75    121   1136.0 110.00   91      264    10.0     3
+## 255  193    3.85     35    466.0  53.00  118      156    10.3     3
+## 256  336    3.74     48    823.0  84.00  108      242     9.7     3
+## 257  280    4.23     36    377.0  56.00  146      227    10.6     2
+## 258  414    3.44     80   1003.0  99.00   55      271     9.6     1
+## 259  277    2.97     42   1110.0 125.00  126      221     9.8     3
+## 260  232    3.59    188   1120.0  98.00  128      248    10.9     4
+## 261  375    3.14    129    857.0  89.00   NA      375     9.5     3
+## 262  322    3.06     65   2562.0  91.00  209      231     9.5     3
+## 263  432    3.57     45   1406.0 190.00   77      248    11.4     4
+## 264  356    3.12    188   1911.0  92.00  130      318    11.2     3
+## 265  348    3.20    121    938.0 120.00  146      296    10.0     4
+## 266  318    3.32     52    613.0  70.00  260      279    10.2     3
+## 267  222    2.33    138    620.0 106.00   91      195    12.1     4
+## 268  344    2.75     16    834.0  82.00  179      149    11.0     4
+## 269  374    3.50    143   1428.0 188.00   44      151    10.1     2
+## 270  448    3.74    102   1128.0  71.00  117      228    10.2     3
+## 271  321    3.50     94    955.0 111.00  177      289     9.7     3
+## 272  226    2.93     22    674.0  58.00   85      153     9.8     1
+## 273  328    3.46     75   1677.0  87.00  116      202     9.6     3
+## 274   NA    3.07    136   1995.0 128.00   NA      372     9.6     4
+## 275  572    3.77     77   2520.0  92.00  114      309     9.5     4
+## 276  219    3.85     67    640.0 145.00  108       95    10.7     2
+## 277  317    3.56     44   1636.0  84.00  111      394     9.8     3
+## 278  338    3.70    130   2139.0 185.00  193      215     9.9     4
+## 279  198    3.77     38    911.0  57.00   56      280     9.8     2
+## 280  325    3.69     69   2583.0 142.00  140      284     9.6     3
+## 281  175    2.10    220    705.0 338.00  229       62    12.9     4
+## 282  304    3.52     97   1622.0  71.00  169      255     9.5     4
+## 283  412    3.99    103   1293.0  91.00  113      422     9.6     4
+## 284  291    3.44     75   1082.0  85.00  195      251     9.5     3
+## 285  253    3.48     65    688.0  57.00   80      252    10.0     1
+## 286  310    3.36     70   1257.0 122.00  118      143     9.8     3
+## 287  373    3.46    155   1768.0 120.00  151      258    10.1     4
+## 288  310    3.89    107    637.0 117.00  242      298     9.6     2
+## 289  416    3.99    177    960.0  86.00  242      269     9.8     2
+## 290  294    3.57     33    722.0  93.00   69      283     9.8     3
+## 291  339    3.18    123   3336.0 205.00   84      304     9.9     4
+## 292  546    3.73     84   1070.0 127.00  153      291    11.2     3
+## 293  194    2.98    196    815.0 163.00   78      122    12.3     4
+## 294 1000    3.07     88   3150.0 193.00  133      299    10.9     4
+## 295  646    3.83    102    855.0 127.00  194      306    10.3     3
+## 296  328    3.31     62   1105.0 137.00   95      293    10.9     4
+## 297  275    3.43    100   1142.0  75.00   91      217    11.3     4
+## 298  340    3.37     73    289.0  97.00   93      243    10.2     3
+## 299  342    3.76     90   1653.0 150.00  127      213    10.8     3
+## 300   NA    2.23    234    601.0 135.00   NA      206    12.3     4
+## 301  393    3.57     50   1307.0  74.00  103      295    10.5     4
+## 302  335    3.95     43    657.0  52.00  104      268    10.6     2
+## 303  372    3.25    108   1190.0 140.00   55      248    10.6     4
+## 304  219    3.93     22    663.0  45.00   75      246    10.8     3
+## 305  426    3.61     73   5184.0 288.00  144      275    10.6     3
+## 306  239    3.45     31   1072.0  55.00   64      227    10.7     2
+## 307  273    3.56     52   1282.0 130.00   59      344    10.5     2
+## 308  246    3.58     24    797.0  91.00  113      288    10.4     2
+## 309  260    2.75     41   1166.0  70.00   82      231    10.8     2
+## 310  434    3.35     39   1713.0 171.00  100      234    10.2     2
+## 311  247    3.16     69   1050.0 117.00   88      335    10.5     2
+## 312  576    3.79    186   2115.0 136.00  149      200    10.8     2
+## 313   NA    3.65     NA       NA     NA   NA      378    11.0    NA
+## 314   NA    3.04     NA       NA     NA   NA      331    12.1     4
+## 315   NA    4.03     NA       NA     NA   NA      226     9.8     4
+## 316   NA    3.96     NA       NA     NA   NA       NA    11.3     4
+## 317   NA    2.48     NA       NA     NA   NA      273    10.0    NA
+## 318   NA    3.68     NA       NA     NA   NA      306     9.5     2
+## 319   NA    2.93     NA       NA     NA   NA      260    10.4    NA
+## 320   NA    3.81     NA       NA     NA   NA      226    10.5     3
+## 321   NA    3.41     NA       NA     NA   NA      259    10.9     4
+## 322   NA    3.69     NA       NA     NA   NA      139    10.5    NA
+## 323   NA    4.04     NA       NA     NA   NA      130    11.2     2
+## 324   NA    3.94     NA       NA     NA   NA      234    11.5     2
+## 325   NA    3.24     NA       NA     NA   NA       NA    18.0     2
+## 326   NA    3.42     NA       NA     NA   NA      246    10.3     3
+## 327   NA    3.99     NA       NA     NA   NA       NA    11.2     2
+## 328   NA    3.60     NA       NA     NA   NA       NA    12.1     2
+## 329   NA    3.40     NA       NA     NA   NA      371    10.1     4
+## 330   NA    3.63     NA       NA     NA   NA      325    10.3     2
+## 331   NA    3.56     NA       NA     NA   NA      142    13.6     4
+## 332   NA    2.87     NA       NA     NA   NA      114    11.8     4
+## 333   NA    3.92     NA       NA     NA   NA       NA    10.6     4
+## 334   NA    3.51     NA       NA     NA   NA      721    11.8    NA
+## 335   NA    4.15     NA       NA     NA   NA      280    10.1     2
+## 336   NA    3.34     NA       NA     NA   NA      155    10.1     4
+## 337   NA    3.64     NA       NA     NA   NA      141    10.0    NA
+## 338   NA    3.42     NA       NA     NA   NA      475    13.8     2
+## 339   NA    4.38     NA       NA     NA   NA      269    10.6     2
+## 340   NA    4.19     NA       NA     NA   NA      141    11.2     2
+## 341   NA    3.29     NA       NA     NA   NA      286    13.1     4
+## 342   NA    4.01     NA       NA     NA   NA      244    10.5     3
+## 343   NA    2.84     NA       NA     NA   NA       NA    12.2     2
+## 344   NA    3.76     NA       NA     NA   NA      209    10.6     3
+## 345   NA    3.76     NA       NA     NA   NA      388    10.1     2
+## 346   NA    3.81     NA       NA     NA   NA      160    11.0     4
+## 347   NA    3.92     NA       NA     NA   NA       NA     9.3     2
+## 348   NA    3.14     NA       NA     NA   NA      191    12.3     2
+## 349   NA    3.82     NA       NA     NA   NA      249    10.3     2
+## 350   NA    4.10     NA       NA     NA   NA      200     9.0     3
+## 351   NA    3.40     NA       NA     NA   NA      150    11.1     4
+## 352   NA    4.19     NA       NA     NA   NA      330     9.9     1
+## 353   NA    3.40     NA       NA     NA   NA      167    10.6     4
+## 354   NA    3.12     NA       NA     NA   NA      125     9.6     2
+## 355   NA    3.75     NA       NA     NA   NA      145    10.4     3
+## 356   NA    3.26     NA       NA     NA   NA      171    11.1     4
+## 357   NA    3.46     NA       NA     NA   NA      109    10.4     4
+## 358   NA    3.49     NA       NA     NA   NA      314    10.3     3
+## 359   NA    2.89     NA       NA     NA   NA      419      NA     1
+## 360   NA    3.15     NA       NA     NA   NA      183    10.4     4
+## 361   NA    2.31     NA       NA     NA   NA      517    10.4     4
+## 362   NA    3.04     NA       NA     NA   NA      432     9.7     2
+## 363   NA    3.50     NA       NA     NA   NA      150     9.9     3
+## 364   NA    3.35     NA       NA     NA   NA      142    11.5     4
+## 365   NA    3.58     NA       NA     NA   NA      224    10.0     3
+## 366   NA    3.01     NA       NA     NA   NA      223    10.7     3
+## 367   NA    3.49     NA       NA     NA   NA      166     9.8     3
+## 368   NA    2.77     NA       NA     NA   NA      388      NA     4
+## 369   NA    4.52     NA       NA     NA   NA      102    10.8     4
+## 370   NA    3.36     NA       NA     NA   NA      384    10.0     3
+## 371   NA    3.52     NA       NA     NA   NA      265    11.1     1
+## 372   NA    3.55     NA       NA     NA   NA      248    10.3     2
+## 373   NA    3.29     NA       NA     NA   NA      190     9.8     2
+## 374   NA    3.10     NA       NA     NA   NA      274    10.6     3
+## 375   NA    3.24     NA       NA     NA   NA      231    10.5     3
+## 376   NA    3.63     NA       NA     NA   NA      292    10.2     3
+## 377   NA    3.76     NA       NA     NA   NA      253     9.9     3
+## 378   NA    3.62     NA       NA     NA   NA      225     9.9     2
+## 379   NA    2.73     NA       NA     NA   NA      224    11.1     4
+## 380   NA    4.08     NA       NA     NA   NA      418    10.5     3
+## 381   NA    3.66     NA       NA     NA   NA       92    11.0     4
+## 382   NA    2.58     NA       NA     NA   NA      190    11.6     4
+## 383   NA    3.00     NA       NA     NA   NA       76    10.8     4
+## 384   NA    3.40     NA       NA     NA   NA      243     9.7     1
+## 385   NA    2.93     NA       NA     NA   NA      209    10.6     3
+## 386   NA    2.38     NA       NA     NA   NA      166     9.8     3
+## 387   NA    3.00     NA       NA     NA   NA      233     9.9     3
+## 388   NA    3.50     NA       NA     NA   NA      117    10.9     4
+## 389   NA    3.06     NA       NA     NA   NA      165    10.0     4
+## 390   NA    3.15     NA       NA     NA   NA      139    10.0     3
+## 391   NA    2.80     NA       NA     NA   NA      120    11.0     2
+## 392   NA    3.03     NA       NA     NA   NA      173    10.9     3
+## 393   NA    2.96     NA       NA     NA   NA      319     9.9     4
+## 394   NA    3.07     NA       NA     NA   NA       80    12.1     4
+## 395   NA    3.98     NA       NA     NA   NA      402    11.0     1
+## 396   NA    3.48     NA       NA     NA   NA      277    10.2     2
+## 397   NA    3.65     NA       NA     NA   NA      425    10.2     4
+## 398   NA    3.49     NA       NA     NA   NA      189    10.9     4
+## 399   NA    2.82     NA       NA     NA   NA      193    10.4     2
+## 400   NA    3.34     NA       NA     NA   NA      258    10.6     2
+## 401   NA    3.19     NA       NA     NA   NA      120    11.1     4
+## 402   NA    3.01     NA       NA     NA   NA      256    10.6     3
+## 403   NA    3.33     NA       NA     NA   NA      256    10.8     4
+## 404   NA    3.60     NA       NA     NA   NA      337    10.4     3
+## 405   NA    3.64     NA       NA     NA   NA      340    10.6     3
+## 406   NA    2.68     NA       NA     NA   NA      219    11.5     4
+## 407   NA    3.69     NA       NA     NA   NA      220    10.8     3
+## 408   NA    3.17     NA       NA     NA   NA      162    10.7     3
+## 409   NA    3.73     NA       NA     NA   NA      214    10.8     3
+## 410   NA    3.81     NA       NA     NA   NA      255    10.8     3
+## 411   NA    3.57     NA       NA     NA   NA      286    10.6     3
+## 412   NA    3.58     NA       NA     NA   NA      244    10.8     3
+## 413   NA    3.23     NA       NA     NA   NA      312    10.8     3
+## 414   NA    2.96     NA       NA     NA   NA      174    10.9     3
+## 415   NA    3.83     NA       NA     NA   NA      180    11.2     4
+## 416   NA    3.42     NA       NA     NA   NA      143     9.9     3
+## 417   NA    3.75     NA       NA     NA   NA      269    10.4     3
+## 418   NA    3.29     NA       NA     NA   NA      350    10.6     4
+</code></pre>
+
+<h2>Consider Trends vs Indicators</h2>
+
+<pre><code class="r">library(tidyverse)
+pbc &lt;- pbc %&gt;%
+      filter(!is.na(stage)) %&gt;%
+      mutate(stage_dummy = as.factor(stage)) %&gt;%
+      mutate(mean_cent_age= age-mean(age))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression plot with trend:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage)) + geom_smooth(method=&quot;lm&quot;, se=FALSE)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression plot with trend:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-16-1.png" alt="plot of chunk unnamed-chunk-16"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression plot with Indicators:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ggplot2)
+ggplot(pbc, aes(mean_cent_age, platelet, color=stage_dummy)) + geom_smooth(method=&quot;lm&quot;)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression plot with Indicators:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-18-1.png" alt="plot of chunk unnamed-chunk-18"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regressions: Trend</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+mod1 &lt;- lm(data=pbc, platelet~mean_cent_age + stage)
+tidy(mod1)
+</code></pre>
+
+<pre><code>## # A tibble: 3 x 5
+##   term          estimate std.error statistic  p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)     333.      16.9       19.7  6.72e-61
+## 2 mean_cent_age    -1.07     0.449     -2.38 1.78e- 2
+## 3 stage           -25.4      5.35      -4.75 2.80e- 6
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretations</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>age: For 2 people with the same disease stage, a person 1 year older has an average platelet count of 1 less than the younger person. </li>
+<li>stage: For 2 people of the same age, a person 1 disease stage higher has an average platelet count 25 less than the person with the lower disease stage. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regressions: Trend</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+mod2 &lt;- lm(data=pbc, platelet~age + stage_dummy)
+tidy(mod2)
+</code></pre>
+
+<pre><code>## # A tibble: 5 x 5
+##   term         estimate std.error statistic  p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)    340.      29.6     11.5    1.50e-26
+## 2 age             -1.03     0.453   -2.28   2.33e- 2
+## 3 stage_dummy2    -2.16    22.9     -0.0941 9.25e- 1
+## 4 stage_dummy3   -26.8     21.9     -1.22   2.22e- 1
+## 5 stage_dummy4   -60.1     22.2     -2.70   7.19e- 3
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretations</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>age: For 2 people with the same disease stage, a person 1 year older has an average platelet count of 1 less than the younger person. </li>
+<li>stage_dummy 2: For 2 people of the same age, a person in diease stage 2 higher has an average platelet count 2 less than the person with disease stage 1. </li>
+<li>stage_dummy 3: For 2 people of the same age, a person in diease stage 3 higher has an average platelet count 27 less than the person with disease stage 1.</li>
+<li>stage_dummy 4: For 2 people of the same age, a person in diease stage 4 higher has an average platelet count 60 less than the person with disease stage 1. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Is there a difference?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Yes!!</li>
+<li>If we look between diease stage 1 and 2 the difference is on average 2 in the model with dummy variables. </li>
+<li>In the trend model the difference between any 2 stages is on average 25. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Is this difference Significant?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can test for significane with the F-test</li>
+</ul>
+
+<pre><code class="r">anova(mod1,mod2)
+</code></pre>
+
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: platelet ~ mean_cent_age + stage
+## Model 2: platelet ~ age + stage_dummy
+##   Res.Df     RSS Df Sum of Sq      F Pr(&gt;F)
+## 1    398 3383405                           
+## 2    396 3370016  2     13389 0.7866 0.4561
+</code></pre>
+
+<ul>
+<li>Based on our test, the trend gives us just as much information. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How about \(R^2\)</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+glance1 &lt;- glance(mod1)[,c(1:2)]
+glance2 &lt;- glance(mod2)[,c(1:2)]
+bind_rows(glance1, glance2)
+</code></pre>
+
+<pre><code>## # A tibble: 2 x 2
+##   r.squared adj.r.squared
+##       &lt;dbl&gt;         &lt;dbl&gt;
+## 1    0.0774        0.0728
+## 2    0.0811        0.0718
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Multiple Variables'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Multiple Variables'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Multiple Variables'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Multiple Variables'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Multiple Variables'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Inference on Linear Regressions'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Inference on Linear Regressions'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Overall Model F test'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Overall Model F test: Bike Sharing'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Overall Model F test: Bike Sharing'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Overall Model F test: Bike Sharing'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Individual Coefficients \(t\)-test'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Individual Coefficients \(t\)-test'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Individual Coefficients \(t\)-test'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Individual Coefficients \(t\)-Test'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='F-test for Groups of Coefficients'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Groups of Coefficients Example'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Groups of Coefficients Example'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Groups of Coefficients Example'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Groups of Coefficients Example 2'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Groups of Coefficients Example 2'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Groups of Coefficients Example 2'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Factors'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='What are Factors?'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Why do we use them?'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='What is an indicator variable?'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='What does this mean in regressions?'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='What does this mean in Regression?'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Are there different types of factors?'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Nominal Factors'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Ordinal Factors'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Indicator Variables vs Trends'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Our 3 regressions'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Indicator Variables vs Trends'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Our Regressions'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='What is the difference?'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='An example: PBC Data'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='PBC Data'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='PBC Data'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='PBC Data'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='PBC Data'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Data'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Regression plot with trend:'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Regression plot with trend:'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Regression plot with Indicators:'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Regression plot with Indicators:'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Regressions: Trend'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Interpretations'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Regressions: Trend'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='Interpretations'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Is there a difference?'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Is this difference Significant?'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='How about \(R^2\)'>
+         53
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

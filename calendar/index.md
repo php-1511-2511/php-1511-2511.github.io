@@ -86,7 +86,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"><a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a> <a href="../labs/lab1_sol.html">Solutions</a></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -104,7 +104,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">13-Feb</td>
 <td align="left">Inference for Linear Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-07-multiple-linear.html">Lect-07-multiple-linear</a></td>
 <td align="left">Fox Chap 7, Vittinghoff Chap 4.6</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -113,7 +113,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 1: Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../labs/lab1.html">HTML</a> <a href="../labs/lab1.Rmd">Rmd</a> <a href="https://vimeo.com/254748467/7723da70df">Video</a> <a href="../labs/lab1_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -131,7 +131,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">20-Feb</td>
 <td align="left">Factors and Interactions</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-08-inter-assum.html">Lect-08-inter-assum</a></td>
 <td align="left">Fox Chap 11, Vittinghoff Chap 4.7</td>
 <td align="left"></td>
 <td align="left"></td>

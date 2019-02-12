@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactions and Regression Assumptions</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Interactions and Regression Assumptions">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Interactions and Regression Assumptions</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Interaction</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interaction</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The definition of interaction is the direct effect that one kind of particle has on another.</li>
+<li>This is similar to how we view it in statistics. </li>
+<li>When there is an interaction, the effect of one variable is different in one group than in another. </li>
+<li>For example, if we feel there is a interaction between sex and treatment, then the effect of ones treatment is directly related to what their sex is. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example with Categorical Interaction</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This data is from 18 women and 14 men to investigate a certain theory on why women exhibit a lower tolerance for alcohol and develop alcohol–related liver disease more readily than men.</li>
+<li>This data is from <a href="http://www.statisticalsleuth.com/">The Statistical Sleuth: A Course in Methods of Data Analysis</a></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example with Categorical Interaction</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="center">Variable Name</th>
+<th align="left">Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="center">Subject</td>
+<td align="left">subject number in the study</td>
+</tr>
+<tr>
+<td align="center">Metabol</td>
+<td align="left">first–pass metabolism of alcohol in the stomach (in mmol/liter-hour)</td>
+</tr>
+<tr>
+<td align="center">Gastric</td>
+<td align="left">gastric alcohol dehydrogenase activity in the stomach (in mumol/min/g of tissue)</td>
+</tr>
+<tr>
+<td align="center">Sex</td>
+<td align="left">sex of the subject</td>
+</tr>
+<tr>
+<td align="center">Alcohol</td>
+<td align="left">whether the subject is alcoholic or not</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration: Metabolism by Gastric Activity</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error: &#39;metab.csv&#39; does not exist in current working directory (&#39;C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes&#39;).
+</code></pre>
+
+<pre><code>## Error in ggplot(metabol, aes(Gastric, Metabol)): object &#39;metabol&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration: Metabolism by Sex</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in ggplot(metabol, aes(Sex, Metabol)): object &#39;metabol&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration: Metabolism by Alcoholism</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in ggplot(metabol, aes(Alcohol, Metabol)): object &#39;metabol&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration: Metabolism by Gastric and Sex</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in ggplot(metabol, aes(Gastric, Metabol, color = Sex)): object &#39;metabol&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
+</code></pre>
+
+<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
+</code></pre>
+
+<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
+</code></pre>
+
+<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
+</code></pre>
+
+<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretation</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have to consider the model that we have:</li>
+</ul>
+
+<p>\[Metabolism = \beta_0 + \beta_1 Gastric + \beta_2 Gastric*Male\]</p>
+
+<ul>
+<li>Females: 
+\[ Metabolism = \beta_0 + \beta_1 Gastric\]</li>
+<li>Males:
+\[ Metabolism = \beta_0 + (\beta_1+\beta_2) Gastric\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Continuous Interaction</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This is a little harder to figure out when it is happening. </li>
+<li>We have simulated data of GPA based on work ethic and GPA</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data Exploration</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Check for Interaction: Try Quantiles</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">gpa_data %&gt;%
+  summarise(`0%`=quantile(iq, probs=0),
+            `33%`=quantile(iq, probs=0.33),
+            `66%`=quantile(iq, probs=0.66),
+            `100%`=quantile(iq,probs=1))
+</code></pre>
+
+<pre><code>##         0%      33%      66%     100%
+## 1 53.44964 92.72525 106.0709 136.3098
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Create a Factor</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">gpa_data &lt;-gpa_data %&gt;%
+    mutate(iq_fact = cut(iq, 3, labels =c(&#39;low&#39;, &#39;medium&#39;, &#39;high&#39;)))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graph Interaction</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-14-1.png" alt="plot of chunk unnamed-chunk-14"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Linear Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">mod &lt;- lm(data=gpa_data, gpa~work_ethic*iq)
+tidy(mod, conf.int = T)[,-c(3:4)]
+</code></pre>
+
+<pre><code>## # A tibble: 4 x 5
+##   term           estimate   p.value conf.low conf.high
+##   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   -0.857    1.85e-166 -0.880    -0.833  
+## 2 work_ethic    -0.000492 9.05e-  1 -0.00857   0.00758
+## 3 iq             0.00129  1.28e- 22  0.00106   0.00153
+## 4 work_ethic:iq  0.00894  5.35e-284  0.00886   0.00902
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-21" style="background:grey;">
+  <hgroup>
+    <h1>Linear Regression Assumptions</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assumptions of Linear Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong><em>Linearity:</em></strong> Function \(f\) is linear. </li>
+<li>Mean of error term is 0. 
+\[E(\varepsilon)=0\]</li>
+<li><strong><em>Independence:</em></strong> Error term is independent of covariate. 
+\[Corr(X,\varepsilon)=0\]</li>
+<li><strong><em>Homoscedacity:</em></strong> Variance of error term is same regardless of value of \(X\). 
+\[Var(\varepsilon)=\sigma^2\]</li>
+<li><strong><em>Normality:</em></strong> Errors are normally Distributed</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Diagnostics for  Linear Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>A remarkable paper came out in 1973 called <em>Graphs in Statistical Analysis</em> by Francis J. Anscombe.</li>
+<li>We will explore this data as we discuss diagnostics and transformations for simple linear regression.</li>
+<li>These examples show how much your regression output may mislead you if you are not careful about the assumptions. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">anscombe
+</code></pre>
+
+<pre><code>##    x1 x2 x3 x4    y1   y2    y3    y4
+## 1  10 10 10  8  8.04 9.14  7.46  6.58
+## 2   8  8  8  8  6.95 8.14  6.77  5.76
+## 3  13 13 13  8  7.58 8.74 12.74  7.71
+## 4   9  9  9  8  8.81 8.77  7.11  8.84
+## 5  11 11 11  8  8.33 9.26  7.81  8.47
+## 6  14 14 14  8  9.96 8.10  8.84  7.04
+## 7   6  6  6  8  7.24 6.13  6.08  5.25
+## 8   4  4  4 19  4.26 3.10  5.39 12.50
+## 9  12 12 12  8 10.84 9.13  8.15  5.56
+## 10  7  7  7  8  4.82 7.26  6.42  7.91
+## 11  5  5  5  8  5.68 4.74  5.73  6.89
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Model Set ups</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Notice in this data that for \(X_1\) - \(X_3\) we have the same data points but all of the \(Y\) values differ. </li>
+<li>Let us first consider their regression outputs from R:</li>
+</ul>
+
+<pre><code class="r">mod1 &lt;- lm(y1 ~ x1, data=anscombe)
+mod2 &lt;- lm(y2 ~ x2, data=anscombe)
+mod3 &lt;- lm(y3 ~ x3, data=anscombe)
+mod4 &lt;- lm(y4 ~ x4, data=anscombe)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(broom)
+library(dplyr)
+tidy1 &lt;- tidy(mod1, conf.int = T)
+tidy2 &lt;- tidy(mod2, conf.int = T)
+tidy3 &lt;- tidy(mod3, conf.int = T)
+tidy4 &lt;- tidy(mod4, conf.int = T)
+
+knitr::kable(bind_rows(tidy1,tidy2, tidy3, tidy4)[,-c(3,4)])
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">3.0000909</td>
+<td align="right">0.0257341</td>
+<td align="right">0.4557369</td>
+<td align="right">5.5444449</td>
+</tr>
+<tr>
+<td align="left">x1</td>
+<td align="right">0.5000909</td>
+<td align="right">0.0021696</td>
+<td align="right">0.2333701</td>
+<td align="right">0.7668117</td>
+</tr>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">3.0009091</td>
+<td align="right">0.0257589</td>
+<td align="right">0.4552982</td>
+<td align="right">5.5465200</td>
+</tr>
+<tr>
+<td align="left">x2</td>
+<td align="right">0.5000000</td>
+<td align="right">0.0021788</td>
+<td align="right">0.2331475</td>
+<td align="right">0.7668525</td>
+</tr>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">3.0024545</td>
+<td align="right">0.0256191</td>
+<td align="right">0.4587013</td>
+<td align="right">5.5462078</td>
+</tr>
+<tr>
+<td align="left">x3</td>
+<td align="right">0.4997273</td>
+<td align="right">0.0021763</td>
+<td align="right">0.2330695</td>
+<td align="right">0.7663851</td>
+</tr>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">3.0017273</td>
+<td align="right">0.0255904</td>
+<td align="right">0.4592412</td>
+<td align="right">5.5442134</td>
+</tr>
+<tr>
+<td align="left">x4</td>
+<td align="right">0.4999091</td>
+<td align="right">0.0021646</td>
+<td align="right">0.2333841</td>
+<td align="right">0.7664341</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Model Stats</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">glance1 &lt;- glance(mod1)
+glance2 &lt;- glance(mod2)
+glance3 &lt;- glance(mod3)
+glance4 &lt;- glance(mod4)
+
+knitr::kable(bind_rows(glance1,glance2, glance3, glance4))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Model Stats</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.6665425</td>
+<td align="right">0.6294916</td>
+<td align="right">1.236603</td>
+<td align="right">17.98994</td>
+<td align="right">0.0021696</td>
+<td align="right">2</td>
+<td align="right">-16.84069</td>
+<td align="right">39.68137</td>
+<td align="right">40.87506</td>
+<td align="right">13.76269</td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td align="right">0.6662420</td>
+<td align="right">0.6291578</td>
+<td align="right">1.237214</td>
+<td align="right">17.96565</td>
+<td align="right">0.0021788</td>
+<td align="right">2</td>
+<td align="right">-16.84612</td>
+<td align="right">39.69224</td>
+<td align="right">40.88593</td>
+<td align="right">13.77629</td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td align="right">0.6663240</td>
+<td align="right">0.6292489</td>
+<td align="right">1.236311</td>
+<td align="right">17.97228</td>
+<td align="right">0.0021763</td>
+<td align="right">2</td>
+<td align="right">-16.83809</td>
+<td align="right">39.67618</td>
+<td align="right">40.86986</td>
+<td align="right">13.75619</td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td align="right">0.6667073</td>
+<td align="right">0.6296747</td>
+<td align="right">1.235696</td>
+<td align="right">18.00329</td>
+<td align="right">0.0021646</td>
+<td align="right">2</td>
+<td align="right">-16.83261</td>
+<td align="right">39.66522</td>
+<td align="right">40.85890</td>
+<td align="right">13.74249</td>
+<td align="right">9</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do we notice?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>All of the regression coefficients are the same. </li>
+<li>All of the regression diagnostics are the same. </li>
+<li>They appear to be the same models. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What About the Assumptions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Lets check our model plots.</li>
+</ul>
+
+<pre><code class="r">library(ggplot2)
+library(gridExtra)
+p1 &lt;- ggplot(anscombe, aes(x1,y1)) + geom_point() + geom_smooth(method=&quot;lm&quot;, se=FALSE)+theme_bw()
+p2 &lt;- ggplot(anscombe, aes(x2,y2)) + geom_point() + geom_smooth(method=&quot;lm&quot;, se=FALSE)+theme_bw()
+p3 &lt;- ggplot(anscombe, aes(x3,y3)) + geom_point() + geom_smooth(method=&quot;lm&quot;, se=FALSE)+theme_bw()
+p4 &lt;- ggplot(anscombe, aes(x4,y4)) + geom_point() + geom_smooth(method=&quot;lm&quot;, se=FALSE)+theme_bw()
+grid.arrange(p1,p2,p3, p4, ncol=2)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What About the Assumptions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-23-1.png" alt="plot of chunk unnamed-chunk-23"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do we Notice?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see that the line looks appropriate for model 1 but not for the other 3. </li>
+<li>For Model 2 it appears the data is curved. </li>
+<li>For model 3 it appears that an outlier is really driving the model. </li>
+<li>Finally for Model 4 it appears that we have only one differing \(X\) value and that is driving the slope.<br></li>
+<li>What are the values of these regression lines?</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Does this Mean?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we look at these closely we can see that these are almost the exact same regressions.</li>
+<li>This is a major issue for us if we just blindly ran our regressions. </li>
+<li>We need to discuss tools to help us not make these mistakes. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-35" style="background:grey;">
+  <hgroup>
+    <h1>Residuals to the Rescue</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residuals to the Rescue!!</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>One method to help us evaluate a linear fit and to check assumptions is to consider the residuals. </li>
+<li>The benefit of examining the residuals is that unlike the plots previously is that we can evaluate them regardless of how many predictors are in the model. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter Residual Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(olsrr)
+ols_rvsp_plot(mod1)
+ols_rvsp_plot(mod2)
+ols_rvsp_plot(mod3)
+ols_rvsp_plot(mod4)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter Residual Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter Residual Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter Residual Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter Residual Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do we see?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Looking at the plots we can see that our residuals take on different patterns. </li>
+<li>This is due to how we defined residual error as 
+\[\varepsilon_i = Y_i - \beta_0 - \beta_1 X_i.\]</li>
+<li>We first look at Model 1 there is no pattern to these residuals and they seem to be randomly spread around 0. </li>
+<li>This is indicator of a good linear fit. Recall that we assume that \(E(\varepsilon_i)=0\), so we would expect to see the residuals spread around 0 and without pattern. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Patterns in residuals show us that our model is not an adequate summary of the data. </li>
+<li>Consider what happens when our line is truly linear in nature then
+\[Y_i = E(Y_i|X_i=x_i) + \varepsilon_i = \beta_0 + \beta_1x_i + \varepsilon_i\]</li>
+<li>We then fit our regression line \(\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i\). This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx \varepsilon_i\]</li>
+<li>So the residuals are randomly distributed and centered about 0.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Quadratic Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In the second figure, we can see that we have a quadratic pattern in this. 
+
+<ul>
+<li>This happens when the true model is quadratic
+\[y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2 + \varepsilon_i\]
+then we again fit our linear model \(\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i\).</li>
+<li>This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+  \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx\beta_2x_i^2+ \varepsilon_i\]</li>
+<li>So we have a quadratic relationship given our \(x\). </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Quadratic Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This means we may have been better off by choosing a model that would include a quadratic term for \(x\). </li>
+<li>In model 2 of Anscombe&#39;s data had we run a model with a quadratic term we would then have</li>
+</ul>
+
+<pre><code class="r">anscombe$x2sq &lt;- anscombe$x2^2
+mod2a &lt;- lm(y2 ~ x2 +  x2sq, data=anscombe)
+tidy(mod2a, conf.int=T)[,-c(3,4)]
+glance(mod2a)
+
+
+ols_rvsp_plot(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Quadratic Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">-5.9957343</td>
+<td align="right">0</td>
+<td align="right">-6.005719</td>
+<td align="right">-5.9857494</td>
+</tr>
+<tr>
+<td align="left">x2</td>
+<td align="right">2.7808392</td>
+<td align="right">0</td>
+<td align="right">2.778441</td>
+<td align="right">2.7832375</td>
+</tr>
+<tr>
+<td align="left">x2sq</td>
+<td align="right">-0.1267133</td>
+<td align="right">0</td>
+<td align="right">-0.126845</td>
+<td align="right">-0.1265816</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Quadratic Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">deviance</th>
+<th align="right">df.residual</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.9999995</td>
+<td align="right">0.9999993</td>
+<td align="right">0.0016725</td>
+<td align="right">7378133</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">56.47107</td>
+<td align="right">-104.9421</td>
+<td align="right">-103.3506</td>
+<td align="right">2.24e-05</td>
+<td align="right">8</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Quadratic Patterns in Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <h2>Tools for Checking Validity of a Model</h2>
+
+<p>When fitting a regression model we will take these steps to verify the validity of the model:</p>
+
+<ol>
+<li>Regression Model is Linear in parameters.</li>
+<li>Residuals are normally distributed.</li>
+<li>Mean of Residuals is 0. </li>
+<li>Homoscedasticity of variances.</li>
+<li>Variables and residuals are not correlated. </li>
+<li>No Influential Points or Outliers</li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Linear in Parameters</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We say it is linear in parameters if the \(\beta\) values are linear in nature. </li>
+<li>Consider the 2nd Anscombe model: </li>
+</ul>
+
+<p>\[E[Y|x] = \beta_0 + \beta_1 x + \beta_2 x^2\]</p>
+
+<ul>
+<li>Even though <code>x2</code> has been transformed to a square term, the \(beta\) values are still linear. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residuals Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_rvsp_plot(mod2)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residuals Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residuals Plots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The residuals shows us that the residuals did not change by much and we can still see the pattern is the exact same as before but the range of the residuals is what has changed. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Normality of Residuals: QQ-Plot</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Recall our model 2a. </li>
+</ul>
+
+<pre><code class="r">ols_rsd_qqplot(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Normality of Residuals: QQ-Plot</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Normality of Residuals: Histogram</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_rsd_hist(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Normality of Residuals: Histogram</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Normality of Residuals: Hypothesis Tests</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_norm_test(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Mean of Residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can test if the mean of residuals is zero with a simple mean function. </li>
+</ul>
+
+<pre><code class="r">mean(mod2a$residuals)
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Homoscedasticity of residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Homoscedasticity of residuals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see that there is no pattern to the residuals. </li>
+<li>They appear to be flat and not have a difference in width of the range of values. </li>
+<li>If we saw a pattern like a cone shape then we would not have homoscedasticity. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Residuals Plot</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Homoscedasticity of residuals: Score Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_score_test(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Homoscedasticity of residuals: F-Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_f_test(mod2a, rhs=TRUE)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">ols_corr_test(mod2)
+ols_corr_test(mod2a)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Interaction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Interaction'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Example with Categorical Interaction'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Example with Categorical Interaction'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Data Exploration: Metabolism by Gastric Activity'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Data Exploration: Metabolism by Sex'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Data Exploration: Metabolism by Alcoholism'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Data Exploration: Metabolism by Gastric and Sex'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Regression Model'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Regression Model'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Regression Model'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Regression Model'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Interpretation'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Continuous Interaction'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Data Exploration'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Data Exploration'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Check for Interaction: Try Quantiles'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Create a Factor'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Graph Interaction'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Linear Model'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Linear Regression Assumptions'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Assumptions of Linear Regression'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Diagnostics for  Linear Regression'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='The Data'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='The Model Set ups'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Coefficients'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Coefficients'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Model Stats'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Model Stats'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='What do we notice?'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='What About the Assumptions'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='What About the Assumptions'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='What Do we Notice?'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='What Does this Mean?'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Residuals to the Rescue'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Residuals to the Rescue!!'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Enter Residual Plots'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Enter Residual Plots'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Enter Residual Plots'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Enter Residual Plots'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Enter Residual Plots'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='What do we see?'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Patterns in Residuals'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Quadratic Patterns in Residuals'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Quadratic Patterns in Residuals'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Quadratic Patterns in Residuals'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Quadratic Patterns in Residuals'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Quadratic Patterns in Residuals'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Linear in Parameters'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='Residuals Plots'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Residuals Plots'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Residuals Plots'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='Assessing Normality of Residuals: QQ-Plot'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Assessing Normality of Residuals: QQ-Plot'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='Assessing Normality of Residuals: Histogram'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='Assessing Normality of Residuals: Histogram'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='Assessing Normality of Residuals: Hypothesis Tests'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='Mean of Residuals'>
+         58
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=59 title='Homoscedasticity of residuals'>
+         59
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=60 title='Homoscedasticity of residuals'>
+         60
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=61 title='Residuals Plot'>
+         61
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=62 title='Homoscedasticity of residuals: Score Test'>
+         62
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=63 title='Homoscedasticity of residuals: F-Test'>
+         63
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=64 title='Correlation of Residuals and Expected Values of Residuals:'>
+         64
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=65 title='Correlation of Residuals and Expected Values of Residuals:'>
+         65
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=66 title='Correlation of Residuals and Expected Values of Residuals:'>
+         66
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
