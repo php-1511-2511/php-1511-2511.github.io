@@ -166,11 +166,7 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error: &#39;metab.csv&#39; does not exist in current working directory (&#39;C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes&#39;).
-</code></pre>
-
-<pre><code>## Error in ggplot(metabol, aes(Gastric, Metabol)): object &#39;metabol&#39; not found
-</code></pre>
+    <p><img src="figure/unnamed-chunk-1-1.png" alt="plot of chunk unnamed-chunk-1"></p>
 
     
     <footer class = 'logo'>
@@ -188,8 +184,7 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in ggplot(metabol, aes(Sex, Metabol)): object &#39;metabol&#39; not found
-</code></pre>
+    <p><img src="figure/unnamed-chunk-2-1.png" alt="plot of chunk unnamed-chunk-2"></p>
 
     
     <footer class = 'logo'>
@@ -207,8 +202,7 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in ggplot(metabol, aes(Alcohol, Metabol)): object &#39;metabol&#39; not found
-</code></pre>
+    <p><img src="figure/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"></p>
 
     
     <footer class = 'logo'>
@@ -226,7 +220,29 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in ggplot(metabol, aes(Gastric, Metabol, color = Sex)): object &#39;metabol&#39; not found
+    <p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## # A tibble: 2 x 5
+##   term        estimate       p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    -1.83 0.00428          -3.03    -0.620
+## 2 Gastric         2.28 0.00000000527     1.70     2.86
 </code></pre>
 
     
@@ -245,32 +261,12 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
-</code></pre>
-
-<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Regression Model</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
-</code></pre>
-
-<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+    <pre><code>## # A tibble: 3 x 5
+##   term        estimate      p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)    -1.95 0.000796       -3.01     -0.884
+## 2 Gastric         1.97 0.0000000424    1.42      2.51 
+## 3 SexMale         1.62 0.00365         0.572     2.66
 </code></pre>
 
     
@@ -289,10 +285,13 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
-</code></pre>
-
-<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+    <pre><code>## # A tibble: 4 x 5
+##   term            estimate p.value conf.low conf.high
+##   &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)       -0.197  0.808    -1.84       1.45
+## 2 Gastric            0.837  0.0947   -0.154      1.83
+## 3 SexMale           -0.988  0.365    -3.19       1.21
+## 4 Gastric:SexMale    1.51   0.0118    0.362      2.65
 </code></pre>
 
     
@@ -311,10 +310,12 @@
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code>## Error in is.data.frame(data): object &#39;metabol&#39; not found
-</code></pre>
-
-<pre><code>## Error in tidy(mod, conf.int = TRUE): object &#39;mod&#39; not found
+    <pre><code>## # A tibble: 3 x 5
+##   term            estimate  p.value conf.low conf.high
+##   &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)       -0.750 0.168      -1.84      0.336
+## 2 Gastric            1.15  0.00237     0.443     1.85 
+## 3 Gastric:SexMale    1.04  0.000166    0.549     1.54
 </code></pre>
 
     
@@ -1010,11 +1011,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code class="r">library(olsrr)
-ols_rvsp_plot(mod1)
-ols_rvsp_plot(mod2)
-ols_rvsp_plot(mod3)
-ols_rvsp_plot(mod4)
+    <pre><code class="r">  plot(mod1,1)
+ plot(mod2,1)
+ plot(mod3,1)
+ plot(mod4,1)
 </code></pre>
 
     
@@ -1033,7 +1033,8 @@ ols_rvsp_plot(mod4)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-25-1.png" alt="plot of chunk unnamed-chunk-25"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1050,7 +1051,8 @@ ols_rvsp_plot(mod4)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-26-1.png" alt="plot of chunk unnamed-chunk-26"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1067,7 +1069,8 @@ ols_rvsp_plot(mod4)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1084,7 +1087,8 @@ ols_rvsp_plot(mod4)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-28-1.png" alt="plot of chunk unnamed-chunk-28"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1190,7 +1194,7 @@ tidy(mod2a, conf.int=T)[,-c(3,4)]
 glance(mod2a)
 
 
-ols_rvsp_plot(mod2a)
+plot(mod2a,1)
 </code></pre>
 
     
@@ -1303,7 +1307,9 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    <h2>Tools for Checking Validity of a Model</h2>
+    <p><img src="figure/unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32"></p>
+
+<h2>Tools for Checking Validity of a Model</h2>
 
 <p>When fitting a regression model we will take these steps to verify the validity of the model:</p>
 
@@ -1359,7 +1365,7 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    <pre><code class="r">ols_rvsp_plot(mod2)
+    <pre><code class="r">plot(mod2,1)
 </code></pre>
 
     
@@ -1378,7 +1384,8 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-34-1.png" alt="plot of chunk unnamed-chunk-34"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1419,7 +1426,7 @@ ols_rvsp_plot(mod2a)
 <li>Recall our model 2a. </li>
 </ul>
 
-<pre><code class="r">ols_rsd_qqplot(mod2a)
+<pre><code class="r">plot(mod2a, 2)
 </code></pre>
 
     
@@ -1438,61 +1445,7 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Assessing Normality of Residuals: Histogram</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">ols_rsd_hist(mod2a)
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Assessing Normality of Residuals: Histogram</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Assessing Normality of Residuals: Hypothesis Tests</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">ols_norm_test(mod2a)
-</code></pre>
+    <p><img src="figure/unnamed-chunk-36-1.png" alt="plot of chunk unnamed-chunk-36"></p>
 
     
     <footer class = 'logo'>
@@ -1536,7 +1489,8 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    
+    <p><img src="figure/unnamed-chunk-38-1.png" alt="plot of chunk unnamed-chunk-38"></p>
+
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -1575,99 +1529,8 @@ ols_rvsp_plot(mod2a)
     <hr>
   </hgroup>
   <article data-timings="">
-    
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+    <p><img src="figure/unnamed-chunk-39-1.png" alt="plot of chunk unnamed-chunk-39"></p>
 
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Homoscedasticity of residuals: Score Test</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">ols_score_test(mod2a)
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Homoscedasticity of residuals: F-Test</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">ols_f_test(mod2a, rhs=TRUE)
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">ols_corr_test(mod2)
-ols_corr_test(mod2a)
-</code></pre>
-
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    
-    
-    <footer class = 'logo'>
-<div style="position: absolute; left: 900px; top: 600px; z-index:100">
-<img src = "assets/img/publichealthlogo.png" height="100" >
-</div>
-</footer>
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="id" style="background:;">
-  <hgroup>
-    <h2>Correlation of Residuals and Expected Values of Residuals:</h2>
-    <hr>
-  </hgroup>
-  <article data-timings="">
-    
     
     <footer class = 'logo'>
 <div style="position: absolute; left: 900px; top: 600px; z-index:100">
@@ -2008,74 +1871,26 @@ ols_corr_test(mod2a)
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=55 title='Assessing Normality of Residuals: Histogram'>
+        data-slide=55 title='Mean of Residuals'>
          55
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=56 title='Assessing Normality of Residuals: Histogram'>
+        data-slide=56 title='Homoscedasticity of residuals'>
          56
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=57 title='Assessing Normality of Residuals: Hypothesis Tests'>
+        data-slide=57 title='Homoscedasticity of residuals'>
          57
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=58 title='Mean of Residuals'>
+        data-slide=58 title='Residuals Plot'>
          58
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=59 title='Homoscedasticity of residuals'>
-         59
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=60 title='Homoscedasticity of residuals'>
-         60
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=61 title='Residuals Plot'>
-         61
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=62 title='Homoscedasticity of residuals: Score Test'>
-         62
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=63 title='Homoscedasticity of residuals: F-Test'>
-         63
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=64 title='Correlation of Residuals and Expected Values of Residuals:'>
-         64
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=65 title='Correlation of Residuals and Expected Values of Residuals:'>
-         65
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=66 title='Correlation of Residuals and Expected Values of Residuals:'>
-         66
       </a>
     </li>
   </ul>

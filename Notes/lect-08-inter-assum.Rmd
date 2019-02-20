@@ -70,7 +70,7 @@ library(broom)
 ```{r, echo=F}
 library(readr)
 library(ggplot2)
-metabol <- read_csv("metab.csv")
+metabol <- read_csv("../Notes/Data/metab.csv")
 ggplot(metabol, aes(Gastric, Metabol)) + geom_point() + geom_smooth(method="lm", se=FALSE) + 
   xlab("GAD Activity mumol/min/g") + ylab("Metabolism (mmol/liter-hour)")
 ```
@@ -485,11 +485,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 ## Enter Residual Plots
 
 ```{R, eval=F}
-library(olsrr)
-ols_rvsp_plot(mod1)
-ols_rvsp_plot(mod2)
-ols_rvsp_plot(mod3)
-ols_rvsp_plot(mod4)
+  plot(mod1,1)
+ plot(mod2,1)
+ plot(mod3,1)
+ plot(mod4,1)
 ```
 
 
@@ -498,8 +497,7 @@ ols_rvsp_plot(mod4)
 ## Enter Residual Plots
 
 ```{R, echo=F}
-library(olsrr)
-ols_rvsp_plot(mod1)
+plot(mod1,1)
 ```
 
 
@@ -509,8 +507,7 @@ ols_rvsp_plot(mod1)
 ## Enter Residual Plots
 
 ```{R, echo=F}
-library(olsrr)
-ols_rvsp_plot(mod2)
+plot(mod2,1)
 ```
 
 --- .class #id
@@ -518,8 +515,7 @@ ols_rvsp_plot(mod2)
 ## Enter Residual Plots
 
 ```{R, echo=F}
-library(olsrr)
-ols_rvsp_plot(mod3)
+plot(mod3,1)
 ```
 
 --- .class #id
@@ -527,8 +523,7 @@ ols_rvsp_plot(mod3)
 ## Enter Residual Plots
 
 ```{R, echo=F}
-library(olsrr)
-ols_rvsp_plot(mod4)
+plot(mod4,1)
 ```
 
 
@@ -589,7 +584,7 @@ tidy(mod2a, conf.int=T)[,-c(3,4)]
 glance(mod2a)
 
 
-ols_rvsp_plot(mod2a)
+plot(mod2a,1)
 ```
 
 
@@ -624,7 +619,7 @@ knitr::kable(glance(mod2a))
 
 
 ```{r, echo=F}
-ols_rvsp_plot(mod2a)
+plot(mod2a,1)
 ```
 
 
@@ -659,7 +654,7 @@ When fitting a regression model we will take these steps to verify the validity 
 ## Residuals Plots
 
 ```{r, eval=F}
-ols_rvsp_plot(mod2)
+plot(mod2,1)
 ```
 
 
@@ -668,7 +663,7 @@ ols_rvsp_plot(mod2)
 ## Residuals Plots
 
 ```{r, echo=F}
-ols_rvsp_plot(mod2)
+plot(mod2, 1)
 ```
 
 --- .class #id
@@ -685,7 +680,7 @@ ols_rvsp_plot(mod2)
 - Recall our model 2a. 
 ```{r, eval=F,message=F, warning=F, error=F}
 
-ols_rsd_qqplot(mod2a)
+plot(mod2a, 2)
 ```
 
 --- .class #id
@@ -695,34 +690,11 @@ ols_rsd_qqplot(mod2a)
 
 ```{r, echo=F,message=F, warning=F, error=F}
 
-ols_rsd_qqplot(mod2a)
+plot(mod2a, 2)
 ```
 
---- .class #id
-
-## Assessing Normality of Residuals: Histogram
-
-```{r,eval=F}
-ols_rsd_hist(mod2a)
-```
-
---- .class #id
 
 
-## Assessing Normality of Residuals: Histogram
-
-```{r,echo=F}
-ols_rsd_hist(mod2a)
-```
-
---- .class #id
-
-
-## Assessing Normality of Residuals: Hypothesis Tests
-
-```{r}
-ols_norm_test(mod2a)
-```
 
 --- .class #id
 
@@ -743,7 +715,7 @@ mean(mod2a$residuals)
 ## Homoscedasticity of residuals
 
 ```{r, echo=F, message=F, warning=F}
-ols_rvsp_plot(mod2a)
+plot(mod2a, 1)
 ```
 
 --- .class #id
@@ -763,56 +735,5 @@ ols_rvsp_plot(mod2a)
 ## Residuals Plot
 
 ```{r, echo=F}
-ols_rvsp_plot(mod2a)
-```
-
---- .class #id
-
-
-## Homoscedasticity of residuals: Score Test
-
-```{R}
-ols_score_test(mod2a)
-```
-
---- .class #id
-
-## Homoscedasticity of residuals: F-Test
-
-```{R}
-ols_f_test(mod2a, rhs=TRUE)
-```
-
---- .class #id
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-```{r, eval=F}
-ols_corr_test(mod2)
-ols_corr_test(mod2a)
-```
-
---- .class #id
-
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-```{r, echo=F}
-
-ols_corr_test(mod2)
-
-```
-
---- .class #id
-
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-```{r, echo=F}
-
-ols_corr_test(mod2a)
-
+plot(mod2a, 1)
 ```

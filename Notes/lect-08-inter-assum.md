@@ -57,14 +57,7 @@ assets      : {assets: ../../assets}
 
 ## Data Exploration: Metabolism by Gastric Activity
 
-
-```
-## Error: 'metab.csv' does not exist in current working directory ('C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/Brown Courses/PHP2511/Spring 2019/website/php-1511-2511.github.io/Notes').
-```
-
-```
-## Error in ggplot(metabol, aes(Gastric, Metabol)): object 'metabol' not found
-```
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png)
 
 --- .class #id
 
@@ -72,10 +65,7 @@ assets      : {assets: ../../assets}
 
 ## Data Exploration: Metabolism by Sex
 
-
-```
-## Error in ggplot(metabol, aes(Sex, Metabol)): object 'metabol' not found
-```
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 
 
@@ -86,10 +76,7 @@ assets      : {assets: ../../assets}
 
 ## Data Exploration: Metabolism by Alcoholism
 
-
-```
-## Error in ggplot(metabol, aes(Alcohol, Metabol)): object 'metabol' not found
-```
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
 
 
 --- .class #id
@@ -97,10 +84,7 @@ assets      : {assets: ../../assets}
 
 ## Data Exploration: Metabolism by Gastric and Sex
 
-
-```
-## Error in ggplot(metabol, aes(Gastric, Metabol, color = Sex)): object 'metabol' not found
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 --- .class #id
 
@@ -111,11 +95,11 @@ assets      : {assets: ../../assets}
 
 
 ```
-## Error in is.data.frame(data): object 'metabol' not found
-```
-
-```
-## Error in tidy(mod, conf.int = TRUE): object 'mod' not found
+## # A tibble: 2 x 5
+##   term        estimate       p.value conf.low conf.high
+##   <chr>          <dbl>         <dbl>    <dbl>     <dbl>
+## 1 (Intercept)    -1.83 0.00428          -3.03    -0.620
+## 2 Gastric         2.28 0.00000000527     1.70     2.86
 ```
 
 --- .class #id
@@ -124,11 +108,12 @@ assets      : {assets: ../../assets}
 
 
 ```
-## Error in is.data.frame(data): object 'metabol' not found
-```
-
-```
-## Error in tidy(mod, conf.int = TRUE): object 'mod' not found
+## # A tibble: 3 x 5
+##   term        estimate      p.value conf.low conf.high
+##   <chr>          <dbl>        <dbl>    <dbl>     <dbl>
+## 1 (Intercept)    -1.95 0.000796       -3.01     -0.884
+## 2 Gastric         1.97 0.0000000424    1.42      2.51 
+## 3 SexMale         1.62 0.00365         0.572     2.66
 ```
 
 --- .class #id
@@ -138,11 +123,13 @@ assets      : {assets: ../../assets}
 
 
 ```
-## Error in is.data.frame(data): object 'metabol' not found
-```
-
-```
-## Error in tidy(mod, conf.int = TRUE): object 'mod' not found
+## # A tibble: 4 x 5
+##   term            estimate p.value conf.low conf.high
+##   <chr>              <dbl>   <dbl>    <dbl>     <dbl>
+## 1 (Intercept)       -0.197  0.808    -1.84       1.45
+## 2 Gastric            0.837  0.0947   -0.154      1.83
+## 3 SexMale           -0.988  0.365    -3.19       1.21
+## 4 Gastric:SexMale    1.51   0.0118    0.362      2.65
 ```
 
 --- .class #id
@@ -155,11 +142,12 @@ assets      : {assets: ../../assets}
 
 
 ```
-## Error in is.data.frame(data): object 'metabol' not found
-```
-
-```
-## Error in tidy(mod, conf.int = TRUE): object 'mod' not found
+## # A tibble: 3 x 5
+##   term            estimate  p.value conf.low conf.high
+##   <chr>              <dbl>    <dbl>    <dbl>     <dbl>
+## 1 (Intercept)       -0.750 0.168      -1.84      0.336
+## 2 Gastric            1.15  0.00237     0.443     1.85 
+## 3 Gastric:SexMale    1.04  0.000166    0.549     1.54
 ```
 
 --- .class #id
@@ -497,11 +485,10 @@ grid.arrange(p1,p2,p3, p4, ncol=2)
 
 
 ```r
-library(olsrr)
-ols_rvsp_plot(mod1)
-ols_rvsp_plot(mod2)
-ols_rvsp_plot(mod3)
-ols_rvsp_plot(mod4)
+  plot(mod1,1)
+ plot(mod2,1)
+ plot(mod3,1)
+ plot(mod4,1)
 ```
 
 
@@ -509,7 +496,7 @@ ols_rvsp_plot(mod4)
 
 ## Enter Residual Plots
 
-
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
 
 
 --- .class #id
@@ -517,19 +504,19 @@ ols_rvsp_plot(mod4)
 
 ## Enter Residual Plots
 
-
-
---- .class #id
-
-## Enter Residual Plots
-
-
+![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
 
 --- .class #id
 
 ## Enter Residual Plots
 
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
+--- .class #id
+
+## Enter Residual Plots
+
+![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
 
 
 --- .class #id
@@ -590,7 +577,7 @@ tidy(mod2a, conf.int=T)[,-c(3,4)]
 glance(mod2a)
 
 
-ols_rvsp_plot(mod2a)
+plot(mod2a,1)
 ```
 
 
@@ -626,7 +613,7 @@ ols_rvsp_plot(mod2a)
 ## Quadratic Patterns in Residuals
 
 
-
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 
 
 ## Tools for Checking Validity of a Model
@@ -661,7 +648,7 @@ When fitting a regression model we will take these steps to verify the validity 
 
 
 ```r
-ols_rvsp_plot(mod2)
+plot(mod2,1)
 ```
 
 
@@ -669,7 +656,7 @@ ols_rvsp_plot(mod2)
 
 ## Residuals Plots
 
-
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
 
 --- .class #id
 
@@ -685,7 +672,7 @@ ols_rvsp_plot(mod2)
 - Recall our model 2a. 
 
 ```r
-ols_rsd_qqplot(mod2a)
+plot(mod2a, 2)
 ```
 
 --- .class #id
@@ -693,33 +680,10 @@ ols_rsd_qqplot(mod2a)
 ## Assessing Normality of Residuals: QQ-Plot
 
 
-
-
---- .class #id
-
-## Assessing Normality of Residuals: Histogram
-
-
-```r
-ols_rsd_hist(mod2a)
-```
-
---- .class #id
-
-
-## Assessing Normality of Residuals: Histogram
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
 
 
 
---- .class #id
-
-
-## Assessing Normality of Residuals: Hypothesis Tests
-
-
-```r
-ols_norm_test(mod2a)
-```
 
 --- .class #id
 
@@ -744,7 +708,7 @@ mean(mod2a$residuals)
 
 ## Homoscedasticity of residuals
 
-
+![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38-1.png)
 
 --- .class #id
 
@@ -762,50 +726,4 @@ mean(mod2a$residuals)
 
 ## Residuals Plot
 
-
-
---- .class #id
-
-
-## Homoscedasticity of residuals: Score Test
-
-
-```r
-ols_score_test(mod2a)
-```
-
---- .class #id
-
-## Homoscedasticity of residuals: F-Test
-
-
-```r
-ols_f_test(mod2a, rhs=TRUE)
-```
-
---- .class #id
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-
-```r
-ols_corr_test(mod2)
-ols_corr_test(mod2a)
-```
-
---- .class #id
-
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-
-
---- .class #id
-
-
-
-## Correlation of Residuals and Expected Values of Residuals:
-
-
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
