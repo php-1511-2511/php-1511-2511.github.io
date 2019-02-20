@@ -139,8 +139,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 2: Regression Diagnostics in R</td>
+<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a>  <a href="../labs/lab2_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -166,7 +166,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 2: Regression Diagnostics in R</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
