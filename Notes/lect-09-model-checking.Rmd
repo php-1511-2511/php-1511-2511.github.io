@@ -1,0 +1,624 @@
+---
+title       : Regression Assumptions and Outliers
+author      : Adam J Sullivan 
+job         : Assistant Professor of Biostatistics
+work        : Brown University
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js # {highlight.js, prettify, highlight}
+hitheme     :  github     # 
+widgets     : [mathjax, quiz, bootstrap, interactive] # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3, libraries/leaflet, libraries/dygraphs]}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+logo        : publichealthlogo.png
+biglogo     : publichealthlogo.png
+assets      : {assets: ../../assets}
+---  .segue bg:grey
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=FALSE)
+library(ggplot2)
+library(fivethirtyeight)
+require(tidyverse)
+library(broom)
+```
+
+```{r, echo=FALSE}
+mod1 <- lm(y1 ~ x1, data=anscombe)
+mod2 <- lm(y2 ~ x2, data=anscombe)
+mod3 <- lm(y3 ~ x3, data=anscombe)
+mod4 <- lm(y4 ~ x4, data=anscombe)
+```
+
+# Linear Regression Assumptions
+
+--- .class #id
+
+
+## Patterns in Residuals
+
+- Patterns in residuals show us that our model is not an adequate summary of the data. 
+- Consider what happens when our line is truly linear in nature then
+\[Y_i = E(Y_i|X_i=x_i) + \varepsilon_i = \beta_0 + \beta_1x_i + \varepsilon_i\]
+- We then fit our regression line $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$. This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx \varepsilon_i\]
+- So the residuals are randomly distributed and centered about 0.
+
+
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+ - In the second figure, we can see that we have a quadratic pattern in this. 
+- This happens when the true model is quadratic
+\[y_i = \beta_0 + \beta_1x_i + \beta_2x_i^2 + \varepsilon_i\]
+then we again fit our linear model $\hat{y}_i= \hat{\beta}_0 + \hat{\beta}_1x_i$.
+- This leads to the residuals
+\[\hat{\varepsilon}_i = y_i - \hat{y}_i = \beta_0 + \beta_1x_i + \beta_2x_i^2+  \varepsilon_i - \hat{\beta}_0 - \hat{\beta}_1x_i \approx\beta_2x_i^2+ \varepsilon_i\]
+- So we have a quadratic relationship given our $x$. 
+
+
+--- .class #id
+
+## Quadratic Patterns in Residuals
+
+
+- This means we may have been better off by choosing a model that would include a quadratic term for $x$. 
+- In model 2 of Anscombe's data had we run a model with a quadratic term we would then have
+
+```{r, eval=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+tidy(mod2a, conf.int=T)[,-c(3,4)]
+glance(mod2a)
+
+
+plot(mod2a,1)
+```
+
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+anscombe$x2sq <- anscombe$x2^2
+mod2a <- lm(y2 ~ x2 +  x2sq, data=anscombe)
+knitr::kable(tidy(mod2a, conf.int=T)[,-c(3,4)])
+```
+
+--- .class #id
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+knitr::kable(glance(mod2a))
+```
+
+
+--- .class #id
+
+
+
+## Quadratic Patterns in Residuals
+
+
+```{r, echo=F}
+plot(mod2a,1)
+```
+
+
+## Tools for Checking Validity of a Model
+
+When fitting a regression model we will take these steps to verify the validity of the model:
+
+1. Regression Model is Linear in parameters.
+2. Residuals are normally distributed.
+3. Mean of Residuals is 0. 
+4. Homoscedasticity of variances.
+5. Variables and residuals are not correlated. 
+6. No Influential Points or Outliers
+
+
+--- .class #id
+
+
+## Linear in Parameters
+
+- We say it is linear in parameters if the $\beta$ values are linear in nature. 
+- Consider the 2nd Anscombe model: 
+
+\[E[Y|x] = \beta_0 + \beta_1 x + \beta_2 x^2\]
+- Even though `x2` has been transformed to a square term, the $beta$ values are still linear. 
+
+
+
+--- .class #id
+
+
+## Residuals Plots
+
+```{r, eval=F}
+plot(mod2,1)
+```
+
+
+--- .class #id
+
+## Residuals Plots
+
+```{r, echo=F}
+plot(mod2, 1)
+```
+
+--- .class #id
+
+## Residuals Plots
+
+- The residuals shows us that the residuals did not change by much and we can still see the pattern is the exact same as before but the range of the residuals is what has changed. 
+
+
+--- .class #id
+
+## Assessing Normality of Residuals: QQ-Plot
+
+- Recall our model 2a. 
+```{r, eval=F,message=F, warning=F, error=F}
+
+plot(mod2a, 2)
+```
+
+--- .class #id
+
+## Assessing Normality of Residuals: QQ-Plot
+
+
+```{r, echo=F,message=F, warning=F, error=F}
+
+plot(mod2a, 2)
+```
+
+
+
+
+--- .class #id
+
+
+
+## Mean of Residuals
+
+- We can test if the mean of residuals is zero with a simple mean function. 
+
+```{R}
+mean(mod2a$residuals)
+```
+
+--- .class #id
+
+
+
+## Homoscedasticity of residuals
+
+```{r, echo=F, message=F, warning=F}
+plot(mod2a, 1)
+```
+
+--- .class #id
+
+
+
+
+## Homoscedasticity of residuals
+
+- We can see that there is no pattern to the residuals. 
+- They appear to be flat and not have a difference in width of the range of values. 
+- If we saw a pattern like a cone shape then we would not have homoscedasticity. 
+
+
+--- .class #id
+
+## Residuals Plot
+
+```{r, echo=F}
+plot(mod2a, 1)
+```
+
+
+
+--- .segue bg:grey
+
+# Leverage and Outliers
+
+
+--- .class #id
+
+## Leverage and Outliers
+
+- We will now move onto leverage points and outliers. 
+- **Leverage point**: is a value of the predictor that is far from the average of the predictor variables. 
+- **Outlier points**: is a values of the outcome that is far from the average of the outcome. 
+
+
+--- .class #id
+
+## Leverage and Outliers
+
+- These two things together help us determine whether certain points have a lot of influence on our regression model. 
+- For example in Anscombe model 3 it appears that there is one point that not only is an outlier but may be a leverage point as well. 
+- Instead of trying to parse both of these concepts out we will focus on a plot that helps us consider influential points as a whole. 
+
+
+--- .class #id
+
+## Cook's D 
+
+- Cook's distance attempts to tell us how much $\hat{\beta}$ changes due to the inclusion of the $i^{th}$ observation. 
+
+$$D_i= \dfrac{\sum_{j=1}^n \left( \hat{y}_j - \hat{y}_{j(i)}\right)^2}{(p+1)\hat{\sigma}^2}$$
+
+
+--- .class #id
+
+
+## DFFITS
+
+- This quantity measures how much the regression function changes at the  $i$-th case / observation when the  $i$-th case / observation is deleted.
+- For small/medium datasets: value of 1 or greater is “suspicious” (RABE). For large dataset: value of  $2\sqrt{(p+1)/n}$.
+
+$$DFFITS_i=\dfrac{\hat{Y_i} - \hat{Y_{i(i)}}}{\hat{\sigma}_{(i)}\sqrt{h_{ii}}}$$
+
+
+--- .class #id
+
+
+## What is $h_{ii}$?
+
+- In regression we have something we call the hat matrix, for a matrix $X$:
+$$H=X(X^TX)^{-1}X^T$$
+- We actually solve regression by performing this operation:
+$$\hat{y} = Hy$$
+
+
+--- .class #id
+
+
+## What is $h_{ii}$?
+
+- This ends up meaning that we have:
+$$\hat{y}_i = h_{i1}y_1 + h_{i2}y_2 + \cdots + h_{ii}y_i + \cdots + h_{in}y_n$$
+
+
+--- .class #id
+
+
+
+## DFBETAS
+
+- This quantity measures how much the coefficients change when the $i$-th case is deleted.
+$$DFBETAS_{j(i)}= \dfrac{\hat{\beta}_j - \hat{\beta}_{j(i)}}{\sqrt{\hat{\sigma}^2_{(i)}(X^TX)^{-1}_{jj}}}$$
+- For small/medium datasets: absolute value of 1 or greater is “suspicious”. For large dataset: absolute value of  $2/\sqrt{n}$ .
+
+
+--- .class #id
+
+
+
+## Simulating Data
+
+```{R}
+set.seed(12345)
+X = runif(150, .5, 3.5)
+beta0 = 1.0
+beta1 = 1.5
+sigma = 0.7
+Y = beta0 + beta1*X + sigma*rnorm(150) # The regular process
+# Contaminated data: Four cases
+X.suspect1 = 1.5; Y.suspect1 = 3.3
+X.suspect2 = 1.5; Y.suspect2 = 9.7
+X.suspect3 = 9.0; Y.suspect3 = 14.5
+X.suspect4 = 9.3; Y.suspect4 = 0.6
+Y.all1 = c(Y, Y.suspect1); X.all1 = c(X, X.suspect1)
+Y.all2 = c(Y, Y.suspect2); X.all2 = c(X, X.suspect2)
+Y.all3 = c(Y, Y.suspect3); X.all3 = c(X, X.suspect3)
+Y.all4 = c(Y, Y.suspect4); X.all4 = c(X, X.suspect4)
+
+
+```
+
+
+--- .class #id
+
+## Plots of Data
+
+```{r, echo=F}
+library(tidyverse)
+library(gridExtra)
+library(ggplot2)
+data <- as_tibble(cbind(X.all1, X.all2, X.all3, X.all4, Y.all1, Y.all2, Y.all3, Y.all4))
+
+p1 <- ggplot(data, aes(X.all1, Y.all1)) + geom_point() +
+annotate("point", x = X.suspect1, y = Y.suspect1, colour = "red", size=3) + xlab("X") + ylab("Y")
+
+p2 <- ggplot(data, aes(X.all2, Y.all2)) + geom_point() +
+  annotate("point", x = X.suspect2, y = Y.suspect2, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+p3 <- ggplot(data, aes(X.all3, Y.all3)) + geom_point() +
+  annotate("point", x = X.suspect3, y = Y.suspect3, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+p4 <- ggplot(data, aes(X.all4, Y.all4)) + geom_point() +
+  annotate("point", x = X.suspect4, y = Y.suspect4, colour = "red", size=3)+ xlab("X") + ylab("Y")
+
+
+grid.arrange(p1,p2,p3,p4, ncol=2)
+
+```
+
+
+--- .class #id
+
+## Run the 4 Regressions
+
+```{r}
+out1 <- lm(data=data, Y.all1~X.all1 )
+out2 <- lm(data=data, Y.all2~X.all2 )
+out3 <- lm(data=data, Y.all3~X.all3 )
+out4 <- lm(data=data, Y.all4~X.all4 )
+```
+
+
+
+--- .class #id
+
+
+## Outliers and Influential Points Plots
+
+
+```{r, eval=F}
+library(olsrr)
+ols_plot_cooksd_bar(out1)
+ols_plot_dfbetas(out1)
+ols_plot_dffits(out1)
+```
+
+
+--- .class #id
+
+## Outliers and Influential Points Plots: Cook's D
+
+```{r}
+library(olsrr)
+ols_plot_cooksd_bar(out1)
+```
+
+
+
+--- .class #id
+
+## Outliers and Influential Points Plots: DFBETAS
+
+```{r}
+library(olsrr)
+ols_plot_dfbetas(out1)
+```
+
+
+--- .class #id
+
+## Outliers and Influential Points Plots: DFFITS
+
+```{r}
+library(olsrr)
+ols_plot_dffits(out1)
+```
+
+
+--- .class #id
+
+
+
+
+## Outliers and Influential Points Plots
+
+
+```{r, eval=F}
+library(olsrr)
+ols_plot_cooksd_bar(out4)
+ols_plot_dfbetas(out4)
+ols_plot_dffits(out4)
+```
+
+
+--- .class #id
+
+
+
+## Outliers and Influential Points Plots: DFBETAS
+
+```{r echo=F}
+ols_plot_dfbetas(out4)
+```
+
+--- .class #id
+
+
+
+## Outliers and Influential Points Plots: DFFITS
+
+```{r, echo=F}
+ols_plot_dffits(out4)
+```
+
+
+
+--- .class #id
+
+
+
+## Outliers and Influential Points Plots: Cook's D
+
+```{r, echo=F}
+ols_plot_cooksd_bar(out4)
+```
+
+--- .class #id
+
+
+
+
+
+
+## What can we do with this point?
+
+- We can decide to remove the point and re-run the regression. 
+
+```{r, eval=F}
+library(broom)
+out4a <- lm(data=data[-151,], Y.all4~X.all4 )
+
+tidy4a <- tidy(out4a, conf.int = T)
+tidy4 <- tidy(out4, conf.int = T)
+knitr::kable(bind_rows(tidy4, tidy4a)[-c(3,4)])
+
+glance4a <- glance(out4a)
+glance4 <- glance(out4)
+knitr::kable(bind_rows(glance4, glance4a))
+```
+
+
+--- .class #id
+
+
+## What can we do with this point?
+
+```{r, echo=F}
+library(broom)
+out4a <- lm(data=data[-151,], Y.all4~X.all4 )
+
+tidy4a <- tidy(out4a, conf.int = T)
+tidy4 <- tidy(out4, conf.int = T)
+knitr::kable(bind_rows(tidy4, tidy4a)[-c(3,4)])
+
+```
+
+
+--- .class #id
+
+
+## What can we do with this point?
+
+```{r, echo=F}
+glance4a <- glance(out4a)
+glance4 <- glance(out4)
+knitr::kable(bind_rows(glance4, glance4a))
+```
+
+
+## Marginal Model Plots
+
+- We will consider the next level of plots called Marginal Model Plots. 
+- The aim of these plots is to show how well out model fits the data. 
+
+
+
+
+```{r, eval=F}
+  library(car)
+mmps(out4)
+```
+
+
+--- .class #id
+
+
+
+## Marginal Model Plots
+
+```{r, echo=F}
+  library(car)
+mmps(out4)
+```
+
+
+--- .class #id
+
+
+## What Can we See?
+
+- From the figure we can see that the blue line represents a loess(smoothing) line for the data and the dashed line represents the model which R fitted. 
+- We can see that our data is very skewed by the outlier 
+- Also we can see that the loess line is more curved than our data model. 
+
+
+--- .class #id
+
+## What happens when we Delete points?
+
+- When we remove the point the difference is drastic 
+```{r, eval=F}
+mmps(out4a)
+```
+
+
+--- .class #id
+
+## What happens when we Delete Points??
+
+
+```{r, echo=F}
+mmps(out4a)
+```
+
+
+--- .class #id
+
+## Outlier Treatment
+
+
+- Once the outliers are identified and you have decided to make amends as per the nature of the problem, you may consider one of the following approaches.
+    1. Imputation
+    2. Capping
+    3. Prediction
+
+--- .class #id
+
+## Imputation
+
+- We can impute the value by replacing it with:
+    - mean
+    - median
+    - mode
+    - Other Regression techniques
+- We will consider this further in missing Data. 
+
+
+--- .class #id
+
+## Capping
+
+- For missing values that lie outside the 1.5*IQR limits, we could cap it by replacing those observations outside the lower limit with the value of 5th %ile and those that lie above the upper limit, with the value of 95th %ile. 
+- Below is a sample code that achieves this.
+```
+x <- dataframe$variable_of)interest
+qnt <- quantile(x, probs=c(.25, .75), na.rm = T)
+caps <- quantile(x, probs=c(.05, .95), na.rm = T)
+H <- 1.5 * IQR(x, na.rm = T)
+x[x < (qnt[1] - H)] <- caps[1]
+x[x > (qnt[2] + H)] <- caps[2]
+```
+
+
+--- .class #id
+
+## Prediction
+
+- In yet another approach, the outliers can be replaced with missing values (NA) and then can be predicted by considering them as a response variable. 
+- We will discuss this when considering missing data. 

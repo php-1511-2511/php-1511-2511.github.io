@@ -95,7 +95,7 @@ title: Calendar
 <td align="left">Week 4</td>
 <td align="left">11-Feb</td>
 <td align="left">Multiple Linear Regression</td>
-<td align="left"><a href="../Notes/lect-06-lin-reg-2.html">Lect-06-lin-reg-2</a></td>
+<td align="left"><a href="../Notes/lect-06-lin-reg-2.html">Lect-06-lin-reg-2</a> <a href="https://vimeo.com/317332692">Video</a></td>
 <td align="left">Fox Chap 6</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -104,7 +104,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">13-Feb</td>
 <td align="left">Inference for Linear Regression</td>
-<td align="left"><a href="../Notes/lect-07-multiple-linear.html">Lect-07-multiple-linear</a></td>
+<td align="left"><a href="../Notes/lect-07-multiple-linear.html">Lect-07-multiple-linear</a> <a href="https://vimeo.com/317332719">Video</a></td>
 <td align="left">Fox Chap 7, Vittinghoff Chap 4.6</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -131,7 +131,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">20-Feb</td>
 <td align="left">Factors and Interactions</td>
-<td align="left"><a href="../Notes/lect-08-inter-assum.html">Lect-08-inter-assum</a></td>
+<td align="left"><a href="../Notes/lect-08-inter-assum.html">Lect-08-inter-assum</a> <a href="https://vimeo.com/318722540">Video</a></td>
 <td align="left">Fox Chap 11, Vittinghoff Chap 4.7</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -148,7 +148,7 @@ title: Calendar
 <tr>
 <td align="left">Week 6</td>
 <td align="left">25-Feb</td>
-<td align="left">Diagnostics for Linear Regression</td>
+<td align="left">Unusual and Influential Data</td>
 <td align="left"></td>
 <td align="left">Fox Chap 12</td>
 <td align="left"></td>
@@ -157,7 +157,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">27-Feb</td>
-<td align="left">Unusual and Influential Data</td>
+<td align="left">Collinearity - Basic GLM</td>
 <td align="left"></td>
 <td align="left">Fox Chap 13, Vittinghoff Chap 4.8</td>
 <td align="left"></td>
@@ -166,8 +166,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 3: Regression Diagnostics in R</td>
+<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a>  <a href="../labs/lab2_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -176,7 +176,7 @@ title: Calendar
 <td align="left">Week 7</td>
 <td align="left">4-Mar</td>
 <td align="left">Collinearity</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-09-model-tests.html">Lect-09-model-tests</a></td>
 <td align="left">Fox Chap 14</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -184,8 +184,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">6-Mar</td>
-<td align="left">Generalized Linear Regression Basics</td>
-<td align="left"></td>
+<td align="left">Logistic Regression</td>
+<td align="left"><a href="../Notes/lect-10-collin-glm.html">Lect-10-collin-glm</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.1</td>
 <td align="left"></td>
 <td align="left"></td>

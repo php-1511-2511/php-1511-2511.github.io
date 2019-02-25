@@ -1,0 +1,282 @@
+---
+title: "Assignment 1 Solutions"
+output: html_document
+header-includes:
+date: "February 16, 2019"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, cache = TRUE, results='asis', echo=FALSE)
+```
+
+***For the R Markdown Version of the solutions: [RMarkdown](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw1_sol.Rmd)***
+
+We will consider the data behind the story: ["Comic Books are Still Made By Men, For Men and About Men"](http://fivethirtyeight.com/features/women-in-comic-books/). This data is part of the `fivethirtyeight` package. To use this data you can run the following code:
+
+```{r, eval=T, echo=F}
+library(fivethirtyeight)
+library(forcats)
+library(dplyr)
+library(xtable)
+library(ggplot2)
+library(knitr)
+library(broom)
+
+```
+
+## Questions
+
+It is obvious that this is not directly a public health dataset but in society at large we can notice that there are a lot of inequities and biases that are interwoven into mast aspects of life. This includes something as simple as comic book characters. This homework will give you a chance to evaluate basic statistical methods you learned previously and practice improving your R coding. 
+
+
+1. We will evaluate the number of appearances as the outcome. Create a plot to display the distribution of this variable. Then interpret the graph and note the normality, skewness and anything else you notice about this. 
+
+```{r}
+cc=comic_characters
+comic=comic_characters
+```
+
+### Range of Appearances
+```{r}
+table <- cc %>%
+  summarise_each(funs(min(., na.rm=TRUE), max(., na.rm=T)), appearances)
+
+kable(table)
+```
+
+
+### Missing Data for Appearances
+
+```{r}
+table <- cc %>%
+  group_by(is.na(appearances)) %>%
+  tally()
+
+kable(table)
+```
+
+
+
+###Histogram of appearances
+
+
+```{r}
+comic %>%
+  ggplot(aes(x = appearances)) +
+  geom_histogram(binwidth = 100, color = 'black', fill = 'white') +
+  ylab("Count") +
+  xlab("Apppearances") +
+  ggtitle("Histogram: Character Appearances") +
+  theme_classic() +
+  labs(caption = "Note: 1451 missing values")
+
+
+```
+
+
+
+$\color{blue}{\text{Answer:}}$
+
+  ***The distribution of appearances is highly right-skewed. The values that the variable takes on range from 1 to 4043 and the variable includes 1451 missing values. There tail of the distribution contains few very high values. The appearance variable is also bounded by 0***
+
+
+2. Hopefully you noted that this was not normally distributed so the next step would be to consider a `log` transform of this variable. Use the `mutate()` function to add a variable `log_app` which is the log of the appearances. Then create the same distribution plot above for `log_app`.
+
+```{r}
+cc=cc%>%
+  mutate(log_app=log(appearances))
+
+comic = comic %>%
+  mutate(log_app = log(appearances))
+
+comic %>%
+  ggplot(aes(x = log_app)) +
+  geom_histogram(color = 'black', fill = 'white') +
+  ylab("Count") +
+  xlab("log(Apppearances)") +
+  ggtitle("Histogram: Character Appearances") +
+  theme_classic() +
+  labs(caption = "Note: 1451 missing values")
+
+
+```
+
+$\color{blue}{\text{Answer:}}$
+  
+***The distribution of log appearances is still right-skewed, but less so than it was prior to the log transformation.***
+  
+
+3. We will now consider the variable `sex` in the dataset. Make a table of counts of how many characters are in each group. You can use `tally()` or `count()` for this. Comment on what you notice about these groups. 
+
+
+
+
+```{r}
+
+###one solution
+#cc$sex[is.na(cc$sex)]='missing'
+tbl1=cc%>%
+  filter(!is.na(sex))%>%
+  count(sex)
+kable(tbl1, format="html")
+```
+
+
+```{r, eval=F}
+###another solution
+sex_count = comic %>%
+  group_by(sex) %>%
+  tally() %>%
+  rename(Sex = sex)
+
+### Change NA to a string for the table
+sex_count[7,1] = "NA"
+
+### Make a table using stargazer
+
+kable(sex_count, format="html")
+
+```
+
+$\color{blue}{\text{Answer:}}$
+
+***There are almost 3 times as many male characters as female, and very small numbers of genderfluid, genderless, and transgender characters relative to the number of male and female characters. We see that of the 23272 characters, more than half are male. About 25% are female. 979 are missing gender information. We will most likely need to combine categories due to the low numbers represented by some. ***
+  
+  
+4. Run an ANOVA considering `log_app` over the different genders (`sex`). Are the appearances different by gender (`sex`)? Do you think ANOVA is appropriate across all these categories? Why or Why not?
+
+$\color{blue}{\text{Answer:}}$
+
+```{r}
+kable(tidy(aov(log_app~sex, data=cc)), format="html")
+boxplot(log_app~sex, data=cc, names=c('Agender','Female','Gender Fluid','Genderless','Male','Transgender'), las=2)
+
+
+#another approach
+### Regress log_app on sex
+model = lm(log_app ~ sex, data = comic)
+
+### Run ANOVA
+anova.4 = aov(model)
+
+
+
+### Check common variance assumption
+model %>%
+  ggplot() +
+  geom_point(aes(x = .fitted, y = .resid, color = sex)) +
+  ylab("Residual") +
+  xlab("Fitted Value") +
+  ggtitle("Check Variance of Observations within Each Sex") +
+  theme_classic()
+
+### Check normality of the observations within each group
+comic %>%
+  ggplot(aes(sample = log_app)) +
+  facet_wrap(~sex) +
+  geom_qq() +
+  geom_qq_line() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("QQ Plots by Group") +
+  theme_classic()
+
+```
+
+***The significant F-statistic in the summary of the anova output indicates that at least one group is significantly different in log appearances between the sexes. Anova may not be appropriate here because there is only one observation in the transgender characters group. The sex classification appears to be disjoint, but the independence assumption is difficult to remark on because we do not know enough about how the data was collected: it is not clear if the fact that one character appears in the dataset is related to other characters appearing in the dataset, since the data was pulled from wikia and publishers. Additionally, as can be seen in the boxplots, the groups do not have common variance, and some groups are skewed.***
+  
+***If the distribution was normal, the points would be close to the line. We see that the points diverge from the line at the lower ends. This is evidence that their distribution is not normal. Also, we do not have enough points in the gender fluid and transgender factors to make any conclusions about their distributions. ***
+
+***Note: You will not have covered the assumptions checking by this time but this is to display the results of it***
+
+5. (PHP 2511 Only) What are the assumptions of ANOVA? Which if any would be a problem with `log_app` and `sex` ?
+
+$\color{blue}{\text{Answer:}}$
+
+***Anova assumes that each sample appears in the data independently of the others, the groups have equal variances, and groups are approximately normally distributed. As mentioned above, the groups do not appear very normal in the boxplots: the female and male boxplots have some high outliers, and the for agender characters, log of appearances is skewed. The groups also do not have common variance. There is not enough information to test whether or not the transgender category is statistically different since it has only one observation.***
+
+
+6. Using `mutate()` and `fct_relevel()` create a new variable called `gender` with three categories:
+    - `male`
+    - `female`
+    - `non-binary`
+    
+$\color{blue}{\text{Answer:}}$
+
+```{r , echo=TRUE}
+cc2 = cc %>%
+  filter(!is.na(sex)) %>%
+  mutate(gender = ifelse(sex == "Male Characters", "Male", ifelse(sex == "Female    Characters", "Female", "Non-Binary"))) %>% # New way to do this, or use the notes version
+  mutate(gender = as.factor(gender))
+
+comic = comic %>%
+  filter(!is.na(sex)) %>%
+  mutate(gender = ifelse(sex == "Male Characters", 
+                         "male", ifelse(sex == "Female Characters",
+                                "female", "non-binary"))) %>%
+  mutate(gender = as.factor(gender))
+
+
+```
+
+    
+7. Run an ANOVA considering `log_app` over the new gender variable. Are there differences between your three gender categories?
+
+$\color{blue}{\text{Answer:}}$
+
+```{r}
+
+### Regress log_app on sex
+model7 = lm(log_app ~ gender, data = comic)
+
+### Run ANOVA
+anova.7 = aov(model7)
+
+### Make a table
+kable(tidy(anova.7))
+      
+```
+
+ ***There are differences between the gender categories, as the F statistic is highly significant, the p-value is almost zero.***
+
+8. Using `TukeyHSD()` perform p-value adjusted t-tests to compare each category of `gender`. What groups are different than the others? 
+  
+$\color{blue}{\text{Answer:}}$
+
+```{r}
+### Use TukeyHSD 
+tukey.8 = TukeyHSD(anova.7)
+
+### Make a table
+kable(tidy(tukey.8))
+
+```
+
+***There is a significant difference between male and female appearances. There is also a significant difference between male and non-binary appearances. ***
+
+9. Interpret the overall results of this ANOVA. What does this tell you about appearances and gender. 
+ 
+  $\color{blue}{\text{Answer:}}$
+
+***The Anova tells us that the gender of the character is associated with the log number of appearances. The difference in number of appearances for males versus non-binary characters is highly significant, with males appearing less frequently than females and non-binary characters. ***
+
+10. (PHP 2511 only) Does your interpretation make sense for what you think is going on? Why might the one particular group be lower than the others?
+ 
+ 
+  $\color{blue}{\text{Answer:}}$
+
+***We can see that there is a difference ***
+
+
+***The average number of appearances by males is significantly lower than that of females and non-binary characters. With a simple test like this you might be led to believe that male characters have some sort of disadvantage when it comes to average appearances. However, it turns out that there are just so many male characters with few appearances:***
+
+```{r}
+table <- cc %>%
+  filter(appearances<=3) %>%
+  group_by(sex, appearances) %>%
+  tally()
+
+kable(table)
+```
+
+***This leads to a skewed result which if not careful we may miss. ***

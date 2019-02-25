@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multicollinearity and Basic GLM</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Multicollinearity and Basic GLM">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Multicollinearity and Basic GLM</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Multicollinearity</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is Multicollinearity</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Multicollinearity exists when 2 or more covariates in a model are moderately or highly correlated. </li>
+<li>This may be viewed as an easy issue to deal with as many things we may want to control for are just highly correlated. </li>
+<li>For example, education and income are highly correlated. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Types of Multicollinearity</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Data based: 
+
+<ul>
+<li>Could be poorly designed study</li>
+<li>observational data where only variables collected are all correlated. </li>
+</ul></li>
+<li>Structural:
+
+<ul>
+<li>Duplicate variables so they are mathematically the same. </li>
+<li>Variables that were created from others
+
+<ul>
+<li>For example, weight and height are highly correlated with BMI. </li>
+</ul></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider the following data:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This data has been simulated so that it is not collinear:</li>
+</ul>
+
+<pre><code>##            response predictor1 predictor2
+## response      1.000        0.8      0.202
+## predictor1    0.800        1.0      0.000
+## predictor2    0.202        0.0      1.000
+</code></pre>
+
+<ul>
+<li>Let&#39;s look at the regressions</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Uncorrelated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider the following regressions:
+\[\text{Model 1: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_1\]
+\[\text{Model 2: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_2\]
+\[\text{Model 3: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_1+ + \hat{\beta}_2Predictor_2\]
+\[\text{Model 4: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_2 + \hat{\beta}_2Predictor_1\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Uncorrelated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">0.8003296</td>
+<td align="right">0</td>
+<td align="right">0.7966066</td>
+<td align="right">0.8040526</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">0.2016739</td>
+<td align="right">0</td>
+<td align="right">0.1956074</td>
+<td align="right">0.2077403</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">0.8004000</td>
+<td align="right">0</td>
+<td align="right">0.7968944</td>
+<td align="right">0.8039057</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">0.2019523</td>
+<td align="right">0</td>
+<td align="right">0.1984514</td>
+<td align="right">0.2054533</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">0.2019523</td>
+<td align="right">0</td>
+<td align="right">0.1984514</td>
+<td align="right">0.2054533</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">0.8004000</td>
+<td align="right">0</td>
+<td align="right">0.7968944</td>
+<td align="right">0.8039057</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Uncorrelated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.6396798</td>
+<td align="right">0.6396762</td>
+<td align="right">0.6008585</td>
+<td align="right">177527.401</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="right">0.0407269</td>
+<td align="right">0.0407173</td>
+<td align="right">0.9803905</td>
+<td align="right">4245.513</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="right">0.6805193</td>
+<td align="right">0.6805129</td>
+<td align="right">0.5657864</td>
+<td align="right">106500.764</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="right">0.6805193</td>
+<td align="right">0.6805129</td>
+<td align="right">0.5657864</td>
+<td align="right">106500.764</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Sum Squares of Models</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">64092.895</td>
+<td align="right">64092.895</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">4080.641</td>
+<td align="right">4080.641</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">64092.895</td>
+<td align="right">64092.895</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">4091.918</td>
+<td align="right">4091.918</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">4080.641</td>
+<td align="right">4080.641</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">64104.172</td>
+<td align="right">64104.172</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do We Notice?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Coefficients do not change in models. </li>
+<li>Sums of Squares added to model remain consistent</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Consider the following data:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This data has been simulated so that it is highly collinear:</li>
+</ul>
+
+<pre><code>##            response predictor1 predictor2
+## response      1.000      0.846      0.188
+## predictor1    0.846      1.000      0.639
+## predictor2    0.188      0.639      1.000
+</code></pre>
+
+<ul>
+<li>Let&#39;s look at the regressions</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Correlated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will consider the following regressions:
+\[\text{Model 1: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_1\]
+\[\text{Model 2: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_2\]
+\[\text{Model 3: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_1+ + \hat{\beta}_2Predictor_2\]
+\[\text{Model 4: }Response = \hat{\beta}_0 + \hat{\beta}_1Predictor_2+ + \hat{\beta}_2Predictor_1\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Correlated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">0.9289612</td>
+<td align="right">0.0000000</td>
+<td align="right">0.8117562</td>
+<td align="right">1.0461662</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">0.2349541</td>
+<td align="right">0.0606592</td>
+<td align="right">-0.0107236</td>
+<td align="right">0.4806318</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1.3475785</td>
+<td align="right">0.0000000</td>
+<td align="right">1.2697073</td>
+<td align="right">1.4254497</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">-0.7444484</td>
+<td align="right">0.0000000</td>
+<td align="right">-0.8329782</td>
+<td align="right">-0.6559187</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">-0.7444484</td>
+<td align="right">0.0000000</td>
+<td align="right">-0.8329782</td>
+<td align="right">-0.6559187</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1.3475785</td>
+<td align="right">0.0000000</td>
+<td align="right">1.2697073</td>
+<td align="right">1.4254497</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression on Correlated Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">r.squared</th>
+<th align="right">adj.r.squared</th>
+<th align="right">sigma</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">0.7162667</td>
+<td align="right">0.7133715</td>
+<td align="right">0.5868151</td>
+<td align="right">247.394788</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="right">0.0354504</td>
+<td align="right">0.0256081</td>
+<td align="right">1.0819531</td>
+<td align="right">3.601826</td>
+<td align="right">0.0606592</td>
+</tr>
+<tr>
+<td align="right">0.9267136</td>
+<td align="right">0.9252025</td>
+<td align="right">0.2997678</td>
+<td align="right">613.287170</td>
+<td align="right">0.0000000</td>
+</tr>
+<tr>
+<td align="right">0.9267136</td>
+<td align="right">0.9252025</td>
+<td align="right">0.2997678</td>
+<td align="right">613.287170</td>
+<td align="right">0.0000000</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Sum Squares of Models</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">df</th>
+<th align="right">sumsq</th>
+<th align="right">meansq</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">85.190885</td>
+<td align="right">85.190885</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">4.216378</td>
+<td align="right">4.216378</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">85.190885</td>
+<td align="right">85.190885</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">25.030002</td>
+<td align="right">25.030002</td>
+</tr>
+<tr>
+<td align="left">predictor2</td>
+<td align="right">1</td>
+<td align="right">4.216378</td>
+<td align="right">4.216378</td>
+</tr>
+<tr>
+<td align="left">predictor1</td>
+<td align="right">1</td>
+<td align="right">106.004508</td>
+<td align="right">106.004508</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What did we Notice?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Coefficients change a lot</li>
+<li>Sum of Squares Depends on the order in which data is in the model. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Signs of Multicollinearity</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Estimates of the coefficients vary from model to model.</li>
+<li>\(t\)-tests of individual slopes are non-significant but overall F-test is significant. </li>
+<li>Correlations among covariates are large. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How Can we Detect this?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the model with just one covariate:</li>
+</ul>
+
+<p>\[y_i= \beta_0 + \beta_kx_{ik} + \varepsilon_i\]</p>
+
+<ul>
+<li>We can see this variance:
+\[Var(b_k)_{min}= \dfrac{\sigma^2}{\sum_{i=1}^n(x_{ik}-\bar{x}_k)^2}\]</li>
+<li>This is the smallest variance will be. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Then the larger model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the model with just one covariate:</li>
+</ul>
+
+<p>\[y_i= \beta_0 + \beta_1x_{i1} + \cdots +  \beta_kx_{ik} + \cdots \beta_px_{ip} \varepsilon_i\]</p>
+
+<ul>
+<li>We can see this variance:
+\[Var(b_k)= \dfrac{\sigma^2}{\sum_{i=1}^n(x_{ik}-\bar{x}_k)^2}\times\dfrac{1}{1-R^2_k}\]</li>
+<li>\(R^2_k\) is the \(R^2\) value of the k\(^{th}\) predictor on the remaining. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does this tell us?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>How much is our variance inflated by?</li>
+</ul>
+
+<p>\[\dfrac{Var(b_k)}{Var(b_k)_{min}} =\dfrac{1}{1-R^2_k} \]</p>
+
+<ul>
+<li>Variance Inflation Factor
+\[VIF_k=\dfrac{1}{1-R^2_k}\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variance Inflation Factor</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Rule of thumb
+
+<ul>
+<li>1 = not correlated.</li>
+<li>Between 1 and 5 = moderately correlated.</li>
+<li>Greater than 5 = highly correlated.</li>
+</ul></li>
+<li>Some suggest anything more than 2.5 should cause concern and definitely over 10.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variance Inflation Factor</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Be careful just judging by it alone</li>
+<li>For example \(x\) and \(x^2\) may have a high VIF but this would not hurt your model. </li>
+<li>Also Indicator variables often have a high VIF with each other but this is not an issue. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Calculating in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(car)
+vif1 &lt;- vif(mod3)
+vif2 &lt;- vif(mod4)
+knitr::kable(bind_rows(vif1,vif2))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Calculating in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">predictor1</th>
+<th align="right">predictor2</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Calculating in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="right">predictor1</th>
+<th align="right">predictor2</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="right">1.691149</td>
+<td align="right">1.691149</td>
+</tr>
+<tr>
+<td align="right">1.691149</td>
+<td align="right">1.691149</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How Can We Deal with it?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Remove Multicollinear variables from model.
+
+<ul>
+<li>What might the effects of this be?</li>
+</ul></li>
+<li>Create a summed score of the collinear variables. </li>
+<li>Create a score based on something like Principal Component Analysis. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-26" style="background:grey;">
+  <hgroup>
+    <h1>Generalized Linear Models</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Generalized Linear Models</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will introduce a topic that is typically taught only in a class where you are expected to know linear algebra. </li>
+<li>Fear not though! </li>
+<li>We will show some of the math behind this but this is to teach you methods that link to the modern way data analysis is done. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why Bother?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>By learning the <em>Generalized Linear Models</em> we can understand how to fit, linear, logistic, Poisson, multinomial, data from distributions like Gamma and Inverse Gamma, longitudinal data and multivariate data.</li>
+<li>We will not have time to learn all of these in this class but this is a very versatile model. </li>
+<li>The mathematics behind these models are matrix related but we will focus on the application of them. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Generalized Linear Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The generalized linear model refers to a whole family of models.<br></li>
+<li>They became popular with a book by McCullagh and Nelder (1982). </li>
+<li>They have 3 basic components. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Components of any GLM</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li><strong>The Random Component</strong> - probability distribution of the response variable. In linear regression this is the normal distribution. </li>
+<li><strong>The Systematic Component</strong> - fixed structure of explanatory variables usually a linear function. We have seen this as \(\beta_0 + \beta_1X_1 + \ldots\). </li>
+<li><strong>The Link Function</strong> - maps the systematic component onto the random component. This was \(E(Y_i|X_{1i}, \ldots)\) in the linear regression case. </li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Random Component</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Observations of the outcome represent a sample from a random variable.</li>
+<li>This random variable has a mean value and variation that depends on the distribution it follows.</li>
+<li>GLM uses random variables that follow an exponential family distribution. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Systematic Component</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We use the covariates or independent variables to model to estimate the means of the random variable that our sample was drawn from.</li>
+<li>This is added to the variation to give use the data that we observed. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Model</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>We use
+\[\eta_i = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \cdots + \beta_px_{ip} = \sum_{j=1}^p \beta_jx_{ij}\]</p></li>
+<li><p>where: </p>
+
+<ul>
+<li>\(\eta\) is the linear predictor.</li>
+<li>\(x_1, \ldots, x_p\) are the explanatory variables.</li>
+<li>\(\beta_1,\ldots,\beta_p\) are the coefficients of the explanatory variables. </li>
+<li>\(\beta_0\) is the value of \(\eta\) when all the \(x\)&#39;s are 0. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What you typically will see:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Most of the time this is written as:
+\[\mathbf{\eta} = \mathbf{X\beta} \]</li>
+<li>where:
+
+<ul>
+<li>\(\mathbf{\eta}=(\eta_1, \ldots, \eta_N)^T\) is a column vector.</li>
+<li>\(\mathbf{\beta} = (\beta_0, \ldots,\beta_p)^T\) is a column vector. </li>
+<li>\(\mathbf{X}\) is a \(N\times p\) matrix of the explanatory variables \(x_{ij}\) for \(i=1,\ldots,N\) and \(j=1,\ldots,p\). </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Visualizing the Matrices</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In other words:
+\[\mathbf{\eta}= 
+\left[\begin{array}{c}
+ \eta_1  \\
+ \vdots \\
+ \eta_N
+\end{array} \right]= \left[\begin{array}{cccc}
+ 1&  x_{11} & \ldots & x_{1p}  \\
+ 1& x_{21} & \ldots & x_{2p} \\
+ \vdots& \vdots &  \vdots & \vdots\\
+ 1& x_{N1} & \ldots & x_{Np}
+\end{array}\right]\left[\begin{array}{c}
+ \beta_0\\
+ \beta_1 \\
+ \vdots\\
+ \beta_p
+\end{array}\right]= \mathbf{X}\mathbf{\beta}\]</li>
+<li>This linear predictor allows the least squares regression approach to be generalized to a wide range of models. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Link Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We cannot always model a direct relationship between the random and the systematic component. </li>
+<li>This is where the link function comes into place. </li>
+<li>This function allows us to specify a relationship between the linear(systematic component) and the random component. </li>
+<li>We essentially link \(\eta_i\) to \(\mu_i=E(y_i)\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Link Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have
+\[g(\mu_i) = \eta_i\]</li>
+<li>where:
+
+<ul>
+<li>\(g()\) is the link function. </li>
+<li>\(\mu_i\) represents the expected value of the random component. </li>
+<li>\(\eta_i\) represents the linear(structural) component. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is this link Function?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The link function is specifically defined by how the distribution is identified as an exponential family. </li>
+<li>We will not go through this math however feel free to look up exponential families and try and put the distributions we talk about into this framework. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Common Link Functions:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Some common link functions are</p>
+
+<table><thead>
+<tr>
+<th>Random Component</th>
+<th>Link Function</th>
+<th>Outcome</th>
+<th>Explanatory</th>
+<th>Model</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Normal</td>
+<td>Identity</td>
+<td>Continuous</td>
+<td>Factor</td>
+<td>ANOVA</td>
+</tr>
+<tr>
+<td>Normal</td>
+<td>Identity</td>
+<td>Continuous</td>
+<td>Continuous</td>
+<td>Regression</td>
+</tr>
+<tr>
+<td>Binomial</td>
+<td>Logit</td>
+<td>Binary</td>
+<td>Mixed</td>
+<td>Logistic Regression</td>
+</tr>
+<tr>
+<td>Multinomial</td>
+<td>Generalized logit</td>
+<td>Binary</td>
+<td>Mixed</td>
+<td>Multinomial Regression</td>
+</tr>
+<tr>
+<td>Poisson</td>
+<td>Log</td>
+<td>Count</td>
+<td>Mixed</td>
+<td>Poisson Regression</td>
+</tr>
+</tbody></table></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Does this Mean?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The chart shows just some of the many types of models we can learn to do just from a simple concept of GLMs. </li>
+<li>Essentially every type of technique you have used up until this point can be structured in such a way that is represents a GLM. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assumptions of a GLM</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The data \(Y_1, Y_2, \ldots, Y_2\) are independently distributed. </li>
+<li>The dependent variable \(Y_i\) is from an exponential family.
+
+<ul>
+<li>Normal (Gaussian)</li>
+<li>Bernoulli</li>
+<li>Binomial</li>
+<li>Multinomial</li>
+<li>Exponential</li>
+<li>Poisson</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assumptions of a GLM</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Linear Relationship between link function and systematic component. </li>
+<li>Errors are independent. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Assumptions are not needed?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We do <strong>NOT</strong> some assumptions we needed before.
+
+<ul>
+<li> We do <strong>NOT</strong> need a linear relationship between the dependent variable and the independent variables. </li>
+<li> We do <strong>NOT</strong> need need normally distributed errors. </li>
+<li> We do <strong>NOT</strong> need homogeneity of errors.</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Elses is Different?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li> Uses Maximum Likelihood Estimation rather than Least Squares Estimation. </li>
+<li> For goodness-of-fit tests need large sample sizes. <em>(Rule of thumb not more than 20\% of cell counts in tables are less than 5).</em> </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-45" style="background:grey;">
+  <hgroup>
+    <h1>The Case of Linear Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Linear Regression as a Case</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have previously been using linear regression and it can be easily display how we use it in this framework. </li>
+<li>For example in a multiple linear regression we have
+\[y_i|x_{i1},\ldots,x_{ip} = \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} + \epsilon_i\]</li>
+<li>Then we know that 
+\[\mu_i = E(y_iy_i|x_{i1},\ldots,x_{ip}) = \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip}\]</li>
+<li>Thus we can directly relate \(\mu_i\) to the systematic component. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Link in the Linear Case?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Thus in this case our function \(g()\) is
+\[g(\mu_i) = \mu_i\]</li>
+<li>We call this the identity link. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do we have?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Then we have that
+
+<ul>
+<li> <strong>Random Component</strong>: \(y\) is the outcome and is normally distributed. So we let \(\epsilon_i\sim N(0\sigma^2)\). </li>
+<li> <strong>Systematic Component</strong>: \(x_1,\ldots,x_p\) are the explanatory variables. They can be categorical or continuous. We have a linear combination of these terms but we can still have \(x^2\) or \(\log(x)\) terms in here as well. </li>
+<li>   <strong>Link Function</strong>: </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Identity Link</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We have the identity function:
+\[
+\begin{aligned}
+    \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+    g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+    g(E(y_i)) &= E(y_i)
+\end{aligned}
+\]</li>
+<li>With linear regression we have the simplest link function because we are able to model the mean directly. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-50" style="background:grey;">
+  <hgroup>
+    <h1>The Case of Logistic Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will now move onto logistic regression. </li>
+<li>With logistic regression we are concerned with binary data. </li>
+<li>This is data that is in a format of either yes or no, 0 or 1, or some variation of that. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Binomial Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we consider binary data we find that what we have is called the Binomial distribution.</li>
+<li>Let&#39;s assume that we have \(Y\) where </li>
+</ul>
+
+<p>\[
+Y = \begin{cases} 
+1 & \text{if sucess}\\
+0 & \text{if failure}
+\end{cases}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Does this mean?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Then
+\[\Pr(Y=y) =\binom{n}{y} p^y(1-p)^{n-y} \]</li>
+<li>where \(p\) is the probability that \(Y=1\). </li>
+<li>This leads us to </li>
+</ul>
+
+<p>\[E(Y) = np\]
+\[Var(Y)= np(1-p)\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regression Model for Logistic</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Recall from simple linear regression that our systematic part of our model is
+\[E(Y_i|x_i) = \beta_0 + \beta_1x_i\]</li>
+<li>That would mean with this type of data we have 
+\[p_i = \beta_0 + \beta_1 x_i\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why Can&#39;t we do Linear Regresion?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The issue with this is now we can have values that fall outside of 0 and 1. </li>
+<li>To overcome the problem with negative values we could exponeniate:
+\[p_i = \exp\left(\beta_0 + \beta_1x_1\right)\]</li>
+<li>We now have values that can fall between 0 and infinity. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about Values greater than 1?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In order to solve the problem of values being greater than 1, we divide by 1 plus the exponential:
+\[p_i= \dfrac{\exp\left(\beta_0 + \beta_1x\right)}{1+\exp\left(\beta_0 + \beta_1x_1\right)}\]</li>
+<li>This new function now lies completely between 0 and 1 as needed. </li>
+<li>Then we solve back to where we have the systematic part.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Systematic Part</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>\[
+\begin{aligned}
+    p_i &= \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+\exp\left(\beta_0 + \beta_1x_i\right)}\\
+    p_i\left(1+\exp\left(\beta_0 + \beta_1x_i\right)\right)&=\exp\left(\beta_0 + \beta_1x_i\right)\\
+    p_i &= \exp\left(\beta_0 + \beta_1x_i\right)\left(1-p_i\right)\\
+    \log\left(\dfrac{p_i}{1-p_i}\right) &= \beta_0 + \beta_1x_i\\
+    logit\left(p_i\right) &= \beta_0 + \beta_1x_i 
+\end{aligned}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does this mean?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This means we are fitting a linear regression to the logistic unit (logit) or the log odds of the probability of a success. </li>
+<li>This is why we refer to this as logistic regression. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Logit</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Then if we consider the logit:</p>
+
+<p>\[
+\begin{aligned}
+\text{If } p= 0 & \text{then } \log\left(\dfrac{p}{1-p}\right)=-\infty\\
+    \text{If } p= \tfrac{1}{2} & \text{then } \log\left(\dfrac{p}{1-p}\right)=0\\
+    \text{If } p= 1 & \text{then } \log\left(\dfrac{p}{1-p}\right)=\infty
+\end{aligned}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does the Logit imply?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see that as \(p\) increases the logit does as well. </li>
+<li>We have that the logit can be anything between \(-\infty\) and \(\infty\), but \(p\) is between 0 and 1 as needed.<br></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Relationship Between \(p\) and the logit</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see the relationship between \(p\) and the logit below. </li>
+</ul>
+
+<p><img src="figure/unnamed-chunk-13-1.png" alt="plot of chunk unnamed-chunk-13"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logistic as a GLM</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>From the above work we can see that with logistic regression we have
+\[log\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1\]
+\[\text{or}\]
+\[log\left(\dfrac{p}{1-p}\right) = \beta_0 + \beta_1x_1 + \cdots + \beta_px_p\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logistic as a GLM</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Where \(E(y_i|y_{i1},\ldots, x_{ip}) = p_i\) therefore what we have is
+
+<ul>
+<li><strong>Random Component</strong>: \(y\) is the outcome and is binomial and we assume the variance to be that of a binomial.</li>
+<li><strong>Systematic Component</strong>: \(x_1,\ldots,x_p\) are the explanatory variables. They can be categorical or continuous. </li>
+<li>We have a linear combination of these terms but we can still have \(x^2\) or \(\log(x)\) terms in here as well. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Link Funcion:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Where \(E(y_i|y_{i1},\ldots, x_{ip}) = p_i\) therefore what we have is
+
+<ul>
+<li><strong>Link Function</strong>: We can see from above that with \(p_i\) being the mean that we have the logit as the link function:</li>
+</ul></li>
+</ul>
+
+<p>\[
+    \begin{aligned}
+        \eta &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+        g(E(y_i)) &= \beta_0 + \beta_1x_{i1} + \cdots + \beta_px_{ip} \\
+        g(p_i) &= logit\left(p_i\right) 
+    \end{aligned}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Maximum Likelihood Estimation</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In linear regression we learned about least squares estimation. </li>
+<li>This falls apart with logistic regression when we have \(p=0\) or \(p=1\). </li>
+<li>Due to this we prefer a technique that can accurately estimate \(p\) no matter what. </li>
+<li>We will map out what this looks like right now. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With our data we have
+\[\Pr(Y_i=1|x_i) = \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}\]</li>
+<li>Then we also have that </li>
+</ul>
+
+<p>\[
+\begin{aligned}
+    \Pr(Y_i=0|x_i) &= 1- \Pr(Y_i=1|x_i)\\
+    &= 1 - \dfrac{\exp\left(\beta_0 + \beta_1x_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}\\
+    &= \dfrac{1}{1+ \exp\left(\beta_0+\beta_1x_i\right)}
+\end{aligned}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we combine these together we find that:
+\[\Pr(Y_i=y_i|x_i) = \dfrac{\exp\left(\left(\beta_0 + \beta_1x_i\right)\cdot y_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}, \;\;\;y_i=0,1\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Likelihood</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The likelihood is defined as the probability of obtaining the data that was observed. 
+\[\Pr(Y_1=y_1, Y_2=y_2, \ldots, Y_n=y_n| x_1,x_2,\ldots,x_n)\]</li>
+<li>Then we assumed that in our data the responses are independent from one another. </li>
+<li>This leads to
+\[\Pr(Y_1=y_1, Y_2=y_2, \ldots, Y_n=y_n| x_1,x_2,\ldots,x_n) = \Pr(Y_1=y_1|x_1)\cdots \Pr(Y_n=y_n|x_n)\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Likelihood</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Then the probability we obtain our data is
+\[L = \prod_{i=1}^n \left[ \dfrac{\exp\left(\left(\beta_0 + \beta_1x_i\right)\cdot y_i\right)}{1+ \exp\left(\beta_0+\beta_1x_i\right)}\right]\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Maximum Likelihood</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Maximum likelihood estimates for \(\beta_0\) and \(\beta_1\) are found by searching for which values \(\hat{\beta}_0\) and \(\hat{\beta}_1\) maximize \(L\). </li>
+<li>Unlike in least squares we cannot find these solutions in a closed form. </li>
+<li>We calculate MLEs with some sort of iterative technique. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Normal Distribution and Maximum Likelihood</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>It can be shown that maximum likelihood estimators are normally distributed.</li>
+<li>This means in our data
+\[\hat{\beta}_0 \stackrel{approx}{\sim} N\left(\beta_0, \widehat{Var}\left(\hat{\beta_0}\right)\right)\]
+\[\hat{\beta}_1 \stackrel{approx}{\sim} N\left(\beta_1, \widehat{Var}\left(\hat{\beta_1}\right)\right)\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why do we use MLE?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Finally we have that MLEs are the most efficient estimators out there.</li>
+<li>Meaning that any other consistent estimators \(\tilde{\beta}_0\) and \(\tilde{\beta}_1\) will have larger variances then \(\hat{\beta}_0\) and \(\hat{\beta}_1\). </li>
+<li>This means we will have the tightest confidence intervals around our MLEs and possibly show significance when other estimators would fail to. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Multicollinearity'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='What is Multicollinearity'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Types of Multicollinearity'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Consider the following data:'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Regression on Uncorrelated Data'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Regression on Uncorrelated Data'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Regression on Uncorrelated Data'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Sum Squares of Models'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='What Do We Notice?'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Consider the following data:'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Regression on Correlated Data'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Regression on Correlated Data'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Regression on Correlated Data'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Sum Squares of Models'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='What did we Notice?'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Signs of Multicollinearity'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='How Can we Detect this?'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Then the larger model'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='What does this tell us?'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Variance Inflation Factor'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Variance Inflation Factor'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Calculating in R'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Calculating in R'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Calculating in R'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='How Can We Deal with it?'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Generalized Linear Models'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Generalized Linear Models'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Why Bother?'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='The Generalized Linear Model'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Components of any GLM'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='The Random Component'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='The Systematic Component'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='The Model'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='What you typically will see:'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Visualizing the Matrices'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='The Link Function'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='The Link Function'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='What is this link Function?'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Common Link Functions:'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='What Does this Mean?'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Assumptions of a GLM'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Assumptions of a GLM'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='What Assumptions are not needed?'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='What Elses is Different?'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='The Case of Linear Regression'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Linear Regression as a Case'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='What Link in the Linear Case?'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='What do we have?'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Identity Link'>
+         49
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=50 title='The Case of Logistic Regression'>
+         50
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=51 title='Logistic Regression'>
+         51
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=52 title='Binomial Distribution'>
+         52
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=53 title='What Does this mean?'>
+         53
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=54 title='Regression Model for Logistic'>
+         54
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=55 title='Why Can&#39;t we do Linear Regresion?'>
+         55
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=56 title='What about Values greater than 1?'>
+         56
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=57 title='The Systematic Part'>
+         57
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=58 title='What does this mean?'>
+         58
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=59 title='The Logit'>
+         59
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=60 title='What does the Logit imply?'>
+         60
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=61 title='Relationship Between \(p\) and the logit'>
+         61
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=62 title='Logistic as a GLM'>
+         62
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=63 title='Logistic as a GLM'>
+         63
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=64 title='The Link Funcion:'>
+         64
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=65 title='Maximum Likelihood Estimation'>
+         65
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=66 title='Our Data'>
+         66
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=67 title='Our Data'>
+         67
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=68 title='The Likelihood'>
+         68
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=69 title='The Likelihood'>
+         69
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=70 title='Maximum Likelihood'>
+         70
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=71 title='Normal Distribution and Maximum Likelihood'>
+         71
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=72 title='Why do we use MLE?'>
+         72
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

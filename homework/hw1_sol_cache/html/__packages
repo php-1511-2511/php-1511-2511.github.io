@@ -1,0 +1,9 @@
+base
+fivethirtyeight
+forcats
+dplyr
+xtable
+ggplot2
+knitr
+broom
+bindrcpp
