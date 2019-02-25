@@ -12,7 +12,7 @@ Week 4,11-Feb,Multiple Linear Regression,[Lect-06-lin-reg-2](../Notes/lect-06-li
 Week 5,18-Feb,***No Class Long Weekend***,,,,
 ,20-Feb,Factors and Interactions,[Lect-08-inter-assum](../Notes/lect-08-inter-assum.html) [Video](https://vimeo.com/318722540),"Fox Chap 11, Vittinghoff Chap 4.7",,
 ,,Lab 2: Regression Diagnostics in R,[HTML](../labs/lab2.html) [Rmd](../labs/lab2.Rmd) [Video](https://vimeo.com/256525852/774a501d10)  [Solutions](../labs/lab2_sol.html),,,
-Week 6,25-Feb,Unusual and Influential Data,,Fox Chap 12,,
+Week 6,25-Feb,Unusual and Influential Data,,Fox Chap 12,[HW2 - html](../homework/hw1.html) [HW2 -Rmd](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw2.Rmd) [HW2-pdf](https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw2.pdf),
 ,27-Feb,Collinearity - Basic GLM,,"Fox Chap 13, Vittinghoff Chap 4.8",,
 ,,Lab 3: Regression Diagnostics in R,[HTML](../labs/lab2.html) [Rmd](../labs/lab2.Rmd) [Video](https://vimeo.com/256525852/774a501d10)  [Solutions](../labs/lab2_sol.html),,,
 Week 7,4-Mar,Collinearity,[Lect-09-model-tests](../Notes/lect-09-model-tests.html),Fox Chap 14,,
