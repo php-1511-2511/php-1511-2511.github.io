@@ -158,7 +158,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">27-Feb</td>
 <td align="left">Collinearity - Basic GLM</td>
-<td align="left"><a href="../Notes/lect-10-collin-glm.html">Lect-10-collin-glm</a></td>
+<td align="left"><a href="../Notes/lect-10-collin-glm.html">Lect-10-collin-glm</a> <a href="https://vimeo.com/320330322">Video</a></td>
 <td align="left">Fox Chap 13, Vittinghoff Chap 4.8</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -167,7 +167,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left"></td>
 <td align="left">Lab 3: Regression Diagnostics in R</td>
-<td align="left"><a href="../labs/lab2.html">HTML</a> <a href="../labs/lab2.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a>  <a href="../labs/lab2_sol.html">Solutions</a></td>
+<td align="left"><a href="../labs/lab3.html">HTML</a> <a href="../labs/lab3.Rmd">Rmd</a> <a href="https://vimeo.com/256525852/774a501d10">Video</a>  <a href="../labs/lab3_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -175,8 +175,8 @@ title: Calendar
 <tr>
 <td align="left">Week 7</td>
 <td align="left">4-Mar</td>
-<td align="left">Collinearity</td>
-<td align="left"></td>
+<td align="left">GLM/Logistic Regression</td>
+<td align="left"><a href="../Notes/lect-11-glm-logit.html">Lect-11-glm-logit</a></td>
 <td align="left">Fox Chap 14</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -185,7 +185,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">6-Mar</td>
 <td align="left">Logistic Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-12-logit-2.html">Lect-12-logit-2</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.1</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -193,8 +193,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 4: Logistic 1</td>
+<td align="left"><a href="../labs/lab4.html">HTML</a> <a href="../labs/lab4.Rmd">Rmd</a> <a href="https://vimeo.com/258696228/4181a70e33">Video</a>  <a href="../labs/lab4_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
