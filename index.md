@@ -52,10 +52,11 @@ This course is designed for graduate and advanced undergraduate students who wil
 |-----------+--------+-----------|
 | What    |  Where | When      
 |:-----------|:--------|:-----------|
-| Office Hours |  SPH - Room 243 |   Tuesdays 2:20 - 3:20 pm|
+| Office Hours |  SPH - Room 717 |   Tuesdays 2:20 - 3:20 pm|
 |:-----------|:--------|:-----------|
 |  |  SPH - Room 243| Wednesday 2:30 - 3:00 pm|
-|  |  SPH - Room 243| Wednesday 4:00 - 5:00 pm|
+|  |  SPH - Room 241| Wednesday 4:00 - 5:00 pm|
+|  |  SPH - Room 243| Friday 2:00 - 4:00 pm|
 |:-----------|:--------|:-----------|
 
 

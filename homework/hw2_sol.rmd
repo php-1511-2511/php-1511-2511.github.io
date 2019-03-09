@@ -1,0 +1,415 @@
+```{r setup, include = FALSE, cache = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+#knitr::opts_chunk$set(results="hold")
+knitr::opts_chunk$set(cache=F)
+#knitr::opts_chunk$set(eval=F)
+knitr::opts_chunk$set(echo=F)
+```
+
+
+# Homework 2 Solutions
+
+
+#Part 1: Multiple Linear Regression (PHP 1511-2511 Both Complete)
+
+##The Data
+
+The goal of this study was to identify risk factors associated with giving birth to a low birth weight baby (weighing less than 2500 grams). Data were collected on 189 women, 59 of which had low birth weight babies and 130 of which had normal birth weight babies.  Four variables which were thought to be of importance were age, weight of the subject at her last menstrual period, race, and the number of physician visits during the first trimester of pregnancy.
+
+Low birth weight is an outcome that has been of concern to physicians for years. This is due to the fact that infant mortality rates and birth defect rates are very high for low birth weight babies. A woman's behavior during pregnancy (including diet, smoking habits, and receiving prenatal care) can greatly alter the chances of carrying the baby to term and, consequently, of delivering a baby of normal birth weight.
+        
+The variables identified in the code sheet given in the table have been shown to be associated with low birth weight in the obstetrical literature. The goal of the current study was to ascertain if these variables were important in the population being served by the medical center where the data were collected. This data is from [Hosmer et al. , 2013](http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470582472.html). 
+
+----------------------------------------------------------------------
+Variable Name   Description
+--------------- -------------------------------------------------------
+id              Identification Code
+
+low             0 = Birthweight $\ge$ 2500g
+
+                1=Birthweight< 2500g
+                
+age             Age of mother in years
+
+lwt             Weight in Pounds at last menstrual period
+
+race            1 = white
+      
+                2 = black
+                
+                3 = other
+
+ptl             History of Premature Labor (0=none, 1= One, ...)
+
+ht              History of hyptertension
+
+ui              Presence of Uterine Irritability
+
+                0 = No
+                
+                1 = Yes
+                
+ftv             Number of Physician visits during first trimester (0=none, 1=One, ...)
+
+btw             Birth weight in grams
+----------------------------------------------------------------------
+
+
+You can read the data in with the command below.
+
+```{R}
+low.weight <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzMzJyVkt5QkdvVnM", header=TRUE, sep=",")
+```
+
+
+## Model Building
+
+
+
+1. Your goal will be to build a model to predict birth weight. Begin by using number summaries and graphs to start to explore relationships of variables in this data set and `bwt`. (0.5point for summary table, 0.5point for all the plots, this homework is ok to only display a few plots, in future, display plots in this manner to mke homework easier to read.)
+```{r}
+s1 <- apply(low.weight, 2, summary)
+knitr::kable(s1)
+```
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+#numerical_var <- c("age","lwt","ptl","ht","ftv")
+#categorical_var <- c("low","race","ui","smoke")
+p1 <- ggplot(low.weight, aes(x = age, y = bwt)) + geom_point()
+p2 <- ggplot(low.weight, aes(x = lwt, y = bwt)) + geom_point()
+p3 <- ggplot(low.weight, aes(x = ptl, y = bwt)) + geom_point()
+p4 <- ggplot(low.weight, aes(x = ftv, y = bwt)) + geom_point()
+
+p5 <- ggplot(low.weight, aes(x = ht, group = ht, y = bwt)) + geom_boxplot()
+p6 <- ggplot(low.weight, aes(x = low, group = low, y = bwt)) + geom_boxplot()
+p7 <- ggplot(low.weight, aes(group = race, x = race, y = bwt)) + geom_boxplot()
+p8 <- ggplot(low.weight, aes(group = ui, x = ui, y = bwt)) + geom_boxplot()
+p9 <- ggplot(low.weight, aes(group = smoke, x = smoke, y = bwt)) + geom_boxplot()
+
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9, ncol=3, nrow=3)
+```
+
+2. The variables of `low`, `race` and `ui` are categorical variables but they are not yet factors. Code them in R to be factors in the data. Then make sure they have correct level names. (0.5 point)
+```{r}
+library(tidyverse)
+low.weight %>%
+  mutate(low = as.factor(low)) %>%
+  mutate(race=factor(race,labels = c("white","black","other"))) %>%
+  mutate(ui = as.factor(ui)) %>%
+  mutate(smoke = as.factor(smoke)) %>%
+  mutate(ht <- as.factor(ht))
+
+
+```
+
+3. Start your model building by looking at simple linear regressions for each of the 8 predictor variables. Display and Examine relevant plots. Summarize the simple linear regression results using a table (hide the intercepts when combining your `tidy()` commands). (1 point for plots, 0.5 point for table)
+
+```{r}
+fit1 <- lm(bwt ~ age, low.weight)
+fit2 <- lm(bwt ~ lwt, low.weight)
+fit3 <- lm(bwt ~ race, low.weight)
+fit4 <- lm(bwt ~ smoke, low.weight)
+fit5 <- lm(bwt ~ ptl, low.weight)
+fit6 <- lm(bwt ~ ht, low.weight)
+fit7 <- lm(bwt ~ ui, low.weight)
+fit8 <- lm(bwt ~ ftv, low.weight)
+```
+
+**Summarize the simple linear regression results using a table**
+```{r}
+library(broom)
+fit.list <- list(fit1,fit2,fit3,fit4,fit5,fit6,fit7,fit8)
+t <- c()
+for (fit in fit.list) {
+        t <- rbind(t,tidy(fit,conf.int = T)[-1,-c(3,4)])
+}
+knitr::kable(t,row.names = FALSE,digits = 3)
+```
+
+**Plots**
+
+```{r}
+library(olsrr)
+library(car)
+for (fit in fit.list) {
+        print(paste0("The plots of ",as.character(fit$terms)[3]))
+        ols_plot_resid_fit(fit)
+        ols_plot_obs_fit(fit)
+        ols_plot_cooksd_bar(fit)
+}
+
+```
+
+
+**The data appear to be linear in nature, the variances appear to be homogenous and centered around 0. The models don't fit the data very well as exepected with only simple regressions. There are outliers in all the models, however they are not consistent across models so we should hold off on any "fixes" until we build a multiple regression model. `age` and `ftv` are not significant in the simple models, therefore we will leave them out of the multiple regression model (If we felt there was confounding due to them, we would leave them in the multiple model.)**
+
+4. Comment of the significance of the 8 variables. What variables do you think would best be used in a multiple linear regression?(0.5 point)
+```{r}
+sig_var <- t$term[which(t$p.value < 0.05)]
+sig_var
+```
+
+**Since $lwt, race, smoke, ptl, ht anf ui$ are significant, they would best be used in a multiple linear regression**
+
+5. Explore the possibility of interaction between smoking and race. Display a graph that would allow you to explore this and then run a regression with the interaction term. Interpret the results of this model. (0.5 for plot, 0.5 for model)
+```{r}
+library(ggplot2)
+ggplot(low.weight, aes(x = smoke, y = bwt, colour = race)) + geom_boxplot()
+```
+
+**Since both smoking and race are categorical variable, we use boxplot to see the relationship between them. From the boxplot above we can tell that there probably be interaction between smoking and race, since for the same smoking group, different race groups have different patterns.**
+
+```{r}
+fit9 <- lm(bwt ~ smoke*race, data=low.weight)
+tidy(fit9,conf.int = T)[,-c(3,4)]
+glance(fit9)[,c(1,2)]
+```
+
+**The interaction term smoke1:race3 is significant, which means the interaction between smoking and race do exist. The model can explain 14% variace of the outcome.**
+
+6. Build a multiple regression model with what you have found in problems 4 and 5. Do the coefficients change from the simple regressions? Comment on both direction and magnitude changes. (1 point)
+
+**Start with the model with all the variables that are significant in the univariate regressions**
+```{r}
+fit10 <- lm(bwt ~ lwt + race * smoke + ptl + ht + ui, data = low.weight)
+tidy(fit10,conf.int = T)[,-c(3,4)]
+```
+
+**Delete the ptl variable since it is not significant**
+```{r}
+fit10 <- lm(bwt ~ lwt + race * smoke + ht + ui, data = low.weight)
+tidy(fit10,conf.int = T)[,-c(3,4)]
+```
+
+**Delete the race*smoke variable since it is not significant**
+```{r}
+fit10 <- lm(bwt ~ lwt + race + smoke + ht + ui, data = low.weight)
+tidy(fit10,conf.int = T)[,-c(3,4)]
+```
+
+**Now all the variables are significant, this is our final model. The magnitudes of all the coefficients of variables changed, but their directions remain the same.**
+
+7. Use the plots we have identified to check the model fit. 
+    a. Are the assumptions of linear regression met by this? (0.5)
+```{r}
+ols_plot_resid_fit(fit10)
+ols_plot_resid_qq(fit10)
+ols_plot_resid_hist(fit10)
+
+```
+
+**The residual plot and tests show that the variance is homogenous, which meets the the assumptions of linear regression. Also, the QQ plot shows that y follows the normal distribution.**
+
+
+b. How does this model fit?(0.5)
+
+```{r}
+ols_plot_obs_fit(fit10)
+```
+
+**The fitted value plot shows that the model doesn't fit the data very well**
+
+
+c. Comment on if you see any possible outliers or collinearity. (0.5)
+```{r}
+ols_plot_cooksd_bar(fit10)
+ols_plot_dfbetas(fit10)
+```
+
+**The plot shows that there are some outliers. We may wish to check that all records were accurate, but without further knowledge we will not remove or cap any of them.**
+
+```{r}
+vif(fit10)
+```
+
+**No collinearity has been found**
+
+
+# Part 2: More Advanced Data Cleaning (PHP 2511 Only)
+
+##The Data
+This data comes from a study which sought to determine if significant sex differences existed between subjects 65 years of age and older, with regard to calcium, phosphorus, and alkaline phosphatase levels. A retrospective chart review of laboratory procedures performed in six different physician practices. The data consisted of 178 subjects representing 92 males and 86 females over the age of 65. Patient data were obtained from the charts housed in a cardiac care center. Subjects, with charts preceding them, were referred by a physician to the cardiac center. The laboratory procedures had been performed previously in the laboratories of the referring physicians. [Boyd et al. , 1998](http://engagedscholarship.csuohio.edu/scimath_facpub/27/). 
+
+The data contains:
+
+---------------------------------------------------
+Variable Name   Description
+--------------- ----------------------------------- 
+obsno           Patient observation number
+
+age             Age in years
+
+sex             1=Male, 2=Female
+
+alkphos         Alkaline Phosphatase IU/L
+
+Lab             1=Metpath
+
+                2=Deyor
+                
+                3=St. Elizabeth's
+                
+                4=CB Rouche
+                
+                5=Youngstown Osteopathic Hospital
+                
+                6=Horizon
+                
+calcium         Calcium mmol/L
+
+phos            Inorganic Phosphorus mmol/L
+
+agegroup        1=65-69
+
+                2=70-74
+                
+                3=75-79
+                
+                4=80-84
+                
+                5=85-89 Years
+---------------------------------------------------
+
+You can read the data in with the command below. 
+
+
+
+```{r}
+calcium <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzbW1oTFlwUlRuSmM", header=TRUE, sep=",")
+
+```
+
+###Cleaning Data
+
+8. The first task of the assignment is to check the validity of the data. Determine if this is a "messy" dataset with variable values that appear incorrect. Attempt to recover the correct values by looking up the true values from the actual data records. Copies of these can be found on [bigtable.htm](http://www.amstat.org/publications/jse/v13n3/grid/bigtable.htm). Be sure to catalogue the problem values in the data and the changes that were made to clean the dataset. Include a paragraph detailing the steps taken to clean the dataset.
+
+**First, we take a look at the number summary of each variable, from where we can see there are missing values and abnormal records in the dataset.** 
+```{r, echo=T}
+summary(calcium)
+```
+```{r}
+#create a same dataset to store the change
+calcium.clean<-calcium
+```
+
+
+**For continuous variable, we take age variable as an example(with R codes):**
+
+**Age(0.5 point):** 
+\begin{enumerate}
+\itme. **Plot the histogram to check the distribution and check is there any abnormal pattern or outlier**
+\item     **2. Find out the abnormal values by sorting the variable in a descending order**
+\item     **3. Identify the abnormal values by certain cretaria, eg. age>60**
+\item     **4. Check the raw dataset and impute the correct value in the new dataset**
+\item     **5. Identify the observation that has missing value, and go back to the raw dataset. If the raw dataset has a non-missing value, then impute the missing value in the new dataset.**
+\end{enumerate}
+
+**After applying above procedures, we identify observation 11,53 and 123 should be changed from 771,699, 730 to 71,69,73. There is one missing value which is at observatin 105. In the actual data, it is confirmed as missing.** 
+```{r,echo=T}
+# Plot the histogram
+hist(calcium$age,main="Age")
+# Check the values from the largest number
+head(sort(calcium$age,decreasing =T))
+# select the outliers
+id.age.out<-which(calcium$age>=600)
+#The observations are:
+id.age.out
+#impute the correct value into a new dataset.
+calcium.clean$age[id.age.out]<-c(71,69,73)
+# find observations with misisng value.  
+id.age.miss<-which(is.na(calcium$age))
+```
+
+**For categorical variable, we take sex as an example:**
+**Sex (0.5 point): **
+\begin{enumerate}
+\item     **1.use table function to tabulate all the categories in sex variable.**
+\item     **2. identify the outliers in sex**
+\item     **3. impute the correct answer**
+\end{enumerate}
+**There are three abnormal observations:28, 120, 173 in sex, which should be revised as 2, 1, 2.**
+
+```{r,echo=T}
+table(calcium$sex)
+id.sex.out<-which(calcium$sex%in%c(12,21,22))
+id.sex.out
+calcium.clean$sex[id.sex.out]<-c(2,1,2)
+```
+
+**alkphos(0.5 point): in observation 60, the alkphos should be changed from 9 to 97. One missing value in observation 22, and it should be imputed as 64.**
+
+```{r, eval=T,echo=F}
+hist(calcium$alkphos,freq=F)
+head(sort(calcium$alkphos))
+id.alkpho.out<-which(calcium$alkphos==9)
+id.alkpho.out
+calcium.clean$alkphos[id.alkpho.out]<-97
+# check missing 
+id.alkpho.miss<-which(is.na(calcium$alkphos))
+calcium.clean$alkphos[id.alkpho.miss]<-64
+```
+
+**lab(0.5 point): observation 6 and 78 should be 4 and 2. **
+```{r,eval=T,echo=F}
+table(calcium$lab)
+id.lab.out<-which(calcium$lab %in% c(21,43))
+id.lab.out
+calcium.clean$lab[id.lab.out]<-c(4,2)
+# check missing 
+id.lab.miss<-which(is.na(calcium$lab))
+```
+
+**Calcium(0.5 point): the following observations'decimal points are misplaced: 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37. Their calcium values should be devided by 10. Also, observation 21 should be changed from 3.2 to 2.2, and observation should be changed from 1.05 to 2.05.**
+```{r,eval=T,echo=F}
+hist(calcium$calcium)
+head(sort(calcium$calcium,decreasing = T))
+head(order(calcium$calcium,decreasing = T))
+id.cal.out<-which(calcium$calcium>=20)
+id.cal.out
+calcium.clean$calcium[id.cal.out]<-calcium$calcium[id.cal.out]/10
+calcium.clean$calcium[which(calcium$calcium==1.05)]<-2.05
+calcium.clean$calcium[which(calcium$calcium==3.20)]<-2.2
+# check missing 
+id.cal.miss<-which(is.na(calcium$calcium))
+```
+
+**Phos(0.5 point): Observation 32, 108, 132 and 176 should be changed to 1.23, 0.9,0.84 and 1.26.** 
+```{r,eval=T,echo=F}
+hist(calcium$phos)
+head(sort(calcium$phos,decreasing = T))
+id.phos.out<-which(calcium$phos>2|calcium$phos==0.09)
+id.phos.out
+calcium.clean$phos[id.phos.out]<-c(1.23,0.9,0.84,1.26)
+# check missing
+id.phos.miss<-which(is.na(calcium$phos))
+```
+
+**Age group(0.5 point):There's no incorrect record. The missing value is in observation 79, it should be changed to 4.**
+```{r,eval=T,echo=F}
+age.grp.check<-aggregate(calcium.clean$age,list(calcium$age.group),function(x)paste(min(x,na.rm=T),"-",max(x,na.rm=T)))
+# check missing
+id.grp.miss<-which(is.na(calcium$age.group))
+id.grp.miss
+calcium.clean$age.group[id.grp.miss]<-4
+```
+**The summary statistics of the cleaned dataset.**
+```{r,echo=F}
+summary(calcium.clean)
+```
+9. Compare the mean and standard deviation of age, alkphos, cammol and phosmmol from the messy dataset with the mean and standard deviation from your cleaned dataset. Does cleaning the data make a difference? Explain. (1 point)
+```{r}
+mean1<-colMeans(calcium[,c(2,4,6,7)],na.rm=T)
+mean2<-colMeans(calcium.clean[,c(2,4,6,7)],na.rm=T)
+sd1<-apply(calcium[,c(2,4,6,7)],2,function(x)sd(x,na.rm = T))
+sd2<-apply(calcium.clean[,c(2,4,6,7)],2,function(x)sd(x,na.rm = T))
+
+knitr::kable(data.frame(variables=colnames(calcium[,c(2,4,6,7)]),mean.mess=mean1,mean.clean=mean2,sd.mess=sd1,sd.clean=sd2),row.names = F,digits = 3)
+
+```
+
+
+
