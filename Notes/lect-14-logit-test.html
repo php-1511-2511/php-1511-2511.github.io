@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logistic Regression Model Fit</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Logistic Regression Model Fit">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Logistic Regression Model Fit</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Logistic Regression: Testing Model Fit</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logistic Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will begin model building with an example. </li>
+<li>We will look at a set of data which considers a self-assessed health exam. </li>
+<li>There is a natural ordering in the health rating so we would assume that the probability of death to change with the categories. </li>
+<li>Our data contains 1600 subjects and they are measured on </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id          Identification Number</td>
+<td></td>
+</tr>
+<tr>
+<td>age         Age (years)</td>
+<td></td>
+</tr>
+<tr>
+<td>male        Sex</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Male</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = Female</td>
+</tr>
+<tr>
+<td>sah</td>
+<td>Self Assessed Health</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Excellent</td>
+</tr>
+<tr>
+<td></td>
+<td>2 = Good</td>
+</tr>
+<tr>
+<td></td>
+<td>3 = Fair</td>
+</tr>
+<tr>
+<td></td>
+<td>4= Poor</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>pperf</td>
+<td>Physical Performance Scale (0-12)</td>
+</tr>
+<tr>
+<td>pefr</td>
+<td>Peak Expiratory Flow Rate (average of 3)</td>
+</tr>
+<tr>
+<td>cogerr</td>
+<td>Number of cognitive errors on SPMSQ</td>
+</tr>
+<tr>
+<td>sbp</td>
+<td>Systolic Blood Pressure (mmHg)</td>
+</tr>
+<tr>
+<td>mile</td>
+<td>Ability to Walk 1 mile</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+<tr>
+<td>digit</td>
+<td>Use of digitalis</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>loop</td>
+<td>Use of Loop Diuretics</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+<tr>
+<td>untrt</td>
+<td>Diagnosed but untreated diabetes</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>trtdb</td>
+<td>Treated Diabetes</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+<tr>
+<td>dead</td>
+<td>Dead by 1991</td>
+</tr>
+<tr>
+<td></td>
+<td>0 = No</td>
+</tr>
+<tr>
+<td></td>
+<td>1 = Yes</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Follow up (years)</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Special Considerations</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For Self-Assessed Health Study we need to consider how we model certain variables
+
+<ul>
+<li>Age: this is critical since subjects were asked to compare their health to others</li>
+<li>Count variables: <code>pperf</code> and <code>cogerr</code></li>
+<li>Measured Variables: <code>sbp</code> and <code>pefr</code></li>
+<li>Diabetes is in 2 variables <code>untrt</code> and <code>trtdb</code></li>
+<li>other binary variables: <code>male</code>, <code>mile</code>, <code>loop</code>, <code>digit</code> and <code>death</code></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Read in the Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(haven)
+sah &lt;- read_dta(&quot;sah.dta&quot;) 
+</code></pre>
+
+<pre><code>## Start:  AIC=1162
+## dead ~ sah2 + age + male + pperf + perf + cogerr + sbp + mile + 
+##     digit + loop + untrt + trtdp
+## 
+##          Df Deviance  AIC
+## - age     1     1137 1161
+## - digit   1     1137 1161
+## - sbp     1     1138 1162
+## &lt;none&gt;          1136 1162
+## - sah2    1     1139 1163
+## - pperf   1     1139 1163
+## - perf    1     1140 1164
+## - untrt   1     1141 1165
+## - mile    1     1144 1168
+## - cogerr  1     1145 1169
+## - trtdp   1     1146 1170
+## - loop    1     1149 1173
+## - male    1     1177 1201
+## 
+## Step:  AIC=1161
+## dead ~ sah2 + male + pperf + perf + cogerr + sbp + mile + digit + 
+##     loop + untrt + trtdp
+## 
+##          Df Deviance  AIC
+## - digit   1     1138 1160
+## &lt;none&gt;          1137 1161
+## - sbp     1     1139 1161
+## - sah2    1     1140 1162
+## - pperf   1     1142 1164
+## - untrt   1     1142 1164
+## - perf    1     1142 1164
+## - mile    1     1145 1167
+## - trtdp   1     1147 1169
+## - cogerr  1     1148 1170
+## - loop    1     1150 1172
+## - male    1     1179 1201
+## 
+## Step:  AIC=1160
+## dead ~ sah2 + male + pperf + perf + cogerr + sbp + mile + loop + 
+##     untrt + trtdp
+## 
+##          Df Deviance  AIC
+## &lt;none&gt;          1138 1160
+## - sbp     1     1140 1160
+## - sah2    1     1142 1162
+## - untrt   1     1143 1163
+## - pperf   1     1143 1163
+## - perf    1     1144 1164
+## - mile    1     1147 1167
+## - cogerr  1     1149 1169
+## - trtdp   1     1149 1169
+## - loop    1     1155 1175
+## - male    1     1181 1201
+## 
+## Call:
+## glm(formula = dead ~ sah2 + male + pperf + perf + cogerr + sbp + 
+##     mile + loop + untrt + trtdp, family = binomial(link = &quot;logit&quot;), 
+##     data = sah)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -1.632  -0.557  -0.401  -0.281   2.559  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -2.831126   0.681306   -4.16  3.2e-05 ***
+## sah2         0.197495   0.107006    1.85  0.06494 .  
+## male         1.145512   0.175180    6.54  6.2e-11 ***
+## pperf       -0.064669   0.028456   -2.27  0.02305 *  
+## perf        -0.001945   0.000807   -2.41  0.01592 *  
+## cogerr       0.148237   0.044780    3.31  0.00093 ***
+## sbp          0.005590   0.003897    1.43  0.15144    
+## mile        -0.569343   0.192364   -2.96  0.00308 ** 
+## loop         0.884837   0.209041    4.23  2.3e-05 ***
+## untrt        0.527456   0.225157    2.34  0.01915 *  
+## trtdp        0.750717   0.219219    3.42  0.00062 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1306.7  on 1599  degrees of freedom
+## Residual deviance: 1138.2  on 1589  degrees of freedom
+## AIC: 1160
+## 
+## Number of Fisher Scoring iterations: 5
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Self-Assessed Health</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With our data we are mainly interested in how well self-assessed health predicts death.</li>
+<li>There are 11 other variables that are possible confounders for this relationship. This means that if we consider all of this we have the possibility of 12 main effects and 11 possible 2 way interactions with self assessed health. </li>
+<li>This could be a very large model and we are only thinking of 2-way interactions here. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Model Fit</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Once we begin building models we need to know how to assess model fit.<br></li>
+<li>We have previously covered the likelihood ratio test where we can compare one model versus another. </li>
+<li>Now we move to assessing the fit of one model.</li>
+<li>What affects model fit?
+
+<ul>
+<li>Omitted covariates (Main effects, interactions, polynomial terms)</li>
+<li>Poor choice of link function</li>
+<li>Unusual subjects </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Assessing Model Fit</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We usually determine the goodness of fit for logistic regression based on </li>
+</ul>
+
+<ol>
+<li><p><strong><em>Calibration:</em></strong> A model is well <em>calibrated</em> if the observed and predicted probabilities based on the model are reasonably close. </p></li>
+<li><p><strong><em>Discrimination:</em></strong>  A model has good <em>discrimination</em> if the distribution of risk scores for cases and controls separate out. </p>
+
+<ul>
+<li>This means Cases tend to have higher scores. </li>
+<li>This means Controls tend to have lower scores.</li>
+<li>There is little overlap.</li>
+</ul></li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Calibration</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will use the Hosmer-Lemeshow Goodness of Fit test to assess calibration in logistic regression models:</li>
+<li>With this test we have:</li>
+</ul>
+
+<p>\[\hat{p}_i = \dfrac{\exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}{1 + \exp\left( \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2} + \cdots + \hat{\beta}_K x_{iK} \right)}\]</p>
+
+<ul>
+<li>where \(i=1,\ldots,n\) and \(K\) is the number of covariates in the model. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How Do We Perform it?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We then reorder the subjects in the order of the fitted probabilities so that
+\[\hat{p}_1<\hat{p}_2< \cdots < \hat{p}_n\]</li>
+<li>We then group this data in <code>G</code> approximately equal sized groups based on the ordered \(\hat{p}\). </li>
+<li>The default is typically <code>G=10</code> to create deciles of increasing risk. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>With G Groups we have:</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>\[
+\begin{aligned}
+O_j &= \sum_{i\in group_j} y_i = \text{ Observed number of events in group }j\\
+E_j &= \sum_{i\in group_j} \hat{p}_i = \text{ Expected number of events in group }j\\
+\bar{p}_j &= \dfrac{E_j}{n_j} \;\;\;\; n_j=\text{ number of subjects in group} j=1,\ldots,G\\
+\end{aligned}
+\]</p>
+
+<ul>
+<li>We then compute the test statistic:
+\[ X^2_{HL} = \sum_{j=1}^G \dfrac{\left(O_j - E_J\right)^2}{n_j\bar{p}_j\left(1-\bar{p}_j\right)}\sim \chi^2_{G-2}\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Test Statistic</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This test statistic is for the following hypothesis
+\[H_0: \text{ The fitted Model is Correct}\]
+\[\text{vs}\]
+\[H_1: \text{ The fitted Model is Not Correct}\]</li>
+<li>In order for this to work well \(G\ge6\) and \(n_j\) should be large.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Testing in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">sah2</td>
+<td align="right">1.218</td>
+<td align="right">0.065</td>
+<td align="right">0.988</td>
+<td align="right">1.504</td>
+</tr>
+<tr>
+<td align="left">male</td>
+<td align="right">3.144</td>
+<td align="right">0.000</td>
+<td align="right">2.233</td>
+<td align="right">4.442</td>
+</tr>
+<tr>
+<td align="left">pperf</td>
+<td align="right">0.937</td>
+<td align="right">0.023</td>
+<td align="right">0.886</td>
+<td align="right">0.991</td>
+</tr>
+<tr>
+<td align="left">perf</td>
+<td align="right">0.998</td>
+<td align="right">0.016</td>
+<td align="right">0.996</td>
+<td align="right">1.000</td>
+</tr>
+<tr>
+<td align="left">cogerr</td>
+<td align="right">1.160</td>
+<td align="right">0.001</td>
+<td align="right">1.062</td>
+<td align="right">1.266</td>
+</tr>
+<tr>
+<td align="left">sbp</td>
+<td align="right">1.006</td>
+<td align="right">0.151</td>
+<td align="right">0.998</td>
+<td align="right">1.013</td>
+</tr>
+<tr>
+<td align="left">mile</td>
+<td align="right">0.566</td>
+<td align="right">0.003</td>
+<td align="right">0.388</td>
+<td align="right">0.826</td>
+</tr>
+<tr>
+<td align="left">loop</td>
+<td align="right">2.423</td>
+<td align="right">0.000</td>
+<td align="right">1.600</td>
+<td align="right">3.635</td>
+</tr>
+<tr>
+<td align="left">untrt</td>
+<td align="right">1.695</td>
+<td align="right">0.019</td>
+<td align="right">1.079</td>
+<td align="right">2.612</td>
+</tr>
+<tr>
+<td align="left">trtdp</td>
+<td align="right">2.119</td>
+<td align="right">0.001</td>
+<td align="right">1.367</td>
+<td align="right">3.234</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Testing in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can test the calibration of this below:</p>
+
+<pre><code class="r">library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about the warning?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We get a warning message about factors. </li>
+<li>When this happens we need to check out data:</li>
+</ul>
+
+<pre><code class="r">class(sah$dead)
+table(sah$dead)
+</code></pre>
+
+<pre><code>## [1] &quot;haven_labelled&quot;
+## 
+##    0    1 
+## 1373  227
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Fixing Factors</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can see that <code>dead</code> is a factor without the 0 and 1 that we wanted to have for it. Basically this Stata dataset had labels and those labels are what R imported. </p>
+
+<pre><code class="r">sah$dead &lt;- as.numeric(sah$dead)
+table(sah$dead)
+</code></pre>
+
+<pre><code>## 
+##    0    1 
+## 1373  227
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Test Again</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=10)
+</code></pre>
+
+<pre><code>## 
+##  Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  sah$dead, fitted(mod.back.auto)
+## X-squared = 10, df = 8, p-value = 0.2
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The test Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This time we get get a p-value of 0.243. </li>
+<li>This means our model is a good fit and it is calibrated well.</li>
+<li> We could try other values of \(G\) to make sure:</li>
+</ul>
+
+<pre><code>## 
+##  Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  sah$dead, fitted(mod.back.auto)
+## X-squared = 3, df = 4, p-value = 0.5
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The test Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=6)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The test Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=8)
+</code></pre>
+
+<pre><code>## 
+##  Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  sah$dead, fitted(mod.back.auto)
+## X-squared = 5, df = 6, p-value = 0.6
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The test Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ResourceSelection)
+hoslem.test(sah$dead, fitted(mod.back.auto), g=12)
+</code></pre>
+
+<pre><code>## 
+##  Hosmer and Lemeshow goodness of fit (GOF) test
+## 
+## data:  sah$dead, fitted(mod.back.auto)
+## X-squared = 10, df = 10, p-value = 0.3
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The test Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>In each case our p-values are still showing this is a good fit. </p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Discrimination</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We then assess discrimination. To do this we use something called <strong><em>Concordance</em></strong> or <strong><em>C Statistic</em></strong></li>
+<li>To understand what this is consider 2 different subjects
+
+<ol>
+<li>Subject 1 is dead</li>
+<li>Subject 2 is not dead.</li>
+</ol></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Discrimination</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>If we consider our model from above it predicts:</p>
+
+<ol>
+<li>\(\hat{p}_1\) the probability that subject 1 is dead.</li>
+<li>\(\hat{p}_2\) the probability that subject 2 is dead.</li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The C-Statistic</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The <strong><em>C Statistic</em></strong> is given by
+\[\Pr\left(\hat{p}_1 > \hat{p}_2\right)\]
+
+<ul>
+<li>If the risk prediction is worthless we find that \(C=0.5\) or essentially the same as flipping a coin. </li>
+<li>If the risk is larger for all who are dead than all who are not dead than we have \(C=1\). </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ROC Curves</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We typically find this value with a Receiver Operating Characteristic (ROC) curve. </li>
+<li>This curve is:
+
+<ul>
+<li>For probability \(p\) those with \(\hat{p}>p\) are predicted to have the outcome </li>
+<li> those with \(\hat{p} < p\) are predicted to not have the outcome. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Sensitivity and Specificity</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p><strong><em>Sensitivity</em></strong> </p>
+
+<ul>
+<li>True Positive</li>
+<li>\(\dfrac{ \text{Num. with Outcome and }\hat{p}>p}{\text{num. with Disease}}\)</li>
+<li>\(\Pr(\hat{p}>p|\text{Has Disease})\)</li>
+</ul></li>
+<li><p><strong><em>Specificity</em></strong></p>
+
+<ul>
+<li>True Negative</li>
+<li>\(\dfrac{ \text{Num. without Outcome and }1-\hat{p}>p}{\text{num. without disease}}\)</li>
+<li>\(\Pr(\hat{p} < p|\text{No Disease})\)</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ROC Curves</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(p\) is arbitrary. </li>
+<li>If we increase \(p\) we increase the Specificity but decrease the Sensitivity. </li>
+<li>An ROC curve has the Sensitivity on the y-axis and 1-Specificity on the x-axis. </li>
+<li>It graphs those points over all choices of \(p\).</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ROC Curves</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If the prediction rule is non-discriminatory then the ROC curve will be a straight line from the points (0,0) to (1,1)</li>
+<li>From the ROC curve, it can be shown that the Area under this Curve (AUC) is the same as the C-statistic or
+\[AUC=C = \Pr\left(\text{Subject with Disease's Risk} > \text{Subject without Disease's Risk}\right)\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>R Code for ROC</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(ggplot2)
+library(ROCR)
+
+
+prob &lt;- predict(mod.back.auto)
+pred &lt;- prediction(prob, sah$dead)
+perf &lt;- performance(pred, &quot;tpr&quot;, &quot;fpr&quot;)
+# I know, the following code is bizarre. Just go with it.
+auc &lt;- performance(pred, measure = &quot;auc&quot;)
+auc &lt;- auc@y.values[[1]]
+
+roc.data &lt;- data.frame(fpr=unlist(perf@x.values),
+                       tpr=unlist(perf@y.values),
+                       model=&quot;GLM&quot;)
+ggplot(roc.data, aes(x=fpr, ymin=0, ymax=tpr)) +
+    geom_ribbon(alpha=0.2) + geom_abline(intercept = 0, slope = 1, colour = &quot;gray&quot;)+
+    geom_line(aes(y=tpr)) +
+    ggtitle(paste0(&quot;ROC Curve w/ AUC=&quot;, auc))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ROC Curve</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-13-1.png" alt="plot of chunk unnamed-chunk-13"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretation</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can see with the plot above that we have an AUC of 0.756. This is a decent fit for the model.</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>AUC</th>
+<th>Model Fit</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0.5</td>
+<td>Random</td>
+</tr>
+<tr>
+<td>0.6</td>
+<td>Mediocre</td>
+</tr>
+<tr>
+<td>0.7</td>
+<td>Decent</td>
+</tr>
+<tr>
+<td>0.8</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>0.9</td>
+<td>Excellent</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Calibration vs Discrimination</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>A logistic model with good agreement between observed and predicted outcomes may fail to sharply distinguish between those with a disease and those without. 
+
+<ul>
+<li>If the range of predicted risk across the deciles is narrow. </li>
+</ul></li>
+<li>A model that does a good job of distinguishing between those with and without the disease may get risks of events wrong if the calibration is poor. </li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Logistic Regression: Testing Model Fit'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Logistic Regression'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Variables'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Variables'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Variables'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Variables'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Special Considerations'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Read in the Data'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Self-Assessed Health'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Assessing Model Fit'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Assessing Model Fit'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Calibration'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='How Do We Perform it?'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='With G Groups we have:'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Our Test Statistic'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Testing in R'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Testing in R'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='What about the warning?'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Fixing Factors'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Our Test Again'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='The test Results'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='The test Results'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='The test Results'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='The test Results'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='The test Results'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Discrimination'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Discrimination'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='The C-Statistic'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='ROC Curves'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Sensitivity and Specificity'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='ROC Curves'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='ROC Curves'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='R Code for ROC'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='ROC Curve'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Interpretation'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Calibration vs Discrimination'>
+         36
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

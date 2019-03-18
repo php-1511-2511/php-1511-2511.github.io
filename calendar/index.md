@@ -220,8 +220,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 5: Logistic</td>
+<td align="left"><a href="../labs/lab5.html">HTML</a> <a href="../labs/lab5.Rmd">Rmd</a>   <a href="../labs/lab5_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -229,8 +229,8 @@ title: Calendar
 <tr>
 <td align="left">Week 9</td>
 <td align="left">18-Mar</td>
-<td align="left">Diagnostics for Logistic Regression</td>
-<td align="left"></td>
+<td align="left">Logistic Model Building</td>
+<td align="left"><a href="../Notes/lect-13-logit-build.html">Lect-13-logit-build</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.4</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -238,8 +238,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">20-Mar</td>
-<td align="left">Further Logistic Regression</td>
-<td align="left"></td>
+<td align="left">Diagnostics for Logistic Regression</td>
+<td align="left"><a href="../Notes/lect-14-logit-test.html">Lect-14-logit-test</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.5-5.7</td>
 <td align="left"></td>
 <td align="left"></td>
