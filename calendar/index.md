@@ -230,7 +230,7 @@ title: Calendar
 <td align="left">Week 9</td>
 <td align="left">18-Mar</td>
 <td align="left">Logistic Model Building</td>
-<td align="left"><a href="../Notes/lect-13-logit-build.html">Lect-13-logit-build</a></td>
+<td align="left"><a href="../Notes/lect-13-logit-build.html">Lect-13-logit-build</a> <a href="https://vimeo.com/325063749">Video</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.4</td>
 <td align="left"></td>
 <td align="left"></td>
