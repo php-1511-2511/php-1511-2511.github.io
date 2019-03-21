@@ -239,7 +239,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">20-Mar</td>
 <td align="left">Diagnostics for Logistic Regression</td>
-<td align="left"><a href="../Notes/lect-14-logit-test.html">Lect-14-logit-test</a></td>
+<td align="left"><a href="../Notes/lect-14-logit-test.html">Lect-14-logit-test</a> <a href="https://vimeo.com/325578123">Video</a></td>
 <td align="left">Fox Chap 15, Vittinghoff Chap 5.5-5.7</td>
 <td align="left"></td>
 <td align="left"></td>
