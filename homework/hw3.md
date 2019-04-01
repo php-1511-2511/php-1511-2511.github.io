@@ -3,8 +3,8 @@ title: "Homework 3"
 author: "Your Name"
 date: "April 8, 2019 at 11:59pm"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 
@@ -136,7 +136,8 @@ Health disparities are very real and exist across individuals and populations. B
 You can load this data into R with the code below:
 
 
-```{r}
+
+```r
 phil_disp <- read.table("https://drive.google.com/uc?export=download&id=0B8CsRLdwqzbzOXlIRl9VcjNJRFU", header=TRUE, sep=",")
 ```
 
