@@ -284,7 +284,7 @@ title: Calendar
 <td align="left">Week 11</td>
 <td align="left">1-Apr</td>
 <td align="left">Introduction to Log-Linear Regression</td>
-<td align="left"></td>
+<td align="left"><a href="../Notes/lect-15-poisson.html">Lect-15-poisson</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
