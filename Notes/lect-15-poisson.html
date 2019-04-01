@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Poisson Regression</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Poisson Regression">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Poisson Regression</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Poisson Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Poisson Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Another situation where we can use a GLM is with Poisson data. </li>
+<li>The poisson model fits data where
+
+<ul>
+<li>Response is a count that follows a Poisson distribution. </li>
+<li>If the events are recurrent than the probability of a 2\(^\text{nd}\) event must not have an increase over the probability of the 1\(^\text{st}\) event. (This would fail for say blood clots. )</li>
+<li>Incidence rates remain constant over time.<br></li>
+<li>Incidence rate multiplied by exposure gives the expected number of events. </li>
+<li>Over a very small exposure time \(t\) the probability of more than one event happening is 0. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Poisson Regression Strengths</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Poisson regression generalizes crude and stratified incidence rates. </li>
+<li>Does not require that subjects are followed for the same amount of time
+
+<ul>
+<li>This can be a weakness of logistic regression when we assume that subjects are followed for the same amount of time given that most studies never achieve this. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Link Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With Poisson Regression it can be shown that we are interested in 
+\[\log\left(\mu\right) =  \beta_0 + \beta_1x_1 + \cdots + \beta_px_p\]</li>
+<li>This would show us we would be using the \(\log\) link. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Unlike Logistic Regression where we took more time to go through the math the benefit of using a GLM is that we no longer need to discuss how to estimate our coefficients. </li>
+<li>We once again will by using maximum likelihood theory. </li>
+<li>We will instead discuss Poisson Regression through example. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Physician Health Study Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>age</td>
+<td>Age in years at time of Randomization</td>
+</tr>
+<tr>
+<td>asa</td>
+<td>0 - placebo, 1 - aspirin</td>
+</tr>
+<tr>
+<td>bmi</td>
+<td>Body Mass Index (kg/\(m^2\))</td>
+</tr>
+<tr>
+<td>hypert</td>
+<td>1 - Hypertensive at baseline, 0 - Not</td>
+</tr>
+<tr>
+<td>alcohol</td>
+<td>0 - less than monthly, 1 - monthly to less than daily, 2 - daily consumption</td>
+</tr>
+<tr>
+<td>dm</td>
+<td>0 = No diabetes Mellitus, 1 - diabetes Mellitus</td>
+</tr>
+<tr>
+<td>sbp</td>
+<td>Systolic BP (mmHg)</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Physician Health Study Variables</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>exer</td>
+<td>0 - No regular, 1 - Sweat at least once per week</td>
+</tr>
+<tr>
+<td>csmoke</td>
+<td>0 - Not currently, 1 - &lt; 1 pack per day, 2 - \(\ge\) 1 pack per day</td>
+</tr>
+<tr>
+<td>psmoke</td>
+<td>0 - never smoked, 1 - former &lt; 1 pack per day, 2 - former \(\ge\) 1 pack per day</td>
+</tr>
+<tr>
+<td>pkyrs</td>
+<td>Total lifetime packs of cigarettes smoked</td>
+</tr>
+<tr>
+<td>crc</td>
+<td>0 - No colorectal Cancer, 1 - Colorectal cancer</td>
+</tr>
+<tr>
+<td>cayrs</td>
+<td>Years to colorectal cancer, or death, or end of follow-up.</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Each Subject Contributed</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Information on whether of not they had a Colorectal Cancer(CRC) during follow-up</li>
+<li>Follow-up time in years, specified as time from randomization until first of
+
+<ul>
+<li>end of Study</li>
+<li>death</li>
+<li>Colorectal Cancer</li>
+<li>Loss to follow-up</li>
+</ul></li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Loading Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(tidyverse)
+library(haven)
+phscrc &lt;- read_dta(&quot;phscrc.dta&quot;)
+phscrc &lt;- phscrc %&gt;%
+            mutate(age.cat = cut(age, c(40,50,60,70, 90), right=FALSE)) %&gt;%
+            mutate(alcohol.use = factor(phscrc$alcohol&gt;0, labels=c(&quot;no&quot;, &quot;yes&quot;)))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Alcohol Use by Age</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We then can consider the following table of information</p>
+
+<style type="text/css">
+    table.tableizer-table {
+        font-size: 12px;
+        border: 1px solid #CCC; 
+        font-family: Arial, Helvetica, sans-serif;
+         width: 80%;
+    margin-left:10%; 
+    margin-right:10%;
+    } 
+    .tableizer-table td {
+        padding: 4px;
+        margin: 3px;
+        border: 1px solid #CCC;
+    }
+    .tableizer-table th {
+        background-color: #104E8B; 
+        color: #FFF;
+        font-weight: bold;
+    }
+</style>
+
+<table class="tableizer-table">
+<thead><tr class="tableizer-firstrow"><th></th><th>Alcohol Users</th><th>Non-Alcohol Users</th></tr></thead><tbody>
+ <tr><td>Ages</td><td>$\dfrac{\text{Events(MI)}}{\text{Person-Years}}$</td><td>$\dfrac{\text{Events(MI)}}{\text{Person-Years}}$</td></tr>
+ <tr><td>40-49</td><td>$\dfrac{8}{69.723}=0.1147$</td><td>$\dfrac{31}{208.093}=0.1490$</td></tr>
+ <tr><td>50-59</td><td>$\dfrac{21}{172.485}=0.1217$</td><td>$\dfrac{59}{426.540}=0.1383$</td></tr>
+ <tr><td>60-69</td><td>$\dfrac{32}{233.063}=0.1373$</td><td>$\dfrac{62}{410.415}=0.1511$</td></tr>
+ <tr><td>70+</td><td>$\dfrac{20}{121.789}=0.1642$</td><td>$\dfrac{21}{129.177}=0.1626$</td></tr>
+ <tr><td>Total </td><td>$\dfrac{81}{597.060}=0.13566$</td><td>$\dfrac{173}{1174.225}=0.1473$</td></tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Reasoning for Poisson Regression</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Before we continue we will discuss why we may use Poisson regression here rather than logistic. 
+
+<ul>
+<li>Poisson regression is used to model expected number of events given covariates. </li>
+<li>We can use either categorical or continuous covariates. </li>
+<li>The number of events for each subject is independent from subject to subject and each subject has a distribution:
+\[Y_i \approx Poisson(\mu_i=\lambda_it_i)\]
+
+<ul>
+<li>This incidence rate (\(\lambda_i\)) of CRC is constant over time but may vary individually based on covariates for subject \(i\). </li>
+</ul></li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do we have?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li> For \(i^{\text{th}}\) subject we have a follow up of \(t_i\) years \(i=1,\ldots,22071\). 
+\[
+Y_i = \begin{cases}
+1 & \text{ if patient develops CRC}\\
+0 & \text{ Otherwise}\\
+\end{cases}
+\]</li>
+<li>\(Y_i\) is not binomial since \(t_i\) is different for every subject. </li>
+<li>We can then assume that \(Y_i\) is Poisson</li>
+</ul>
+
+<p>\[
+\begin{aligned}
+E(Y_i) &= \mu_i = \lambda_it_i\\
+\log(\mu_i) &= \log(\lambda_i) + \log(t_i)\\
+&= \beta_0 + \beta_1x_{1i}+ \cdots+\beta_kx_{ki}  + \log(t_i)\\
+\end{aligned}
+\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Offset</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(\log(t_i)\) is called an offset. </li>
+<li>We fit a regression model and fix the offset coefficient so that it is 1.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Rationale for \(\log()\) transform</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Many times we call Poisson regression, log-linear regression. The rationale behind using the log transform is:
+
+<ul>
+<li>\(\log(\lambda)\) has a range of \(-\infty\) to \(\infty\) even though \(\lambda>0\). This means there are no restrictions to a specific range. </li>
+<li>Maximum likelihood estimation works extremely well with the \(\log()\) relationship. This is due to the fact that the \(\log()\) link is something called the canonical link between outcome and covariates. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Analysis of Grouped or Individual Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can actually enter data in  different ways</p>
+
+<ol>
+<li>Individual Data: one line per patient. </li>
+<li>Grouped Data: grouping data by a covariate pattern. 
+
+<ul>
+<li>This happens when all covariates are categorical</li>
+<li>There are no differences with inferences in either case. </li>
+</ul></li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpreting Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Given our data we consider the following model:
+\[\log\left(\lambda_{x_1,x_2}\right)= \beta_0 + \beta_1x_1 + \beta_2x_2\]</li>
+<li>where
+
+<ul>
+<li>\(X_1\) is Alcohol Use
+
+<ul>
+<li>1 for Daily</li>
+<li>0 for Less than Daily</li>
+</ul></li>
+<li>\(X_2\) is mean-centered age at baseline</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is \(\beta_0\)?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(\beta_0\) can be interpreted as:
+\[\beta_0 = \log\left(\lambda_{x_1=0, x_2=0}\right)\]
+
+<ul>
+<li>This then represents the log CRC rate for less than daily drinkers who are at the mean age.</li>
+<li>The CRC rate for less than daily drinkers who are at the mean age is \(\exp(\beta_0)\). </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is \(\beta_1\)?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li> \(\beta_1\) can be interpreted as:
+
+<ul>
+<li>Consider 2 subjects who are the same age but differ in drinking status:</li>
+</ul></li>
+</ul>
+
+<p>\[\begin{aligned}
+\log\left(\lambda_{x_1=0, x_2}\right) &= \beta_0 + \beta_2x_2\\
+\log\left(\lambda_{x_1=1, x_2}\right) &= \beta_0 + \beta_1+  \beta_2x_2\\
+\beta_1 &= \log\left(\lambda_{x_1=0, x_2}\right) - \log\left(\lambda_{x_1=1, x_2}\right)\\
+&= \log\left( \dfrac{\lambda_{x_1=1, x_2}}{\lambda_{x_1=0, x_2}}\right)\\
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How do you interpret \(\beta_1\)?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This is the log CRC rate ratio comparing daily drinking to less than daily drinking in subjects who are the same age. </li>
+<li>The CRC rate ratio comparing daily drinking to less than daily drinking in subjects who are the same age is \(\exp(\beta_1)\).</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What is \(\beta_2\)?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li> What is \(\beta_2\)?:
+
+<ul>
+<li>Consider 2 subjects who differ in age by one year but have the same drinking status:</li>
+</ul></li>
+</ol>
+
+<p>\[\begin{aligned}
+\log\left(\lambda_{x_1, x_2}\right) &= \beta_0 + \beta_2x_2\\
+\log\left(\lambda_{x_1, x_2+1}\right) &= \beta_0 + \beta_1+  \beta_2(x_2+1)\\
+\beta_2 &= \log\left(\lambda_{x_1, x_2+1}\right) - \log\left(\lambda_{x_1, x_2}\right)\\
+&= \log\left( \dfrac{\lambda_{x_1, x_2+1}}{\lambda_{x_1=0, x_2}}\right)\\
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How do you interpret \(\beta_2\)?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This is the log CRC rate ratio comparing a one year increase over mean age for patients who have the same drinking status.<br></li>
+<li>The CRC rate ratio comparing a one year increase over mean age for subjects who have the same drinking status is \(\exp(\beta_2)\).</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Model in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">phscrc$mean.cent.age &lt;- phscrc$age - mean(phscrc$age, na.rm=TRUE)
+fit5 &lt;- glm(crc~alcohol.use + mean.cent.age + offset(log(cayrs)), data=phscrc, family=poisson(link=&#39;log&#39;))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">p.value</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">(Intercept)</td>
+<td align="right">0.001</td>
+<td align="right">0.000</td>
+<td align="right">0.001</td>
+<td align="right">0.001</td>
+</tr>
+<tr>
+<td align="left">alcohol.useyes</td>
+<td align="right">1.413</td>
+<td align="right">0.026</td>
+<td align="right">1.051</td>
+<td align="right">1.936</td>
+</tr>
+<tr>
+<td align="left">mean.cent.age</td>
+<td align="right">1.080</td>
+<td align="right">0.000</td>
+<td align="right">1.067</td>
+<td align="right">1.093</td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretation of Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong><em>Intercept</em></strong>:
+
+<ul>
+<li>The CRC rate for less than daily drinkers who are 53 years old is 0.001. </li>
+</ul></li>
+<li><strong><em>Alcohol Use</em></strong>:
+
+<ul>
+<li>The CRC rate ratio comparing daily drinking to less than daily drinking in subjects who are the same age is 1.1976 although it is insignificant.</li>
+<li>The CRC rate for daily drinkers is 19.76% greater than the CRC rate of less than daily drinkers  although it is insignificant.</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Interpretation of Coefficients</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong><em>Age</em></strong>:
+
+<ul>
+<li>The CRC rate ratio comparing a one year increase over mean age for subjects who have the same drinking status is 1.0781.</li>
+<li>The CRC rate for one year increase in mean age is 7.81% larger than the CRC rate for subjects at the mean age and who have the same drinking status. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-25" style="background:grey;">
+  <hgroup>
+    <h1>Model fit for Poisson Regression</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Deviance Goodness-of-Fit Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong>Deviance</strong> is a a measure of how close our model predicts the actual observed outcomes. 
+
+<ul>
+<li><em>This is similar to residuals in linear regression</em></li>
+</ul></li>
+<li>We can use this as a basic test for goodness of fit since we hope our predictions are close to actual outcomes.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Distribution</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We first must understand what the distribution of this would be
+
+<ul>
+<li>If our model is correctly specified we must determine how much variation we expect in the observed outcomes around the predicted means under the assumption that our data is Poisson. </li>
+<li>It can be shown that deviance follows a \(\chi^2\) distribution equal to the difference in parameters between the model fit at the saturated model, \(n-p\).</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Chi-Square Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This means we can use a \(\chi^2\) test for this with the hypothesis of:</li>
+</ul>
+
+<p>\[H_0:\text{ The Model is Correctly Specified }\]
+\[\text{vs.}\]
+\[H_1:\text{ The Model is Not Correctly Specified }\]</p>
+
+<pre><code class="r">pchisq(fit5$deviance, df=fit5$df.residual, lower.tail=FALSE)
+</code></pre>
+
+<pre><code>## [1] 1
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Overdispersion</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>-When we deal with Poisson data we are saying that
+\[E(X) = Var(X)\]</p>
+
+<ul>
+<li>In other words we are saying that the mean is equal to the variance. If this is not true:
+
+<ul>
+<li>We still have valid estimates of relevant event rates</li>
+<li>We tend to underestimate variance and then have p-values that are too small and confidence intervals that are too narrow. </li>
+<li>We correct for this using Negative-Binomial Regression. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Dispersion Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can test for this in R:</p>
+
+<pre><code class="r">library(AER)
+dispersiontest(fit5)
+</code></pre>
+
+<pre><code>## 
+##  Overdispersion test
+## 
+## data:  fit5
+## z = -8, p-value = 1
+## alternative hypothesis: true dispersion is greater than 1
+## sample estimates:
+## dispersion 
+##      0.984
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Results of Dispersion Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>From this test we see that our dispersion is 1 and so we have correctly scaled the variance compared to the mean. </li>
+<li>If it was not we could make a change that would correct it without having to learn a new regression model:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Results</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">summary(fit5)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## glm(formula = crc ~ alcohol.use + mean.cent.age + offset(log(cayrs)), 
+##     family = poisson(link = &quot;log&quot;), data = phscrc)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -0.531  -0.199  -0.148  -0.116   4.026  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)    -7.13694    0.14604  -48.87   &lt;2e-16 ***
+## alcohol.useyes  0.34583    0.15557    2.22    0.026 *  
+## mean.cent.age   0.07665    0.00621   12.35   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 2495.0  on 16017  degrees of freedom
+## Residual deviance: 2342.6  on 16015  degrees of freedom
+##   (16 observations deleted due to missingness)
+## AIC: 2857
+## 
+## Number of Fisher Scoring iterations: 7
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Results Correcting for Dispersion</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">summary(fit5, dispersion=0.9841428)
+</code></pre>
+
+<pre><code>## 
+## Call:
+## glm(formula = crc ~ alcohol.use + mean.cent.age + offset(log(cayrs)), 
+##     family = poisson(link = &quot;log&quot;), data = phscrc)
+## 
+## Deviance Residuals: 
+##    Min      1Q  Median      3Q     Max  
+## -0.531  -0.199  -0.148  -0.116   4.026  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)    -7.13694    0.14488  -49.26   &lt;2e-16 ***
+## alcohol.useyes  0.34583    0.15433    2.24    0.025 *  
+## mean.cent.age   0.07665    0.00616   12.45   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 0.984)
+## 
+##     Null deviance: 2495.0  on 16017  degrees of freedom
+## Residual deviance: 2342.6  on 16015  degrees of freedom
+##   (16 observations deleted due to missingness)
+## AIC: 2857
+## 
+## Number of Fisher Scoring iterations: 7
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Poisson Regression'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Poisson Regression'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Poisson Regression Strengths'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Link Function'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Example'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Physician Health Study Variables'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Physician Health Study Variables'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='What Each Subject Contributed'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Loading Data'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Alcohol Use by Age'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Reasoning for Poisson Regression'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='What do we have?'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='The Offset'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Rationale for \(\log()\) transform'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Analysis of Grouped or Individual Data'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Interpreting Coefficients'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='What is \(\beta_0\)?'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='What is \(\beta_1\)?'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='How do you interpret \(\beta_1\)?'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='What is \(\beta_2\)?'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='How do you interpret \(\beta_2\)?'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Model in R'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Interpretation of Coefficients'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Interpretation of Coefficients'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Model fit for Poisson Regression'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Deviance Goodness-of-Fit Test'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Distribution'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Chi-Square Test'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Overdispersion'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Dispersion Test'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Results of Dispersion Test'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Results'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Results Correcting for Dispersion'>
+         33
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
