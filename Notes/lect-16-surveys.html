@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Poisson Regression</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Poisson Regression">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Poisson Regression</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Random Sampling</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Random Sampling</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Simple Random Sampling is where each member of the population has the same probability of being sampled. </li>
+<li>The goal is to produce a representative sample that does not have problems with selection bias. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Sampling Error and Bias</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Sampling error is the inherent error that is a produce of the variation of different samples. 
+
+<ul>
+<li>Can change with survey design.</li>
+<li>Clustering and Stratification add further errors and bias in. </li>
+</ul></li>
+<li>Bias:  Difference between estimator&#39;s value based on sample and the true value of the
+population parameter being estimated. 
+
+<ul>
+<li>An estimate is biased if the <em>center</em> of it&#39;s distribution is not the population mean. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Bias Variance Tradeoff</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="https://i.stack.imgur.com/2kYe5m.png" alt=""></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-5" style="background:grey;">
+  <hgroup>
+    <h1>Why Surveys</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why Surveys</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Randomly sampling from populations can be extremely expensive</li>
+<li>Many times you also want to guarantee that you reach certain parts of population that you you are concerned about having enough information on. </li>
+<li>We use Surveys to save cost and make sure we hear from specific subpopulations we are interested in.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Types of Survey Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><strong>Stratified Sampling</strong> - Sample across different strata to make representative. </li>
+<li><strong>Cluster Sampling</strong> - Sample across clusters, for example neighborhoods. </li>
+<li><strong>Weighted Sampling</strong> - You may choose to oversample from important subpopulations, for example ethnic minorities or impoverished neighborhoods. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How Does this Change our Analysis?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can no longer assume that everyone has an equal probability of being selected. </li>
+<li>We assume that we know a certain probability of being selected, \(\pi_i\) for each individual. </li>
+<li>We then need to weight based on this \(\pi_i\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How Does this Change our Anaysis?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>For example if we randomly sample from the population a good estimate for the total sample size is simple
+\[T_x = \sum_{i=1}^N x_i\]</li>
+<li>For a survey we sampled based on unequal probabilities
+\[T_X = \sum_{i=1}^N \dfrac{1}{\pi_i}x_i\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What else does this effect?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We no longer get the correct estimate of variance.</li>
+<li>We need to adjust things like means for the new total population. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Methods for Variance?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We could estimate variances using:
+
+<ul>
+<li>delta method</li>
+<li>jackknife</li>
+<li>bootstrap</li>
+<li>Other resampling tools</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do we Do?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can no longer use regular summary, regression or even graphic techniques. </li>
+<li>Each person does not count as 1 anymore in this data. </li>
+<li>Luckily statistical software has been created to deal with these issues. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Do we Need to Know?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Describing your survey design. </li>
+<li>Summary Statistics</li>
+<li>Tables</li>
+<li>Graphics</li>
+<li>Regression Modeling</li>
+<li>Calibration</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-14" style="background:grey;">
+  <hgroup>
+    <h1>The <code>survey</code> package in R</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter the <code>survey</code> Package in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The survey package in R has been built to handle survey data.</li>
+<li>It can do all of the procedures above. </li>
+<li>It can also work directly with databases for connecting to surveys stored in databases. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Describing the Design</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>library(survey)
+brfss.design &lt;- svydesign(data=brfss, nest=TRUE,
+weight= ~llcpwt,id= ~psu, strata= ~ststr) 
+</code></pre>
+
+<ul>
+<li><code>data</code> the data for your survey.</li>
+<li><code>nest</code> if your data needs to be relabeled due to nesting.</li>
+<li><code>weight</code> weights for the specific sampling.</li>
+<li><code>id</code> unique ids for the sampling groups. </li>
+<li><code>strata</code> strata that weights and ids refer to. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Enter BRFSS Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>BRFSS is the Behavioral Risk Factor Surveillance System (BRFSS).</li>
+<li>This is a national health-related telephone survey. </li>
+<li>There are more than 400,000 interviews done every year from all 50 states and the district of Columbia. </li>
+<li>To learn more about this survey please go to their website: <a href="http://www.cdc.gov/brfss/">Behavioral Risk Factor Surveillance System</a>. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>BRFSS Information</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><a href="http://www.cdc.gov/brfss/annual_data/2014/pdf/codebook14_llcp.pdf">Codebook</a></li>
+<li><a href="https://drive.google.com/file/d/0B8CsRLdwqzbzd1RrRWp2RnBGTDg/view?usp=sharing">Data</a></li>
+<li><a href="http://www.cdc.gov/brfss/annual_data/2014/llcp_varlayout_14_onecolumn.html">Variable Layout</a></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Reading the Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code class="r"># Download file and then run this code:
+# https://drive.google.com/open?id=1KiFP1xip0aM5sq7W8Mg-TRmi-34TaIXw
+
+load(&quot;BRFSS_2014.rda&quot;)
+names(brfss) &lt;- tolower(names(brfss)) # Make sure they line up with SAS names
+names(brfss) &lt;- gsub(&quot;x_&quot;, &quot;&quot;, names(brfss)) # Make sure they line up with SAS names
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Design in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(survey)
+brfss.design &lt;- svydesign(data=brfss_sub_com, nest=TRUE,  
+                          weight= ~llcpwt,id= ~psu, strata= ~ststr) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Does this tell us?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">brfss.design
+</code></pre>
+
+<pre><code>## Stratified Independent Sampling design (with replacement)
+## svydesign(data = brfss_sub_com, nest = TRUE, weight = ~llcpwt, 
+##     id = ~psu, strata = ~ststr)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What else can we view?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">summary(brfss.design)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What else can we view?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>Stratified Independent Sampling design (with replacement)
+svydesign(data = brfss_sub_com, nest = TRUE, weight = ~llcpwt, 
+    id = ~psu, strata = ~ststr)
+Probabilities:
+     Min.   1st Qu.    Median      Mean 
+0.0000346 0.0012320 0.0030010 0.0076400 
+  3rd Qu.      Max. 
+0.0071610 0.7931000 
+Stratum Sizes: 
+           11011 11012 11021 11022 11031
+           11032 11041 11042 11051 11052
+           11061 11062 11071 11072 11081
+           ...
+`
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What else can we view?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>[ reached getOption(&quot;max.print&quot;) -- omitted 3 rows ]
+Data variables:
+ [1] &quot;insurance&quot;      &quot;imprace&quot;       
+ [3] &quot;pcp&quot;            &quot;education&quot;     
+ [5] &quot;age&quot;            &quot;annual_income&quot; 
+ [7] &quot;employed&quot;       &quot;sex&quot;           
+ [9] &quot;military&quot;       &quot;cost&quot;          
+[11] &quot;children_count&quot; &quot;llcpwt&quot;        
+[13] &quot;psu&quot;            &quot;ststr&quot;  
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">names(brfss.design)
+</code></pre>
+
+<pre><code>## [1] &quot;cluster&quot;    &quot;strata&quot;     &quot;has.strata&quot; &quot;prob&quot;       &quot;allprob&quot;   
+## [6] &quot;call&quot;       &quot;variables&quot;  &quot;fpc&quot;        &quot;pps&quot;
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Totals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">#Sometimes strata only have one person in them
+# We need to tell R how to adjust for this
+
+
+options(survey.lonely.psu = &quot;adjust&quot;)
+svytotal(~insurance, brfss.design)
+svytotal(~imprace, brfss.design)
+
+
+#We could also have this done for more than one
+#variable at a time:
+
+svytotal(~insurance + imprace, brfss.design)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Totals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">options(survey.lonely.psu = &quot;adjust&quot;)
+svytotal(~insurance, brfss.design)
+</code></pre>
+
+<pre><code>##                 total     SE
+## insuranceNo  13654714 201653
+## insuranceYes 65124829 255568
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Totals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">options(survey.lonely.psu = &quot;adjust&quot;)
+svytotal(~imprace, brfss.design)
+</code></pre>
+
+<pre><code>##                    total     SE
+## impraceWhite    44507752 216030
+## impraceBlack    10111446 159564
+## impraceAsian     3975911 140229
+## impraceAI/AN      866153  37770
+## impraceHispanic 17769428 225292
+## impraceOther     1548855  49807
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Totals</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">options(survey.lonely.psu = &quot;adjust&quot;)
+svytotal(~insurance + imprace, brfss.design)
+</code></pre>
+
+<pre><code>##                    total     SE
+## insuranceNo     13654714 201653
+## insuranceYes    65124829 255568
+## impraceWhite    44507752 216030
+## impraceBlack    10111446 159564
+## impraceAsian     3975911 140229
+## impraceAI/AN      866153  37770
+## impraceHispanic 17769428 225292
+## impraceOther     1548855  49807
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Means</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">options(survey.lonely.psu = &quot;adjust&quot;)
+
+#Continuous: give means
+svymean(~age,brfss.design)
+
+#Categorical: gives proportions
+svymean(~insurance, brfss.design)
+svymean(~imprace, brfss.design)
+
+
+#Also with multiple variables
+svymean(~age+insurance+imprace, brfss.design)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Means</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##     mean   SE
+## age 38.7 0.07
+##               mean SE
+## insuranceNo  0.173  0
+## insuranceYes 0.827  0
+##                   mean SE
+## impraceWhite    0.5650  0
+## impraceBlack    0.1284  0
+## impraceAsian    0.0505  0
+## impraceAI/AN    0.0110  0
+## impraceHispanic 0.2256  0
+## impraceOther    0.0197  0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Means</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##                    mean   SE
+## age             38.6604 0.07
+## insuranceNo      0.1733 0.00
+## insuranceYes     0.8267 0.00
+## impraceWhite     0.5650 0.00
+## impraceBlack     0.1284 0.00
+## impraceAsian     0.0505 0.00
+## impraceAI/AN     0.0110 0.00
+## impraceHispanic  0.2256 0.00
+## impraceOther     0.0197 0.00
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Means</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##                    mean   SE
+## age             38.6604 0.07
+## insuranceNo      0.1733 0.00
+## insuranceYes     0.8267 0.00
+## impraceWhite     0.5650 0.00
+## impraceBlack     0.1284 0.00
+## impraceAsian     0.0505 0.00
+## impraceAI/AN     0.0110 0.00
+## impraceHispanic  0.2256 0.00
+## impraceOther     0.0197 0.00
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Quantiles</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Necessary for Boxplots</li>
+</ul>
+
+<pre><code class="r">options(survey.lonely.psu = &quot;adjust&quot;)
+svyquantile(~age, brfss.design, c(.25,.5,.75), ci=TRUE)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Basic Summaries: Quantiles</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Necessary for Boxplots</li>
+</ul>
+
+<pre><code>## $quantiles
+##     0.25 0.5 0.75
+## age   30  38   46
+## 
+## $CIs
+## , , age
+## 
+##        0.25 0.5 0.75
+## (lower   30  38   46
+## upper)   31  38   46
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Tables in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>With survey data we would like to be able to have contingency tables as well. </li>
+<li>For example lets say that we want to consider insurance and race:</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Survey Tables in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"># This produces a table with the means in one column
+a &lt;- svymean(~interaction(insurance, imprace), design = brfss.design)
+a
+
+# This produces the table in a contingency table format
+b &lt;- ftable(a, rownames = list(insurance = c(&quot;No&quot;, &quot;Yes&quot;), 
+      imprace = c(&quot;White&quot;, &quot;Black&quot;, &quot;Asian&quot;, &quot;Ai/AN&quot;, &quot;Hispanic&quot;, &quot;Other&quot;)))
+b
+
+
+# we can turn these to percents and round better
+round(100*b,2)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Survey Tables in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##                                                mean SE
+## interaction(insurance, imprace)No.White     0.05911  0
+## interaction(insurance, imprace)Yes.White    0.50586  0
+## interaction(insurance, imprace)No.Black     0.02329  0
+## interaction(insurance, imprace)Yes.Black    0.10506  0
+## interaction(insurance, imprace)No.Asian     0.00574  0
+## interaction(insurance, imprace)Yes.Asian    0.04473  0
+## interaction(insurance, imprace)No.AI/AN     0.00167  0
+## interaction(insurance, imprace)Yes.AI/AN    0.00932  0
+## interaction(insurance, imprace)No.Hispanic  0.08040  0
+## interaction(insurance, imprace)Yes.Hispanic 0.14516  0
+## interaction(insurance, imprace)No.Other     0.00311  0
+## interaction(insurance, imprace)Yes.Other    0.01655  0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Survey Tables in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##               insurance       No      Yes
+## imprace                                  
+## White    mean           0.059106 0.505860
+##          SE             0.001293 0.002744
+## Black    mean           0.023290 0.105061
+##          SE             0.000984 0.001788
+## Asian    mean           0.005744 0.044725
+##          SE             0.000705 0.001610
+## Ai/AN    mean           0.001675 0.009320
+##          SE             0.000200 0.000438
+## Hispanic mean           0.080404 0.145155
+##          SE             0.001908 0.002295
+## Other    mean           0.003110 0.016550
+##          SE             0.000273 0.000575
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Survey Tables in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>we can turn these to percents and round better</p>
+
+<pre><code>##               insurance    No   Yes
+## imprace                            
+## White    mean            5.91 50.59
+##          SE              0.13  0.27
+## Black    mean            2.33 10.51
+##          SE              0.10  0.18
+## Asian    mean            0.57  4.47
+##          SE              0.07  0.16
+## Ai/AN    mean            0.17  0.93
+##          SE              0.02  0.04
+## Hispanic mean            8.04 14.52
+##          SE              0.19  0.23
+## Other    mean            0.31  1.66
+##          SE              0.03  0.06
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Chi-SQuare Test Over Table</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">svytable(~insurance+imprace, design=brfss.design)
+svychisq(~insurance+imprace, design=brfss.design,
+         statistic=&quot;Chisq&quot;)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Chi-SQuare Test Over Table</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>##          imprace
+## insurance    White    Black    Asian    AI/AN Hispanic    Other
+##       No   4656358  1834760   452476   131934  6334172   245014
+##       Yes 39851393  8276686  3523435   734219 11435255  1303841
+## 
+##  Pearson&#39;s X^2: Rao &amp; Scott adjustment
+## 
+## data:  svychisq(~insurance + imprace, design = brfss.design, statistic = &quot;Chisq&quot;)
+## X-squared = 8000, df = 5, p-value &lt;2e-16
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graphics: Boxplots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">#Single boxplot
+svyboxplot(age~1, brfss.design)
+
+#Boxplot by categorical variable
+svyboxplot(age~insurance, brfss.design)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graphics: Boxplots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graphics: Boxplots</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-28-1.png" alt="plot of chunk unnamed-chunk-28"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graphics: Histograms</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">svyhist(~age, brfss.design)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Graphics: Histograms</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-30-1.png" alt="plot of chunk unnamed-chunk-30"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Regressions</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Linear
+<code>
+svyglm( outcome ~ covariate1 + covariate2, 
+  design=brfss.design
+</code></li>
+<li>Logistic
+<code>
+svyglm( outcome ~ covariate1 + covariate2, 
+  design=brfss.design, family=&quot;binomial&quot;)
+</code></li>
+<li>Cox-PH
+<code>
+svycoxph( Surv(time,event)~ covariates, 
+  design=brfss.design)
+</code></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Random Sampling'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Random Sampling'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Sampling Error and Bias'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Bias Variance Tradeoff'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Why Surveys'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Why Surveys'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Types of Survey Data'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='How Does this Change our Analysis?'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='How Does this Change our Anaysis?'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='What else does this effect?'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Methods for Variance?'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='What Do we Do?'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='What Do we Need to Know?'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='The <code>survey</code> package in R'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Enter the <code>survey</code> Package in R'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Describing the Design'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Enter BRFSS Data'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='BRFSS Information'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Reading the Data'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='NA'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='The Design in R'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='What Does this tell us?'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='What else can we view?'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='What else can we view?'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='What else can we view?'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Data'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Basic Summaries: Totals'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Basic Summaries: Totals'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Basic Summaries: Totals'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Basic Summaries: Totals'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Basic Summaries: Means'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Basic Summaries: Means'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Basic Summaries: Means'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Basic Summaries: Means'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Basic Summaries: Quantiles'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Basic Summaries: Quantiles'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Tables in R'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Survey Tables in R'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Survey Tables in R'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Survey Tables in R'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Survey Tables in R'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Chi-SQuare Test Over Table'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Chi-SQuare Test Over Table'>
+         43
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=44 title='Graphics: Boxplots'>
+         44
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=45 title='Graphics: Boxplots'>
+         45
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=46 title='Graphics: Boxplots'>
+         46
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=47 title='Graphics: Histograms'>
+         47
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=48 title='Graphics: Histograms'>
+         48
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=49 title='Regressions'>
+         49
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

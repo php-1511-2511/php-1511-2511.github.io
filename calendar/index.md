@@ -284,16 +284,16 @@ title: Calendar
 <td align="left">Week 11</td>
 <td align="left">1-Apr</td>
 <td align="left">Introduction to Log-Linear Regression</td>
-<td align="left"><a href="../Notes/lect-15-poisson.html">Lect-15-poisson</a></td>
+<td align="left"><a href="../Notes/lect-15-poisson.html">Lect-15-poisson</a> <a href="https://vimeo.com/327800352">Video</a></td>
 <td align="left"></td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw3.html">HW3 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.Rmd">HW3 -Rmd</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.pdf">HW3-pdf</a></td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left">3-Apr</td>
-<td align="left">Further Log-Linear Regression</td>
-<td align="left"></td>
+<td align="left">Survey Data Analysis</td>
+<td align="left"><a href="../Notes/lect-16-surveys.html">Lect-16-surveys</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>

@@ -1,0 +1,735 @@
+---
+title       : Poisson Regression
+author      : Adam J Sullivan 
+job         : Assistant Professor of Biostatistics
+work        : Brown University
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js # {highlight.js, prettify, highlight}
+hitheme     :  github     # 
+widgets     : [mathjax, quiz, bootstrap, interactive] # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3, libraries/leaflet, libraries/dygraphs]}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+logo        : publichealthlogo.png
+biglogo     : publichealthlogo.png
+assets      : {assets: ../../assets}
+---  .segue bg:grey
+
+```{r setup, include = FALSE, cache = FALSE}
+library(knitr)
+opts_chunk$set(error = TRUE)
+opts_chunk$set(warning=FALSE)
+opts_chunk$set(message=FALSE)
+opts_chunk$set(results="hold")
+opts_chunk$set(cache=T)
+opts_chunk$set(  tidy=F,size="small")
+opts_chunk$set(tidy.opts=list(width.cutoff=60))
+options(digits = 3, scipen = 3)
+```
+
+
+```{r, echo=FALSE, warning=F, message=F}
+library(knitr)
+library(broom)
+knitr::opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small",
+  eval=TRUE, 
+  warning = FALSE,
+  message=FALSE,
+  cache=T)
+```
+
+
+# Random Sampling
+
+
+--- .class #id
+
+## Random Sampling
+
+- Simple Random Sampling is where each member of the population has the same probability of being sampled. 
+- The goal is to produce a representative sample that does not have problems with selection bias. 
+
+
+
+--- .class #id
+
+## Sampling Error and Bias
+
+- Sampling error is the inherent error that is a produce of the variation of different samples. 
+    - Can change with survey design.
+    - Clustering and Stratification add further errors and bias in. 
+- Bias:  Difference between estimator's value based on sample and the true value of the
+population parameter being estimated. 
+    - An estimate is biased if the *center* of it's distribution is not the population mean. 
+
+
+
+--- .class #id
+
+## Bias Variance Tradeoff
+
+![](https://i.stack.imgur.com/2kYe5m.png)
+
+
+
+--- .segue bg:grey
+
+# Why Surveys
+
+
+--- .class #id
+
+## Why Surveys
+
+- Randomly sampling from populations can be extremely expensive
+- Many times you also want to guarantee that you reach certain parts of population that you you are concerned about having enough information on. 
+- We use Surveys to save cost and make sure we hear from specific subpopulations we are interested in.
+
+
+
+--- .class #id
+
+
+## Types of Survey Data
+
+
+- **Stratified Sampling** - Sample across different strata to make representative. 
+- **Cluster Sampling** - Sample across clusters, for example neighborhoods. 
+- **Weighted Sampling** - You may choose to oversample from important subpopulations, for example ethnic minorities or impoverished neighborhoods. 
+
+
+
+
+--- .class #id
+
+
+## How Does this Change our Analysis?
+
+- We can no longer assume that everyone has an equal probability of being selected. 
+- We assume that we know a certain probability of being selected, $\pi_i$ for each individual. 
+- We then need to weight based on this $\pi_i$
+
+
+
+--- .class #id
+
+## How Does this Change our Anaysis?
+
+- For example if we randomly sample from the population a good estimate for the total sample size is simple
+\[T_x = \sum_{i=1}^N x_i\]
+- For a survey we sampled based on unequal probabilities
+\[T_X = \sum_{i=1}^N \dfrac{1}{\pi_i}x_i\]
+
+
+
+
+--- .class #id
+
+
+## What else does this effect?
+
+- We no longer get the correct estimate of variance.
+- We need to adjust things like means for the new total population. 
+
+
+
+--- .class #id
+
+## Methods for Variance?
+
+- We could estimate variances using:
+    - delta method
+    - jackknife
+    - bootstrap
+    - Other resampling tools
+
+
+
+
+--- .class #id
+
+
+## What Do we Do?
+
+- We can no longer use regular summary, regression or even graphic techniques. 
+- Each person does not count as 1 anymore in this data. 
+- Luckily statistical software has been created to deal with these issues. 
+
+
+
+--- .class #id
+
+## What Do we Need to Know?
+
+- Describing your survey design. 
+- Summary Statistics
+- Tables
+- Graphics
+- Regression Modeling
+- Calibration
+
+
+
+--- .segue bg:grey
+
+
+
+
+
+
+
+# The `survey` package in R
+
+
+
+--- .class #id
+
+## Enter the `survey` Package in R
+
+- The survey package in R has been built to handle survey data.
+- It can do all of the procedures above. 
+- It can also work directly with databases for connecting to surveys stored in databases. 
+
+
+
+--- .class #id
+
+
+## Describing the Design
+
+```
+library(survey)
+brfss.design <- svydesign(data=brfss, nest=TRUE,
+weight= ~llcpwt,id= ~psu, strata= ~ststr) 
+```
+
+- `data` the data for your survey.
+- `nest` if your data needs to be relabeled due to nesting.
+- `weight` weights for the specific sampling.
+- `id` unique ids for the sampling groups. 
+- `strata` strata that weights and ids refer to. 
+
+
+
+--- .class #id
+
+## Enter BRFSS Data
+
+- BRFSS is the Behavioral Risk Factor Surveillance System (BRFSS).
+- This is a national health-related telephone survey. 
+- There are more than 400,000 interviews done every year from all 50 states and the district of Columbia. 
+- To learn more about this survey please go to their website: [Behavioral Risk Factor Surveillance System](http://www.cdc.gov/brfss/). 
+
+
+
+--- .class #id
+
+## BRFSS Information
+
+
+* [Codebook](http://www.cdc.gov/brfss/annual_data/2014/pdf/codebook14_llcp.pdf)
+* [Data](https://drive.google.com/file/d/0B8CsRLdwqzbzd1RrRWp2RnBGTDg/view?usp=sharing)
+* [Variable Layout](http://www.cdc.gov/brfss/annual_data/2014/llcp_varlayout_14_onecolumn.html)
+
+
+
+--- .class #id
+
+
+## Reading the Data 
+
+```{r, echo=F }
+load("C:/Users/adam_/Dropbox (Personal)/Brown/Teaching/TSHS_Challenge/TSHS_challenge/BRFSS_2014.rda")
+names(brfss) <- tolower(names(brfss)) # Make sure they line up with SAS names
+names(brfss) <- gsub("x_", "", names(brfss)) # Make sure they line up with SAS names
+```
+
+
+--- .class #id
+
+
+
+```{r, eval=F}
+# Download file and then run this code:
+# https://drive.google.com/open?id=1KiFP1xip0aM5sq7W8Mg-TRmi-34TaIXw
+
+load("BRFSS_2014.rda")
+names(brfss) <- tolower(names(brfss)) # Make sure they line up with SAS names
+names(brfss) <- gsub("x_", "", names(brfss)) # Make sure they line up with SAS names
+```
+
+
+
+--- .class #id
+
+```{r, echo=FALSE}
+brfss$insurance <- NA
+brfss$insurance[brfss$hlthpln1==1] <-1 
+brfss$insurance[brfss$hlthpln1==2] <-0 
+
+brfss$pcp <- NA
+brfss$pcp[brfss$persdoc2==2] <-2
+brfss$pcp[brfss$persdoc2==1] <-1 
+brfss$pcp[brfss$persdoc2==3] <-0
+
+brfss$cost <- NA
+brfss$cost[brfss$medcost==1] <-1 
+brfss$cost[brfss$medcost==2] <-0
+
+brfss$military = NA #1- yes, 0- no
+brfss$military[brfss$veteran3==1] = 1
+brfss$military[brfss$veteran3==2] = 0
+
+brfss$education = NA #get rid of refused answer
+brfss$education = brfss$educa
+brfss$education[brfss$education==9] = NA
+
+#most of children is missing. Maybe exclude in analysis
+brfss$children_count = NA #recode so that if you have more than 4 or more coded as 1
+brfss$children_count = brfss$children
+brfss$children_count[brfss$children_count==88 | brfss$children_count==99] = NA
+# Note we recode the missing first because they are 88 and 99 which our 
+# below code would have set to 4
+brfss$children_count[brfss$children_count>=4] = 4
+#1 employed, 2 not employed
+brfss$employed = NA
+brfss$employed[brfss$employ1==1] = 1
+brfss$employed[brfss$employ1==8 | brfss$employ1 ==9] = NA
+brfss$employed[brfss$employ1>=2] = 2
+
+#1- 75000 or more, 0- not
+brfss$annual_income = NA
+brfss$annual_income[brfss$income2==77 | brfss$income2==99] = NA
+brfss$annual_income[brfss$income2 == 8] = 1
+brfss$annual_income[brfss$income2 < 8] = 0
+
+brfss$age = brfss$age80 #left it as continuous
+
+brfss$imprace <- factor(brfss$imprace, levels = c(1,2,3,4,5,6), labels= c("White", "Black", "Asian", "AI/AN", "Hispanic", "Other" ))
+brfss$insurance <- factor(brfss$insurance, levels=c(0,1), label=c("No", "Yes"))
+brfss$pcp = factor(brfss$pcp, levels=c(2,1,0), label = c("more than one", "only one", "no"))
+brfss$education = factor(brfss$education, levels=c(1,2,3,4,5,6), labels = c("never attended school", "elementary", "some high school", "high school graduate", "some college", "college graduate"))
+
+
+#This is a list of variables we care about
+vars <- c( "insurance", "imprace",  "pcp", 
+         "education", "age", "annual_income", "employed", "sex", 
+           "military", "cost", "children_count", 
+         "llcpwt", "psu", "ststr")     
+
+#Select only these variables
+brfss_sub <- brfss[vars]
+
+#Use only complete cases
+brfss_sub_com <- brfss_sub[complete.cases(brfss_sub),]
+```
+
+## The Design in R
+
+
+```{R, echo=F }
+
+library(survey)
+brfss.design <- svydesign(data=brfss_sub_com, nest=TRUE,  weight= ~llcpwt,id= ~psu, strata= ~ststr) 
+```
+
+
+
+
+```{R, eval=F }
+
+library(survey)
+brfss.design <- svydesign(data=brfss_sub_com, nest=TRUE,  
+                          weight= ~llcpwt,id= ~psu, strata= ~ststr) 
+```
+
+
+
+--- .class #id
+
+
+## What Does this tell us?
+
+```{r}
+brfss.design
+```
+
+
+
+--- .class #id
+
+
+## What else can we view?
+
+```{r, eval= FALSE}
+summary(brfss.design)
+```
+
+
+
+--- .class #id
+
+## What else can we view?
+
+```
+Stratified Independent Sampling design (with replacement)
+svydesign(data = brfss_sub_com, nest = TRUE, weight = ~llcpwt, 
+    id = ~psu, strata = ~ststr)
+Probabilities:
+     Min.   1st Qu.    Median      Mean 
+0.0000346 0.0012320 0.0030010 0.0076400 
+  3rd Qu.      Max. 
+0.0071610 0.7931000 
+Stratum Sizes: 
+           11011 11012 11021 11022 11031
+           11032 11041 11042 11051 11052
+           11061 11062 11071 11072 11081
+           ...
+`
+
+--- .class #id
+
+
+## What else can we view?
+
+```
+[ reached getOption("max.print") -- omitted 3 rows ]
+Data variables:
+ [1] "insurance"      "imprace"       
+ [3] "pcp"            "education"     
+ [5] "age"            "annual_income" 
+ [7] "employed"       "sex"           
+ [9] "military"       "cost"          
+[11] "children_count" "llcpwt"        
+[13] "psu"            "ststr"  
+```
+
+--- .class #id
+
+
+## Data
+
+```{r}
+names(brfss.design)
+```
+
+
+--- .class #id
+
+## Basic Summaries: Totals
+
+
+```{r, eval=FALSE}
+#Sometimes strata only have one person in them
+# We need to tell R how to adjust for this
+
+
+options(survey.lonely.psu = "adjust")
+svytotal(~insurance, brfss.design)
+svytotal(~imprace, brfss.design)
+
+
+#We could also have this done for more than one
+#variable at a time:
+
+svytotal(~insurance + imprace, brfss.design)
+```
+
+
+--- .class #id
+
+
+## Basic Summaries: Totals
+
+```{r, }
+options(survey.lonely.psu = "adjust")
+svytotal(~insurance, brfss.design)
+```
+
+
+--- .class #id
+
+
+## Basic Summaries: Totals
+
+```{r}
+options(survey.lonely.psu = "adjust")
+svytotal(~imprace, brfss.design)
+```
+
+--- .class #id
+
+
+## Basic Summaries: Totals
+
+```{r}
+options(survey.lonely.psu = "adjust")
+svytotal(~insurance + imprace, brfss.design)
+```
+
+
+--- .class #id
+
+
+
+## Basic Summaries: Means
+
+```{r, eval=F}
+options(survey.lonely.psu = "adjust")
+
+#Continuous: give means
+svymean(~age,brfss.design)
+
+#Categorical: gives proportions
+svymean(~insurance, brfss.design)
+svymean(~imprace, brfss.design)
+
+
+#Also with multiple variables
+svymean(~age+insurance+imprace, brfss.design)
+```
+
+
+--- .class #id
+
+
+## Basic Summaries: Means
+
+```{r, echo=F }
+options(survey.lonely.psu = "adjust")
+
+#Continuous: give means
+svymean(~age,brfss.design)
+
+#Categorical: gives proportions
+svymean(~insurance, brfss.design)
+svymean(~imprace, brfss.design)
+
+```
+
+
+--- .class #id
+
+
+## Basic Summaries: Means
+
+```{r, echo=F }
+svymean(~age+insurance+imprace, brfss.design)
+```
+
+
+--- .class #id
+
+## Basic Summaries: Means
+
+```{r, echo=F }
+options(survey.lonely.psu = "adjust")
+
+#Also with multiple variables
+svymean(~age+insurance+imprace, brfss.design)
+```
+
+--- .class #id
+
+
+## Basic Summaries: Quantiles
+
+- Necessary for Boxplots
+
+```{r, eval=F}
+options(survey.lonely.psu = "adjust")
+svyquantile(~age, brfss.design, c(.25,.5,.75), ci=TRUE)
+```
+
+
+
+--- .class #id
+
+## Basic Summaries: Quantiles
+
+- Necessary for Boxplots
+
+```{r, echo=F }
+options(survey.lonely.psu = "adjust")
+svyquantile(~age, brfss.design, c(.25,.5,.75), ci=TRUE)
+```
+
+--- .class #id
+
+
+## Tables in R
+
+- With survey data we would like to be able to have contingency tables as well. 
+- For example lets say that we want to consider insurance and race:
+
+
+--- .class #id
+
+## Survey Tables in R
+
+
+```{R, eval=F}
+# This produces a table with the means in one column
+a <- svymean(~interaction(insurance, imprace), design = brfss.design)
+a
+
+# This produces the table in a contingency table format
+b <- ftable(a, rownames = list(insurance = c("No", "Yes"), 
+      imprace = c("White", "Black", "Asian", "Ai/AN", "Hispanic", "Other")))
+b
+
+
+# we can turn these to percents and round better
+round(100*b,2)
+```
+
+
+--- .class #id
+
+
+## Survey Tables in R
+
+
+```{R, echo=F }
+# This produces a table with the means in one column
+a <- svymean(~interaction(insurance, imprace),
+             design = brfss.design)
+a
+```
+
+
+--- .class #id
+
+## Survey Tables in R
+
+
+```{R, echo=F }
+# This produces the table in a contingency table format
+b <- ftable(a, rownames = list(insurance = c("No", "Yes"), 
+      imprace = c("White", "Black", "Asian", "Ai/AN", 
+                  "Hispanic", "Other")))
+b
+```
+
+
+--- .class #id
+
+## Survey Tables in R
+
+we can turn these to percents and round better
+
+```{R, echo=F }
+
+round(100*b,2)
+```
+
+
+--- .class #id
+
+
+## Chi-SQuare Test Over Table
+
+```{r,eval=F}
+svytable(~insurance+imprace, design=brfss.design)
+svychisq(~insurance+imprace, design=brfss.design,
+         statistic="Chisq")
+```
+
+--- .class #id
+
+
+
+
+## Chi-SQuare Test Over Table
+
+```{r,echo=F }
+svytable(~insurance+imprace, design=brfss.design)
+svychisq(~insurance+imprace, design=brfss.design,
+         statistic="Chisq")
+```
+
+
+--- .class #id
+
+
+## Graphics: Boxplots
+
+```{r, eval=F}
+#Single boxplot
+svyboxplot(age~1, brfss.design)
+
+#Boxplot by categorical variable
+svyboxplot(age~insurance, brfss.design)
+```
+
+--- .class #id
+
+
+
+## Graphics: Boxplots
+
+```{r, echo=F }
+#Single boxplot
+svyboxplot(age~1, brfss.design)
+
+```
+
+--- .class #id
+
+
+
+
+## Graphics: Boxplots
+
+```{r, echo=F }
+#Single boxplot
+svyboxplot(age~insurance, brfss.design)
+
+```
+
+--- .class #id
+
+## Graphics: Histograms
+
+
+```{r, eval=F}
+
+svyhist(~age, brfss.design)
+```
+
+
+--- .class #id
+
+
+## Graphics: Histograms
+
+
+```{r, echo=F }
+
+svyhist(~age, brfss.design)
+```
+
+--- .class #id
+
+## Regressions 
+
+- Linear
+```
+svyglm( outcome ~ covariate1 + covariate2, 
+      design=brfss.design
+```
+- Logistic
+```
+svyglm( outcome ~ covariate1 + covariate2, 
+      design=brfss.design, family="binomial")
+```
+- Cox-PH
+```
+svycoxph( Surv(time,event)~ covariates, 
+      design=brfss.design)
+```
+
+
+

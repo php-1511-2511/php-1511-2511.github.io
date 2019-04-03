@@ -20,6 +20,7 @@ assets      : {assets: ../../assets}
 
 
 
+
 # Poisson Regression
 
 
@@ -266,7 +267,7 @@ $$\beta_0 = \log\left(\lambda_{x_1=0, x_2=0}\right)$$
 $$\begin{aligned}
 \log\left(\lambda_{x_1=0, x_2}\right) &= \beta_0 + \beta_2x_2\\
 \log\left(\lambda_{x_1=1, x_2}\right) &= \beta_0 + \beta_1+  \beta_2x_2\\
-\beta_1 &= \log\left(\lambda_{x_1=0, x_2}\right) - \log\left(\lambda_{x_1=1, x_2}\right)\\
+\beta_1 &= \log\left(\lambda_{x_1=1, x_2}\right) - \log\left(\lambda_{x_1=0, x_2}\right)\\
 &= \log\left( \dfrac{\lambda_{x_1=1, x_2}}{\lambda_{x_1=0, x_2}}\right)\\
 \end{aligned}$$
 
@@ -287,10 +288,10 @@ $$\begin{aligned}
   + Consider 2 subjects who differ in age by one year but have the same drinking status:
 
 $$\begin{aligned}
-\log\left(\lambda_{x_1, x_2}\right) &= \beta_0 + \beta_2x_2\\
-\log\left(\lambda_{x_1, x_2+1}\right) &= \beta_0 + \beta_1+  \beta_2(x_2+1)\\
+\log\left(\lambda_{x_1, x_2}\right) &= \beta_0 + \beta_1 x_1 +  \beta_2x_2\\
+\log\left(\lambda_{x_1, x_2+1}\right) &= \beta_0 + \beta_1 x_1 +  \beta_2(x_2+1)\\
 \beta_2 &= \log\left(\lambda_{x_1, x_2+1}\right) - \log\left(\lambda_{x_1, x_2}\right)\\
-&= \log\left( \dfrac{\lambda_{x_1, x_2+1}}{\lambda_{x_1=0, x_2}}\right)\\
+&= \log\left( \dfrac{\lambda_{x_1, x_2+1}}{\lambda_{x_1, x_2}}\right)\\
 \end{aligned}$$
 
 
@@ -333,8 +334,8 @@ fit5 <- glm(crc~alcohol.use + mean.cent.age + offset(log(cayrs)), data=phscrc, f
 - ***Intercept***:
     + The CRC rate for less than daily drinkers who are 53 years old is 0.001. 
 - ***Alcohol Use***:
-    + The CRC rate ratio comparing daily drinking to less than daily drinking in subjects who are the same age is 1.1976 although it is insignificant.
-    + The CRC rate for daily drinkers is 19.76% greater than the CRC rate of less than daily drinkers  although it is insignificant.
+    + The CRC rate ratio comparing daily drinking to less than daily drinking in subjects who are the same age is 1.413 although it is insignificant.
+    + The CRC rate for daily drinkers is 41.3% greater than the CRC rate of less than daily drinkers  although it is insignificant.
     
 
 
@@ -345,8 +346,8 @@ fit5 <- glm(crc~alcohol.use + mean.cent.age + offset(log(cayrs)), data=phscrc, f
 
 
 - ***Age***:
-    + The CRC rate ratio comparing a one year increase over mean age for subjects who have the same drinking status is 1.0781.
-    + The CRC rate for one year increase in mean age is 7.81% larger than the CRC rate for subjects at the mean age and who have the same drinking status. 
+    + The CRC rate ratio comparing a one year increase over mean age for subjects who have the same drinking status is 1.08.
+    + The CRC rate for one year increase in mean age is 8% larger than the CRC rate for subjects at the mean age and who have the same drinking status. 
     
 
 --- .segue bg:grey
