@@ -319,18 +319,18 @@ title: Calendar
 <tr>
 <td align="left">Week 12</td>
 <td align="left">8-Apr</td>
-<td align="left">Basics of Survival Data</td>
+<td align="left">Survey Analysis</td>
 <td align="left"></td>
-<td align="left">Vittinghoff Chap 6.1</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left">10-Apr</td>
-<td align="left">Cox PH Model</td>
-<td align="left"></td>
-<td align="left">Vittinghoff Chap 6.2</td>
+<td align="left">Basics of Survival Data</td>
+<td align="left"><a href="../Notes/lect-18-intro-survival.html">Lect-18-intro-survival</a></td>
+<td align="left">Vittinghoff Chap 6.1-6.2</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
