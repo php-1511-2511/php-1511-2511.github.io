@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parametric Survival Analysis</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Parametric Survival Analysis">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Parametric Survival Analysis</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Non Parametric Statistics</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What are they?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Non parametrics means that you do not need to specify a specific distribution for the data. </li>
+<li>Many of the methods you have learned up to this point require data dealing with the normal distribution. </li>
+<li>This is due partially to the fact that the t-distribution, \(\chi^2\) distribution, and the \(F\) distribution can all be derived from the normal distribution. </li>
+<li>Traditionally you are just taught to use normallity and made to either transform the data or just go ahead knowing it is incorrect. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Normal vs Skewed Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Data that is normally distributed has:
+
+<ul>
+<li>the mean and the median the same.</li>
+<li>The data is centered about the mean.</li>
+<li>Very specific probability values.</li>
+</ul></li>
+<li>Data that is skewed has: 
+
+<ul>
+<li>Mean less than median for left skewed data.</li>
+<li>Mean greater than median for right skewed data. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why is this an issue?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>In 1998 a survey was given to Harvard students who entered in 1973:
+
+<ul>
+<li>The mean salary was $750,000</li>
+<li>The median salary was $175,000</li>
+</ul></li>
+<li>What could be a problem with this?</li>
+<li>What happened here? </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why do we use Parametric Models?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Parametric Models have more power so can more easily detect significant differences. </li>
+<li>Given large sample size Parametric models perform well even in non-normal data. </li>
+<li>Central limit theorem states that in research that can be perfromed over and over again, that the means are normally distributed. </li>
+<li>There are methods to deal with incorrect variances. </li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Why do we use Non Parametric Models?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Your data is better represented by the median. </li>
+<li>You have small sample sizes. </li>
+<li>You cannot see the ability to replicate this work. </li>
+<li>You have ordinal data, ranked data, or outliers that you can’t remove.</li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What Non Parametric Tests will we cover?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Sign Test</li>
+<li>Wilcoxon Signed-Rank Test</li>
+<li>Wilcoxon Rank-Sum Test (Mann-Whitney U Test, ...)</li>
+<li>Kruskal Wallis test</li>
+<li>Spearman Rank Correlation Coefficient</li>
+<li>Bootstrapping</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-8" style="background:grey;">
+  <hgroup>
+    <h1>The sign Test</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Sign Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The sign test can be used when comparing 2 samples of observarions when there is not independence of samples. </li>
+<li>It actually does compares matches together in order to accomplish its task. </li>
+<li>This is similar to the paired t-test</li>
+<li>No need for the assumption of normality. </li>
+<li>Uses the Binomial Distribution</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Steps of the Sign Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We first match the data </li>
+<li>Then we subtract the 2nd value from the 1st value. </li>
+<li>You then look at the sign of each subtraction. </li>
+<li>If there is no difference between the two groups you shoul have roughly 50% positives and 50% negatives. </li>
+<li>Compare the proportion of positives you have to a binomial with p=0.5. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Binomial Test Function</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider the scenario where you have patients with Cystic Fibrosis and health individuals. </li>
+<li>Each subject with CF has been matched to a healthy individual on age, sex, height and weight. </li>
+<li>We will compare the Resting Energy Expenditure (kcal/day)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Reading in the Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(readr)
+ree &lt;- read_csv(&quot;ree.csv&quot;)
+ree
+</code></pre>
+
+<pre><code>## # A tibble: 13 x 2
+##       CF Healthy
+##    &lt;dbl&gt;   &lt;dbl&gt;
+##  1  1153     996
+##  2  1132    1080
+##  3  1165    1182
+##  4  1460    1452
+##  5  1634    1162
+##  6  1493    1619
+##  7  1358    1140
+##  8  1453    1123
+##  9  1185    1113
+## 10  1824    1463
+## 11  1793    1632
+## 12  1930    1614
+## 13  2075    1836
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Function in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Comes from the <code>BDSA</code> Package</li>
+</ul>
+
+<pre><code>SIGN.test(x ,y, md=0, alternative = &quot;two.sidesd&quot;,
+conf.level=0.95)
+</code></pre>
+
+<ul>
+<li>Where 
+
+<ul>
+<li><code>x</code> is a vector of values</li>
+<li><code>y</code> is an optional vector of values.</li>
+<li><code>md</code> is median and defaults to 0. </li>
+<li><code>alternative</code> is way to specific type of test.</li>
+<li><code>conf.level</code> specifies \(1-\alpha\).</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Getting Package</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"># install.packages(&quot;devtools&quot;)
+# devtools::install_github(&#39;alanarnholt/BSDA&#39;)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(BSDA)
+attach(ree)
+SIGN.test(CF, Healthy)
+detach()
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Our Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## 
+##  Dependent-samples Sign-Test
+## 
+## data:  CF and Healthy
+## S = 10, p-value = 0.02
+## alternative hypothesis: true median difference is not equal to 0
+## 95 percent confidence interval:
+##   25.4 324.5
+## sample estimates:
+## median of x-y 
+##           161 
+## 
+## Achieved and Interpolated Confidence Intervals: 
+## 
+##                   Conf.Level L.E.pt U.E.pt
+## Lower Achieved CI      0.908   52.0    316
+## Interpolated CI        0.950   25.4    324
+## Upper Achieved CI      0.978    8.0    330
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>By &quot;Hand&quot;</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Subtract Values</li>
+</ul>
+
+<pre><code class="r">library(tidyverse)
+ree &lt;- ree %&gt;%
+mutate(diff = CF - Healthy)
+ree
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>By &quot;Hand&quot;</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>count negatives</li>
+</ul>
+
+<pre><code>## # A tibble: 13 x 3
+##       CF Healthy  diff
+##    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1  1153     996   157
+##  2  1132    1080    52
+##  3  1165    1182   -17
+##  4  1460    1452     8
+##  5  1634    1162   472
+##  6  1493    1619  -126
+##  7  1358    1140   218
+##  8  1453    1123   330
+##  9  1185    1113    72
+## 10  1824    1463   361
+## 11  1793    1632   161
+## 12  1930    1614   316
+## 13  2075    1836   239
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>By &quot;Hand&quot;</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">binom.test(2,13)
+</code></pre>
+
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  2 and 13
+## number of successes = 2, number of trials = 10, p-value = 0.02
+## alternative hypothesis: true probability of success is not equal to 0.5
+## 95 percent confidence interval:
+##  0.0192 0.4545
+## sample estimates:
+## probability of success 
+##                  0.154
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-20" style="background:grey;">
+  <hgroup>
+    <h1>Wilcoxon Signed-Rank Test</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Signed-Rank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>The sign test works well but it truly ignores the magntiude of the differences. </li>
+<li>Sign test often not used due to this problem. </li>
+<li>Wilcoxon Signed Rank takes into account both the sign and the rank</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How does it work?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Pairs the data based on study design. </li>
+<li>Subtracts data just like the sign test.</li>
+<li>Ranks the magnitude of the difference:</li>
+</ul>
+
+<pre><code>8
+-17
+52
+-76
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What happens with these ranks?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Subtraction</th>
+<th>Positive Ranks</th>
+<th>Negative Ranks</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>8</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>-17</td>
+<td></td>
+<td>-2</td>
+</tr>
+<tr>
+<td>52</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>-76</td>
+<td></td>
+<td>-4</td>
+</tr>
+<tr>
+<td><strong>Sum</strong></td>
+<td><strong>4</strong></td>
+<td><strong>-6</strong></td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about after the sum?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(W_{+}= 1 + 3 = 4\)</li>
+<li>\(W_{-} + -2 + -4 = -6\)</li>
+<li>Mean: \(\dfrac{n(n+1)}{4}\)</li>
+<li>Variance: \(\dfrac{n(n+1)(2n+1)}{24}\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What about after the sum?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Any ties, \(t\): decrease variance by \(t^3-\dfrac{t}{48}\)</li>
+<li>z test:</li>
+</ul>
+
+<p>\[ z =\dfrac{W_{smaller}- \dfrac{n(n+1)}{4}}{\sqrt{\dfrac{n(n+1)(2n+1)}{24}-t^3-\dfrac{t}{48}}}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Signed Rank in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">attach(ree)
+wilcox.test(CF, Healthy, paired=T)
+detach(ree)
+</code></pre>
+
+<pre><code>## 
+##  Wilcoxon signed rank test
+## 
+## data:  CF and Healthy
+## V = 80, p-value = 0.005
+## alternative hypothesis: true location shift is not equal to 0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-27" style="background:grey;">
+  <hgroup>
+    <h1>Wilcoxon Rank-Sum Test</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Rank-Sum Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This test is used on indepdent data. </li>
+<li>It is the non-parametric version of the 2-sample \(t\)-test.</li>
+<li>Does not requre normality or equal variance. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How do we do it?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Order each sample from least to greatest</li>
+<li>Rank them. </li>
+<li>Sum the ranks of each sample</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What do we do with summed ranks?</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>\(W_s\) smaller of 2 sums.</li>
+<li>Mean: \(\dfrac{n_s(n_s+n_L + 1)}{2}\)</li>
+<li>Variance: \(\dfrac{n_sn_L(n_s+n_L+1)}{12}\)</li>
+<li>z-test</li>
+</ul>
+
+<p>\[ z = \dfrac{W_s-\dfrac{n_s(n_s+n_L + 1)}{2}}{\sqrt{\dfrac{n_sn_L(n_s+n_L+1)}{12}}}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Rank-Sum in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Consider built in data <code>mtcars</code></li>
+</ul>
+
+<pre><code class="r">library(tidyverse)
+cars &lt;- as_data_frame(mtcars)
+cars
+</code></pre>
+
+<pre><code>## # A tibble: 32 x 11
+##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # ... with 22 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Rank-Sum in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We will Consider <code>mpg</code> and <code>am</code></li>
+<li><code>mpg</code>: Miles Per Gallon on Average</li>
+<li><code>am</code>
+
+<ul>
+<li>0: automatic transmission</li>
+<li>1: manual transmission</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Wilcoxon Rank-Sum in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">attach(cars)
+wilcox.test(mpg, am)
+detach(cars)
+</code></pre>
+
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  mpg and am
+## W = 1000, p-value = 3e-12
+## alternative hypothesis: true location shift is not equal to 0
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-34" style="background:grey;">
+  <hgroup>
+    <h1>Kruskal Wallis Test</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kruskal Wallis Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we have multiple groups of independent data that are not normally distributed or have variance issues, you can use the Kruskal Wallis Test.</li>
+<li>It tests significant differences in medians of the groups. </li>
+<li>This is a non-parametric method for One-Way ANOVA.</li>
+<li>Harder to try and calculate by hand, so we will just use R.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kruskal Wallis Test in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>kruskal.test(formula, data, subset, ...)
+</code></pre>
+
+<ul>
+<li>Where
+
+<ul>
+<li><code>formula</code> is <code>y~x</code> or can enter <code>outcome,group</code> instead.</li>
+<li><code>data</code> is the dataframe of interest.</li>
+<li><code>subset</code> if you wish to test subset of data. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arthritis Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>comes from the <code>BSDA</code> package. </li>
+<li><code>Arthriti</code></li>
+</ul>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>time</code></td>
+<td>Time in Days until patient felt relief</td>
+</tr>
+<tr>
+<td><code>treatment</code></td>
+<td>Factor with three levels <code>A</code>, <code>B</code>, and <code>C</code></td>
+</tr>
+</tbody></table>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Arthritis Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(BSDA)
+Arthriti
+</code></pre>
+
+<pre><code>## # A tibble: 51 x 2
+##     time treatment
+##    &lt;int&gt; &lt;fct&gt;    
+##  1    40 A        
+##  2    35 A        
+##  3    47 A        
+##  4    52 A        
+##  5    31 A        
+##  6    61 A        
+##  7    92 A        
+##  8    46 A        
+##  9    50 A        
+## 10    49 A        
+## # ... with 41 more rows
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kruskal-Wallis Test in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">kruskal.test(time~treatment, data=Arthriti)
+</code></pre>
+
+<pre><code>## 
+##  Kruskal-Wallis rank sum test
+## 
+## data:  time by treatment
+## Kruskal-Wallis chi-squared = 2, df = 2, p-value = 0.4
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-40" style="background:grey;">
+  <hgroup>
+    <h1>Spearman Rank Correlation Coefficient</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Spearman Rank Correlation Coefficient</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Correlation is a measurement of the strength of a linear relationship between variables. </li>
+<li>This means it does not necessarily get the actual magnitude of relationship. </li>
+<li>Spearman Rank Correlation seeks to fix this. </li>
+<li>It works with Montonic Data.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Monotonic Data</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-13-1.png" alt="plot of chunk unnamed-chunk-13"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Spearman Rank Correlation in R</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>We can do this the the <code>cor()</code> function. </li>
+</ul>
+
+<pre><code class="r">#Pearson from Monotonic Decreasing
+cor(x2,y2, method=&quot;pearson&quot;)
+
+#Spearman from Monotonic Decreasing
+cor(x2,y2, method=&quot;spearman&quot;)
+</code></pre>
+
+<pre><code>## [1] -0.888
+## [1] -0.996
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Non Parametric Statistics'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='What are they?'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Normal vs Skewed Data'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Why is this an issue?'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Why do we use Parametric Models?'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Why do we use Non Parametric Models?'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='What Non Parametric Tests will we cover?'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='The sign Test'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='The Sign Test'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Steps of the Sign Test'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Example: Binomial Test Function'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Reading in the Data'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Function in R'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Getting Package'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Our Data'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Our Data'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='By &quot;Hand&quot;'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='By &quot;Hand&quot;'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='By &quot;Hand&quot;'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Wilcoxon Signed-Rank Test'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Wilcoxon Signed-Rank Test'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='How does it work?'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='What happens with these ranks?'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='What about after the sum?'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='What about after the sum?'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Wilcoxon Signed Rank in R'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Wilcoxon Rank-Sum Test'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Wilcoxon Rank-Sum Test'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='How do we do it?'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='What do we do with summed ranks?'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Wilcoxon Rank-Sum in R'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Wilcoxon Rank-Sum in R'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Wilcoxon Rank-Sum in R'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Kruskal Wallis Test'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Kruskal Wallis Test'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Kruskal Wallis Test in R'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Arthritis Data'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Arthritis Data'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Kruskal-Wallis Test in R'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Spearman Rank Correlation Coefficient'>
+         40
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=41 title='Spearman Rank Correlation Coefficient'>
+         41
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=42 title='Monotonic Data'>
+         42
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=43 title='Spearman Rank Correlation in R'>
+         43
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

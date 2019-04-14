@@ -301,8 +301,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 6:  Survey Data in R / Poisson Regression</td>
+<td align="left"><a href="../labs/lab6.html">HTML</a> <a href="../labs/lab6.Rmd">Rmd</a> <a href="https://vimeo.com/263953564/8a847023c5">Video</a>  <a href="../labs/lab6_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -346,8 +346,8 @@ title: Calendar
 <tr>
 <td align="left">Week 13</td>
 <td align="left">15-Apr</td>
-<td align="left">Cox PH Model</td>
-<td align="left"></td>
+<td align="left">Non-Parametric Survival</td>
+<td align="left"><a href="../Notes/lect-19-survival-2.html">Lect-19-survival-2</a></td>
 <td align="left">Vittinghoff Chap 6.3-6.4</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -355,8 +355,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">17-Apr</td>
-<td align="left">Cox PH Model</td>
-<td align="left"></td>
+<td align="left">Parametric Survival</td>
+<td align="left"><a href="../Notes/lect-20-survival-3.html">Lect-20-survival-3</a></td>
 <td align="left">Vittinghoff Chap 6.5-6.7</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -364,8 +364,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 8: Survey Model build</td>
+<td align="left"><a href="../labs/lab8.html">HTML</a> <a href="../labs/lab8.Rmd">Rmd</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -373,8 +373,8 @@ title: Calendar
 <tr>
 <td align="left">Week 14</td>
 <td align="left">22-Apr</td>
-<td align="left">Survey Data Methods</td>
-<td align="left"></td>
+<td align="left">Non-Parametric Hypothesis Testing</td>
+<td align="left"><a href="../Notes/lect-21-nonparametrics.html">Lect-21-nonparametrics</a></td>
 <td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -382,7 +382,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">24-Apr</td>
-<td align="left">Survey Data Methods</td>
+<td align="left">Resampling</td>
 <td align="left"></td>
 <td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
@@ -391,8 +391,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">Lab 7: Survival Analysis</td>
+<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a>  <a href="../labs/lab7_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -400,7 +400,7 @@ title: Calendar
 <tr>
 <td align="left">Week 15</td>
 <td align="left">29-Apr</td>
-<td align="left">Time Series and Non-linear Data</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left">Fox Chap 16-17</td>
 <td align="left"></td>
@@ -409,7 +409,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">1-May</td>
-<td align="left">Missing Data</td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left">Fox Chap 20, Vittinghoff Chap 11</td>
 <td align="left"></td>
@@ -427,7 +427,7 @@ title: Calendar
 <tr>
 <td align="left">Final Week</td>
 <td align="left">6-May</td>
-<td align="left">Overflow</td>
+<td align="left"><strong><em>Exam 2</em></strong></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -435,8 +435,8 @@ title: Calendar
 </tr>
 <tr>
 <td align="left"></td>
-<td align="left">11-May</td>
-<td align="left"><strong><em>Exam 2</em></strong></td>
+<td align="left"></td>
+<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>

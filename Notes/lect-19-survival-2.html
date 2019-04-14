@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Non-Parametric Survival Analysis</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Non-Parametric Survival Analysis">
+  <meta name="author" content="Adam J Sullivan">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/github.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/interactive/css/aceeditor.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+<link rel=stylesheet href="./assets/css/style.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+      <slide class="nobackground">
+    <article class="flexbox vcenter">
+      <span>
+        <img width='300px' src="assets/img/publichealthlogo.png">
+      </span>
+    </article>
+  </slide>
+    <slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="assets/img/publichealthlogo.png">
+  </aside>
+  <hgroup class="auto-fadein">
+    <h1>Non-Parametric Survival Analysis</h1>
+    <h2></h2>
+    <p>Adam J Sullivan<br/>Assistant Professor of Biostatistics<br/>Brown University</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="segue" id="slide-1" style="background:grey;">
+  <hgroup>
+    <h1>Estimation of a Survival Curves</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Estimation of a Survival Curves</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Many times we use nonparametric estimators - This requires that \(C\) is independent of \(T\). </p>
+
+<ul>
+<li>Kaplan-Meier estimate of \(S(t)\)</li>
+<li>Confidence intervals for \(S(t)\)</li>
+<li>Nelson-Aalen estimate for \(\Lambda(t)\)</li>
+<li>Confidence intervals for \(\Lambda(t)\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We begin with an example of Remission times (time to relapse) measured in weeks for 21 leukemia patients:
+\[T_i = 1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23\]</p>
+
+<ul>
+<li>Not there are no censored observations here</li>
+<li>When there is no censoring (all subjects experience the event), fix a time \(t\) and consider the indicator variable
+\[I(T\ge t)\]
+This is a binomial random variable with 
+\[\Pr\left(I(T\ge t)=1\right)= S(t)\]</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Our goal is to estimate \(S(t)\) so we consider:</p>
+
+<p>\[\hat{S}(t) = \dfrac{1}{n}\sum_{i=1}^n I(T_i\ge t)\]</p>
+
+<p>For example we have that</p>
+
+<ul>
+<li>\(\hat{S}(10) = \dfrac{8}{10}\)</li>
+<li>\(\hat{S}(19) = \dfrac{8}{10}\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Then since this is a binomial random variable, we can consider the variance of \(S(t)\) as
+\[Var\left[S(t)\right]= nS(t)\left[1-S(t)\right]\]</p>
+
+<pre><code class="r">library(survival)
+T.1 &lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
+event.1 &lt;- rep(1, length(T.1))
+
+Y &lt;- Surv(T.1, event.1==1)
+K.M &lt;- survfit(Y~1)
+summary(K.M)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code>## Call: survfit(formula = Y ~ 1)
+## 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1     21       2   0.9048  0.0641      0.78754        1.000
+##     2     19       2   0.8095  0.0857      0.65785        0.996
+##     3     17       1   0.7619  0.0929      0.59988        0.968
+##     4     16       2   0.6667  0.1029      0.49268        0.902
+##     5     14       2   0.5714  0.1080      0.39455        0.828
+##     8     12       4   0.3810  0.1060      0.22085        0.657
+##    11      8       2   0.2857  0.0986      0.14529        0.562
+##    12      6       2   0.1905  0.0857      0.07887        0.460
+##    15      4       1   0.1429  0.0764      0.05011        0.407
+##    17      3       1   0.0952  0.0641      0.02549        0.356
+##    22      2       1   0.0476  0.0465      0.00703        0.322
+##    23      1       1   0.0000     NaN           NA           NA
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(GGally)
+plot(K.M, main=&quot;Survival Curve No Censoring&quot;, xlab=&quot;Weeks&quot;, ylab=&quot;Survival&quot;, col=c(3,4, 4))
+legend(15, .9, c(&quot;Survival&quot;, &quot;95% CI&quot;), lty = 1:2, col=c(3,4)) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can also plot the hazard:</p>
+
+<pre><code class="r">library(GGally)
+plot(K.M, fun=&quot;cumhaz&quot;, main=&quot;Hazard Curve No Censoring&quot;, xlab=&quot;Weeks&quot;, ylab=&quot;Hazard&quot;, col=c(3,4, 4))
+legend(0, 3, c(&quot;Hazard&quot;, &quot;95% CI&quot;), lty = 1:2, col=c(3,4)) 
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: No Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can also plot the hazard:</p>
+
+<p><img src="figure/unnamed-chunk-6-1.png" alt="plot of chunk unnamed-chunk-6"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We go back to the same study as before. This was published in 1965 by Gehan. There were 21 patients in a control group and 21 patients in a drug group. They were followed to see how long in weeks before they relapsed. </p>
+
+<ul>
+<li><em>Drug</em>: 6+, 6, 6, 6, 7, 9+, 10+, 10, 11+, 13, 16, 17+, 19+, 20+, 22, 23, 25+, 32+, 32+, 34+, 35+</li>
+<li><em>Control</em>: 1, 1, 2, 2, 3, 4, 4, 5, 5, 8, 8, 8, 8, 11, 11, 12, 12, 15, 17, 22, 23</li>
+</ul>
+
+<p>We can enter these into R but this time we need to account for the censoring</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Example: Censoring</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">T.1 &lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
+event.1 &lt;- rep(1, length(T.1))
+group.1 &lt;- rep(0,length(T.1))
+
+T.2 &lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
+event.2 &lt;- c(0,1,1,1,1,0,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0)
+group.2 &lt;- rep(1, length(T.2))
+
+T.all &lt;- c(T.1,T.2)
+event.all &lt;- c(event.1,event.2)
+group.all &lt;- c(group.1, group.2)
+
+leuk2 &lt;- data.frame(cbind(T.all, event.all, group.all))
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan-Meier Estimator</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>The control group was easy to analyze as it had no censoring so we could calculate it by hand. However with the introduction to censoring we need a new estimator. </p>
+
+<ul>
+<li>Kaplan-Meier is a non-parametric method.
+
+<ul>
+<li>No assumptions of distribution</li>
+</ul></li>
+<li>We define patients to be at risk at time \(t\) if they have not experienced the event just before time \(t\) and are not yet censored just before time \(t\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Product Limit Method</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Let </p>
+
+<ul>
+<li>\(t_i=\) distinct observed failure times (uncensored), in increasing order such that \(t_1<t_2<\cdots<t_k\).</li>
+<li>\(K=\) number of distinct failure times</li>
+<li>\(n_i=\) number of subjects at risk at \(t_i\)</li>
+<li>\(d_i=\) number of failures at even \(t_i\)</li>
+<li>\(\hat{p}_i=\dfrac{d_i}{n_i}=\) estimated risk of failure at \(t_i\) given at risk at \(t_i\). </li>
+<li>\(\hat{q}_i= 1-\hat{p}_i=\) estimated proportion surviving \(t_i\) given at risk at \(t_i\). </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan-Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>The Kaplan-Meier estimate of survival is: </p>
+
+<ol>
+<li>\(\hat{S}(0)=1\) </li>
+<li>It drops after each of the distinct failure times.</li>
+<li>Let \(t_k\) be the \(k^{\text{th}}\) observed event time.
+
+<ul>
+<li>In order to have \(T_i>t_k\), subject \(i\) needs to 
+
+<ul>
+<li>be at risk at \(t_1\) and have \(T_i>t_1\) <strong>and</strong></li>
+<li>be at risk at \(t_2\) and have \(T_i>t_2\) <strong>and</strong></li>
+<li>\(\qquad\qquad\vdots\)</li>
+<li>be at risk at \(t_k\) and have \(T_i>t_k\). </li>
+</ul></li>
+</ul></li>
+</ol>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Then </p>
+
+<p>\[\Pr(T_i>t_k) = \Pr(T_i>t_1|\text{at risk at }t_1) \times \cdots \times \Pr(T_i>t_k|\text{at risk at }t_k)\]</p>
+
+<p>Then we have that for \(0\le t < t_1\)</p>
+
+<p>\[\hat{S}(t) = 1  \]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Then for \(t_1 \le t < t_2\) we have that:</p>
+
+<p>\[\begin{aligned}
+\hat{S}(t) &= \Pr(T>t_1)|\text{at risk at }t_1)\\
+&=  1- \dfrac{d_1}{n_1}\\
+&= \dfrac{n_1-d_1}{n_1}\\
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>for \(t_2 \le t < t_3\) we have that:</p>
+
+<p>\[\begin{aligned}
+\hat{S}(t) &= \Pr(T>t_1)|\text{at risk at }t_1) \times \Pr(T>t_2)|\text{at risk at }t_2)\\
+&= \hat{q}_1 \times \hat{q}_2\\
+&= \left(\dfrac{n_1-d_1}{n_1}\right)\left(\dfrac{n_2-d_2}{n_2}\right)\\
+&= \prod_{j=1}^2 \left(\dfrac{n_j-d_j}{n_j}\right)
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>thus for any \(t_i<t\le t_{i+1}\) we have</p>
+
+<p>\[\hat{S}(t) = \prod_{j=1}^i \left(\dfrac{n_j-d_j}{n_j}\right) = \prod_{j=1}^i \hat{q}_j\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>In R:</p>
+
+<pre><code class="r">leukemia.surv &lt;- survfit(Surv(T.all, event.all) ~ group.all , data=leuk2) 
+summary(leukemia.surv)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>In R:</p>
+
+<pre><code>## Call: survfit(formula = Surv(T.all, event.all) ~ group.all, data = leuk2)
+## 
+##                 group.all=0 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1     21       2   0.9048  0.0641      0.78754        1.000
+##     2     19       2   0.8095  0.0857      0.65785        0.996
+##     3     17       1   0.7619  0.0929      0.59988        0.968
+##     4     16       2   0.6667  0.1029      0.49268        0.902
+##     5     14       2   0.5714  0.1080      0.39455        0.828
+##     8     12       4   0.3810  0.1060      0.22085        0.657
+##    11      8       2   0.2857  0.0986      0.14529        0.562
+##    12      6       2   0.1905  0.0857      0.07887        0.460
+##    15      4       1   0.1429  0.0764      0.05011        0.407
+##    17      3       1   0.0952  0.0641      0.02549        0.356
+##    22      2       1   0.0476  0.0465      0.00703        0.322
+##    23      1       1   0.0000     NaN           NA           NA
+## 
+##                 group.all=1 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     6     21       3    0.857  0.0764        0.720        1.000
+##     7     17       1    0.807  0.0869        0.653        0.996
+##    10     15       1    0.753  0.0963        0.586        0.968
+##    13     12       1    0.690  0.1068        0.510        0.935
+##    16     11       1    0.627  0.1141        0.439        0.896
+##    22      7       1    0.538  0.1282        0.337        0.858
+##    23      6       1    0.448  0.1346        0.249        0.807
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">suppressMessages(library(survminer))
+ggsurvplot(leukemia.surv, conf.int = TRUE, risk.table = TRUE, risk.table.col=&quot;strata&quot;,
+           legend.labs = c(&quot;Placebo&quot;, &quot;Treatment&quot;),break.time.by=5)  
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Confidence intervals for Kaplan Meier</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>These are based on <a href="http://www.stat.berkeley.edu/%7Ecensus/greenwd.pdf">Greenwood Formula</a></p>
+
+<p>\[\widehat{Var}\left(\log\left[\hat{S}(t_i)\right]\right) = \sum_{j=1}^i \dfrac{d_j}{n_j(n_j-d_j)}\]</p>
+
+<p>Thus a 95% CI for \(\log\left[S(t_i)\right]\) is:
+\[\log\left[\hat{S}(t_i)\right] \pm 1.96\sqrt{\widehat{Var}\left(\log\left[\hat{S}(t_i)\right]\right)}\]
+and a 95% CI for \(S(t_i)\) is</p>
+
+<p>\[\hat{S}(t_i)\cdot\exp\left[\pm 1.96\sqrt{\widehat{Var}\left(\log\left[\hat{S}(t_i)\right]\right)}\right]\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Cumulative Hazard</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>Recall</p>
+
+<p>\[\Lambda(t) = \int_0^t h(u)du\] 
+\[\text{and}\] 
+\[S(t) = \exp\left(-\Lambda(t)\right)\]</p>
+
+<p>If we consider the cumulative risk (hazard) function:</p>
+
+<ul>
+<li>\(\Lambda(t)\) is the expected number of events that a subject under \((0,t]\) will experience
+
+<ul>
+<li>Mostly useful for recurrent events. </li>
+</ul></li>
+<li>The slope of \(\Lambda(t)\) at \(t\) estimates \(h(t)\), and if the plot is a straight line, a constant hazard is implied. </li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Nelson-AAlen Estimator</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>This cumulative hazard estimator is </p>
+
+<p>\[\hat{\Lambda}(t) = \sum_{t_j\le t} \dfrac{d_j}{n_j}\]
+where \(d_j\) is the number of events observed at \(t_j\) and \(n_j\) is the number of subjects at risk at time \(t_j\)</p>
+
+<p>\[\widehat{Var}\left(\hat{\Lambda}(t)\right) = \sum_{t_j\le t} \dfrac{d_j}{n^2_j}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Nelson-AAlen Estimator</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">leukemia.haz &lt;- survfit(Surv(T.all, event.all) ~ group.all, type=&#39;fleming&#39;, data=leuk2) 
+</code></pre>
+
+<pre><code class="r">suppressMessages(library(survminer))
+ggsurvplot(leukemia.haz, conf.int = TRUE,
+           risk.table = TRUE, risk.table.col = &quot;strata&quot;,
+           fun = &quot;cumhaz&quot;, legend.labs = c(&quot;Placebo&quot;, &quot;Treatment&quot;),
+          break.time.by=5)
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Nelson-AAlen Estimator</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="figure/unnamed-chunk-15-1.png" alt="plot of chunk unnamed-chunk-15"></p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue" id="slide-29" style="background:grey;">
+  <hgroup>
+    <h1>Stratified Analysis of Survival Data</h1>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>The Logrank Test is a hypothesis test for 2 or more independent samples of survival data. </p>
+
+<p>The hypothesis being tested are:</p>
+
+<p>\[H_o: S_1(t) = S_2(t) \text{ for all }t\]
+\[\text{and}\]
+\[H_o: S_1(t) \ne  S_2(t) \text{ for some }t\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>If \(H_0\) is true then</p>
+
+<ul>
+<li>\(h_1(t)=h_2(t) \text{ for all }t\)</li>
+<li>\(\Lambda_1(t)=\Lambda_2(t)  \text{ for all }t\)</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>How do we calculate this test statistic?</p>
+
+<ol>
+<li>Construct a 2x2 table at the time of each observed failure. </li>
+<li>Calculate the Mantel-Haenszel chi-square test statistic. </li>
+</ol>
+
+<p>We have \(K\) distinct observed failure times:
+\[t_1<\cdots<t_K\]</p>
+
+<p>at the \(i^{\text{th}}\) observed failure time \(t_i\):</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <table><thead>
+<tr>
+<th>Treatment</th>
+<th>Died</th>
+<th>Alive</th>
+<th>At Risk</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Control</td>
+<td>\(a_i\)</td>
+<td>\(b_i\)</td>
+<td>\(n_{1i}\)</td>
+</tr>
+<tr>
+<td>Treated</td>
+<td>\(c_i\)</td>
+<td>\(d_i\)</td>
+<td>\(n_{2i}\)</td>
+</tr>
+<tr>
+<td>total</td>
+<td>\(m_{1i}\)</td>
+<td>\(m_{2i}\)</td>
+<td>\(n_i\)</td>
+</tr>
+</tbody></table>
+
+<p>where
+\[\begin{aligned}
+n_{1i} &= \text{ numer at risk at } t_i \text{ from Control}\\
+n_{2i} &= \text{ numer at risk at } t_i \text{ from Treated}\\
+m_{1i} &= \text{ number of failures at } t_i\\
+m_{2i} &= \text{ number surviving past } t_i\\
+n_i &= \text{ total numer at risk at } t_i\\
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>This test is exactly the same as a Mantel-Haenszel test applied to \(K\) strata</p>
+
+<p>\[\chi^2_{MH} = \dfrac{\left[\sum_{i=1}^K (a_i - E(a_i))\right]^2}{\sum_{i=1}^K Var(a_i)}\]</p>
+
+<p>where</p>
+
+<p>\[\begin{aligned}
+E(a_i) &= \dfrac{n_{1i}m_{1i}}{n_i}\\
+Var(a_i) &= \dfrac{n_{1i}n_{2i}m_{1i}m_{2i}}{n_i^2(n_i-1)}\\
+\end{aligned}\]</p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We compute the expectation that the null hypothesis is true and there is no difference in survival between the groups. We consider all margins fixed but \(a_i\) is random and thus we have a hypergeometric distribution. </p>
+
+<ul>
+<li>Under \(H_0\) we have that \(S_1(t)=S_2(t)\) and this means
+
+<ul>
+<li>\(\chi^2_{MH}\sim \chi^2_1\)</li>
+<li>Reject \(H_0\) when \(\chi^2_{MH}>\chi^2_{1,1-\alpha}\)</li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>We can run this test in R:</p>
+
+<pre><code class="r">survdiff(Surv(T.all, event.all) ~ group.all)
+</code></pre>
+
+<pre><code>## Call:
+## survdiff(formula = Surv(T.all, event.all) ~ group.all)
+## 
+##              N Observed Expected (O-E)^2/E (O-E)^2/V
+## group.all=0 21       21     10.7      9.77      16.8
+## group.all=1 21        9     19.3      5.46      16.8
+## 
+##  Chisq= 16.8  on 1 degrees of freedom, p= 0.00004
+</code></pre>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>This test is most powerful if the hazard ratio is constant over time. </li>
+<li>We can easily extend this to compare 3 or more independent groups.</li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Stratified Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>The logrank test can also be written</p>
+
+<p>\[\chi^2_{MH} = \dfrac{\sum_{i=1}^K (a_i - E(a_i))}{\sqrt{\sum_{i=1}^K Var(a_i)}} = \dfrac{D}{\sqrt{v}}\]
+Which is a standard normal distribution under \(H_0\). </p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Stratified Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>If we want a logrank adjusted for a categorical covariate that has \(L\) levels:
+
+<ul>
+<li>Split the data up into \(L\) strata defined by \(X\). </li>
+<li>Calculate the ordinary logrank test for each of the \(L\) strata</li>
+<li>Let \(D_l\) denote the numerator in each stratum</li>
+<li>Let \(V_l\) denote the corresponding variance. </li>
+</ul></li>
+</ul>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Stratified Logrank Test</h2>
+    <hr>
+  </hgroup>
+  <article data-timings="">
+    <p>then the stratified logrank is</p>
+
+<p>\[Z_{ST} = \dfrac{\sum_{l=1}^LD_l}{\sqrt{\sum_{l=1}^LV_l}}\]</p>
+
+<p>Under \(H_0\) this is also a standard normal distribution. </p>
+
+    
+    <footer class = 'logo'>
+<div style="position: absolute; left: 900px; top: 600px; z-index:100">
+<img src = "assets/img/publichealthlogo.png" height="100" >
+</div>
+</footer>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Estimation of a Survival Curves'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Estimation of a Survival Curves'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Example: No Censoring'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Example: No Censoring'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Example: No Censoring'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Example: No Censoring'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Example: No Censoring'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Example: No Censoring'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Example: No Censoring'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Example: No Censoring'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Example: Censoring'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Example: Censoring'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Kaplan-Meier Estimator'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Product Limit Method'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Kaplan-Meier'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Kaplan Meier'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Kaplan Meier'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Kaplan Meier'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Kaplan Meier'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Kaplan Meier'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Kaplan Meier'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='Kaplan Meier'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='Kaplan Meier'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='Confidence intervals for Kaplan Meier'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='Cumulative Hazard'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='Nelson-AAlen Estimator'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='Nelson-AAlen Estimator'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='Nelson-AAlen Estimator'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='Stratified Analysis of Survival Data'>
+         29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='Logrank Test'>
+         30
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=31 title='Logrank Test'>
+         31
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=32 title='Logrank Test'>
+         32
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=33 title='Logrank Test'>
+         33
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=34 title='Logrank Test'>
+         34
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=35 title='Logrank Test'>
+         35
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=36 title='Logrank Test'>
+         36
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=37 title='Logrank Test'>
+         37
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=38 title='Stratified Logrank Test'>
+         38
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=39 title='Stratified Logrank Test'>
+         39
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=40 title='Stratified Logrank Test'>
+         40
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/interactive/js/ace/js/ace.js"></script>
+<script src="libraries/widgets/interactive/js/opencpu-0.5.js"></script>
+<script src="libraries/widgets/interactive/js/interactive.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
