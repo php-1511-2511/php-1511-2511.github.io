@@ -1,0 +1,94 @@
+---
+title: "Homework 4"
+author: "Your Name"
+date: "April 22, 2019 at 11:59pm"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+### Homework Guidelines:
+
+Please read [Homework Guidelines](../homework/guidelines.html). You must follow these guidelines. 
+
+
+### Turning the Homework in:
+
+*Please turn the homework in through canvas. You may use a pdf, html or word doc file to turn the assignment in.*
+
+[PHP 1511 Assignment Link](https://canvas.brown.edu/courses/1077969/assignments/7723030)
+
+[PHP 2511 Assignment Link](https://canvas.brown.edu/courses/1077129/assignments/7723048)
+
+
+***For the R Markdown Version of this assignment: [HW4.Rmd](../homework/hw4.Rmd)***
+
+We consider in this homework the relationship of cardiometabolic risk factors with the occurrence of colorectal cancer in the Physicians' Health Study.  The data are contains information on 13 variables in a sample of 16,018 participants in the Physicians' Health Study.  These participants were randomized in 1982-1983 and followed until they died, dropped out, developed colorectal cancer, or until 12/31/1995.  
+
+Variables are: 
+
+
+
+-----------------------------------------------------------
+Name        Description
+----------- -------------------------------------------
+age         Age in years at time of Randomization
+
+asa         0 - placebo, 1 - aspirin
+
+bmi         Body Mass Index (kg/$m^2$)
+
+hypert      1 - Hypertensive at baseline, 0 - Not
+
+alcohol     0 - less than monthly, 1 - monthly to less than daily, 2 - daily consumption
+
+dm          0 = No diabetes Mellitus, 1 - diabetes Mellitus
+
+sbp         Systolic BP (mmHg)
+
+exer        0 - No regular, 1 - Sweat at least once per week
+
+csmoke      0 - Not currently, 1 - < 1 pack per day, 2 - $\ge$ 1 pack per day
+
+psmoke      0 - never smoked, 1 - former < 1 pack per day, 2 - former $\ge$ 1 pack per day
+
+pkyrs       Total lifetime packs of cigarettes smoked
+
+crc         0 - No colorectal Cancer, 1 - Colorectal cancer
+
+cayrs       Years to colorectal cancer, or death, or end of follow-up.
+------------------------------------------------------------------------
+
+
+
+```r
+suppressMessages(library(foreign))
+phscrc <- read.dta("phscrc.dta")
+```
+
+
+1. Fit a Poisson regression model that predicts the incidence of CRC with the following independent variables: continuous age, continuous SBP, pack-years of cigarettes consumed, continuous BMI and an indicator of diabetes mellitus.  Provide interpretation of the relationship of SBP with rates of CRC from this model, based on comparison of the adjusted relative rate in two men differing by 10 mmHg, with a relevant 95% confidence interval.  
+
+2. Obtain and plot Kaplan-Meier estimates of the probability of developing CRC among those with and without elevated SBP ($\ge$ 140 mmHg).  Give estimated probabilities of developing CRC at 1, 5, and 10 years in each SBP group.
+
+3. In question 2, you compared the probability of developing colorectal cancer at 3 different follow-up times (1, 5, and 10 years) between men with and without elevated SBP ($\ge$ 140 mmHg).  Continue with this same dichotomous exposure variable, and perform the log-rank test to compare the hazard of colorectal cancer between the two groups of men.  Make sure you state the null and alternative hypotheses.  
+
+
+4. Older age is a powerful risk factor for colorectal cancer that also influences SBP, and is therefore a probable confounder.  Form  four age groups  (40-49, 50-59, 60-59, and 70-84 years) and perform a stratified log-rank test of whether elevated SBP ($\ge$ 140 mmHg) is related to the hazard of colorectal cancer, adjusted for age.
+
+
+5. Evaluate the shape of the relationship of SBP with rates of CRC, **adjusting for age** in a cox proportional hazards model.  You can use either continuous age or the four categories described above. Create 4 models:
+
+- **Model 1**: Use continuous SBP (We will refer to this as the simple linear model)
+- **Model 2**: Use clinical cutpoints of SBP (<120, 120-129, 130-139, $\ge$ 140 mmHg)
+- **Model 3**: Quartiles of the distribution
+- **Model 4**: Linear plus quadratic term of SBP.  
+
+Does a simple linear model (on the log scale) adequately describe the relationship controlling for age?  You can use Likelihood Ratio tests to compare Models 2-4 vs Model 1. 
+
+
+6. Which graphical approaches can you use to evaluate whether the assumptions of the proportional hazards appear to hold?  Obtain these graphs and briefly interpret them.
+
+7. Perform a hypothesis test to evaluate the proportional hazards assumption. 

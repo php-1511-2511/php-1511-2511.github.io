@@ -349,7 +349,7 @@ title: Calendar
 <td align="left">Non-Parametric Survival</td>
 <td align="left"><a href="../Notes/lect-19-survival-2.html">Lect-19-survival-2</a></td>
 <td align="left">Vittinghoff Chap 6.3-6.4</td>
-<td align="left"></td>
+<td align="left"><a href="../homework/hw4.html">HW3 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.Rmd">HW4 -Rmd</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.pdf">HW3-pdf</a></td>
 <td align="left"></td>
 </tr>
 <tr>
@@ -364,8 +364,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 8: Survey Model build</td>
-<td align="left"><a href="../labs/lab8.html">HTML</a> <a href="../labs/lab8.Rmd">Rmd</a></td>
+<td align="left">Lab 7: Survival Analysis</td>
+<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a>  <a href="../labs/lab7_sol.html">Solutions</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -391,8 +391,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left"></td>
-<td align="left">Lab 7: Survival Analysis</td>
-<td align="left"><a href="../labs/lab7.html">HTML</a> <a href="../labs/lab7.Rmd">Rmd</a> <a href="../labs/lab7-sol.Rmd">Solutions</a> <a href="https://vimeo.com/265267538/3ab3fa6732">Video</a>  <a href="../labs/lab7_sol.html">Solutions</a></td>
+<td align="left">Lab 8: Survival Model build</td>
+<td align="left"><a href="../labs/lab8.html">HTML</a> <a href="../labs/lab8.Rmd">Rmd</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -428,15 +428,6 @@ title: Calendar
 <td align="left">Final Week</td>
 <td align="left">6-May</td>
 <td align="left"><strong><em>Exam 2</em></strong></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
