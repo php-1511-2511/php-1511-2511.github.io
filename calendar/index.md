@@ -349,7 +349,7 @@ title: Calendar
 <td align="left">Non-Parametric Survival</td>
 <td align="left"><a href="../Notes/lect-19-survival-2.html">Lect-19-survival-2</a></td>
 <td align="left">Vittinghoff Chap 6.3-6.4</td>
-<td align="left"><a href="../homework/hw4.html">HW3 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.Rmd">HW4 -Rmd</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw3.pdf">HW3-pdf</a></td>
+<td align="left"><a href="../homework/hw4.html">HW4 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw4.Rmd">HW4 -Rmd</a>
 <td align="left"></td>
 </tr>
 <tr>

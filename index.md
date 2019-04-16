@@ -52,12 +52,23 @@ This course is designed for graduate and advanced undergraduate students who wil
 |-----------+--------+-----------|
 | What    |  Where | When      
 |:-----------|:--------|:-----------|
-| Office Hours |  SPH - Room 243 |   Tuesdays 2:20 - 3:20 pm|
+| Office Hours |  |   |
 |:-----------|:--------|:-----------|
 |  |  SPH - Room 243| Wednesday 2:30 - 3:00 pm|
 |  |  SPH - Room 241| Wednesday 4:00 - 5:00 pm|
 |  |  SPH - Room 243| Friday 2:00 - 4:00 pm|
 |:-----------|:--------|:-----------|
+
+
+
+* * *
+
+
+### Project Office Hours:
+
+Please sign up for a slot for appointments. Sign up for 1 during this first week and then we can add more in the upcoming weeks. 
+
+[Google Calendar Appointments](https://calendar.google.com/calendar/selfsched?sstoken=UUEzS2dGMjluUDRifGRlZmF1bHR8ZTVkODU0MGIyMDg5NzQ1ODFkNGU3OTQ2YmE2OWE0N2U)
 
 
 Additional Hours held by Julia Mullokandova:
