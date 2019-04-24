@@ -293,7 +293,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">3-Apr</td>
 <td align="left">Survey Data Analysis</td>
-<td align="left"><a href="../Notes/lect-16-surveys.html">Lect-16-surveys</a></td>
+<td align="left"><a href="../Notes/lect-16-surveys.html">Lect-16-surveys</a>  <a href="https://vimeo.com/331579142">Video</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>
@@ -329,7 +329,7 @@ title: Calendar
 <td align="left"></td>
 <td align="left">10-Apr</td>
 <td align="left">Basics of Survival Data</td>
-<td align="left"><a href="../Notes/lect-18-intro-survival.html">Lect-18-intro-survival</a></td>
+<td align="left"><a href="../Notes/lect-18-intro-survival.html">Lect-18-intro-survival</a>   <a href="https://vimeo.com/331579185">Video</a></td>
 <td align="left">Vittinghoff Chap 6.1-6.2</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -347,16 +347,16 @@ title: Calendar
 <td align="left">Week 13</td>
 <td align="left">15-Apr</td>
 <td align="left">Non-Parametric Survival</td>
-<td align="left"><a href="../Notes/lect-19-survival-2.html">Lect-19-survival-2</a></td>
+<td align="left"><a href="../Notes/lect-19-survival-2.html">Lect-19-survival-2</a> <a href="https://vimeo.com/331579245">Video</a></td>
 <td align="left">Vittinghoff Chap 6.3-6.4</td>
-<td align="left"><a href="../homework/hw4.html">HW4 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw4.Rmd">HW4 -Rmd</a>
+<td align="left"><a href="../homework/hw4.html">HW4 - html</a> <a href="https://raw.githubusercontent.com/php-1511-2511/php-1511-2511.github.io/master/homework/hw4.Rmd">HW4 -Rmd</a></td>
 <td align="left"></td>
 </tr>
 <tr>
 <td align="left"></td>
 <td align="left">17-Apr</td>
 <td align="left">Parametric Survival</td>
-<td align="left"><a href="../Notes/lect-20-survival-3.html">Lect-20-survival-3</a></td>
+<td align="left"><a href="../Notes/lect-20-survival-3.html">Lect-20-survival-3</a>   <a href="https://vimeo.com/331579281">Video</a></td>
 <td align="left">Vittinghoff Chap 6.5-6.7</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -382,7 +382,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">24-Apr</td>
-<td align="left">Resampling</td>
+<td align="left">Non-Parametrics Part 2</td>
 <td align="left"></td>
 <td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
@@ -400,7 +400,7 @@ title: Calendar
 <tr>
 <td align="left">Week 15</td>
 <td align="left">29-Apr</td>
-<td align="left"></td>
+<td align="left">Resampling</td>
 <td align="left"></td>
 <td align="left">Fox Chap 16-17</td>
 <td align="left"></td>
@@ -409,7 +409,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">1-May</td>
-<td align="left"></td>
+<td align="left">Resampling</td>
 <td align="left"></td>
 <td align="left">Fox Chap 20, Vittinghoff Chap 11</td>
 <td align="left"></td>
