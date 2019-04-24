@@ -16,17 +16,7 @@ assets      : {assets: ../../assets}
 ---  .segue bg:grey
 
 
-```{r setup, include = FALSE, cache = FALSE}
-library(knitr)
-opts_chunk$set(error = TRUE)
-opts_chunk$set(warning=FALSE)
-opts_chunk$set(message=FALSE)
-opts_chunk$set(results="hold")
-opts_chunk$set(cache=F)
-opts_chunk$set(  tidy=F,size="small")
-opts_chunk$set(tidy.opts=list(width.cutoff=60))
-options(digits = 3, scipen = 3)
-```
+
 
 # Cross validation 
 
@@ -47,7 +37,8 @@ options(digits = 3, scipen = 3)
 
 
 
-```{r , warning=FALSE, message=FALSE, eval=F}
+
+```r
 library(tidyverse)
 library(dslabs)
 data("mnist_27")
@@ -62,12 +53,7 @@ mnist_27$test%>% ggplot(aes(x_1, x_2, color = y)) +  geom_point()
 ## Motivation with k-nearest neighbors 
 
 
-```{r , warning=FALSE, message=FALSE, echo=F}
-library(tidyverse)
-library(dslabs)
-data("mnist_27")
-mnist_27$test%>% ggplot(aes(x_1, x_2, color = y)) +  geom_point()
-```
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 
 --- .class #id
@@ -104,7 +90,8 @@ $$
 - To implement the algorithm, we can use the `knn3` function from the __caret__ package. 
 
 
-```{r}
+
+```r
 library(caret)
 knn_fit <- knn3(y ~ ., data = mnist_27$train, k=5)
 ```
@@ -115,7 +102,8 @@ knn_fit <- knn3(y ~ ., data = mnist_27$train, k=5)
 
 - The `predict` function for `knn` produces a probability for each class.
 - We keep the probability of being a 7 as the estimate $\hat{p}(x_1, x_2)$
-```{r, eval =F}
+
+```r
 y_hat_knn <- predict(knn_fit, mnist_27$test, type = "class")
 confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy"]
 ```
@@ -127,9 +115,10 @@ confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy
 ## What do we get ? 
 
 
-```{r, echo =F}
-y_hat_knn <- predict(knn_fit, mnist_27$test, type = "class")
-confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy"]
+
+```
+## Accuracy 
+##    0.815
 ```
 
 
@@ -139,7 +128,8 @@ confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy
 
 - Let's see if linear regression could work: 
 
-```{r, eval=F}
+
+```r
 fit_lm <- mnist_27$train %>% mutate(y = ifelse(y == 7, 1, 0)) %>% lm(y ~ x_1 + x_2, data = .)
 p_hat_lm <- predict(fit_lm, mnist_27$test)
 y_hat_lm <- factor(ifelse(p_hat_lm > 0.5, 7, 2))
@@ -153,11 +143,10 @@ confusionMatrix(data = y_hat_lm, reference = mnist_27$test$y)$overall["Accuracy"
 ## Comparison to Linear Regression
 
 
-```{r, echo=F}
-fit_lm <- mnist_27$train %>% mutate(y = ifelse(y == 7, 1, 0)) %>% lm(y ~ x_1 + x_2, data = .)
-p_hat_lm <- predict(fit_lm, mnist_27$test)
-y_hat_lm <- factor(ifelse(p_hat_lm > 0.5, 7, 2))
-confusionMatrix(data = y_hat_lm, reference = mnist_27$test$y)$overall["Accuracy"]
+
+```
+## Accuracy 
+##     0.75
 ```
 
 --- .class #id
@@ -172,30 +161,10 @@ confusionMatrix(data = y_hat_lm, reference = mnist_27$test$y)$overall["Accuracy"
 
 ## Comparison Plots
 
-```{r, echo=FALSE}
-# We use this function to plot the estimated conditional probabilities
-plot_cond_prob <- function(p_hat=NULL){
-  tmp <- mnist_27$true_p
-  if(!is.null(p_hat)){
-    tmp <- mutate(tmp, p=p_hat)
-  }
-  tmp %>% ggplot(aes(x_1, x_2, z=p, fill=p)) +
-  geom_raster(show.legend = FALSE) +
-  scale_fill_gradientn(colors=c("#F8766D","white","#00BFC4")) +
-  stat_contour(breaks=c(0.5),color="black")
-}
-```
 
 
-```{r knn-fit, echo=FALSE, message=FALSE, warning=FALSE, out.width="70%"}
-p1 <- plot_cond_prob() + ggtitle("True conditional probability")
 
-p2 <- plot_cond_prob(predict(knn_fit, mnist_27$true_p)[,2]) +
-  ggtitle("kNN-5 estimate")
-library(gridExtra)
-
-grid.arrange(p2, p1, nrow=1)
-``` 
+<img src="figure/knn-fit-1.png" title="plot of chunk knn-fit" alt="plot of chunk knn-fit" width="70%" />
 
 
 
@@ -212,12 +181,20 @@ grid.arrange(p2, p1, nrow=1)
 
 ## Viewing Overfitting
 
-```{r}
+
+```r
 y_hat_knn <- predict(knn_fit, mnist_27$train, type = "class")
 confusionMatrix(data = y_hat_knn, reference = mnist_27$train$y)$overall["Accuracy"]
 
 y_hat_knn <- predict(knn_fit, mnist_27$test, type = "class")
 confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy"]
+```
+
+```
+## Accuracy 
+##    0.882 
+## Accuracy 
+##    0.815
 ```
 
 
@@ -236,10 +213,15 @@ confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy
 ## kNN with $k=1$
 
 
-```{r}
+
+```r
 knn_fit_1 <- knn3(y ~ ., data = mnist_27$train, k = 1)
 y_hat_knn_1 <- predict(knn_fit_1, mnist_27$train, type = "class")
 confusionMatrix(data=y_hat_knn_1, reference=mnist_27$train$y)$overall[["Accuracy"]]
+```
+
+```
+## [1] 0.994
 ```
 
 --- .class #id
@@ -248,9 +230,15 @@ confusionMatrix(data=y_hat_knn_1, reference=mnist_27$train$y)$overall[["Accuracy
 
 
 
-```{r}
+
+```r
 y_hat_knn_1 <- predict(knn_fit_1, mnist_27$test, type = "class")
 confusionMatrix(data=y_hat_knn_1, reference=mnist_27$test$y)$overall["Accuracy"]
+```
+
+```
+## Accuracy 
+##     0.74
 ```
 
 
@@ -259,27 +247,7 @@ confusionMatrix(data=y_hat_knn_1, reference=mnist_27$test$y)$overall["Accuracy"]
 ## Picturing over-fitting
 
 
-```{r knn-1-overfit, echo=FALSE, out.width="70%"}
-p1 <- mnist_27$true_p %>% 
-  mutate(knn = predict(knn_fit_1, newdata = .)[,2]) %>%
-  ggplot() +
-  geom_point(data = mnist_27$train, aes(x_1, x_2, color= y),
-             pch=21, show.legend = FALSE) +
-  scale_fill_gradientn(colors=c("#F8766D","white","#00BFC4")) +
-  stat_contour(aes(x_1, x_2, z = knn), breaks=c(0.5), color="black") +
-  ggtitle("Train set")
-
-p2 <- mnist_27$true_p %>% 
-  mutate(knn = predict(knn_fit_1, newdata = .)[,2]) %>%
-  ggplot() +
-  geom_point(data = mnist_27$test, aes(x_1, x_2, color= y), 
-             pch=21, show.legend = FALSE) +
-  scale_fill_gradientn(colors=c("#F8766D","white","#00BFC4")) +
-  stat_contour(aes(x_1, x_2, z = knn), breaks=c(0.5), color="black") +
-  ggtitle("Test set")
-
-grid.arrange(p1, p2, nrow=1)
-``` 
+<img src="figure/knn-1-overfit-1.png" title="plot of chunk knn-1-overfit" alt="plot of chunk knn-1-overfit" width="70%" />
 
 
 --- .class #id
@@ -304,10 +272,16 @@ grid.arrange(p1, p2, nrow=1)
 ## Over-smoothing
 
 
-```{r}
+
+```r
 knn_fit_401 <- knn3(y ~ ., data = mnist_27$train, k = 401)
 y_hat_knn_401 <- predict(knn_fit_401, mnist_27$test, type = "class")
 confusionMatrix(data=y_hat_knn_401, reference=mnist_27$test$y)$overall["Accuracy"]
+```
+
+```
+## Accuracy 
+##     0.79
 ```
 
 --- .class #id
@@ -317,17 +291,7 @@ confusionMatrix(data=y_hat_knn_401, reference=mnist_27$test$y)$overall["Accuracy
 
 - This turns out to be similar to regression:
   
-```{r mnist-27-glm-est, echo=FALSE, out.height="20%"}
-p_hat <- predict(fit_lm, newdata = mnist_27$true_p)
-p_hat <- scales::squish(p_hat, c(0, 1))
-p1 <- plot_cond_prob(p_hat) +
-  ggtitle("Regression")
-
-p2 <- plot_cond_prob(predict(knn_fit_401, mnist_27$true_p)[,2]) +
-  ggtitle("kNN-401")
-  
-grid.arrange(p1, p2, nrow=1)
-```
+<img src="figure/mnist-27-glm-est-1.png" title="plot of chunk mnist-27-glm-est" alt="plot of chunk mnist-27-glm-est" height="20%" />
 
 
 --- .class #id
@@ -354,12 +318,14 @@ grid.arrange(p1, p2, nrow=1)
 ## Coding
 
 - Sequence of ks
-```{r}
+
+```r
 ks <- seq(3, 251, 2)
 ```
 - We do this using  `map_df` function to repeat the above for each one. 
 
-```{r, warning=FALSE, message=FALSE, eval=F}
+
+```r
 library(purrr)
 accuracy <- map_df(ks, function(k){
   fit <- knn3(y ~ ., data = mnist_27$train, k = k)
@@ -385,13 +351,9 @@ accuracy <- map_df(ks, function(k){
 - Note that we estimate accuracy by using both the training set and the test set. 
 - We can now plot the accuracy estimates for each value of $k$:
 
-```{r accuracy-vs-k-knn, echo=FALSE}
-accuracy %>% mutate(k = ks) %>%
-  gather(set, accuracy, -k) %>%
-  mutate(set = factor(set, levels = c("train", "test"))) %>%
-  ggplot(aes(k, accuracy, color = set)) + 
-  geom_line() +
-  geom_point() 
+
+```
+## Error in eval(lhs, parent, parent): object 'accuracy' not found
 ```
 
 
@@ -411,9 +373,21 @@ accuracy %>% mutate(k = ks) %>%
 ## Different $k$
 
 - If we were to use these estimate to pick the $k$ that maximizes accuracy, we would use the estimates built on the test data:
-```{r}
+
+```r
 ks[which.max(accuracy$test)]
+```
+
+```
+## Error in which.max(accuracy$test): object 'accuracy' not found
+```
+
+```r
 max(accuracy$test)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'accuracy' not found
 ```
 - Another reason we need a better estimate of accuracy is that if we use the test set to pick this $k$, we we not should expect the accompanying accuracy estimate to extrapolate to the real world. 
 - This is because even here we broke a golden rule of machine learning: we selected the $k$ using the test set. 
@@ -479,9 +453,7 @@ $$
 ## K-fold cross validation
 
 - We begin with a dataset that we work with (blue) and we wish to test on a completely new dataset (yellow)
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-1.png")
-```
+![plot of chunk unnamed-chunk-16](images/cv-1.png)
 
 
 --- .class #id
@@ -498,9 +470,7 @@ knitr::include_graphics("images/cv-1.png")
 
 ## Reality Check
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-3.png")
-```
+![plot of chunk unnamed-chunk-17](images/cv-3.png)
 
 
 --- .class #id
@@ -549,9 +519,7 @@ $$
 
 ## Validation Set
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-4.png")
-```
+![plot of chunk unnamed-chunk-18](images/cv-4.png)
 
 
 --- .class #id
@@ -575,9 +543,7 @@ $$
 
 --- .class #id
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-5.png")
-```
+![plot of chunk unnamed-chunk-19](images/cv-5.png)
 
 
 
@@ -604,9 +570,7 @@ $$
 
 --- .class #id
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-6.png")
-```
+![plot of chunk unnamed-chunk-20](images/cv-6.png)
 
 
 --- .class #id
@@ -615,9 +579,7 @@ knitr::include_graphics("images/cv-6.png")
 
 - We can do cross validation again:
 
-```{r, echo=FALSE}
-knitr::include_graphics("images/cv-7.png")
-```
+![plot of chunk unnamed-chunk-21](images/cv-7.png)
 
 
 --- .class #id

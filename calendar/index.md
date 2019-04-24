@@ -374,7 +374,7 @@ title: Calendar
 <td align="left">Week 14</td>
 <td align="left">22-Apr</td>
 <td align="left">Non-Parametric Hypothesis Testing</td>
-<td align="left"><a href="../Notes/lect-21-nonparametrics.html">Lect-21-nonparametrics</a></td>
+<td align="left"><a href="../Notes/lect-21-nonparametrics.html">Lect-21-nonparametrics</a> <a href="https://vimeo.com/332184962">Video</a></td>
 <td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -382,8 +382,8 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">24-Apr</td>
-<td align="left">Non-Parametrics Part 2</td>
-<td align="left"></td>
+<td align="left">Cross-Validation</td>
+<td align="left"><a href="../Notes/lect-22-cv.html">Lect-22-cv</a></td>
 <td align="left">Vittinghoff Chap 12</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -400,7 +400,7 @@ title: Calendar
 <tr>
 <td align="left">Week 15</td>
 <td align="left">29-Apr</td>
-<td align="left">Resampling</td>
+<td align="left">Cross-Validation</td>
 <td align="left"></td>
 <td align="left">Fox Chap 16-17</td>
 <td align="left"></td>

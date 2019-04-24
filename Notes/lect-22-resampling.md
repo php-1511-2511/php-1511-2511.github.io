@@ -1,5 +1,5 @@
 ---
-title       : Resampling
+title       : Cross-Validation
 author      : Adam J Sullivan 
 job         : Assistant Professor of Biostatistics
 work        : Brown University
@@ -18,527 +18,602 @@ assets      : {assets: ../../assets}
 
 
 
-# Resampling Methods
-
-
---- .class #id
-
-## Resampling Methods
-
-- Very popular tool in modern statistics. 
-- Involvees drawing samples from data and calculating statistics in the sample. 
-- Quick Example: Getting standard error and confidence intervals for non-normal data in linear regression
+# Cross validation 
 
 --- .class #id
 
-## Resampling Methods
+## Cross Validation
 
-
-![](bootstrap.png)
-
+- One important concept in statistics and data science is cross validation. 
+- This method can help us understand the errors present in our data. 
+- It is often used for predictive modeling and validating other models. 
 
 --- .class #id
 
+## Motivation with k-nearest neighbors 
+
+- We will begin by considering the concept of k-nearest neighbors. 
+- Let's explore some data first. 
 
 
-
-## Why Resampling {#why}
-
-Thus far, in our tutorials we have been using the *validation* or *hold-out* approach to estimate the prediction error of our predictive models. This involves randomly dividing the available set of observations into two parts, a *training set* and a *testing set* (aka *validation set*). Our statistical model is fit on the training set, and the fitted model is used to predict the responses for the observations in the validation set. The resulting validation set error rate (typically assessed using MSE in the case of a quantitative response) provides an estimate of the test error rate.  
-
-The validation set approach is conceptually simple and is easy to implement. But it has two potential drawbacks:
-
-First, the estimate of the test error rate can be highly variable, depending on precisely which observations are included in the training set and which observations are included in the validation set.  I will illustrate on our `auto` data set.  Here we see that there is a relationship between *mpg* and *horsepower* and it doesn't seem linear but we're not sure which polynomial degree creates the best fit.
 
 
 ```r
-ggplot(auto, aes(horsepower, mpg)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
-  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, linetype = 2) +
-  geom_smooth(method = "lm", formula = y ~ poly(x, 3), se = FALSE, linetype = 3) +
-  geom_smooth(method = "lm", formula = y ~ poly(x, 4), se = FALSE, linetype = 4)
+library(tidyverse)
+library(dslabs)
+data("mnist_27")
+mnist_27$test%>% ggplot(aes(x_1, x_2, color = y)) +  geom_point()
 ```
 
-<img src="/public/images/analytics/resampling/unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
 
-Let's go ahead and do the traditional validation set approach to split our data into a training and testing set.  Then we'll fit 10 different models ranging from a linear model to a 10th degree polynomial model. The results show us there is a steep decline in our test error (MSE) rate when we go from a linear model to a quadratic model; however, the MSE flatlines beyond that point suggesting that adding more polynomial degrees likely does not improve the model performance. 
+
+
+--- .class #id
+
+## Motivation with k-nearest neighbors 
+
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+
+
+--- .class #id
+
+## Why K-Nearest Neighbors
+
+- This is a non-parametric classification method.
+- We can use this to help separate out values. 
+- In practice this can be used to match a new value with the closest old values. 
+
+
+--- .class #id
+
+## What are we doing?
+
+- We will use these data to estimate the conditional probability function 
+$$
+p(x_1, x_2) = \mbox{Pr}(Y=1 \mid X_1=x_1 , X_2 = x_2).
+$$
+
+--- .class #id
+
+## How do we do this?
+
+- First we define the distance between all observations based on the features. 
+- Then, for any point $(x_1,x_2)$ for which we want an estimate of $p(x_1, x_2)$, we look for the $k$ nearest points to $(x_1,x_2)$ and then take an average of the 0s and 1s associated with these points. 
+- We refer to the set of points used to compute the average as the _neighborhood_.
+- The larger your $k$, the smoother the estimates. 
+
+--- .class #id
+
+## `caret` package in R
+
+- To implement the algorithm, we can use the `knn3` function from the __caret__ package. 
+
 
 
 ```r
-set.seed(1)
-sample <- sample(c(TRUE, FALSE), nrow(auto), replace = T, prob = c(0.6,0.4))
-train <- auto[sample, ]
-test <- auto[!sample, ]
-
-# loop for first ten polynomial
-mse.df <- tibble(degree = 1:10, mse = NA)
-
-for(i in 1:10) {
-  lm.fit <- lm(mpg ~ poly(horsepower, i), data = train)
-  mse.df[i, 2] <- mean((test$mpg - predict(lm.fit, test))^2)
-}
-
-ggplot(mse.df, aes(degree, mse)) +
-  geom_line() +
-  geom_point() +
-  ylim(c(10, 30))
+library(caret)
+knn_fit <- knn3(y ~ ., data = mnist_27$train, k=5)
 ```
 
-<img src="/public/images/analytics/resampling/unnamed-chunk-3-1.png" style="display: block; margin: auto;" />
+--- .class #id
 
-However, our MSE is dependent on our training and test samples. If we repeat the process of randomly splitting the sample set into two parts, we will get a somewhat different estimate for the test MSE each time. I illustrate below, which displays ten different validation set MSE curves from the auto data set, produced using ten different random splits of the observations into training and validation sets. All ten curves indicate that the model with a quadratic term has a dramatically smaller validation set MSE than the model with only a linear term. Furthermore, all ten curves indicate that there is not much benefit in including cubic or higher-order polynomial terms in the model. But it is worth noting that each of the ten curves results in a __*different test MSE estimate*__ for each of the ten regression models considered. And there is no consensus among the curves as to which model results in the smallest validation set MSE.
+## What do we get ? 
+
+- The `predict` function for `knn` produces a probability for each class.
+- We keep the probability of being a 7 as the estimate $\hat{p}(x_1, x_2)$
+
+```r
+y_hat_knn <- predict(knn_fit, mnist_27$test, type = "class")
+confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy"]
+```
+
+
+
+--- .class #id
+
+## What do we get ? 
+
+
+
+```
+## Accuracy 
+##    0.815
+```
+
+
+--- .class #id
+
+## Comparison to Linear Regression
+
+- Let's see if linear regression could work: 
 
 
 ```r
-mse.df.2 <- tibble(sample = vector("integer", 100), 
-                   degree = vector("integer", 100), 
-                   mse = vector("double", 100))
-counter <- 1
+fit_lm <- mnist_27$train %>% mutate(y = ifelse(y == 7, 1, 0)) %>% lm(y ~ x_1 + x_2, data = .)
+p_hat_lm <- predict(fit_lm, mnist_27$test)
+y_hat_lm <- factor(ifelse(p_hat_lm > 0.5, 7, 2))
+confusionMatrix(data = y_hat_lm, reference = mnist_27$test$y)$overall["Accuracy"]
+```
 
-for(i in 1:10) {
-  # random sample
-  set.seed(i)
-  sample <- sample(c(TRUE, FALSE), nrow(auto), replace = T, prob = c(0.6,0.4))
-  train <- auto[sample, ]
-  test <- auto[!sample, ]
+
+
+--- .class #id
+
+## Comparison to Linear Regression
+
+
+
+```
+## Accuracy 
+##     0.75
+```
+
+--- .class #id
+
+## Comparison to Linear Regression
   
-  # modeling
-  for(j in 1:10) {
-    lm.fit <- lm(mpg ~ poly(horsepower, j), data = train)
-    
-    # add degree & mse values
-    mse.df.2[counter, 2] <- j
-    mse.df.2[counter, 3] <- mean((test$mpg - predict(lm.fit, test))^2)
-    
-    # add sample identifier
-    mse.df.2[counter, 1] <- i
-    counter <- counter + 1
-  }
-  next
-}
-
-ggplot(mse.df.2, aes(degree, mse, color = factor(sample))) +
-  geom_line(show.legend = FALSE) +
-  geom_point(show.legend = FALSE) +
-  ylim(c(10, 30))
-```
-
-<img src="/public/images/analytics/resampling/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
+- kNN doe better than regression.
+-  To see why this is case, we will plot $\hat{p}(x_1, x_2)$ and compare it to the the true conditional probability $p(x_1, x_2)$:
 
 
-A second concern with the validation approach, only a subset of the observations, those that are included in the training set rather than in the validation set, are used to fit the model. Since statistical methods tend to perform worse when trained on fewer observations, this suggests that the validation set error rate may tend to overestimate the test error rate for the model fit on the entire data set.
+--- .class #id
 
-We can address these concerns using *cross-validation* methods.
+## Comparison Plots
 
-## Leave-One-Out Cross-Validation {#LOOCV}
 
-*Leave-one-out cross-validation* (LOOCV) is closely related to the validation set approach as it involves splitting the set of observations into two parts. However, instead of creating two subsets of comparable size (i.e. 60% training, 40% validation), a single observation ($$x_1, y_1$$) is used for the validation set, and the remaining $$n-1$$ observations {$$(x_2, y_2), \dots, (x_n, y_n)$$} make up the training set. The statistical learning method is fit on the $$n − 1$$ training observations, and a prediction $$\hat y_1$$ is made for the excluded observation. Since the validation observation ($$x_1, y_1$$) was not used in the fitting process, the estimate error $$MSE_1 = (y_1 − \hat y_1)^2$$ provides an approximately unbiased estimate for the test error. But even though $$MSE_1$$ is unbiased for the test error, it is a poor estimate because it is highly variable, since it is based upon a single observation ($$x_1, y_1$$).
 
-However, we can repeat the procedure by selecting a different row ($$x_2, y_2$$) for the validation data, training the statistical learning procedure on the other $$n-1$$ observations and computing $$MSE_2 =(y_2− \hat y_2)^2$$. We can repeate this approach *n* times, where each time we holdout a different, single observation to validate on.  This produces a total of *n* squared errors, $$MSE_1,\dots, MSE_n$$. The LOOCV estimate for the test MSE is the average of these *n* test error estimates:
 
-$$ CV_{(n)} = \frac{1}{n}\sum^n_{i=1}MSE_i  \tag{1}$$
+<img src="figure/knn-fit-1.png" title="plot of chunk knn-fit" alt="plot of chunk knn-fit" width="70%" />
 
-To perform this procedure in R we first need to understand an important nuance.  In the logistic regression tutorial, we used the `glm` function to perform logistic regression by passing in the `family = "binomial"` argument. But if we use `glm` to fit a model without passing in the family argument, then it performs linear regression, just like the `lm` function. So, for instance:
+
+
+--- .class #id
+
+## Why does it work? 
+
+- We can see that the relationship is non-linear. 
+- Some of our areas and colors do not make sense though. 
+- This is what we call overfitting. 
+- Over-fitting is when the result works really well in one set of data but not as well in newer data. 
+
+--- .class #id
+
+## Viewing Overfitting
 
 
 ```r
-glm.fit <- glm(mpg ~ horsepower, data = auto)
-coef(glm.fit)
-## (Intercept)  horsepower 
-##  39.9358610  -0.1578447
+y_hat_knn <- predict(knn_fit, mnist_27$train, type = "class")
+confusionMatrix(data = y_hat_knn, reference = mnist_27$train$y)$overall["Accuracy"]
+
+y_hat_knn <- predict(knn_fit, mnist_27$test, type = "class")
+confusionMatrix(data = y_hat_knn, reference = mnist_27$test$y)$overall["Accuracy"]
 ```
 
-is the same as
-
-
-```r
-lm.fit <- lm(mpg ~ horsepower, data = auto)
-coef(lm.fit)
-## (Intercept)  horsepower 
-##  39.9358610  -0.1578447
 ```
-
-Why is this important?  Because we can perform LOOCV for any generalized linear model using `glm` and the `cv.glm` function from the [`boot`](http://cran.r-project.org/web/packages/boot/index.html) package. `boot` provides extensive facilities for bootstrapping and related resampling methods. You can bootstrap a single statistic (e.g. a median), a vector (e.g., regression weights), or as you'll see in this tutorial perform cross-validation. To perform LOOCV for a given generalized linear model we simply:
-
-1. fit our model across the entire data set with `glm`
-2. feed the entire data set and our fitted model into `cv.glm`
-
-
-```r
-# step 1: fit model
-glm.fit <- glm(mpg ~ horsepower, data = auto)
-
-# setp 2: perform LOOCV across entire data set
-loocv.err <- cv.glm(auto, glm.fit)
-
-str(loocv.err)
-## List of 4
-##  $ call : language cv.glm(data = auto, glmfit = glm.fit)
-##  $ K    : num 392
-##  $ delta: num [1:2] 24.2 24.2
-##  $ seed : int [1:626] 403 392 -1703707781 1994959178 434562476 -1277611857 -1105401243 1020654108 526650482 -1538305299 ...
-```
-
-`cv.glm` provides a list with 4 outputs:
-
-1. *call*: the original function call
-2. *K*: the number of *folds* used.  In our case it is 392 because the LOOCV looped through and pulled out each observation at least once to use a test observation.
-3. *delta*: the cross-validation estimate of prediction error.  The first number, which is the primary number we care about, is the output from Eq. 1 listed above.
-4. *seed*: the values of the random seed used for the function call
-
-The result we primarily care about is the cross-validation estimate of test error (Eq. 1).  Our cross-validation estimate for the test error is approximately 24.23.  This estimate is a far less biased estimate of the test error compared to our single test MSE produced by a training - testing validation approach. 
-
-
-```r
-loocv.err$delta[1]
-## [1] 24.23151
+## Accuracy 
+##    0.882 
+## Accuracy 
+##    0.815
 ```
 
 
-We can repeat this procedure to estimate an ubiased MSE across multiple model fits. For example, to assess multiple polynomial fits (as we did above) to identify the one that represents the best fit we can integrate this procedure into a function.  Here we develop a function that computes the LOOCV MSE based on specified polynomial degree.  We then feed this function (via `map_dbl`) values 1-5 to compute the first through fifth polynomials.  
+--- .class #id
+
+## Over-fitting
+
+- Over-fitting with kNN is the worst when $k=1$. 
+- This is because the estimate for each $(x_1, x_2)$ in the training set is obtained with just the $y$ corresponding to that point. 
+- In this case, if the $(x_1, x_2)$ are unique, we will obtain perfect accuracy in the training set because each point is used to predict itself. 
+- however, this will fail if the new points are not in the training set. 
+
+
+--- .class #id
+
+## kNN with $k=1$
+
 
 
 ```r
-# create function that computes LOOCV MSE based on specified polynomial degree
-loocv_error <- function(x) {
-  glm.fit <- glm(mpg ~ poly(horsepower, x), data = auto)
-  cv.glm(auto, glm.fit)$delta[1]
-}
+knn_fit_1 <- knn3(y ~ ., data = mnist_27$train, k = 1)
+y_hat_knn_1 <- predict(knn_fit_1, mnist_27$train, type = "class")
+confusionMatrix(data=y_hat_knn_1, reference=mnist_27$train$y)$overall[["Accuracy"]]
+```
 
-# compute LOOCV MSE for polynomial degrees 1-5
+```
+## [1] 0.998
+```
+
+--- .class #id
+
+## What about the test accuracy?
+
+
+
+
+```r
+y_hat_knn_1 <- predict(knn_fit_1, mnist_27$test, type = "class")
+confusionMatrix(data=y_hat_knn_1, reference=mnist_27$test$y)$overall["Accuracy"]
+```
+
+```
+## Accuracy 
+##    0.735
+```
+
+
+--- .class #id
+
+## Picturing over-fitting
+
+
+<img src="figure/knn-1-overfit-1.png" title="plot of chunk knn-1-overfit" alt="plot of chunk knn-1-overfit" width="70%" />
+
+
+--- .class #id
+
+## What can we see?
+
+- The estimate $\hat{p}(x_1, x_2)$ follows the training data too closely (left). 
+- You can see that in the training set, boundaries have been drawn to perfectly surround a single red point in a sea of blue. 
+- Because most points $(x_1, x_2)$ are unique, the prediction is either 1 or 0 and the prediction for that point is the associated label. 
+- However, once we introduce the training set (right), we see that many of these small islands now have the opposite color and we end up making several incorrect predictions.
+
+--- .class #id
+
+## Over-smoothing
+
+- Although not as badly as with the previous examples, we saw that with $k=5$ we also over-trained.
+- Hence, we should consider a larger $k$. 
+- Let's try, as an example, a much larger number: $k=401$. 
+
+--- .class #id
+
+## Over-smoothing
+
+
+
+```r
+knn_fit_401 <- knn3(y ~ ., data = mnist_27$train, k = 401)
+y_hat_knn_401 <- predict(knn_fit_401, mnist_27$test, type = "class")
+confusionMatrix(data=y_hat_knn_401, reference=mnist_27$test$y)$overall["Accuracy"]
+```
+
+```
+## Accuracy 
+##     0.79
+```
+
+--- .class #id
+
+
+## Large $k$ vs Linear
+
+- This turns out to be similar to regression:
+  
+<img src="figure/mnist-27-glm-est-1.png" title="plot of chunk mnist-27-glm-est" alt="plot of chunk mnist-27-glm-est" height="20%" />
+
+
+--- .class #id
+
+
+## Large $k$ vs Linear
+
+- This size of $k$ is so large that it does not permit enough flexibility. 
+- We call this _over-smoothing_. 
+
+--- .class #id
+
+## Picking the $k$ in kNN
+
+- So how do we pick $k$? 
+- In principle we want to pick the $k$ that maximizes accuracy, or minimizes the expected MSE.
+- The goal of cross validation is to estimate these quantities for any given algorithm and set of tuning parameters such as $k$. 
+- To understand why we need a special method to do this let's repeat what we did above but for different values of $k$:
+
+
+
+--- .class #id
+
+## Coding
+
+- Sequence of ks
+
+```r
+ks <- seq(3, 251, 2)
+```
+- We do this using  `map_df` function to repeat the above for each one. 
+
+
+```r
 library(purrr)
-1:5 %>% map_dbl(loocv_error)
-## [1] 24.23151 19.24821 19.33498 19.42443 19.03321
-```
-
-Our results illustrate a sharp drop in the estimated test MSE between the linear and quadratic fits, but then no clear improvement from using higher-order polynomials.  Thus, our unbiased MSEs suggest that using a 2nd polynomial (quadratic fit) is likely the optimal model balancing interpretation and low test errors.  
-
-This LOOCV approach can be used with any kind of predictive modeling. For example we could use it with logistic regression or linear discriminant analysis.  Unfortunately, this can be very time consuming approach if *n* is large, you're trying to loop through many models (i.e. 1-10 polynomials), and if each individual model is slow to fit. For example, if we wanted to perform this approach on the `ggplot2::diamonds` data set for a linear regression model, which contains 53,940 observations, the computation time is nearly 30 minutes!
-
-
-```r
-# DO NOT RUN THIS CODE - YOU WILL BE WAITING A LONG TIME!!
-system.time({
-    diamonds.fit <- glm(price ~ carat + cut + color + clarity, data = diamonds)
-    cv.glm(diamonds, diamonds.fit)
+accuracy <- map_df(ks, function(k){
+  fit <- knn3(y ~ ., data = mnist_27$train, k = k)
+  
+  y_hat <- predict(fit, mnist_27$train, type = "class")
+  cm_train <- confusionMatrix(data = y_hat, reference = mnist_27$train$y)
+  train_error <- cm_train$overall["Accuracy"]
+  
+  y_hat <- predict(fit, mnist_27$test, type = "class")
+  cm_test <- confusionMatrix(data = y_hat, reference = mnist_27$test$y)
+  test_error <- cm_test$overall["Accuracy"]
+  
+  tibble(train = train_error, test = test_error)
 })
-#      user    system    elapsed 
-#  1739.041   285.496   2035.062 
 ```
 
 
-## *k*-Fold Cross Validation {#kfold}
 
-An alternative to LOOCV is the *k*-fold cross validation approach. This resampling method involves randomly dividing the data into *k* groups (aka *folds*) of approximately equal size. The first fold is treated as a validation set, and the statistical method is fit on the remaining data. The mean squared error, $$MSE_1$$, is then computed on the observations in the held-out fold. This procedure is repeated *k* times; each time, a different group of observations is treated as the validation set. This process results in *k* estimates of the test error, $$MSE_1, MSE_2, \dots , MSE_k$$. Thus, the *k*-fold CV estimate is computed by averaging these values,
+--- .class #id
 
-$$ CV_{(k)} = \frac{1}{k}\sum^k_{i=1}MSE_i  \tag{2} $$
+## Plotting accuracy
 
-It is not hard to see that LOOCV is a special case of *k*-fold approach in which *k*
-is set to equal *n*. However, using the *k*-fold approach, one typically uses *k* = 5 or *k* = 10.  This can substantially reduce the computational burden of LOOCV.  Furthermore, there has been sufficient empirical evidence that demonstrates using 5-10 folds yield surprisingly accurate test error rate estimates (see chapter 5 of ISLR for more details[^islr]). 
+- Note that we estimate accuracy by using both the training set and the test set. 
+- We can now plot the accuracy estimates for each value of $k$:
 
-We can implement the *k*-fold approach just as we did with the LOOCV approach.  The only difference is incorporating the `K = 10` argument that we include in the `cv.glm` function.  Below illustrates our *k*-fold MSE values for the different polynomial models on our auto data.  When compared to the LOOCV outputs we see that the results are nearly identical.
 
+```
+## Error in eval(lhs, parent, parent): object 'accuracy' not found
+```
+
+
+--- .class #id
+
+## What can we see?
+
+- The estimate obtained on the training set is generally higher than the estimate obtained with the test set, with the difference larger for smaller values of $k$. 
+- This is due to over-fitting Also note that the accuracy versus $k$ plot is quite jagged.
+- We do not expect this because small changes in $k$ should not affect the algorithm's performance too much. 
+- The jaggedness is explained by the fact that the accuracy is computed on a sample and therefore is a random variable.
+- This demonstrates why we prefer to minimize the expected loss rather than the loss we observe with one dataset. 
+
+
+--- .class #id
+
+## Different $k$
+
+- If we were to use these estimate to pick the $k$ that maximizes accuracy, we would use the estimates built on the test data:
 
 ```r
-# create function that computes k-fold MSE based on specified polynomial degree
-kfcv_error <- function(x) {
-  glm.fit <- glm(mpg ~ poly(horsepower, x), data = auto)
-  cv.glm(auto, glm.fit, K = 10)$delta[1]
-}
-
-# compute k-fold MSE for polynomial degrees 1-5
-1:5 %>% map_dbl(kfcv_error)
-## [1] 24.56850 19.22648 19.29535 19.46601 19.24090
-
-# compare to LOOCV MSE values
-1:5 %>% map_dbl(loocv_error)
-## [1] 24.23151 19.24821 19.33498 19.42443 19.03321
+ks[which.max(accuracy$test)]
 ```
 
-We can also illustrate the computational advantage of the *k*-fold approach.  As we saw, using LOOCV on the `diamonds` data set took nearly 30 minutes whereas using the *k*-fold approach only takes about 4 seconds.
-
+```
+## Error in which.max(accuracy$test): object 'accuracy' not found
+```
 
 ```r
-system.time({
-  diamonds.fit <- glm(price ~ carat + cut + color + clarity, data = diamonds)
-  cv.glm(diamonds, diamonds.fit, K = 10)
-})
-##    user  system elapsed 
-##   3.760   0.564   4.347
+max(accuracy$test)
 ```
 
-We can apply this same approach to classification problems as well. For example, in the previous tutorial we compared the performance of a logistic regression, linear discriminant analysis (LDA), and quadratic discriminant analysis (QDA) on some stock market data using the traditional training vs. testing (60%/40%) data splitting approach.  We could've performed the same assessment using cross validation. In the classification setting, the LOOCV error rate takes the form
-
-$$ CV_{(n)} = \frac{1}{n}\sum^n_{i=1}Err_i  \tag{3} $$
-
-where $$Err_i = I(y_i \ne \hat y_i)$$.  The *k*-fold CV error rate and validation set error rates are defined analogously.
-
-Consequently, for the logistic regression we use `cv.glm` to perform a *k*-fold cross validation.  The end result is an estimated CV error rate of .5. (*Note: since the response variable is binary we incorporate a new cost function to compute the estimated error rate in Eq. 3*)
-
-
-```r
-stock <- ISLR::Smarket
-
-# fit logistic regression model
-glm.fit <- glm(Direction ~ Lag1 + Lag2, family = binomial, data = stock)
-
-# The cost function here correlates to that in Eq. 3
-cost <- function(r, pi = 0) mean(abs(r - pi) > 0.5)
-
-# compute the k-fold estimated error with our cost function
-cv.glm(stock, glm.fit, cost, K = 10)$delta[1]
-## [1] 0.4984
 ```
-
-To performm cross validation with our LDA and QDA models we use a slightly different approach.  Both the `lda` and `qda` functions have built-in cross validation arguments.  Thus, setting `CV = TRUE` within these functions will result in a LOOCV execution and the class and posterior probabilities are a product of this cross validation.
-
-
-```r
-library(MASS)
-
-# fit discriminant analysis models with CV = TRUE for LOOCV
-lda.fit <- lda(Direction ~ Lag1 + Lag2, CV = TRUE, data = stock)
-qda.fit <- qda(Direction ~ Lag1 + Lag2, CV = TRUE, data = stock)
-
-# compute estimated test error based on cross validation
-mean(lda.fit$class != stock$Direction)
-## [1] 0.4816
-mean(qda.fit$class != stock$Direction)
-## [1] 0.4872
+## Error in eval(expr, envir, enclos): object 'accuracy' not found
 ```
-
-Thus, the results are similar to what we saw in the previous tutorial, none of these models do an exceptional (or even decent!) job.  However, we see that the LOOCV estimated error for the QDA model (.487) is fairly higher than what we saw in the train-test validation approach (.40).  This suggests that our previous QDA model with the train-test validation approach may have been a bit optimistically biased!
-
-## Bootstrapping {#boot}
-
-*Bootstrapping* is a widely applicable and extremely powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method. As a simple example, bootstraping can be used to estimate the standard errors of the coefficients from a linear regression fit. In the case of linear regression, this is not particularly useful, since we saw in the [linear regression tutorial](linear_regression) that R provides such standard errors automatically. However, the power of the bootstrap lies in the fact that it can be easily applied to a wide range of statistical learning methods, including some for which a measure of variability is otherwise difficult to obtain and is not automatically output by statistical software.
-
-In essence bootstrapping repeatedly draws independent samples from our data set to create bootstrap data sets.  This sample is performed with *replacement*, which means that the same observation can be sampled more than once. The figure below from the ISLR[^islr] book depicts the bootsrap approach on a small data set (*n = 3*).
-
-<center>
-<img src="/public/images/analytics/resampling/bootstrap.png"  style="width: 60%; height: 60%;" />
-</center>
-
-Each bootstrap data set ($$Z^{*1}, Z^{*2}, \dots, Z^{*B}$$) contains *n* observations, sampled with replacement from the original data set.  Each bootstrap is used to compute the estimated statistic we are interested in ($$\hat\alpha^*$$). We can then use all the bootstrapped data sets to compute the standard error of $$\hat\alpha^{*1}, \hat\alpha^{*2}, \dots, \hat\alpha^{*B}$$ desired statistic as
-
-$$ SE_B(\hat\alpha) = \sqrt{\frac{1}{B-1}\sum^B_{r=1}\bigg(\hat\alpha^{*r}-\frac{1}{B}\sum^B_{r'=1}\hat\alpha^{*r'}\bigg)^2}  \tag{4} $$
-
-Thus, $$SE_B(\hat\alpha)$$ serves as an estimate of the standard error of $$\hat\alpha$$ estimated from the original data set.  Let's look at how we can implement this in R on a couple of simple examples:
-
-### Example 1: Estimating the accuracy of a single statistic
-
-Performing a bootstrap analysis in R entails two steps:
-
-1. Create a function that computes the statistic of interest.
-2. Use the `boot` function from the [`boot`](http://cran.r-project.org/web/packages/boot/index.html) package to perform the boostrapping
-
-In this example we'll use the `ISLR::Portfolio` data set.  This data set contains the returns for two investment assets (*X* and *Y*). Here, our goal is going to be minimizing the risk of investing a fixed sum of money in each asset.  Mathematically, we can achieve this by minimizing the variance of our investment using the statistic
-
-$$ \hat\alpha = \frac{\hat\sigma^2_Y - \hat\sigma_{XY}}{\hat\sigma^2_X +\hat\sigma^2_Y-2\hat\sigma_{XY}}  \tag{5} $$
-
-Thus, we need to create a function that will compute this test statistic:
+- Another reason we need a better estimate of accuracy is that if we use the test set to pick this $k$, we we not should expect the accompanying accuracy estimate to extrapolate to the real world. 
+- This is because even here we broke a golden rule of machine learning: we selected the $k$ using the test set. 
+- Cross validation also provides an estimate that takes this into account.
 
 
-```r
-statistic <- function(data, index) {
-  x <- data$X[index]
-  y <- data$Y[index]
-  (var(y) - cov(x, y)) / (var(x) + var(y) - 2* cov(x, y))
-}
-```
+--- .class #id
 
-Now we can compute $$\hat\alpha$$ for a specified subset of our portfolio data:
+## Mathematical description of cross validation
 
-
-```r
-portfolio <- ISLR::Portfolio
-
-# compute our statistic for all 100 observations
-statistic(portfolio, 1:100)
-## [1] 0.5758321
-```
-
-Next, we can use `sample` to randomly select 100 observations from the range 1 to 100, with replacement. This is equivalent to constructing a new bootstrap data set and recomputing $$\hat\alpha$$ based on the new data set.  
+- When we introduced liner regression we said one goal was to minimize the MSE. 
+$$
+\mbox{MSE} = \mbox{E}\left\{ \frac{1}{N}\sum_{i=1}^N (\hat{Y}_i - Y_i)^2 \right\}
+$$
+- When all we have at our disposal is one dataset, we can estimate the MSE with the observed MSE like this:
+$$
+\hat{\mbox{MSE}} = \frac{1}{N}\sum_{i=1}^N (\hat{y}_i - y_i)^2
+$$
+- These two are often referred to as the _true error_ and _apparent error_ respectively.
 
 
-```r
-statistic(portfolio, sample(100, 100, replace = TRUE))
-## [1] 0.7661566
-```
+--- .class #id 
 
-If you re-ran this function several times you'll see that you are getting a different output each time.  What we want to do is run this *many* times, record our output each time, and then compute a valid standard error of all the outputs.  To do this we can use `boot` and supply it our original data, the function that computes the test statistic, and the number of bootstrap replicates (`R`).
+## Apparent Error
 
 
-```r
-set.seed(123)
-boot(portfolio, statistic, R = 1000)
-## 
-## ORDINARY NONPARAMETRIC BOOTSTRAP
-## 
-## 
-## Call:
-## boot(data = portfolio, statistic = statistic, R = 1000)
-## 
-## 
-## Bootstrap Statistics :
-##      original      bias    std. error
-## t1* 0.5758321 0.002396754  0.08752118
-```
-
-The final output shows that using the original data, $$\hat\alpha = 0.5758$$, and it also provides the bootstrap estimate of our standard error $$SE(\hat\alpha) = 0.0875$$.
-
-Once we generate the bootstrap estimates we can also view the confidence intervals with `boot.ci` and plot our results:
+1. Because our data is random, the apparent error is a random variable. 
+2. If we train an algorithm on the same dataset that we use to compute the apparent error, we might be overfitting 
+    - In general, when we do this, the apparent error will be an underestimate of the true error. 
+    - We will see an extreme example of this with k nearest neighbors.
 
 
-```r
-set.seed(123)
-result <- boot(portfolio, statistic, R = 1000)
+--- .class #id
 
-boot.ci(result, type = "basic")
-## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
-## Based on 1000 bootstrap replicates
-## 
-## CALL : 
-## boot.ci(boot.out = result, type = "basic")
-## 
-## Intervals : 
-## Level      Basic         
-## 95%   ( 0.3958,  0.7376 )  
-## Calculations and Intervals on Original Scale
-plot(result)
-```
+## Cross validation
 
-<img src="/public/images/analytics/resampling/unnamed-chunk-19-1.png" style="display: block; margin: auto;" />
+- Cross validation is a technique that permits us to alleviate both these problems. 
+- To understand cross validation, it helps to think of the true error, a theoretical quantity, as the average of many apparent errors obtained by applying the algorithm to $B$ new random samples of the data, none of them used to train the algorithm. 
+- We think of the true error as:
 
-### Example 2: Estimating the accuracy of a linear regression model
+$$
+\frac{1}{B} \sum_{b=1}^B \frac{1}{N}\sum_{i=1}^N \left(\hat{y}_i^b - y_i^b\right)^2 
+$$
 
-We can use this same concept to assess the variability of the coefficient estimates and predictions from a statistical learning method such as linear regression.  For instance, here we'll assess the variability of the estimates for $$\beta_0$$ and $$\beta_1$$, the intercept and slope terms for the linear regression model that uses `horsepower` to predict `mpg` in our `auto` data set.  
+--- .class #id
 
-First, we create the function to compute the statistic of interest. We can apply this to our entire data set to get the baseline coefficients.
+## Cross validation
 
+- with $B$ a large number that can be thought of as practically infinite. 
+- As already mentioned, this is a theoretical quantity because we only have available one set of outcomes: $y_1, \dots, y_n$. 
+- Cross validation is based on the idea of imitating the theoretical setup above as best we can with the data we have. 
 
-```r
-statistic <- function(data, index) {
-  lm.fit <- lm(mpg ~ horsepower, data = data, subset = index)
-  coef(lm.fit)
-}
+--- .class #id
 
-statistic(auto, 1:392)
-## (Intercept)  horsepower 
-##  39.9358610  -0.1578447
-```
+## Cross Validation
 
-Now we can inject this into the `boot` function to compute the bootstrapped standard error estimate:
+- To do this, we have to generate a series of different random samples. 
+- There are several approaches we can use, but the general idea for all of them is to randomly generate smaller datasets that are not used for training, and instead used to estimate the true error.
 
 
-```r
-set.seed(123)
-boot(auto, statistic, 1000)
-## 
-## ORDINARY NONPARAMETRIC BOOTSTRAP
-## 
-## 
-## Call:
-## boot(data = auto, statistic = statistic, R = 1000)
-## 
-## 
-## Bootstrap Statistics :
-##       original        bias    std. error
-## t1* 39.9358610  0.0295956008 0.863541674
-## t2* -0.1578447 -0.0002940364 0.007598619
-```
+--- .class #id
 
-This indicates that the bootstrap estimate for $$SE(\beta_0)$$ is 0.86, and that the bootstrap estimate for $$SE(\beta_1)$$ is 0.0076. If we compare these to the standard errors provided by the `summary` function we see a difference.  
+## K-fold cross validation
+
+- We begin with a dataset that we work with (blue) and we wish to test on a completely new dataset (yellow)
+![plot of chunk unnamed-chunk-16](images/cv-1.png)
 
 
-```r
+--- .class #id
 
-summary(lm(mpg ~ horsepower, data = auto))
-## 
-## Call:
-## lm(formula = mpg ~ horsepower, data = auto)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -13.5710  -3.2592  -0.3435   2.7630  16.9240 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) 39.935861   0.717499   55.66   <2e-16 ***
-## horsepower  -0.157845   0.006446  -24.49   <2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 4.906 on 390 degrees of freedom
-## Multiple R-squared:  0.6059,	Adjusted R-squared:  0.6049 
-## F-statistic: 599.7 on 1 and 390 DF,  p-value: < 2.2e-16
-```
+## Reality Check
 
-This difference suggests the standard errors provided by `summary` may be biased.  That is, certain assumptions may be violated which is causing the standard errors in the non-bootstrap approach to be different than those in the bootstrap approach.
-
-If you remember from earlier in the tutorial we found that a quadratic fit appeared to be the most approapriate for the relationship between `mpg` and `horsepower`.  Lets adjust our code to capture this fit and see if we notice a difference with our outputs.
+- We typically never get to see the yellow when building the model. 
+- So to imitate this situation, we carve out a piece of our dataset and pretend it is an independent dataset.
+- we divide the dataset into a _training set_ (blue) and a _test set_ (red). 
+- We will train our models exclusively on the training set and use the test set only for evaluation purposes.
 
 
-```r
-quad.statistic <- function(data, index) {
-  lm.fit <- lm(mpg ~ poly(horsepower, 2), data = data, subset = index)
-  coef(lm.fit)
-}
+--- .class #id
 
-set.seed(1)
-boot(auto, quad.statistic, 1000)
-## 
-## ORDINARY NONPARAMETRIC BOOTSTRAP
-## 
-## 
-## Call:
-## boot(data = auto, statistic = quad.statistic, R = 1000)
-## 
-## 
-## Bootstrap Statistics :
-##       original      bias    std. error
-## t1*   23.44592 0.003943212   0.2255528
-## t2* -120.13774 0.117312678   3.7008952
-## t3*   44.08953 0.047449584   4.3294215
-```
+## Reality Check
 
-Now if we compare the standard errors between the bootstrap approach and the non-bootstrap approach we see the standard errors align more closely.  This better correspondence between the bootstrap estimates and the standard estimates suggest a better model fit.  Thus, bootstrapping provides an additional method for assessing the adequacy of our model's fit.
+![plot of chunk unnamed-chunk-17](images/cv-3.png)
 
 
-```r
-summary(lm(mpg ~ poly(horsepower, 2), data = auto))
-## 
-## Call:
-## lm(formula = mpg ~ poly(horsepower, 2), data = auto)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -14.7135  -2.5943  -0.0859   2.2868  15.8961 
-## 
-## Coefficients:
-##                       Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)            23.4459     0.2209  106.13   <2e-16 ***
-## poly(horsepower, 2)1 -120.1377     4.3739  -27.47   <2e-16 ***
-## poly(horsepower, 2)2   44.0895     4.3739   10.08   <2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 4.374 on 389 degrees of freedom
-## Multiple R-squared:  0.6876,	Adjusted R-squared:  0.686 
-## F-statistic:   428 on 2 and 389 DF,  p-value: < 2.2e-16
-```
+--- .class #id
+
+## How do we do this?
+
+- We usually try to select a small piece of the dataset so that we have as much data as possible to train. 
+- However, we also want the test set to be large so that we obtain a stable estimate of the loss without fitting an impractical number of models. 
+- Typical choices are to use 10%-20% of the data for testing. 
+- For each set of model parameters being considered, we we want an estimate of the MSE and then we will chose the parameters with the smallest MSE. 
+- Cross validation provides this estimate.
 
 
-## Additional Resources {#additional}
 
-This will get you started with resampling methods; however, understand that there are many approaches for resampling and even more options within R to implement these approaches. The following resources will help you learn more:
+--- .class #id
 
-- [An Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/)
-- [Introduction to Statistics Through Resampling Methods and R](https://www.amazon.com/Introduction-Statistics-Through-Resampling-Methods/dp/1118428218/ref=sr_1_2?ie=UTF8&qid=1490920595&sr=8-2&keywords=resampling+r)
-- [Applied Predictive Modeling](http://appliedpredictivemodeling.com/)
-- [Elements of Statistical Learning](https://statweb.stanford.edu/~tibs/ElemStatLearn/)
+## Cross Validation
+
+- 
+First, before we start the cross validation procedure, it is important to fix all the algorithm parameters. 
+- Although we will train the algorithm on the set of training sets, the parameters $\lambda$ will be the same across all training sets.
+- We will use $\hat{y}_i(\lambda)$ to denote the predictors obtained when we use parameters $\lambda$.
 
 
-[^islr]: This tutorial was built as a supplement to chapter 5 of [An Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/)
+--- .class #id
 
+## Cross Validation
+
+- So, if we are going to imitate this definition:
+$$
+\mbox{MSE}(\lambda) = \frac{1}{B} \sum_{b=1}^B \frac{1}{N}\sum_{i=1}^N \left(\hat{y}_i^b(\lambda) - y_i^b\right)^2 
+$$
+- we want to consider datasets that can be thought of as an independent random sample and we want to do this several times. 
+- With K-fold cross validation, we do it $K$ times. 
+
+--- .class #id
+
+## How?
+
+- We will eventually end up with $K$ samples, but let's start by describing how to construct the first:
+-  we simply pick $M=N/K$ observations at random (we round if $M$ is not a round number) and think of these as a random sample $y_1^b, \dots, y_M^b$, with $b=1$. 
+- We call this the validation set:
+
+
+--- .class #id 
+
+## Validation Set
+
+![plot of chunk unnamed-chunk-18](images/cv-4.png)
+
+
+--- .class #id
+
+## Fit Model in Training Set
+
+- Now we can fit the model in the training set, then compute the apparent error on the independent set:
+$$
+\hat{\mbox{MSE}}_b(\lambda) = \frac{1}{M}\sum_{i=1}^M \left(\hat{y}_i^b(\lambda) - y_i^b\right)^2 
+$$
+
+--- .class #id
+
+## Problems?
+
+- Note that this is just one sample and will therefore return a noisy estimate of the true error.
+- This is why we take $K$ samples, not just one. 
+- In K-cross validation, we randomly split the observations into $K$ non-overlapping sets:
+
+
+
+--- .class #id
+
+![plot of chunk unnamed-chunk-19](images/cv-5.png)
+
+
+
+--- .class #id
+
+## Repeat
+
+- Now we repeat the calculation above for each of these sets $b=1,\dots,K$ and obtain $\hat{\mbox{MSE}}_1(\lambda),\dots, \hat{\mbox{MSE}}_K(\lambda)$. 
+- Then, for our final estimate, we compute the average:
+$$
+\hat{\mbox{MSE}}(\lambda) = \frac{1}{B} \sum_{b=1}^K \hat{\mbox{MSE}}_b(\lambda)
+$$
+- A final step would be to select the $\lambda$ that minimizes the MSE.
+
+
+
+--- .class #id
+
+## Notes
+
+- We now have to take into account the fact that the optimization occurred on the training data and therefore we need an estimate of our final algorithm based on data that was not used to optimize the choice. 
+- Here is where we use the test set we separated early on:
+
+
+--- .class #id
+
+![plot of chunk unnamed-chunk-20](images/cv-6.png)
+
+
+--- .class #id
+
+## Cross Validation 
+
+- We can do cross validation again:
+
+![plot of chunk unnamed-chunk-21](images/cv-7.png)
+
+
+--- .class #id
+
+## Final Notes
+
+
+- note that this means that our entire compute time gets multiplied by $K$.
+- You will soon learn that performing this task takes time because we are performing many complex computations. 
+- As a result, we are always looking for ways to reduce this time. 
+- For the final evaluation, we often just use the one test set.
+
+
+--- .class #id
+
+## How do we pick k?
+
+-  Large values of $K$ are preferable because the training data better imitates the original dataset. 
+- However, larger values of $K$ will have much slower computation time: for example, 100-fold cross validation will be 10 times slower than 10-fold cross validation. 
+- For this reason, the choices of $K=5$ and $K=10$ are popular.
+
+--- .class #id
+
+## Improving on Estimates?
+
+- One way we can improve the variance of our final estimate is to take more samples. 
+- To do this, we would no longer require the training set to be partitioned into non-overlapping sets. 
+- Instead, we would just pick $K$ sets of some size at random.
+
+
+--- .class #id
+
+## Improving Estimates
+
+- One popular version of this technique, at each fold, picks observations at random with replacement (which means the same observation can appear twice).
+- This approach has some advantages (not discussed here) and is generally referred to as the _Bootstrap_.
+- In fact, this is the default approach in the __caret__ package.  
