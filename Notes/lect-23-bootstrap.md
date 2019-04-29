@@ -16,17 +16,7 @@ assets      : {assets: ../../assets}
 ---  .segue bg:grey
 
 
-```{r setup, include = FALSE, cache = FALSE}
-library(knitr)
-opts_chunk$set(error = TRUE)
-opts_chunk$set(warning=FALSE)
-opts_chunk$set(message=FALSE)
-opts_chunk$set(results="hold")
-opts_chunk$set(cache=F)
-opts_chunk$set(  tidy=F,size="small")
-opts_chunk$set(tidy.opts=list(width.cutoff=60))
-options(digits = 3, scipen = 3)
-```
+
 
 # Resampling Methods
 
@@ -158,7 +148,8 @@ $$ \hat\alpha = \frac{\hat\sigma^2_Y - \hat\sigma_{XY}}{\hat\sigma^2_X +\hat\sig
 
 ## The Function
 
-```{r}
+
+```r
 statistic <- function(data, index) {
   x <- data$X[index]
   y <- data$Y[index]
@@ -176,10 +167,14 @@ statistic <- function(data, index) {
 
 - Now we can compute $$\hat\alpha$$ for a specified subset of our portfolio data:
 
-```{r}
+
+```r
 portfolio <- ISLR::Portfolio
 statistic(portfolio, 1:100)
+```
 
+```
+## [1] 0.576
 ```
 
 
@@ -192,8 +187,13 @@ Next, we can use `sample` to randomly select 100 observations from the range 1 t
 - This is equivalent to constructing a new bootstrap data set and recomputing $$\hat\alpha$$ based on the new data set.  
 
 
-```{r}
+
+```r
 statistic(portfolio, sample(100, 100, replace = TRUE))
+```
+
+```
+## [1] 0.467
 ```
 
 
@@ -211,7 +211,8 @@ statistic(portfolio, sample(100, 100, replace = TRUE))
 
 ## `boot()` function in R
 
-```{r, eval=F}
+
+```r
 set.seed(123)
 boot(portfolio, statistic, R = 1000)
 ```
@@ -220,10 +221,19 @@ boot(portfolio, statistic, R = 1000)
 
 ## `boot()` function in R
 
-```{r, echo=F}
-set.seed(123)
-library(boot)
-boot(portfolio, statistic, R = 1000)
+
+```
+## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = portfolio, statistic = statistic, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##     original  bias    std. error
+## t1*    0.576  0.0024      0.0875
 ```
 
 
@@ -240,7 +250,8 @@ boot(portfolio, statistic, R = 1000)
 
 ## R Code
 
-```{r, eval=F}
+
+```r
 set.seed(123)
 result <- boot(portfolio, statistic, R = 1000)
 
@@ -251,11 +262,18 @@ boot.ci(result, type = "basic")
 
 ## R Code
 
-```{r, echo=F}
-set.seed(123)
-result <- boot(portfolio, statistic, R = 1000)
 
-boot.ci(result, type = "basic")
+```
+## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+## Based on 1000 bootstrap replicates
+## 
+## CALL : 
+## boot.ci(boot.out = result, type = "basic")
+## 
+## Intervals : 
+## Level      Basic         
+## 95%   ( 0.396,  0.738 )  
+## Calculations and Intervals on Original Scale
 ```
 
 --- .class #id
@@ -264,9 +282,7 @@ boot.ci(result, type = "basic")
 ## Plot of Results
 
 
-```{R, echo=F}
-plot(result)
-```
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 
 
@@ -290,7 +306,8 @@ plot(result)
 - First, we create the function to compute the statistic of interest. 
 - We can apply this to our entire data set to get the baseline coefficients.
 
-```{r}
+
+```r
 library(tidyverse)
 auto <- as_tibble(ISLR::Auto)
 statistic <- function(data, index) {
@@ -305,8 +322,14 @@ statistic <- function(data, index) {
 ## What do we get?
 
 
-```{R}
+
+```r
 statistic(auto, 1:392)
+```
+
+```
+## (Intercept)  horsepower 
+##      39.936      -0.158
 ```
 
 
@@ -315,7 +338,8 @@ statistic(auto, 1:392)
 ## Then use `boot()`
 
 
-```{r, eval=F}
+
+```r
 set.seed(123)
 boot(auto, statistic, 1000)
 ```
@@ -328,9 +352,20 @@ boot(auto, statistic, 1000)
 ## The Results
 
 
-```{r, echo=F}
-set.seed(123)
-boot(auto, statistic, 1000)
+
+```
+## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = auto, statistic = statistic, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##     original    bias    std. error
+## t1*   39.936  0.029596      0.8635
+## t2*   -0.158 -0.000294      0.0076
 ```
 
 
@@ -347,9 +382,26 @@ boot(auto, statistic, 1000)
 
 ## The summary
 
-```{r, echo=FALSE}
 
-summary(lm(mpg ~ horsepower, data = auto))
+```
+## 
+## Call:
+## lm(formula = mpg ~ horsepower, data = auto)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.571  -3.259  -0.344   2.763  16.924 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 39.93586    0.71750    55.7   <2e-16 ***
+## horsepower  -0.15784    0.00645   -24.5   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 4.91 on 390 degrees of freedom
+## Multiple R-squared:  0.606,	Adjusted R-squared:  0.605 
+## F-statistic:  600 on 1 and 390 DF,  p-value: <2e-16
 ```
 
 
@@ -368,7 +420,8 @@ summary(lm(mpg ~ horsepower, data = auto))
 ## Quadratic Function
 
 
-```{r}
+
+```r
 quad.statistic <- function(data, index) {
   lm.fit <- lm(mpg ~ poly(horsepower, 2), data = data, subset = index)
   coef(lm.fit)
@@ -381,8 +434,8 @@ quad.statistic <- function(data, index) {
 
 ## Boot it
 
-```{r, eval=F}
 
+```r
 set.seed(1)
 boot(auto, quad.statistic, 1000)
 ```
@@ -391,10 +444,21 @@ boot(auto, quad.statistic, 1000)
 
 ## Boot it
 
-```{r, echo=F}
 
-set.seed(1)
-boot(auto, quad.statistic, 1000)
+```
+## 
+## ORDINARY NONPARAMETRIC BOOTSTRAP
+## 
+## 
+## Call:
+## boot(data = auto, statistic = quad.statistic, R = 1000)
+## 
+## 
+## Bootstrap Statistics :
+##     original  bias    std. error
+## t1*     23.4 0.00394       0.226
+## t2*   -120.1 0.11731       3.701
+## t3*     44.1 0.04745       4.329
 ```
 
 
@@ -414,7 +478,26 @@ boot(auto, quad.statistic, 1000)
 ## Summary in R
 
 
-```{r, echo=F}
-summary(lm(mpg ~ poly(horsepower, 2), data = auto))
+
+```
+## 
+## Call:
+## lm(formula = mpg ~ poly(horsepower, 2), data = auto)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -14.714  -2.594  -0.086   2.287  15.896 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)            23.446      0.221   106.1   <2e-16 ***
+## poly(horsepower, 2)1 -120.138      4.374   -27.5   <2e-16 ***
+## poly(horsepower, 2)2   44.090      4.374    10.1   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 4.37 on 389 degrees of freedom
+## Multiple R-squared:  0.688,	Adjusted R-squared:  0.686 
+## F-statistic:  428 on 2 and 389 DF,  p-value: <2e-16
 ```
 

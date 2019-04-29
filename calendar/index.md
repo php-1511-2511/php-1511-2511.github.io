@@ -400,8 +400,8 @@ title: Calendar
 <tr>
 <td align="left">Week 15</td>
 <td align="left">29-Apr</td>
-<td align="left">Cross-Validation</td>
-<td align="left"></td>
+<td align="left">Bootstrapping</td>
+<td align="left"><a href="../Notes/lect-23-bootstrap.html">Lect-23-bootstrapping</a></td>
 <td align="left">Fox Chap 16-17</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -409,7 +409,7 @@ title: Calendar
 <tr>
 <td align="left"></td>
 <td align="left">1-May</td>
-<td align="left">Resampling</td>
+<td align="left">Putting it Together</td>
 <td align="left"></td>
 <td align="left">Fox Chap 20, Vittinghoff Chap 11</td>
 <td align="left"></td>

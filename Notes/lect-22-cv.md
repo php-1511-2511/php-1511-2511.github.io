@@ -221,7 +221,7 @@ confusionMatrix(data=y_hat_knn_1, reference=mnist_27$train$y)$overall[["Accuracy
 ```
 
 ```
-## [1] 0.994
+## [1] 0.998
 ```
 
 --- .class #id
@@ -238,7 +238,7 @@ confusionMatrix(data=y_hat_knn_1, reference=mnist_27$test$y)$overall["Accuracy"]
 
 ```
 ## Accuracy 
-##     0.74
+##    0.735
 ```
 
 
@@ -325,8 +325,17 @@ ks <- seq(3, 251, 2)
 - We do this using  `map_df` function to repeat the above for each one. 
 
 
+--- .class #id 
+
+
+## Coding
+
+
+
 ```r
+library(caret)
 library(purrr)
+library(tidyverse)
 accuracy <- map_df(ks, function(k){
   fit <- knn3(y ~ ., data = mnist_27$train, k = k)
   
@@ -351,10 +360,7 @@ accuracy <- map_df(ks, function(k){
 - Note that we estimate accuracy by using both the training set and the test set. 
 - We can now plot the accuracy estimates for each value of $k$:
 
-
-```
-## Error in eval(lhs, parent, parent): object 'accuracy' not found
-```
+![plot of chunk accuracy-vs-k-knn](figure/accuracy-vs-k-knn-1.png)
 
 
 --- .class #id
@@ -376,18 +382,12 @@ accuracy <- map_df(ks, function(k){
 
 ```r
 ks[which.max(accuracy$test)]
-```
-
-```
-## Error in which.max(accuracy$test): object 'accuracy' not found
-```
-
-```r
 max(accuracy$test)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'accuracy' not found
+## [1] 41
+## [1] 0.86
 ```
 - Another reason we need a better estimate of accuracy is that if we use the test set to pick this $k$, we we not should expect the accompanying accuracy estimate to extrapolate to the real world. 
 - This is because even here we broke a golden rule of machine learning: we selected the $k$ using the test set. 
