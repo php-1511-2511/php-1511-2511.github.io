@@ -433,7 +433,7 @@ max(accuracy$test)
 
 ## Mathematical description of cross validation
 
-- When we introduced liner regression we said one goal was to minimize the MSE. 
+- When we introduced linear regression we said one goal was to minimize the MSE. 
 $$
 \mbox{MSE} = \mbox{E}\left\{ \frac{1}{N}\sum_{i=1}^N (\hat{Y}_i - Y_i)^2 \right\}
 $$
