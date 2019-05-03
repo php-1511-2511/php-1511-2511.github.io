@@ -455,7 +455,7 @@ confusionMatrix(data = predict(train_loess, mnist_27$test),
 
 - This is more smooth
 
-```{r gam-smooth, warning=FALSE, echo=FALSE, out.width="100%"}
+```{r gam-smooth, warning=FALSE, echo=FALSE, out.width="60%"}
 p1 <- plot_cond_prob() + ggtitle("True conditional probability")
 
 p2 <- plot_cond_prob(predict(train_loess, mnist_27$true_p, type = "prob")[,2]) + 

@@ -84,7 +84,7 @@ train_knn <- train(y ~ ., method = "knn", data = mnist_27$train)
 ## Resampling results:
 ## 
 ##   Accuracy  Kappa
-##   0.793     0.585
+##   0.795     0.588
 ```
 
 
@@ -106,9 +106,9 @@ train_knn <- train(y ~ ., method = "knn", data = mnist_27$train)
 ## Resampling results across tuning parameters:
 ## 
 ##   k  Accuracy  Kappa
-##   5  0.806     0.610
-##   7  0.812     0.622
-##   9  0.816     0.630
+##   5  0.797     0.592
+##   7  0.812     0.623
+##   9  0.818     0.634
 ## 
 ## Accuracy was used to select the optimal model using the largest value.
 ## The final value used for the model was k = 9.
@@ -499,5 +499,5 @@ confusionMatrix(data = predict(train_loess, mnist_27$test),
 
 - This is more smooth
 
-<img src="figure/gam-smooth-1.png" title="plot of chunk gam-smooth" alt="plot of chunk gam-smooth" width="100%" />
+<img src="figure/gam-smooth-1.png" title="plot of chunk gam-smooth" alt="plot of chunk gam-smooth" width="60%" />
 

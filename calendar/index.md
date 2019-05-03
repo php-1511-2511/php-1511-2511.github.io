@@ -428,7 +428,7 @@ title: Calendar
 <td align="left">Final Week</td>
 <td align="left">6-May</td>
 <td align="left"><strong><em>Exam 2</em></strong></td>
-<td align="left"></td>
+<td align="left"><a href="../exams/final_review.html">Final Review Questions</a> <a href="../exams/final_review_output.html">Final Review Output</a> <a href="../exams/final_review_sol.html">Final Review Solutions</a> <a href="../exams/final_exam_extra_info.html">Questions Asked By Students</a></td>
 <td align="left"></td>
 <td align="left"></td>
 <td align="left"></td>

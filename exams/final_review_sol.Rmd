@@ -1,0 +1,117 @@
+---
+title: Final Review"
+author: 'Solutions'
+date: "May 7, 2018"
+output: html_document
+---
+  
+  <style type="text/css">
+  .table {
+    
+    width: 80%;
+    margin-left:10%; 
+    margin-right:10%;
+  }
+</style>
+  
+```{r,setup, cache=TRUE, echo=F}
+## numbers >= 10^5 will be denoted in scientific notation,
+## and rounded to 2 digits
+options(scipen = 3, digits = 4)
+suppressMessages( require(car))
+```
+
+```{r, echo=FALSE}
+library(foreign)
+fhs <- read.dta("fhs.dta")
+```
+
+##The Data
+
+The Framingham Heart Study is a long term prospective study of the etiology of cardiovascular disease among a population of free living subjects in the community of Framingham, Massachusetts. The Framingham Heart Study was a landmark study in epidemiology in that it was the first prospective study of cardiovascular disease and identified the concept of risk
+factors and their joint effects. The study began in 1948 and 5,209 subjects were initially enrolled in the study. Participants have been examined biennially since the inception of the study and all subjects are continuously followed through regular surveillance for cardiovascular outcomes. Clinic examination data has included cardiovascular disease risk factors and markers of disease such as blood pressure, blood chemistry, lung function, smoking history, health behaviors, ECG tracings, Echocardiography, and medication use. Through regular surveillance of area hospitals, participant contact, and death certificates, the Framingham Heart Study reviews and adjudicates events for the occurrence of Angina Pectoris, Myocardial Infarction, Heart Failure, and Cerebrovascular disease.
+
+The dataset is a subset of the data collected as part of the Framingham study and includes laboratory, clinic, questionnaire, and adjudicated event data on 4,434 participants. Participant clinic data was collected during three examination periods, approximately 6 years apart, from roughly 1956 to 1968. Each participant was followed for a total of 24 years for the outcome of the following events: Angina Pectoris, Myocardial Infarction, Atherothrombotic Infarction or Cerebral Hemorrhage (Stroke) or death. 
+
+
+## Logistic Model
+
+Our goal will be to build a model to explain hypertension. We will do this cross-sectionally and consider what covariates at baseline explain whether or not a subject will have hypertension. Your goal with this will be to go through the output given here and pick the best model:
+
+1. Discuss the outcome variable ( what is the outcome, how many subjects have this outcome? ...)
+2. Make a table of the values for the simple logistic regressions. Comment on what you see here. 
+3. Walk through the process of multivariate model builing. 
+  a. Look over the models, do the coefficients look the same as the simple logistic regression?
+  b. What model would you choose?
+      - Make sure to show tests comparing some of the models and why you chose the model you chose. 
+      - Remember some tests are shown that may no be done appropriately. 
+
+
+When we first look at this question we were told that we are considering whether or not a subject has hypertension. By nature this would mean a subject has hypertension or not making this a collection of bernoulli trials or the binomial distribution. In the survival portion of the ouput we can see that there are 4322 subjects and that 3166 have the event of interest. (*For the exam I would not make you search for this kind of information but for the homework it shows you that it always pays to go through all your tables and information before trying to answer and summarize.* ***In other words this is not about searching until you find the right answer but about the process of learning and understanding about the problem at hand. *** )
+
+
+For our simple logistic regressions we have:
+
+------------------------------------------------------
+Variable      Estimate        p-value         AIC
+------------- --------------- --------------- --------
+Age           0.057           <0.0001         4949.2
+
+Current Smoke -0.533          <0.0001         5085.1
+
+Cigs per day  -0.014          <0.0001         5078.8
+
+bmi           0.16            <0.0001         4841.1
+
+diabetes      0.562           0.0205          5139.9
+
+BP Meds       15.607          0.938           4996.1
+
+Heart Rate    0.019           <0.0001         5103.6
+
+Heart Attacks 0.396           0.147           5143.6
+
+Systolic BP   0.094           <0.0001         3785.4
+-----------------------------------------------------------------------------
+
+
+From this table we can see that Blood pressure meds and whether or not the subject has had a heart attack is not associated with the event of hyptertension. Also notably the estimate for diabetes has the next highest p-value. 
+
+We note that all estimated effects but current smoking and cigarettes per day show an increase in the odds of having hypertension. Current smoking and cigarettes per day will have odds ratios less than 1 which would suggest a protective effect of them on hypertension. At this stage I would assume that there is confounding and that this does not explain the whole picture. 
+
+
+From Model 10 we can see that only BMI and Systolic blood pressure are significantly associated with hypertension. We also can note that model 10 has an AUC of 0.845. From the AIC (3626.3) this model is better than all of the above models but it may not be the best model we have thus far. Model 11 has an AIC (3623.2) comparable to the model 10 but now we have BMI, Systolic Blood Pressure and Current Smoking significant. Once again smoking is negatively related to hypertension. Model 11 also has an AUC of 0.845. Model 12 is not noteworthy given it has an AIC of 4656 and an AUC of 0.678 making it a worse fit than just systolic blood pressure alone. Model 13 has current smoing, bmi and systolic blood pressure as significant associations with hypertension. It has the lowest AIC (3618) and again an AUC of 0.845. With this it seems valid to compare models 10, 11 and 13 as candidates for our final selection. 
+
+Model 11 is nested inside Model 10 and by the likelihood ratio test we can choose model 11 with p-value 0.6404. Model 13 is also nested inside model 10 and by the likelihood ratio test we can choose model 13 with p-value 0.8619. Finally model 13 is nested inside model 11 and by the likelihood ratio test we can use model 11 with p-value 0.7975. 
+
+This means our best bet would be to choose Model 13. 
+
+\newpage
+
+
+##Survival Model
+
+We will now build a model to explain hypertension with survival data. Your goal with this will be to go through the output given here and pick the best model:
+
+1. Discuss the outcome variable ( what is the outcome, how many subjects have this outcome? ...)
+2. Consider the 4 models.
+    - Do the models contain significant coefficients?
+    - Do the models meet the proportional hazards assumptions?
+3. Can we pick a final Model? 
+    - Does this have the same variables as the logistic?
+
+With this outcome we now have the event of hypertension but also take into account the time in which the subject placed into the study before they had hypertension or before they were censored. We assume independent censoring since we have no knowledge of a reason not to. 
+
+We consider models for survival again with the 9 variables used in the logistic part. We can see that model 14 and model 14a include all of these variables. We find that only BMI, BP mEds, Heart Rate, Heart attack and systolic blood pressure are statistically significant in this model. These variables are also positively associated with the hazard of hypertension. When we look at the test for the proportional hazard assumptions we can see that all variables except systolic blood pressure meet this criterion. This is why we move to model 14a where we stratify the models over systolic blood pressure to adjust the model for it but not include it in the estimates due to it not meeting the assumptions of Cox PH. No other major changes occur when this is done and the estimates seem similar. 
+
+For model 15 we now find that BMI, BP Meds, Heart Rate, Heart attacks and Systolic blood pressure are significant and positively associated with the hazard of hypertension. A close look at the proportional hazards test reveals that once again systolic blood pressure violates the proportional hazards assumption. We move to model 15a from this one and find things look similar with no significant changes.
+
+Model 16 reveals that current smoking, BMI and BP Meds are all significant. We find that in this model BMI violates the proportional hazards model. Due to this we move to model 16a. With model 16a we have similar results. Not that current smoking again appears to be negatively associated with the hazard of hypertension. 
+
+
+Model 15a is nested inside model 14a and by the LRT we can use Model 15a with p-value 0.6369. Model 17a is neested inside model 15a, however the LRT test reveals that we should stick with the larger model and go qith model 15a. This would leave us with model 15a and model 16a. These models are not nested and we would not be able to compare them.
+
+You would be able to possibly make a qualitative argument as to why you would pick one of them but we do not have a reason with these output to do so. Even the concordance and R-Square values are similar (*We did not discuss these and they will not be tested on*)
+
+Model 17 displays that Current Smoking, BMI, BP Meds and Systolic blood pressure are all associated with the hazard of hypertension. Proportional hazards test reveals that Systolic Blood Pressure is a problem. We mode to model 17a  and note that now current smoking is not significant. Then we find that BMI and blood pressure are significantly associated with hypertension. This model makes sense becuase with increased weight you are more likely to have hypertension and being on blood pressure meds means you either already have hypertension or that you are highly at risk for it. 
+

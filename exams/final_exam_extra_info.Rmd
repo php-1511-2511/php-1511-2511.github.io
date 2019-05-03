@@ -13,7 +13,7 @@ knitr::opts_chunk$set(cache=F)
 
 ## Final Exam Extra Questions
 
-Here are the questions I received on Polly. Due to the nature of them I will just answer them via this page instead of a video.
+Here are the questions I have received. Due to the nature of them I will just answer them via this page instead of a video.
 
 - [I know hazard h(t) is a derivative of survival S(t), so are there interpretations different? Do I have x chance of survival or x hazard of getting disease? ](#hazard-vs-survival)
 - [When the proportional hazards assumption is violated, we can include a 'strata' term... does this alter our interpretation of the beta coefficient? or do you include this as conditional statement? For example: adjusting for the 'strata'term, we expect that the hazard rate increases by X for every 1 year increase in age.](#stratified-cox-ph-models)
